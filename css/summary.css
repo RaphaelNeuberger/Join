@@ -13,10 +13,8 @@ main.addtask-wrap {
   margin: 8px 0 24px;
 }
 .h1 {
-  font-size: 61px;
-  font-weight: 700;
   letter-spacing: 0.2px;
-  color: var(--ink);
+
   display: flex;
   align-items: center;
   gap: 12px;
