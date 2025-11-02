@@ -13,6 +13,7 @@
   <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
     <nav header-html="./templates/header.html"></nav>
     <aside sidebar-html="./templates/sidebar.html"></aside>
+
     <main class="task-form-container">
       <h1 class="task-form__title">Add Task</h1>
 
@@ -58,6 +59,7 @@
                   id="dueDate"
                   name="dueDate"
                   class="form-group__input form-group__input--date"
+                  placeholder="dd/mm/yyyy"
                   required />
               </div>
               <span class="form-group__error" id="dueDateError"></span>
@@ -73,6 +75,7 @@
                   type="button"
                   class="priority-buttons__button"
                   data-priority="Urgent">
+                  Urgent
                   <svg
                     class="priority-buttons__icon"
                     width="16"
@@ -86,12 +89,12 @@
                       stroke-linecap="round"
                       stroke-linejoin="round" />
                   </svg>
-                  Urgent
                 </button>
                 <button
                   type="button"
                   class="priority-buttons__button priority-buttons__button--active"
                   data-priority="Medium">
+                  Medium
                   <svg
                     class="priority-buttons__icon"
                     width="16"
@@ -103,26 +106,25 @@
                       stroke-width="2"
                       stroke-linecap="round" />
                   </svg>
-                  Medium
                 </button>
                 <button
                   type="button"
                   class="priority-buttons__button"
                   data-priority="Low">
+                  Low
                   <svg
                     class="priority-buttons__icon"
                     width="16"
                     height="16"
                     viewBox="0 0 16 16">
                     <path
-                      d="M3 8L7 12L13 4"
+                      d="M8 14L8 2M12 10L8 14L4 10"
                       stroke="currentColor"
                       stroke-width="2"
                       fill="none"
                       stroke-linecap="round"
                       stroke-linejoin="round" />
                   </svg>
-                  Low
                 </button>
               </div>
             </div>
@@ -200,6 +202,17 @@
             class="form-actions__button form-actions__button--clear"
             id="clearBtn">
             Clear
+            <svg
+              class="form-actions__icon"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16">
+              <path
+                d="M4 4L12 12M12 4L4 12"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round" />
+            </svg>
           </button>
           <button
             type="submit"
@@ -239,6 +252,7 @@
       </div>
     </main>
 
+    <script src="scripts/templates.js"></script>
     <script src="scripts/add_task.js"></script>
     <script src="scripts/templates.js"></script>
   </body>

@@ -1,4 +1,5 @@
 :root {
+<<<<<<< HEAD
   /* Primitive Color Tokens */
   --color-white: rgba(255, 255, 255, 1);
   --color-black: rgba(0, 0, 0, 1);
@@ -751,11 +752,30 @@ select.form-control {
   --color-background: #f9f9f9;
   --color-white: #ffffff;
   --color-error: #ff6b6b;
+=======
+  /* Color Tokens */
+  --color-primary: #2A3D4A;
+  --color-urgent: #FF6B6B;
+  --color-medium: #FFA500;
+  --color-low: #4CAF50;
+  --color-white: #FFFFFF;
+  --color-text-primary: #333333;
+  --color-text-secondary: #888888;
+  --color-border: #E0E0E0;
+  --color-background: #F9F9F9;
+  --color-input-bg: #FFFFFF;
+  --color-error: #FF6B6B;
+  --color-success: #4CAF50;
+>>>>>>> a7b67e864e931f945244fb9d3461d19ca9dc9d51
   --spacing-small: 8px;
   --spacing-medium: 16px;
   --spacing-large: 24px;
+  --spacing-xl: 32px;
   --border-radius: 8px;
-  --transition: 0.1s;
+  --border-radius-large: 12px;
+  --transition: 0.15s ease-in-out;
+  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.08);
+  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 * {
@@ -773,44 +793,51 @@ body {
   font-size: 14px;
 }
 
+/* Main Layout */
 .task-form-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: var(--spacing-large);
+  margin-left: 250px; /* Account for sidebar */
+  padding: var(--spacing-xl);
+  min-height: 100vh;
+  padding-top: 100px; /* Account for header */
 }
 
 .task-form__title {
-  font-size: 28px;
-  font-weight: 600;
-  margin-bottom: var(--spacing-large);
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: var(--spacing-xl);
   color: var(--color-text-primary);
 }
 
 .task-form {
   background: var(--color-white);
-  border-radius: var(--border-radius);
-  padding: var(--spacing-large);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  border-radius: var(--border-radius-large);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-light);
+  max-width: 1000px;
 }
 
+/* Two Column Layout */
 .task-form__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-xl);
+}
+
+.task-form__column-left,
+.task-form__column-right {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-large);
 }
 
-.task-form__column-left,
-.task-form__column-right {
-  flex: 1;
-}
-
-/* Form Group Styles */
+/* Form Groups */
 .form-group {
-  margin-bottom: var(--spacing-large);
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group__label {
-  display: block;
   margin-bottom: var(--spacing-small);
   font-weight: 500;
   color: var(--color-text-primary);
@@ -821,13 +848,14 @@ body {
   color: var(--color-error);
 }
 
+/* Input Styles */
 .form-group__input,
 .form-group__textarea,
 .form-group__select {
   width: 100%;
   padding: 12px var(--spacing-medium);
-  border: unset;
-  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
   border-radius: var(--border-radius);
   font-size: 14px;
   color: var(--color-text-primary);
@@ -839,17 +867,14 @@ body {
 .form-group__input:focus,
 .form-group__textarea:focus,
 .form-group__select:focus {
-  background-color: #f0f0f0;
-  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(42, 61, 74, 0.1);
 }
 
 .form-group__textarea {
   resize: vertical;
   min-height: 100px;
-}
-
-.form-group__date-wrapper {
-  position: relative;
+  font-family: inherit;
 }
 
 .form-group__input--date {
@@ -861,6 +886,7 @@ body {
   opacity: 0.6;
 }
 
+/* Select Dropdown */
 .form-group__select {
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23888888' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
@@ -881,16 +907,14 @@ body {
 /* Priority Buttons */
 .priority-buttons {
   display: flex;
-  gap: var(--spacing-small);
-  flex-wrap: wrap;
+  gap: var(--spacing-medium);
 }
 
 .priority-buttons__button {
   flex: 1;
-  min-width: 100px;
-  padding: 10px var(--spacing-medium);
-  border: unset;
-  background-color: var(--color-background);
+  padding: 12px var(--spacing-medium);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-white);
   border-radius: var(--border-radius);
   font-size: 14px;
   font-weight: 500;
@@ -899,30 +923,35 @@ body {
   transition: all var(--transition);
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 6px;
+  justify-content: space-between;
+  min-height: 48px;
 }
 
 .priority-buttons__button:hover {
-  background-color: #f0f0f0;
+  border-color: var(--color-primary);
+  background-color: #f8f9fa;
 }
 
 .priority-buttons__button--active {
-  background-color: var(--color-medium);
   color: var(--color-white);
+  border-color: var(--color-medium);
+  background-color: var(--color-medium);
 }
 
 .priority-buttons__button[data-priority="Urgent"].priority-buttons__button--active {
   background-color: var(--color-urgent);
+  border-color: var(--color-urgent);
 }
 
 .priority-buttons__button[data-priority="Low"].priority-buttons__button--active {
   background-color: var(--color-low);
+  border-color: var(--color-low);
 }
 
 .priority-buttons__icon {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
 
 /* Subtask Input */
@@ -934,25 +963,26 @@ body {
 .subtask-input__field {
   flex: 1;
   padding: 12px var(--spacing-medium);
-  border: unset;
-  background-color: var(--color-background);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-input-bg);
   border-radius: var(--border-radius);
   font-size: 14px;
   color: var(--color-text-primary);
   outline: none;
   font-family: inherit;
+  transition: all var(--transition);
 }
 
 .subtask-input__field:focus {
-  background-color: #f0f0f0;
-  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.2);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px rgba(42, 61, 74, 0.1);
 }
 
 .subtask-input__button {
-  width: 40px;
-  height: 40px;
-  border: unset;
-  background-color: var(--color-button-primary);
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: var(--color-primary);
   color: var(--color-white);
   border-radius: var(--border-radius);
   cursor: pointer;
@@ -964,7 +994,7 @@ body {
 }
 
 .subtask-input__button:hover {
-  background-color: #2a4d7a;
+  background-color: #1e2d36;
 }
 
 .subtask-input__button:active {
@@ -975,6 +1005,9 @@ body {
 .subtask-list {
   list-style: none;
   margin-top: var(--spacing-medium);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
 }
 
 .subtask-list__item {
@@ -984,7 +1017,7 @@ body {
   padding: var(--spacing-small) var(--spacing-medium);
   background-color: var(--color-background);
   border-radius: var(--border-radius);
-  margin-bottom: var(--spacing-small);
+  border: 1px solid var(--color-border);
 }
 
 .subtask-list__text {
@@ -995,7 +1028,7 @@ body {
 .subtask-list__delete {
   width: 24px;
   height: 24px;
-  border: unset;
+  border: none;
   background-color: transparent;
   color: var(--color-text-secondary);
   cursor: pointer;
@@ -1016,15 +1049,14 @@ body {
 .form-actions {
   display: flex;
   gap: var(--spacing-medium);
-  margin-top: var(--spacing-large);
+  justify-content: flex-end;
   padding-top: var(--spacing-large);
   border-top: 1px solid var(--color-border);
-  justify-content: flex-end;
 }
 
 .form-actions__button {
   padding: 12px 24px;
-  border: unset;
+  border: none;
   border-radius: var(--border-radius);
   font-size: 14px;
   font-weight: 500;
@@ -1034,25 +1066,27 @@ body {
   align-items: center;
   gap: var(--spacing-small);
   font-family: inherit;
+  min-height: 48px;
 }
 
 .form-actions__button--clear {
   background-color: var(--color-white);
   color: var(--color-text-primary);
-  border: 2px solid var(--color-border);
+  border: 1px solid var(--color-border);
 }
 
 .form-actions__button--clear:hover {
   background-color: var(--color-background);
+  border-color: var(--color-primary);
 }
 
 .form-actions__button--submit {
-  background-color: var(--color-button-primary);
+  background-color: var(--color-primary);
   color: var(--color-white);
 }
 
 .form-actions__button--submit:hover {
-  background-color: #2a4d7a;
+  background-color: #1e2d36;
 }
 
 .form-actions__button--submit:disabled {
@@ -1064,6 +1098,7 @@ body {
 .form-actions__icon {
   width: 16px;
   height: 16px;
+  flex-shrink: 0;
 }
 
 /* Success Message */
@@ -1073,36 +1108,23 @@ body {
   gap: var(--spacing-medium);
   padding: var(--spacing-medium);
   background-color: #e8f5e9;
-  color: var(--color-low);
+  color: var(--color-success);
   border-radius: var(--border-radius);
   margin-top: var(--spacing-large);
   font-weight: 500;
+  border: 1px solid rgba(76, 175, 80, 0.2);
 }
 
 .success-message.show {
   display: flex;
 }
 
-/* Desktop Layout */
-@media (min-width: 768px) {
-  .task-form__layout {
-    flex-direction: row;
-    gap: var(--spacing-large) 32px;
-  }
-
-  .task-form__column-left,
-  .task-form__column-right {
-    flex: 1;
-  }
-
-  .form-actions {
-    justify-content: flex-end;
-  }
-}
-
-@media (max-width: 767px) {
+/* Responsive Design */
+@media (max-width: 768px) {
   .task-form-container {
+    margin-left: 0;
     padding: var(--spacing-medium);
+    padding-top: 80px;
   }
 
   .task-form__title {
@@ -1110,7 +1132,21 @@ body {
   }
 
   .task-form {
-    padding: var(--spacing-medium);
+    padding: var(--spacing-large);
+  }
+
+  .task-form__layout {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-large);
+  }
+
+  .priority-buttons {
+    flex-direction: column;
+  }
+
+  .priority-buttons__button {
+    justify-content: center;
+    gap: var(--spacing-small);
   }
 
   .form-actions {
@@ -1121,12 +1157,19 @@ body {
     width: 100%;
     justify-content: center;
   }
+}
 
-  .priority-buttons {
-    flex-direction: column;
+@media (max-width: 480px) {
+  .task-form-container {
+    padding: var(--spacing-small);
   }
 
-  .priority-buttons__button {
-    width: 100%;
+  .task-form {
+    padding: var(--spacing-medium);
+  }
+
+  .task-form__column-left,
+  .task-form__column-right {
+    gap: var(--spacing-medium);
   }
 }
