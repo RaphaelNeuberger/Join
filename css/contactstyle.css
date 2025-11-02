@@ -11,7 +11,7 @@
 .all-contacts {
     flex-shrink: 0;
     text-align: center;
-    width: 350px;
+    width: 320px;
     border-right: 1px solid #d3d3d3;
     padding-right: 1rem;
     box-sizing: border-box;
@@ -22,37 +22,44 @@
 }
 
 .add-contact-button {
-    height: 3rem;
     margin-top: 1rem;
     background-color: #2a3647;
     color: white;
     border: none;
     border-radius: 10px;
-    padding: 8px 56px;
+    padding: 12px;
     font-size: 1rem;
+    text-align: center;
     font-weight: bolder;
     cursor: pointer;
     transition: all 0.2s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    align-content: center;
 }
 .add-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 1.6rem;
+    height: 1.6rem;
+    text-align: center;
     margin-left: 1rem;
-    vertical-align: middle;
 }
 
 .user-list {
-    width: 17rem;
     text-align: left;
     margin-top: 2rem;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 20px;
+    font-weight: 400;
+    font-style: regular;
     color: #555555;
 }   
 .contact-list {
+    box-sizing: border-box;
     position: sticky;
     overflow: auto;
-    padding: 2rem;
+    padding: 0.6rem;
     
 }
 
@@ -68,7 +75,7 @@
     padding: 0.7rem;
     background-color: rgb(255, 123, 0);
     color: white;
-    font-size: 1rem;
+    font-size: 12px;
     border-radius: 50%;
     margin-right: 1rem;
 }   
@@ -78,19 +85,24 @@
     color: white;
 }
 .user-name {
-    font-size: 1.2rem;
+    font-size: 20px;
     font-weight: 400;
 }
 .user-email {
-    font-size: 0.9rem;
+    font-size: 16px;
     color: #007CEE;
     font-weight: 400;
 }
 
 .info-contact-area{
+    width: calc(100% - 320px);
     box-sizing: border-box;
-    margin-top: 8rem;
-    margin-left: 6rem;
+    margin-top: 7rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-content: center;
+    flex-wrap: wrap;
 }
 .info-contact-header{
     display: flex;
@@ -98,12 +110,82 @@
     margin-bottom: 1rem;
 }
 .info-contact-area h2{
-    font-size: 2.5rem;
-    padding-right: 1.5rem;
+    font-weight: 700;
+    font-size: 61px;
+    font-style: bold;
+    padding-right: 1rem;
     border-right: #007CEE 2px solid;
 }
 .slogan{
-    margin-left: 2rem;
-    font-size: 1.4rem;
+    font-size: 27px;
+    font-weight: 400;
+    font-style: regular;
+    margin-left: 1rem;
+    font-size: 2rem;
     color: #2A3647;
+}
+.user-infos{
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+}
+.name-logo-large{
+    height: 120px;
+    width: 120px;
+    font-weight: 500;
+    font-style: medium;
+    background-color: rgb(255, 123, 0);
+    color: white;
+    font-size: 47px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+}
+.user-details-large{
+    margin-left: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+.name-large{
+    font-size: 47px;
+    font-weight: 500;
+    font-style: medium;
+}
+.edit-area{
+    margin-top: 1rem;
+    display: flex;
+    gap: 2rem;
+}
+.edit-elements span{
+    width: 16px;
+    height: 16px;
+    margin-right: 0.8rem;
+    text-align: center;
+}
+.edit-area img{
+    margin-right: 0.6rem;
+    height: 18px;
+    width: 18px;
+}
+
+.para-1{
+    margin-top: 40px;
+    font-weight: 400;
+    font-style: regular;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+.para-2{
+    font-size: 16px;
+    font-weight: 700;
+    font-style: bold;
+}
+.para-3{
+    color: #007CEE;
+    font-size: 16px;
+    font-weight: 400;
+    font-style: regular;
+    margin-bottom: 20px;
 }
