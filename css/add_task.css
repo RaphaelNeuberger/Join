@@ -732,25 +732,25 @@ select.form-control {
 }
 
 @font-face {
-  font-family: 'FKGroteskNeue';
-  src: url('https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2')
-    format('woff2');
+  font-family: "FKGroteskNeue";
+  src: url("https://r2cdn.perplexity.ai/fonts/FKGroteskNeue.woff2")
+    format("woff2");
 }
 
 /* END PERPLEXITY DESIGN SYSTEM */
 :root {
-  --color-primary: #FF6B6B;
-  --color-medium: #FFA500;
-  --color-low: #4CAF50;
-  --color-urgent: #FF6B6B;
-  --color-button-primary: #1E3A5F;
-  --color-button-secondary: #E8E8E8;
+  --color-primary: #ff6b6b;
+  --color-medium: #ffa500;
+  --color-low: #4caf50;
+  --color-urgent: #ff6b6b;
+  --color-button-primary: #1e3a5f;
+  --color-button-secondary: #e8e8e8;
   --color-text-primary: #333333;
   --color-text-secondary: #888888;
-  --color-border: #E0E0E0;
-  --color-background: #F9F9F9;
-  --color-white: #FFFFFF;
-  --color-error: #FF6B6B;
+  --color-border: #e0e0e0;
+  --color-background: #f9f9f9;
+  --color-white: #ffffff;
+  --color-error: #ff6b6b;
   --spacing-small: 8px;
   --spacing-medium: 16px;
   --spacing-large: 24px;
@@ -765,7 +765,8 @@ select.form-control {
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   line-height: 1.6;
