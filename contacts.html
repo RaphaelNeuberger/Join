@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="css/links.css">
   <link rel="stylesheet" href="css/fonts.css">
   <link rel="stylesheet" href="./css/contactstyle.css">
-  <script src="./test.js"></script>
 </head>
 
 <body>
@@ -49,7 +48,7 @@
     <div class="main-contact">
 
 
-
+<!-- contact list -->
             <div class="all-contacts">           
                     <button class="add-contact-button dark-button">Add new contact<img class="add-icon" src="img/buttons/person_add.svg" alt="Add Icon"></button>
                 
@@ -150,11 +149,11 @@
                     </div>
 
 
-                    
+
                 </div>
             </div>
 
-
+<!-- contact info -->
             <div class="info-contact-area">
                 <div class="info-contact-header">
                     <h2>Contacts</h2>
@@ -185,6 +184,31 @@
 
     </div>
 
+
+    <div class="edit-overay">
+        <div class="left-section">
+             <img src="./img/logo/join_logo_white.svg" alt="">
+             <p>Edit contact</p>
+             <hr>
+        </div>
+        <div class="right-section">
+           <div class="name-logo-etition">AW</div>
+        </div>
+        <div class="edit-contact">
+            <form class="contact-edit-form" action="">
+                <input type="text" id="name" name="name" value="Tatjana Wolf" class="contact-edit-name">
+                <input type="email" id="email" name="email" value="tatjana.wolf@example.com" class="contact-edit-email">
+                <input type="phone" id="phone" name="phone" value="+1 (555) 123-4567" class="contact-edit-phone">
+            </form>
+            <div class="contact-edit-save-cancel">
+                <button class="cancel-edit-button">Cancel</button>
+                <button class="save-edit-button">Save <img src="./img/icons/check.svg" alt="check" style="height: 1.5rem;"></button>
+            </div>
+        </div>
+
+
+        
+    </div>
   
 </body>
 

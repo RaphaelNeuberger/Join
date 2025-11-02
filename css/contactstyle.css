@@ -9,16 +9,16 @@
 }
 
 .all-contacts {
-    flex-shrink: 0;
+    flex: 0 0 320px;
     text-align: center;
-    width: 320px;
+    min-width: 280px;
+    max-width: 400px;
     border-right: 1px solid #d3d3d3;
     padding-right: 1rem;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
-
 }
 
 .add-contact-button {
@@ -95,9 +95,10 @@
 }
 
 .info-contact-area{
+    background-color: rgb(245, 246, 247);
     width: calc(100% - 320px);
     box-sizing: border-box;
-    margin-top: 7rem;
+    padding-top: 7rem;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -188,4 +189,96 @@
     font-weight: 400;
     font-style: regular;
     margin-bottom: 20px;
+}
+
+.edit-overay{
+    z-index: 99;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 1010px;
+    height: 500px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    overflow: hidden;
+}
+
+.left-section {
+    width: 45%;
+    background-color: #2a3647;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 5rem;
+    padding-left: 1.5rem;
+    box-sizing: border-box;
+    align-items: flex-start;
+}
+.left-section img {
+    width: 20%;
+    height: auto;
+}
+.left-section p {
+    color: white;
+    font-size: 61px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+
+}
+.left-section hr {
+    width: 20%;
+    border: 0.5px solid #007CEE;
+    margin: 0;
+    margin-right: auto;
+}
+.right-section {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 2rem;
+    box-sizing: border-box;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: space-between;
+}
+.name-logo-etition{
+    width: 120px;
+    height: 120px;
+    background-color: rgb(255, 123, 0);
+    color: white;
+    font-size: 47px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+.edit-contact{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.contact-edit-form{
+    display: flex;
+    width: 15rem;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact-edit-save-cancel{
+    margin-top: 2rem;
+    display: flex;
+    gap: 1rem;
+}
+.contact-edit-save-cancel button{
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
