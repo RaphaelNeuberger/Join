@@ -41,7 +41,7 @@
     vertical-align: middle;
 }
 
-.list-group {
+.user-list {
     width: 17rem;
     text-align: left;
     margin-top: 2rem;
@@ -49,6 +49,12 @@
     font-size: 1.1rem;
     color: #555555;
 }   
+.contact-list {
+    position: sticky;
+    overflow: auto;
+    padding: 2rem;
+    
+}
 
 .contact-item {
     display: flex;
@@ -56,24 +62,20 @@
     padding: 0.5rem;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s ease;
 }
 .name-logo {
     text-align: center;
-    padding: 0.5rem;
+    padding: 0.7rem;
     background-color: rgb(255, 123, 0);
     color: white;
-    font-size: 1.2rem;
+    font-size: 1rem;
     border-radius: 50%;
-    margin-right: 2rem;
+    margin-right: 1rem;
 }   
-.user-photo img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-}
+
 .contact-item:hover {
-    background-color: #f0f0f0;
+    background-color: #2a3647;
+    color: white;
 }
 .user-name {
     font-size: 1.2rem;
@@ -83,4 +85,25 @@
     font-size: 0.9rem;
     color: #007CEE;
     font-weight: 400;
+}
+
+.info-contact-area{
+    box-sizing: border-box;
+    margin-top: 8rem;
+    margin-left: 6rem;
+}
+.info-contact-header{
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+.info-contact-area h2{
+    font-size: 2.5rem;
+    padding-right: 1.5rem;
+    border-right: #007CEE 2px solid;
+}
+.slogan{
+    margin-left: 2rem;
+    font-size: 1.4rem;
+    color: #2A3647;
 }

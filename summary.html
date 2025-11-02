@@ -103,21 +103,6 @@
   <script src="scripts/helpers.js"></script>
   <script src="scripts/storage.js"></script>
   <script src="scripts/templates.js"></script>
-  <script>
-    // Mark active nav after sidebar loads
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        document.querySelectorAll(".sidebar .nav-item").forEach((a) => {
-          const href = a.getAttribute("href");
-          if (href && location.pathname.endsWith(href)) {
-            a.classList.add("active");
-          } else {
-            a.classList.remove("active");
-          }
-        });
-      }, 0);
-    });
-  </script>
   <script src="scripts/add_task.js"></script>
 </body>
 
