@@ -4,13 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Join</title>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet" />
-    <link
-      rel="icon"
-      href="img/logo/Logo for Favicon construction.svg"
-      type="image/svg+xml" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/indexstyle.css" />
   </head>
@@ -18,10 +13,7 @@
   <body>
     <!-- HEADER -->
     <header>
-      <img
-        src="img/logo/Logo for Favicon construction.svg"
-        alt="Join Logo"
-        class="join-logo" />
+      <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" class="join-logo" />
       <div class="signup-box" id="signup-top">
         <span class="signup-text">Not a Join user?</span>
         <button class="signup-btn dark-button" id="toggle-form">Sign up</button>
@@ -35,12 +27,12 @@
 
       <div class="input-group">
         <input type="email" placeholder="E-Mail" required />
-        <span class="material-icons">email</span>
+        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
       </div>
 
       <div class="input-group">
         <input type="password" placeholder="Passwort" id="password" required />
-        <span class="material-icons" id="toggle-password">lock</span>
+        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" id="toggle-password" />
       </div>
 
       <div class="button-group">
@@ -52,35 +44,29 @@
     <!-- SIGN UP FORM -->
     <main id="signup-form" class="hidden">
       <div class="signup-header">
-        <span class="material-icons back-arrow" id="back-to-login"
-          >arrow_back</span
-        >
+        <span class="material-icons back-arrow" id="back-to-login">arrow_back</span>
         <h1>Sign up</h1>
       </div>
       <div class="blueline"></div>
 
       <div class="input-group">
         <input type="text" placeholder="Name" required />
-        <span class="material-icons">person</span>
+        <img src="img/icons/person.svg" alt="Person Icon" class="icon-person" />
       </div>
 
       <div class="input-group">
         <input type="email" placeholder="E-Mail" required />
-        <span class="material-icons">email</span>
+        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
       </div>
 
       <div class="input-group">
-        <input
-          type="password"
-          placeholder="Passwort"
-          id="signup-password"
-          required />
-        <span class="material-icons">lock</span>
+        <input type="password" placeholder="Passwort" id="signup-password" required />
+        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" />
       </div>
 
       <div class="input-group">
         <input type="password" placeholder="Confirm Passwort" required />
-        <span class="material-icons">lock</span>
+        <img src="img/icons/lock.svg" alt="Confirm Lock Icon" class="icon-lock" />
       </div>
 
       <label class="privacy-accept">
@@ -94,7 +80,7 @@
       </div>
     </main>
 
-    <!-- SIGNUP-BOX FÜR MOBILE – JETZT UNTER ALLEN FORMS -->
+    <!-- SIGNUP-BOX FÜR MOBILE -->
     <div class="signup-box" id="signup-bottom">
       <span class="signup-text">Not a Join user?</span>
       <button class="signup-btn dark-button" id="toggle-form-2">Sign up</button>
@@ -106,9 +92,21 @@
       <a href="legal-notice.html">Legal Notice</a>
     </div>
 
+    <!-- SCRIPT -->
     <script>
       const togglePassword = document.getElementById("toggle-password");
       const passwordInput = document.getElementById("password");
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener("click", () => {
+          const isPwd = passwordInput.type === "password";
+          passwordInput.type = isPwd ? "text" : "password";
+
+          // Optional: Icon tauschen (falls du z. B. eye.svg hast)
+          // togglePassword.src = isPwd ? "img/icons/eye-off.svg" : "img/icons/lock.svg";
+        });
+      }
+
       const toggleForm = document.getElementById("toggle-form");
       const toggleForm2 = document.getElementById("toggle-form-2");
       const loginForm = document.getElementById("login-form");
@@ -117,15 +115,6 @@
       const signupBtns = document.querySelectorAll(".signup-btn");
       const backArrow = document.getElementById("back-to-login");
 
-      // 🔒 Passwortanzeige umschalten
-      togglePassword.addEventListener("click", () => {
-        const type = passwordInput.type === "password" ? "text" : "password";
-        passwordInput.type = type;
-        togglePassword.textContent =
-          type === "password" ? "lock" : "visibility_off";
-      });
-
-      // 🔄 Login/Signup umschalten – für beide Buttons (oben & unten)
       function toggleForms() {
         const isLoginVisible = loginForm.classList.contains("active");
 
@@ -134,9 +123,7 @@
           loginForm.classList.add("hidden");
           signupForm.classList.remove("hidden");
           signupForm.classList.add("active");
-          signupTexts.forEach(
-            (el) => (el.textContent = "Already have an account?")
-          );
+          signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
           signupBtns.forEach((el) => (el.textContent = "Log in"));
         } else {
           signupForm.classList.remove("active");
@@ -148,23 +135,19 @@
         }
       }
 
-      toggleForm.addEventListener("click", toggleForms);
-      toggleForm2.addEventListener("click", toggleForms);
+      if (toggleForm) toggleForm.addEventListener("click", toggleForms);
+      if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
 
-      // ⬅️ Zurück-Pfeil im Sign-up-Formular
-      backArrow.addEventListener("click", () => {
-        signupForm.classList.remove("active");
-        signupForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-        signupBtns.forEach((el) => (el.textContent = "Sign up"));
-      });
+      if (backArrow) {
+        backArrow.addEventListener("click", () => {
+          signupForm.classList.remove("active");
+          signupForm.classList.add("hidden");
+          loginForm.classList.remove("hidden");
+          loginForm.classList.add("active");
+          signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
+          signupBtns.forEach((el) => (el.textContent = "Sign up"));
+        });
+      }
     </script>
-    <script src="scripts/config.js"></script>
-    <script src="scripts/helpers.js"></script>
-    <script src="scripts/storage.js"></script>
-    <script src="scripts/templates.js"></script>
-    <script src="scripts/add_task.js"></script>
   </body>
 </html>

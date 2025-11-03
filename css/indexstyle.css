@@ -98,11 +98,16 @@ h1 {
   margin-bottom: 20px;
 }
 
+.input-group input::placeholder {
+  color: #D1D1D1;
+  opacity: 1; /* wichtig, damit Browser keine Transparenz drauflegen */
+}
+
 .input-group input {
   width: 100%;
   padding: 12px 40px 12px 12px;
   font-size: 16px;
-  border: 1px solid #d1d1d1;
+  border: 1px solid #D1D1D1;
   border-radius: 8px;
   outline: none;
   box-sizing: border-box;
@@ -308,4 +313,73 @@ button:not(.dark-button):hover {
 .back-arrow:hover {
   color: #29abe2;
   transform: translateY(-50%) scale(1.1);
+}
+
+/* === EIGENE ICONS IN INPUT FELDERN === */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;  /* rechts Platz für Icon */
+  font-size: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #29abe2;
+}
+
+/* Icons rechts im Feld positionieren */
+.input-group img.icon-mail,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;             /* Größe kannst du anpassen */
+  height: 22px;
+  pointer-events: none;    /* verhindert, dass das Icon Klicks blockiert */
+  opacity: 0.7;
+}
+
+.input-group img.icon-mail {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.input-group img.icon-lock {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Wenn du bei Hover oder Focus leichten Effekt willst */
+.input-group input:focus + img {
+  opacity: 1;
+  filter: none;
+}
+
+/* === ICONS IM INPUT (ERGÄNZT MIT PERSON) === */
+.input-group img.icon-person,
+.input-group img.icon-mail,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.7;
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Effekt bei Fokus */
+.input-group input:focus + img {
+  opacity: 1;
+  filter: none;
 }
