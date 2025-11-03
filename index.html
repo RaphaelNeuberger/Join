@@ -1,153 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/fonts.css" />
-    <link rel="stylesheet" href="css/indexstyle.css" />
-  </head>
 
-  <body>
-    <!-- HEADER -->
-    <header>
-      <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" class="join-logo" />
-      <div class="signup-box" id="signup-top">
-        <span class="signup-text">Not a Join user?</span>
-        <button class="signup-btn dark-button" id="toggle-form">Sign up</button>
-      </div>
-    </header>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/indexstyle.css" />
+</head>
 
-    <!-- LOGIN FORM -->
-    <main id="login-form" class="active">
-      <h1>Log in</h1>
-      <div class="blueline"></div>
+<body>
+  <!-- HEADER -->
+  <div id="intro-screen">
+    <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" />
+  </div>
 
-      <div class="input-group">
-        <input type="email" placeholder="E-Mail" required />
-        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
-      </div>
-
-      <div class="input-group">
-        <input type="password" placeholder="Passwort" id="password" required />
-        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" id="toggle-password" />
-      </div>
-
-      <div class="button-group">
-        <button class="dark-button">Log in</button>
-        <button>Guest Log in</button>
-      </div>
-    </main>
-
-    <!-- SIGN UP FORM -->
-    <main id="signup-form" class="hidden">
-      <div class="signup-header">
-        <span class="material-icons back-arrow" id="back-to-login">arrow_back</span>
-        <h1>Sign up</h1>
-      </div>
-      <div class="blueline"></div>
-
-      <div class="input-group">
-        <input type="text" placeholder="Name" required />
-        <img src="img/icons/person.svg" alt="Person Icon" class="icon-person" />
-      </div>
-
-      <div class="input-group">
-        <input type="email" placeholder="E-Mail" required />
-        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
-      </div>
-
-      <div class="input-group">
-        <input type="password" placeholder="Passwort" id="signup-password" required />
-        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" />
-      </div>
-
-      <div class="input-group">
-        <input type="password" placeholder="Confirm Passwort" required />
-        <img src="img/icons/lock.svg" alt="Confirm Lock Icon" class="icon-lock" />
-      </div>
-
-      <label class="privacy-accept">
-        <input type="checkbox" required />
-        I accept the
-        <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
-      </label>
-
-      <div class="button-group">
-        <button class="dark-button">Sign up</button>
-      </div>
-    </main>
-
-    <!-- SIGNUP-BOX FÜR MOBILE -->
-    <div class="signup-box" id="signup-bottom">
+  <header>
+    <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" class="join-logo" />
+    <div class="signup-box" id="signup-top">
       <span class="signup-text">Not a Join user?</span>
-      <button class="signup-btn dark-button" id="toggle-form-2">Sign up</button>
+      <button class="signup-btn dark-button" id="toggle-form">Sign up</button>
+    </div>
+  </header>
+
+  <!-- LOGIN FORM -->
+  <main id="login-form" class="active">
+    <h1>Log in</h1>
+    <div class="blueline"></div>
+
+    <div class="input-group">
+      <input type="email" placeholder="E-Mail" required />
+      <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
     </div>
 
-    <!-- FOOTER -->
-    <div class="footer-links">
-      <a href="privacypolicy.html">Privacy Policy</a>
-      <a href="legal-notice.html">Legal Notice</a>
+    <div class="input-group">
+      <input type="password" placeholder="Passwort" id="password" required />
+      <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" id="toggle-password" />
     </div>
 
-    <!-- SCRIPT -->
-    <script>
-      const togglePassword = document.getElementById("toggle-password");
-      const passwordInput = document.getElementById("password");
+    <div class="button-group">
+      <button class="dark-button">Log in</button>
+      <button>Guest Log in</button>
+    </div>
+  </main>
 
-      if (togglePassword && passwordInput) {
-        togglePassword.addEventListener("click", () => {
-          const isPwd = passwordInput.type === "password";
-          passwordInput.type = isPwd ? "text" : "password";
+  <!-- SIGN UP FORM -->
+  <main id="signup-form" class="hidden">
+    <div class="signup-header">
+      <span class="material-icons back-arrow" id="back-to-login">arrow_back</span>
+      <h1>Sign up</h1>
+    </div>
+    <div class="blueline"></div>
 
-          // Optional: Icon tauschen (falls du z. B. eye.svg hast)
-          // togglePassword.src = isPwd ? "img/icons/eye-off.svg" : "img/icons/lock.svg";
-        });
+    <div class="input-group">
+      <input type="text" placeholder="Name" required />
+      <img src="img/icons/person.svg" alt="Person Icon" class="icon-person" />
+    </div>
+
+    <div class="input-group">
+      <input type="email" placeholder="E-Mail" required />
+      <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
+    </div>
+
+    <div class="input-group">
+      <input type="password" placeholder="Passwort" id="signup-password" required />
+      <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" />
+    </div>
+
+    <div class="input-group">
+      <input type="password" placeholder="Confirm Passwort" required />
+      <img src="img/icons/lock.svg" alt="Confirm Lock Icon" class="icon-lock" />
+    </div>
+
+    <label class="privacy-accept">
+      <input type="checkbox" required />
+      I accept the
+      <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
+    </label>
+
+    <div class="button-group">
+      <button class="dark-button">Sign up</button>
+    </div>
+  </main>
+
+  <!-- SIGNUP-BOX FÜR MOBILE -->
+  <div class="signup-box" id="signup-bottom">
+    <span class="signup-text">Not a Join user?</span>
+    <button class="signup-btn dark-button" id="toggle-form-2">Sign up</button>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-links">
+    <a href="privacypolicy.html">Privacy Policy</a>
+    <a href="legal-notice.html">Legal Notice</a>
+  </div>
+
+  <!-- SCRIPT -->
+  <script>
+    const togglePassword = document.getElementById("toggle-password");
+    const passwordInput = document.getElementById("password");
+
+    if (togglePassword && passwordInput) {
+      togglePassword.addEventListener("click", () => {
+        const isPwd = passwordInput.type === "password";
+        passwordInput.type = isPwd ? "text" : "password";
+
+        // Optional: Icon tauschen (falls du z. B. eye.svg hast)
+        // togglePassword.src = isPwd ? "img/icons/eye-off.svg" : "img/icons/lock.svg";
+      });
+    }
+
+    const toggleForm = document.getElementById("toggle-form");
+    const toggleForm2 = document.getElementById("toggle-form-2");
+    const loginForm = document.getElementById("login-form");
+    const signupForm = document.getElementById("signup-form");
+    const signupTexts = document.querySelectorAll(".signup-text");
+    const signupBtns = document.querySelectorAll(".signup-btn");
+    const backArrow = document.getElementById("back-to-login");
+
+    function toggleForms() {
+      const isLoginVisible = loginForm.classList.contains("active");
+
+      if (isLoginVisible) {
+        loginForm.classList.remove("active");
+        loginForm.classList.add("hidden");
+        signupForm.classList.remove("hidden");
+        signupForm.classList.add("active");
+        signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
+        signupBtns.forEach((el) => (el.textContent = "Log in"));
+      } else {
+        signupForm.classList.remove("active");
+        signupForm.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+        loginForm.classList.add("active");
+        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
+        signupBtns.forEach((el) => (el.textContent = "Sign up"));
+      }
+    }
+
+    if (toggleForm) toggleForm.addEventListener("click", toggleForms);
+    if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
+
+    if (backArrow) {
+      backArrow.addEventListener("click", () => {
+        signupForm.classList.remove("active");
+        signupForm.classList.add("hidden");
+        loginForm.classList.remove("hidden");
+        loginForm.classList.add("active");
+        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
+        signupBtns.forEach((el) => (el.textContent = "Sign up"));
+      });
+    }
+
+    window.addEventListener("load", () => {
+      const intro = document.getElementById("intro-screen");
+      const flyingLogo = intro?.querySelector("img");
+      const headerLogo = document.querySelector(".join-logo");
+
+      if (!intro || !flyingLogo || !headerLogo) {
+        // Fallback: Seite normal einblenden
+        document.body.classList.add("loaded");
+        return;
       }
 
-      const toggleForm = document.getElementById("toggle-form");
-      const toggleForm2 = document.getElementById("toggle-form-2");
-      const loginForm = document.getElementById("login-form");
-      const signupForm = document.getElementById("signup-form");
-      const signupTexts = document.querySelectorAll(".signup-text");
-      const signupBtns = document.querySelectorAll(".signup-btn");
-      const backArrow = document.getElementById("back-to-login");
+      // ganz kurzer Moment groß stehen lassen
+      const holdMs = 150;            // << kürzerer „Stand“ vor dem Flug
+      const flyMs = 1200;           // Flugdauer
+      const easing = "cubic-bezier(0.7, 0, 0.3, 1)";
 
-      function toggleForms() {
-        const isLoginVisible = loginForm.classList.contains("active");
+      // sicherstellen, dass das Overlay über allem liegt
+      intro.style.opacity = "1";
 
-        if (isLoginVisible) {
-          loginForm.classList.remove("active");
-          loginForm.classList.add("hidden");
-          signupForm.classList.remove("hidden");
-          signupForm.classList.add("active");
-          signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
-          signupBtns.forEach((el) => (el.textContent = "Log in"));
-        } else {
-          signupForm.classList.remove("active");
-          signupForm.classList.add("hidden");
-          loginForm.classList.remove("hidden");
-          loginForm.classList.add("active");
-          signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-          signupBtns.forEach((el) => (el.textContent = "Sign up"));
-        }
-      }
+      setTimeout(() => {
+        // aktuelle Positionen messen
+        const startRect = flyingLogo.getBoundingClientRect();
+        const endRect = headerLogo.getBoundingClientRect();
 
-      if (toggleForm) toggleForm.addEventListener("click", toggleForms);
-      if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
+        // Zentren berechnen
+        const startCX = startRect.left + startRect.width / 2;
+        const startCY = startRect.top + startRect.height / 2;
+        const endCX = endRect.left + endRect.width / 2;
+        const endCY = endRect.top + endRect.height / 2;
 
-      if (backArrow) {
-        backArrow.addEventListener("click", () => {
-          signupForm.classList.remove("active");
-          signupForm.classList.add("hidden");
-          loginForm.classList.remove("hidden");
-          loginForm.classList.add("active");
-          signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-          signupBtns.forEach((el) => (el.textContent = "Sign up"));
-        });
-      }
-    </script>
-  </body>
+        // Ziel-Skalierung (von 220px Breite auf echte Header-Logo-Breite)
+        const startW = startRect.width;
+        const endW = endRect.width || 110; // Fallback
+        const scale = endW / startW;
+
+        // Delta in Pixeln (vom Intro-Center zum Header-Logo-Center)
+        const dx = endCX - startCX;
+        const dy = endCY - startCY;
+
+        // Transform-Origin aus der Mitte
+        flyingLogo.style.transformOrigin = "center center";
+
+        // Sanfter, durchgehender Flug per Web Animations API
+        const anim = flyingLogo.animate(
+          [
+            { transform: "translate(0px, 0px) scale(1)" },
+            { transform: `translate(${dx}px, ${dy}px) scale(${scale})` }
+          ],
+          { duration: flyMs, easing, fill: "forwards" }
+        );
+
+        anim.onfinish = () => {
+          // Seite einblenden, Intro ausblenden und entfernen
+          document.body.classList.add("loaded");
+          intro.style.opacity = "0";
+          setTimeout(() => intro.remove(), 800);
+        };
+      }, holdMs);
+    });
+
+  </script>
+</body>
+
 </html>
