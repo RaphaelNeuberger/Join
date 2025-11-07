@@ -85,7 +85,7 @@ h1 {
 
 .blueline {
   width: 90px;
-  height: 4px;
+  height: 3px;
   background-color: #29abe2;
   border-radius: 2px;
   margin-bottom: 32px;
@@ -98,11 +98,17 @@ h1 {
   margin-bottom: 20px;
 }
 
+.input-group input::placeholder {
+  color: #D1D1D1;
+  opacity: 1;
+  /* wichtig, damit Browser keine Transparenz drauflegen */
+}
+
 .input-group input {
   width: 100%;
   padding: 12px 40px 12px 12px;
   font-size: 16px;
-  border: 1px solid #d1d1d1;
+  border: 1px solid #D1D1D1;
   border-radius: 8px;
   outline: none;
   box-sizing: border-box;
@@ -136,7 +142,8 @@ h1 {
   width: 16px;
   height: 16px;
   cursor: pointer;
-  accent-color: #29abe2; /* moderner Farbton für Checkbox */
+  accent-color: #29abe2;
+  /* moderner Farbton für Checkbox */
 }
 
 .privacy-accept a {
@@ -233,7 +240,10 @@ button:not(.dark-button):hover {
 
 /* === RESPONSIVE DESIGN === */
 @media (max-width: 480px) {
-  #signup-top { display: none; }
+  #signup-top {
+    display: none;
+  }
+
   #signup-bottom {
     display: flex;
     flex-direction: row;
@@ -252,12 +262,21 @@ button:not(.dark-button):hover {
     padding: 28px 20px;
   }
 
-  .join-logo { width: 90px; }
+  .join-logo {
+    width: 90px;
+  }
 
-  h1 { font-size: 28px; }
+  h1 {
+    font-size: 28px;
+  }
 
-  button { width: 100%; }
-  .signup-btn { width: auto; }
+  button {
+    width: 100%;
+  }
+
+  .signup-btn {
+    width: auto;
+  }
 
   .footer-links {
     flex-direction: column;
@@ -271,8 +290,13 @@ button:not(.dark-button):hover {
 }
 
 @media (min-width: 481px) {
-  #signup-bottom { display: none; }
-  #signup-top { display: flex; }
+  #signup-bottom {
+    display: none;
+  }
+
+  #signup-top {
+    display: flex;
+  }
 }
 
 
@@ -308,4 +332,126 @@ button:not(.dark-button):hover {
 .back-arrow:hover {
   color: #29abe2;
   transform: translateY(-50%) scale(1.1);
+}
+
+/* === EIGENE ICONS IN INPUT FELDERN === */
+.input-group {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 12px 40px 12px 12px;
+  /* rechts Platz für Icon */
+  font-size: 16px;
+  border: 1px solid #d1d1d1;
+  border-radius: 8px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: #29abe2;
+}
+
+/* Icons rechts im Feld positionieren */
+.input-group img.icon-mail,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  /* Größe kannst du anpassen */
+  height: 22px;
+  pointer-events: none;
+  /* verhindert, dass das Icon Klicks blockiert */
+  opacity: 0.7;
+}
+
+.input-group img.icon-mail {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.input-group img.icon-lock {
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Wenn du bei Hover oder Focus leichten Effekt willst */
+.input-group input:focus+img {
+  opacity: 1;
+  filter: none;
+}
+
+/* === ICONS IM INPUT (ERGÄNZT MIT PERSON) === */
+.input-group img.icon-person,
+.input-group img.icon-mail,
+.input-group img.icon-lock {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px;
+  height: 22px;
+  pointer-events: none;
+  opacity: 0.7;
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+/* Effekt bei Fokus */
+.input-group input:focus+img {
+  opacity: 1;
+  filter: none;
+}
+
+/* === STARTANIMATION === */
+#intro-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+
+#intro-screen img {
+  width: 220px;
+  height: auto;
+}
+
+/* Logo fliegt diagonal nach oben links */
+@keyframes logo-move {
+  0% {
+    transform: scale(1) translate(0, 0);
+  }
+
+  100% {
+    transform: scale(0.35) translate(-120vw, -120vh);
+  }
+}
+.join-logo { visibility: hidden; }
+body.loaded .join-logo { visibility: visible; }
+
+
+/* Body unsichtbar bis Animation endet */
+body.loaded main,
+body.loaded header,
+body.loaded .footer-links,
+body.loaded #signup-bottom {
+  opacity: 1;
+}
+
+main,
+header,
+.footer-links,
+#signup-bottom {
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
