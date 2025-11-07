@@ -418,12 +418,13 @@ button:not(.dark-button):hover {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.8s ease, background-color 0.5s ease; /* smoother Übergang für BG */
 }
 
 #intro-screen img {
   width: 220px;
   height: auto;
+  transition: opacity 0.3s ease, filter 0.5s ease; /* für smoother Logo-Wechsel */
 }
 
 /* Logo fliegt diagonal nach oben links */
@@ -454,4 +455,21 @@ header,
 #signup-bottom {
   opacity: 0;
   transition: opacity 0.9s ease;
+}
+
+/* === INTRO-SCREEN RESPONSIVE === */
+#intro-screen img {
+  width: 220px;
+  height: auto;
+  transition: width 0.3s ease;
+}
+
+/* Auf Handy: kleineres Startlogo + initial dunkler BG */
+@media (max-width: 480px) {
+  #intro-screen {
+    background-color: #2a3647; /* Initial dunkel, um Weiß-Blink zu vermeiden */
+  }
+  #intro-screen img {
+    width: 150px;
+  }
 }
