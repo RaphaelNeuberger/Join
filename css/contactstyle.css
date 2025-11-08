@@ -66,7 +66,7 @@ body {
     position: sticky;
     overflow: auto;
     padding: 0.6rem;
-    
+    padding-left: 1.5rem;
 }
 
 .contact-item {
@@ -292,4 +292,50 @@ body {
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
+}
+
+.add-person-mobile {
+    display: none;
+}
+
+@media (max-width: 900px) {
+    .info-contact-area {
+        display: none;
+    }
+    .main-contact {
+        width: 100vw;
+        margin-left: 0;
+    }
+    .add-contact-button{
+        display: none;
+    }
+    .all-contacts{
+        flex: none;
+        width: 100%;
+        max-width: none;
+        border-right: none;
+        border-bottom: 1px solid #d3d3d3;
+        padding-bottom: 1rem;
+    }
+    .contact-list{
+        position: relative;
+        overflow: visible;
+    }
+    .add-person-mobile {
+        display: block;
+        position: fixed;
+        bottom: 120px;
+        right: 80px;
+        width: 56px;
+        height: 56px;
+        background-color: #2a3647;
+        border-radius: 50%;
+        box-shadow: 0 4px 8px #2a3647;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        z-index: 5;
+    }
+
 }
