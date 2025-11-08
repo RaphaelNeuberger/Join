@@ -8,6 +8,10 @@ body {
   grid-template-rows: auto 1fr auto;
   gap: 1px;
   height: 100%;
+  background: var(--bg);
+  font-family: "Inter", sans-serif;
+  font-weight: 400;
+  size: 16px;
 }
 
 :root {
@@ -19,12 +23,13 @@ body {
   --urgent: #ff3d00;
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
-body {
-  background: var(--bg);
-}
 
 h1 {
   font-size: 61px;
   font-weight: 700;
   color: var(--ink);
+}
+
+.material-icons {
+  font-size: 30px;
 }
