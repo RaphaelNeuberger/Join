@@ -1,250 +1,250 @@
 <!DOCTYPE html>
+
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join – Legal Notice</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/impressum.css" />
-    <link rel="stylesheet" href="css/links.css" />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contacts • Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/fonts.css" />
-    <link rel="stylesheet" href="./css/contactstyle.css"/>
-</head>  
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/impressum.css" />
+    <link rel="stylesheet" href="./css/contactstyle.css" />
+  </head>
 
-<body>
-<!-- HEADER -->
-<header>
-    <span class="marginsidebar">Kanban Project Management Tool</span>
-    <div class="user-section">
-        <span class="material-icons">help</span>
-        <div class="profile-circle"></div>
-    </div>
-</header>
+  <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
+    <nav header-html="./templates/header.html"></nav>
+    <aside sidebar-html="./templates/sidebar.html"></aside>
 
-<!-- SIDEBAR -->
-    <nav class="main-sidebar">
-        <img class="sidebar-logo" src="img/logo/join_logo_white.svg" alt="Join Logo" onclick="window.location.href='index.html'">
-
-        <div class="sidebar-top">
-            <ul>
-                <li><a href="summary.html"><span class="material-icons">dashboard</span>Summary</a></li>
-                <li><a href="addtask.html"><span class="material-icons">edit_square</span>Add Task</a></li>
-                <li><a href="board.html"><span class="material-icons">view_kanban</span>Board</a></li>
-                <li><a href="contacts.html"><span class="material-icons">perm_contact_calendar</span>Contacts</a></li>
-            </ul>
-        </div>
-
-        <div class="sidebar-bottom">
-            <ul>
-                <li><a href="privacypolicy.html">Privacy Policy</a></li>
-                <li><a href="legal-notice.html">Legal Notice</a></li>
-            </ul>
-        </div>
-    </nav>
-
-<!-- contact section -->
+    <!-- contact section -->
     <div class="main-contact">
+      <div class="all-contacts">
+        <button class="add-contact-button dark-button">
+          Add new contact<img
+            class="add-icon"
+            src="img/buttons/person_add.svg"
+            alt="Add Icon" />
+        </button>
 
-
-
-            <div class="all-contacts">           
-                    <button class="add-contact-button dark-button">Add new contact<img class="add-icon" src="img/buttons/person_add.svg" alt="Add Icon"></button>
-                
-                <div class="contact-list">
-                    
-                    <div class="user-list">
-                        <span>A</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">AB</span>
-                            <div class="user">
-                                <span class="user-name">Alexander Beck</span><br>   
-                                <span class="user-email">alexander.beck@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span> <br>    
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                    <div class="user-list">
-                        <span>A</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">AB</span>
-                            <div class="user">
-                                <span class="user-name">Alexander Beck</span><br>
-                                <span class="user-email">alexander.beck@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="user-list">
-                        <span>A</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">AB</span>
-                            <div class="user">
-                                <span class="user-name">Alexander Beck</span><br>
-                                <span class="user-email">alexander.beck@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="user-list">
-                        <span>A</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">AB</span>
-                            <div class="user">
-                                <span class="user-name">Alexander Beck</span><br>
-                                <span class="user-email">alexander.beck@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                     <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="user-list">
-                        <span>B</span>
-                        <hr>
-                        <div class="contact-item">
-                            <span class="name-logo">BJ</span>
-                            <div class="user">
-                                <span class="user-name">Beatrice Johnson</span><br>
-                                <span class="user-email">beatrice.johnson@example.com</span>
-                            </div>
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div class="add-person-mobile">
-                    <img src="img/icons/person_add.svg" alt="Add Person">
-                </div>
+        <div class="contact-list">
+          <div class="user-list">
+            <span>A</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">AB</span>
+              <div class="user">
+                <span class="user-name">Alexander Beck</span><br />
+                <span class="user-email">alexander.beck@example.com</span>
+              </div>
             </div>
-
-            <div class="info-contact-area">
-                <div class="info-contact-header">
-                    <h2>Contacts</h2>
-                    <span class="slogan">Better with a team</span>
-                </div>
-                <div class="user-infos">
-                    <span class="name-logo-large">AB</span>
-                    <div class="user-details-large">             
-                        <span class="name-large">Tatjana Wolf</span>
-                        <div class="edit-area">
-                            <span><img class="edit-elements" src="./img/icons/edit.svg" alt="edit">Edit</span>
-                            <span><img class="edit-elements" src="./img/icons/delete.svg" alt="edit">Delete</span>
-                        </div>
-                    </div>
-                </div>
-                <p class="para-1">Contact Information</p>
-                
-                <div class="contact-information">
-                    <p class="para-2">Email:</p>
-                    <p class="para-3">tatjana.wolf@example.com</p>
-                    <p class="para-2">Phone:</p>
-                    <p class="para-4">+1 (555) 123-4567</p>
-               </div>
-                
-
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span> <br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
             </div>
+          </div>
 
+          <div class="user-list">
+            <span>A</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">AB</span>
+              <div class="user">
+                <span class="user-name">Alexander Beck</span><br />
+                <span class="user-email">alexander.beck@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
 
+          <div class="user-list">
+            <span>A</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">AB</span>
+              <div class="user">
+                <span class="user-name">Alexander Beck</span><br />
+                <span class="user-email">alexander.beck@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-list">
+            <span>A</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">AB</span>
+              <div class="user">
+                <span class="user-name">Alexander Beck</span><br />
+                <span class="user-email">alexander.beck@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
+          <div class="user-list">
+            <span>B</span>
+            <hr />
+            <div class="contact-item">
+              <span class="name-logo">BJ</span>
+              <div class="user">
+                <span class="user-name">Beatrice Johnson</span><br />
+                <span class="user-email">beatrice.johnson@example.com</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="add-person-mobile">
+          <img src="img/icons/person_add.svg" alt="Add Person" />
+        </div>
+      </div>
+
+      <div class="info-contact-area">
+        <div class="info-contact-header">
+          <h2>Contacts</h2>
+          <span class="slogan">Better with a team</span>
+        </div>
+        <div class="user-infos">
+          <span class="name-logo-large">AB</span>
+          <div class="user-details-large">
+            <span class="name-large">Tatjana Wolf</span>
+            <div class="edit-area">
+              <span
+                ><img
+                  class="edit-elements"
+                  src="./img/icons/edit.svg"
+                  alt="edit" />Edit</span
+              >
+              <span
+                ><img
+                  class="edit-elements"
+                  src="./img/icons/delete.svg"
+                  alt="edit" />Delete</span
+              >
+            </div>
+          </div>
+        </div>
+        <p class="para-1">Contact Information</p>
+
+        <div class="contact-information">
+          <p class="para-2">Email:</p>
+          <p class="para-3">tatjana.wolf@example.com</p>
+          <p class="para-2">Phone:</p>
+          <p class="para-4">+1 (555) 123-4567</p>
+        </div>
+      </div>
     </div>
-
 
     <div class="edit-overay">
-        <div class="left-section">
-             <img src="./img/logo/join_logo_white.svg" alt="">
-             <p>Edit contact</p>
-             <hr>
+      <div class="left-section">
+        <img src="./img/logo/join_logo_white.svg" alt="" />
+        <p>Edit contact</p>
+        <hr />
+      </div>
+      <div class="right-section">
+        <div class="name-logo-etition">AW</div>
+      </div>
+      <div class="edit-contact">
+        <form class="contact-edit-form" action="">
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value="Tatjana Wolf"
+            class="contact-edit-name" />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value="tatjana.wolf@example.com"
+            class="contact-edit-email" />
+          <input
+            type="phone"
+            id="phone"
+            name="phone"
+            value="+1 (555) 123-4567"
+            class="contact-edit-phone" />
+        </form>
+        <div class="contact-edit-save-cancel">
+          <button class="cancel-edit-button">Cancel</button>
+          <button class="save-edit-button">
+            Save
+            <img
+              src="./img/icons/check.svg"
+              alt="check"
+              style="height: 1.5rem" />
+          </button>
         </div>
-        <div class="right-section">
-           <div class="name-logo-etition">AW</div>
-        </div>
-        <div class="edit-contact">
-            <form class="contact-edit-form" action="">
-                <input type="text" id="name" name="name" value="Tatjana Wolf" class="contact-edit-name">
-                <input type="email" id="email" name="email" value="tatjana.wolf@example.com" class="contact-edit-email">
-                <input type="phone" id="phone" name="phone" value="+1 (555) 123-4567" class="contact-edit-phone">
-            </form>
-            <div class="contact-edit-save-cancel">
-                <button class="cancel-edit-button">Cancel</button>
-                <button class="save-edit-button">Save <img src="./img/icons/check.svg" alt="check" style="height: 1.5rem;"></button>
-            </div>
-        </div>
-
-
-        
+      </div>
     </div>
-  
-</body>
-
+  </body>
+  <script src="scripts/config.js"></script>
+  <script src="scripts/helpers.js"></script>
+  <script src="scripts/storage.js"></script>
+  <script src="scripts/templates.js"></script>
+  <script src="scripts/add_task.js"></script>
 </html>

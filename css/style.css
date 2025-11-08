@@ -9,9 +9,6 @@ body {
   gap: 1px;
   height: 100%;
   background: var(--bg);
-  /* font-family: "Inter", sans-serif;
-  font-weight: 400;
-  size: 16px; */
 }
 
 :root {
@@ -21,13 +18,26 @@ body {
   --muted: #6b7280;
   --accent: #29abe2;
   --urgent: #ff3d00;
+  --black: #000000;
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 h1 {
-  font-size: 61px;
+  font-family: "Inter";
+  font-style: normal;
   font-weight: 700;
+  font-size: 61px;
+  color: var(--black);
+  margin: 0px;
+}
+
+h2 {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 27px;
   color: var(--ink);
+  margin: 0px;
 }
 
 .material-icons {

@@ -1,106 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Help • Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/impressum.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join – Help</title>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/impressum.css">
-  <link rel="stylesheet" href="css/links.css">
-  <link rel="stylesheet" href="css/fonts.css">
-</head>
+  <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
+    <nav header-html="./templates/header.html"></nav>
+    <aside sidebar-html="./templates/sidebar.html"></aside>
 
-<body>
-  <!-- HEADER -->
-  <header>
-    <span class="marginsidebar">Kanban Project Management Tool</span>
-    <div class="user-section">
-      <span class="material-icons">help</span>
-      <div class="profile-circle"></div>
-    </div>
-  </header>
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+      <div class="Datenschutz">
+        <h1>Help & Support</h1>
 
-  <!-- SIDEBAR -->
-  <nav class="main-sidebar">
-    <img class="sidebar-logo" src="img/logo/join_logo_white.svg" alt="Join Logo"
-      onclick="window.location.href='index.html'">
+        <section class="help-section">
+          <p>
+            Welcome to the Join Help Page! Here you will find everything you
+            need to know about using the Join Kanban Project Management Tool.
+          </p>
 
-    <div class="sidebar-top">
-      <ul>
-        <li><a href="summary.html"><span class="material-icons">dashboard</span>Summary</a></li>
-        <li><a href="addtask.html"><span class="material-icons">edit_square</span>Add Task</a></li>
-        <li><a href="board.html"><span class="material-icons">view_kanban</span>Board</a></li>
-        <li><a href="contact.html"><span class="material-icons">perm_contact_calendar</span>Contacts</a></li>
-      </ul>
-    </div>
+          <h2>What is Join?</h2>
+          <p>
+            Join is a digital Kanban-style project management application that
+            helps you and your team organize tasks, manage deadlines, and
+            collaborate efficiently. You can create, edit, and assign tasks
+            across your projects.
+          </p>
 
-    <div class="sidebar-bottom">
-      <ul>
-        <li><a href="privacypolicy.html">Privacy Policy</a></li>
-        <li><a href="legal-notice.html">Legal Notice</a></li>
-      </ul>
-    </div>
-  </nav>
+          <h2>Main Features</h2>
+          <ul>
+            <li>
+              <strong>Summary:</strong> See an overview of your current tasks,
+              progress, and deadlines.
+            </li>
+            <li>
+              <strong>Board:</strong> Manage your tasks visually using the
+              Kanban board. Move tasks between columns like “To Do”, “In
+              Progress”, and “Done”.
+            </li>
+            <li>
+              <strong>Add Task:</strong> Create new tasks with title,
+              description, due date, priority, and assigned contacts.
+            </li>
+            <li>
+              <strong>Contacts:</strong> Manage your team members, view their
+              details, and assign them to tasks easily.
+            </li>
+          </ul>
 
-  <!-- MAIN CONTENT -->
-  <main class="main-content">
-    <div class="Datenschutz">
-      <h1>Help & Support</h1>
+          <h2>How to Use Join</h2>
+          <ol>
+            <li>Click on <strong>Add Task</strong> to create a new task.</li>
+            <li>Assign your task to one or multiple contacts.</li>
+            <li>
+              Set a <strong>priority</strong> and a <strong>due date</strong>.
+            </li>
+            <li>
+              Use the <strong>Board</strong> to track progress by dragging tasks
+              between stages.
+            </li>
+            <li>
+              Review your status and statistics on the
+              <strong>Summary</strong> page.
+            </li>
+          </ol>
 
-      <section class="help-section">
-        <p>
-          Welcome to the Join Help Page!  
-          Here you will find everything you need to know about using the Join Kanban Project Management Tool.
-        </p>
+          <h2>Tips for Productivity</h2>
+          <ul>
+            <li>Update your board daily to keep the overview clear.</li>
+            <li>
+              Communicate with your team regularly via your chosen channels.
+            </li>
+            <li>
+              Keep your tasks small and focused to make progress measurable.
+            </li>
+            <li>Use color codes and priorities to visualize urgency.</li>
+          </ul>
 
-        <h2>What is Join?</h2>
-        <p>
-          Join is a digital Kanban-style project management application that helps you and your team organize tasks,
-          manage deadlines, and collaborate efficiently. You can create, edit, and assign tasks across your projects.
-        </p>
+          <h2>Need More Help?</h2>
+          <p>
+            If you have further questions, suggestions, or want to report a
+            problem, please contact us at:<br />
+            <a href="mailto:info@gruppe-854.developerakademie.net"
+              >info@gruppe-854.developerakademie.net</a
+            >
+          </p>
 
-        <h2>Main Features</h2>
-        <ul>
-          <li><strong>Summary:</strong> See an overview of your current tasks, progress, and deadlines.</li>
-          <li><strong>Board:</strong> Manage your tasks visually using the Kanban board. Move tasks between columns like
-            “To Do”, “In Progress”, and “Done”.</li>
-          <li><strong>Add Task:</strong> Create new tasks with title, description, due date, priority, and assigned
-            contacts.</li>
-          <li><strong>Contacts:</strong> Manage your team members, view their details, and assign them to tasks easily.</li>
-        </ul>
-
-        <h2>How to Use Join</h2>
-        <ol>
-          <li>Click on <strong>Add Task</strong> to create a new task.</li>
-          <li>Assign your task to one or multiple contacts.</li>
-          <li>Set a <strong>priority</strong> and a <strong>due date</strong>.</li>
-          <li>Use the <strong>Board</strong> to track progress by dragging tasks between stages.</li>
-          <li>Review your status and statistics on the <strong>Summary</strong> page.</li>
-        </ol>
-
-        <h2>Tips for Productivity</h2>
-        <ul>
-          <li>Update your board daily to keep the overview clear.</li>
-          <li>Communicate with your team regularly via your chosen channels.</li>
-          <li>Keep your tasks small and focused to make progress measurable.</li>
-          <li>Use color codes and priorities to visualize urgency.</li>
-        </ul>
-
-        <h2>Need More Help?</h2>
-        <p>
-          If you have further questions, suggestions, or want to report a problem, please contact us at:<br>
-          <a href="mailto:info@gruppe-854.developerakademie.net">info@gruppe-854.developerakademie.net</a>
-        </p>
-
-        <p>
-          You can also visit our <a href="legal-notice.html">Legal Notice</a> or <a
-            href="privacypolicy.html">Privacy Policy</a> for more information.
-        </p>
-      </section>
-    </div>
-  </main>
-</body>
-
+          <p>
+            You can also visit our
+            <a href="legal-notice.html">Legal Notice</a> or
+            <a href="privacypolicy.html">Privacy Policy</a> for more
+            information.
+          </p>
+        </section>
+      </div>
+    </main>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/helpers.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/templates.js"></script>
+    <script src="scripts/add_task.js"></script>
+  </body>
 </html>
