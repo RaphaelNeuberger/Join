@@ -9,6 +9,12 @@ body {
   gap: 1px;
   height: 100%;
   background: var(--bg);
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--black);
+  margin: 0px;
 }
 
 :root {
@@ -34,12 +40,14 @@ h1 {
 h2 {
   font-family: "Inter";
   font-style: normal;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 27px;
-  color: var(--ink);
+  color: var(--black);
   margin: 0px;
 }
 
 .material-icons {
   font-size: 30px;
 }
+
+text
