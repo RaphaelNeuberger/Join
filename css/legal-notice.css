@@ -1,0 +1,77 @@
+/* Brand Name Styling */
+.brand-name {
+  color: #29abe2;
+  font-weight: 500;
+}
+
+/* Legal Content Container */
+.legal-content {
+  max-width: 900px;
+  padding: 40px 48px;
+  margin-left: 240px;
+}
+
+.legal-content h1 {
+  font-size: 48px;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #000;
+}
+
+/* Legal Sections */
+.legal-section {
+  margin-bottom: 32px;
+}
+
+.legal-section h2 {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  margin-top: 24px;
+  color: #000;
+}
+
+.legal-section h3 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  margin-top: 16px;
+  color: #000;
+}
+
+.legal-section p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: #000;
+}
+
+/* Company Name */
+.company-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+/* Links */
+.legal-section a {
+  color: #29abe2;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.legal-section a:hover {
+  color: #1a8fc7;
+  text-decoration: underline;
+}
+
+/* Contact Section */
+.contact-section {
+  margin-top: 40px;
+}
+
+.legal-date {
+  font-weight: 600;
+  margin-top: 24px;
+  color: #000;
+}

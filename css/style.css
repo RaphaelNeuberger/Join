@@ -46,6 +46,16 @@ h2 {
   margin: 0px;
 }
 
+h3 {
+font-family: "Inter";
+  font-style: bold;
+  font-weight: 700;
+  font-size: 20px;
+  color: var(--black);
+  margin: 0px;
+
+}
+
 .material-icons {
   font-size: 30px;
 }
