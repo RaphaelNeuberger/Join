@@ -98,105 +98,124 @@
   </div>
 
   <!-- SCRIPT -->
-  <script>
-    const togglePassword = document.getElementById("toggle-password");
-    const passwordInput = document.getElementById("password");
+ <script>
+  const togglePassword = document.getElementById("toggle-password");
+  const passwordInput = document.getElementById("password");
 
-    if (togglePassword && passwordInput) {
-      togglePassword.addEventListener("click", () => {
-        const isPwd = passwordInput.type === "password";
-        passwordInput.type = isPwd ? "text" : "password";
+  if (togglePassword && passwordInput) {
+    togglePassword.addEventListener("click", () => {
+      const isPwd = passwordInput.type === "password";
+      passwordInput.type = isPwd ? "text" : "password";
 
-        // Optional: Icon tauschen (falls du z. B. eye.svg hast)
-        // togglePassword.src = isPwd ? "img/icons/eye-off.svg" : "img/icons/lock.svg";
-      });
+      // Optional: Icon tauschen (falls du z. B. eye.svg hast)
+      // togglePassword.src = isPwd ? "img/icons/eye-off.svg" : "img/icons/lock.svg";
+    });
+  }
+
+  const toggleForm = document.getElementById("toggle-form");
+  const toggleForm2 = document.getElementById("toggle-form-2");
+  const loginForm = document.getElementById("login-form");
+  const signupForm = document.getElementById("signup-form");
+  const signupTexts = document.querySelectorAll(".signup-text");
+  const signupBtns = document.querySelectorAll(".signup-btn");
+  const backArrow = document.getElementById("back-to-login");
+
+  function toggleForms() {
+    const isLoginVisible = loginForm.classList.contains("active");
+
+    if (isLoginVisible) {
+      loginForm.classList.remove("active");
+      loginForm.classList.add("hidden");
+      signupForm.classList.remove("hidden");
+      signupForm.classList.add("active");
+      signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
+      signupBtns.forEach((el) => (el.textContent = "Log in"));
+    } else {
+      signupForm.classList.remove("active");
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+      loginForm.classList.add("active");
+      signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
+      signupBtns.forEach((el) => (el.textContent = "Sign up"));
+    }
+  }
+
+  if (toggleForm) toggleForm.addEventListener("click", toggleForms);
+  if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
+
+  if (backArrow) {
+    backArrow.addEventListener("click", () => {
+      signupForm.classList.remove("active");
+      signupForm.classList.add("hidden");
+      loginForm.classList.remove("hidden");
+      loginForm.classList.add("active");
+      signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
+      signupBtns.forEach((el) => (el.textContent = "Sign up"));
+    });
+  }
+
+  // === STARTANIMATION RESPONSIVE ===
+  window.addEventListener("load", () => {
+    const intro = document.getElementById("intro-screen");
+    const flyingLogo = intro?.querySelector("img");
+    const headerLogo = document.querySelector(".join-logo");
+
+    if (!intro || !flyingLogo || !headerLogo) {
+      document.body.classList.add("loaded");
+      return;
     }
 
-    const toggleForm = document.getElementById("toggle-form");
-    const toggleForm2 = document.getElementById("toggle-form-2");
-    const loginForm = document.getElementById("login-form");
-    const signupForm = document.getElementById("signup-form");
-    const signupTexts = document.querySelectorAll(".signup-text");
-    const signupBtns = document.querySelectorAll(".signup-btn");
-    const backArrow = document.getElementById("back-to-login");
+    const isMobile = window.matchMedia("(max-width: 480px)").matches;
 
-    function toggleForms() {
-      const isLoginVisible = loginForm.classList.contains("active");
+    if (isMobile) {
+      // Mobile: Starte mit dunklem BG (schon im CSS), weißes Logo
+      flyingLogo.src = "img/logo/join_logo_white.svg";
+      flyingLogo.style.width = "150px";
+      flyingLogo.style.transition = "opacity 0.3s ease";
 
-      if (isLoginVisible) {
-        loginForm.classList.remove("active");
-        loginForm.classList.add("hidden");
-        signupForm.classList.remove("hidden");
-        signupForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
-        signupBtns.forEach((el) => (el.textContent = "Log in"));
-      } else {
-        signupForm.classList.remove("active");
-        signupForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-        signupBtns.forEach((el) => (el.textContent = "Sign up"));
-      }
+      // Sanfter Fade-In
+      flyingLogo.style.opacity = "0";
+      setTimeout(() => (flyingLogo.style.opacity = "1"), 30);
+
+      setTimeout(() => {
+        // Fade Logo out für smoother Wechsel
+        flyingLogo.style.opacity = "0";
+        setTimeout(() => {
+          // Wechsel zu normalem Logo + BG zu white (mit Transition)
+          intro.style.backgroundColor = "white";
+          flyingLogo.src = "img/logo/Logo for Favicon construction.svg";
+          flyingLogo.style.opacity = "1";
+          startFlyAnimation();
+        }, 200); // Kürzere Wartezeit für Fade-Out
+      }, 300); // Etwas längere Hold-Zeit für dunkles Logo
+    } else {
+      startFlyAnimation();
     }
 
-    if (toggleForm) toggleForm.addEventListener("click", toggleForms);
-    if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
-
-    if (backArrow) {
-      backArrow.addEventListener("click", () => {
-        signupForm.classList.remove("active");
-        signupForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-        signupBtns.forEach((el) => (el.textContent = "Sign up"));
-      });
-    }
-
-    window.addEventListener("load", () => {
-      const intro = document.getElementById("intro-screen");
-      const flyingLogo = intro?.querySelector("img");
-      const headerLogo = document.querySelector(".join-logo");
-
-      if (!intro || !flyingLogo || !headerLogo) {
-        // Fallback: Seite normal einblenden
-        document.body.classList.add("loaded");
-        return;
-      }
-
-      // ganz kurzer Moment groß stehen lassen
-      const holdMs = 150;            // << kürzerer „Stand“ vor dem Flug
-      const flyMs = 1200;           // Flugdauer
+    function startFlyAnimation() {
+      const holdMs = 150;
+      const flyMs = 1200;
       const easing = "cubic-bezier(0.7, 0, 0.3, 1)";
-
-      // sicherstellen, dass das Overlay über allem liegt
       intro.style.opacity = "1";
 
       setTimeout(() => {
-        // aktuelle Positionen messen
         const startRect = flyingLogo.getBoundingClientRect();
         const endRect = headerLogo.getBoundingClientRect();
 
-        // Zentren berechnen
         const startCX = startRect.left + startRect.width / 2;
         const startCY = startRect.top + startRect.height / 2;
         const endCX = endRect.left + endRect.width / 2;
         const endCY = endRect.top + endRect.height / 2;
 
-        // Ziel-Skalierung (von 220px Breite auf echte Header-Logo-Breite)
         const startW = startRect.width;
-        const endW = endRect.width || 110; // Fallback
+        const endW = endRect.width || 110;
         const scale = endW / startW;
 
-        // Delta in Pixeln (vom Intro-Center zum Header-Logo-Center)
         const dx = endCX - startCX;
         const dy = endCY - startCY;
 
-        // Transform-Origin aus der Mitte
         flyingLogo.style.transformOrigin = "center center";
 
-        // Sanfter, durchgehender Flug per Web Animations API
         const anim = flyingLogo.animate(
           [
             { transform: "translate(0px, 0px) scale(1)" },
@@ -206,15 +225,15 @@
         );
 
         anim.onfinish = () => {
-          // Seite einblenden, Intro ausblenden und entfernen
           document.body.classList.add("loaded");
           intro.style.opacity = "0";
           setTimeout(() => intro.remove(), 800);
         };
       }, holdMs);
-    });
+    }
+  });
+</script>
 
-  </script>
 </body>
 
 </html>
