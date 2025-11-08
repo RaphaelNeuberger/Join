@@ -9,9 +9,9 @@ body {
   gap: 1px;
   height: 100%;
   background: var(--bg);
-  font-family: "Inter", sans-serif;
+  /* font-family: "Inter", sans-serif;
   font-weight: 400;
-  size: 16px;
+  size: 16px; */
 }
 
 :root {
