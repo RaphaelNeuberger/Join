@@ -1,9 +1,61 @@
-// <weight>: Use a value from 100 to 900
-// <uniquifier>: Use a unique and descriptive class name
+/* Inter Variable Font - Normal */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./fonts/Inter-VariableFont_opsz,wght.ttf") format("truetype");
+}
 
-.inter-<uniquifier > {
+/* Inter Variable Font - Italic */
+@font-face {
+  font-family: "Inter";
+  font-style: italic;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("./fonts/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
+}
+
+/* Basis-Klasse für Inter */
+body,
+html {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-weight: <weight>;
-  font-style: normal;
+}
+
+/* Hilfsklassen für verschiedene Gewichte */
+.inter-thin {
+  font-weight: 100;
+}
+
+.inter-extralight {
+  font-weight: 200;
+}
+
+.inter-light {
+  font-weight: 300;
+}
+
+.inter-regular {
+  font-weight: 400;
+}
+
+.inter-medium {
+  font-weight: 500;
+}
+
+.inter-semibold {
+  font-weight: 600;
+}
+
+.inter-bold {
+  font-weight: 700;
+}
+
+.inter-extrabold {
+  font-weight: 800;
+}
+
+.inter-black {
+  font-weight: 900;
 }
