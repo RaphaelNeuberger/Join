@@ -303,7 +303,7 @@ body {
         display: none;
     }
     .main-contact {
-        width: 100vw;
+        height: auto;
         margin-left: 0;
     }
     .add-contact-button{
@@ -311,21 +311,30 @@ body {
     }
     .all-contacts{
         flex: none;
-        width: 100%;
+        width: 90vw;
         max-width: none;
         border-right: none;
         border-bottom: 1px solid #d3d3d3;
         padding-bottom: 1rem;
     }
     .contact-list{
+        width: 80%;
         position: relative;
         overflow: visible;
+        padding-left: 0.5rem;
     }
+    .contact-item{
+        align-items: center;
+        cursor: pointer;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
     .add-person-mobile {
         display: block;
         position: fixed;
         bottom: 120px;
-        right: 80px;
+        right: 20px;
         width: 56px;
         height: 56px;
         background-color: #2a3647;
