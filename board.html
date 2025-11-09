@@ -3,23 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Add Task • Join</title>
+    <title>Board • Join</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/add_task.css" />
     <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/board.css" />
   </head>
   <body onload="includeHeaderHTML();includeSidebarHTML();">
     <nav header-html="./templates/header.html"></nav>
     <aside sidebar-html="./templates/sidebar.html"></aside>
 
-    <main>
+    <main class="board-container">
+        <div class="board-header">
+            <div><h2>Board</h2></div>
+            <div class="serch-add-task-button">
+                <input type="text" placeholder="Find Task" />
+                <button >Add task +</button>
+            </div>
+            
+
+        </div>
+        <div class="board-content row">
+            <div class="column" style="background-color:#aaa;">
+                <div class="column-header">
+                    <H2>To Do</H2>
+                    <img src="./img/icons/plus button.svg" alt="">
+                </div>
+                
+            </div>
+            <div class="column" style="background-color:#bbb;"></div>
+            <div class="column" style="background-color:#ccc;"></div>
+            <div class="column" style="background-color:#ddd;"></div>
+        </div>
      
     </main>
 
     <script src="scripts/templates.js"></script>
-    <script src="scripts/add_task.js"></script>
-    <script src="scripts/templates.js"></script>
+
   </body>
 </html>
