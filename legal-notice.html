@@ -3,121 +3,153 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join – Legal Notice</title>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="css/impressum.css" />
-    <link rel="stylesheet" href="css/links.css" />
+    <title>Legal Notice • Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/legal-notice.css" />
   </head>
 
-  <body>
-    <!-- HEADER -->
-    <header>
-      <span class="marginsidebar">Kanban Project Management Tool</span>
-      <div class="user-section">
-        <span class="material-icons" onclick="window.location.href='help.html'" style="cursor:pointer;">help</span>
-        <div class="profile-circle"></div>
-      </div>
-    </header>
-
-    <!-- SIDEBAR -->
-    <nav class="main-sidebar">
-      <img
-        class="sidebar-logo"
-        src="img/logo/join_logo_white.svg"
-        alt="Join Logo"
-        onclick="window.location.href='index.html'" />
-
-      <div class="sidebar-top">
-        <ul>
-          <li>
-            <a href="summary.html"
-              ><span class="material-icons">dashboard</span>Summary</a
-            >
-          </li>
-          <li>
-            <a href="addtask.html"
-              ><span class="material-icons">edit_square</span>Add Task</a
-            >
-          </li>
-          <li>
-            <a href="board.html"
-              ><span class="material-icons">view_kanban</span>Board</a
-            >
-          </li>
-          <li>
-            <a href="contact.html"
-              ><span class="material-icons">perm_contact_calendar</span
-              >Contacts</a
-            >
-          </li>
-        </ul>
-      </div>
-
-      <div class="sidebar-bottom">
-        <ul>
-          <li><a href="privacypolicy.html">Privacy Policy</a></li>
-          <li><a href="legal-notice.html">Legal Notice</a></li>
-        </ul>
-      </div>
-    </nav>
+  <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
+    <nav header-html="./templates/header.html"></nav>
+    <aside sidebar-html="./templates/sidebar.html"></aside>
 
     <!-- MAIN CONTENT -->
     <main class="main-content">
-      <div class="Datenschutz">
+      <div class="legal-content">
         <h1>Legal Notice</h1>
 
-        <section class="impressum">
-          <p>Information according to § 5 TMG</p>
-          <p>
-            Join<br />
-            Joannis Ballos, Tim Thiele, Raphael Neuberger<br />
-            Maximilian Str. 22<br />
-            80539 Munich <br />
-          </p>
+        <section class="legal-section">
+          <h2>Imprint</h2>
+          <p class="company-name"><span class="brand-name">Join</span></p>
+          <p>Joannis Ballos, Tim Thiele, Raphael Neuberger</p>
+          <p>Maximilian Str. 22</p>
+          <p>80539 Munich</p>
+
+          <h3>Exploring the Board</h3>
 
           <p>
-            <strong>Represented by:</strong><br />
-            Joannis Ballos, Tim Thiele, Raphael Neuberger
-          </p>
-
-          <p>
-            <strong>Contact:</strong><br />
-            Phone: +49 89 0000000<br />
             Email:
-            <a href="mailto:info@join-1341.developerakademie.net"
+            <a href="mailto:info@gruppe-854.developerakademie.net"
               >info@gruppe-854.developerakademie.net</a
             >
           </p>
+        </section>
 
+        <section class="legal-section">
+          <h2>Acceptance of terms</h2>
           <p>
-            <strong>VAT ID:</strong><br />
-            Value added tax identification number according to § 27a UStG:
-            Sample VAT ID.
+            By accessing and using
+            <span class="brand-name">Join</span> (Product), you acknowledge and
+            agree to the following terms and conditions, and any policies,
+            guidelines, or amendments thereto that may be presented to you from
+            time to time. We, the listed students, may update or change the
+            terms and conditions from time to time without notice.
           </p>
+        </section>
 
+        <section class="legal-section">
+          <h2>Scope and ownership of the product</h2>
           <p>
-            <strong
-              >Responsible for content according to § 55 para. 2 RStV:</strong
-            ><br />
-            Joannis Ballos, Tim Thiele, Raphael Neuberger<br />
-            Maximilian Str. 22 <br />
-            80539 Munich
+            <span class="brand-name">Join</span> has been developed as part of a
+            student group project in a web development bootcamp at the
+            <a
+              href="https://developerakademie.com"
+              target="_blank"
+              rel="noopener"
+              >Developer Akademie GmbH</a
+            >. It has an educational purpose and is not intended for extensive
+            personal & business usage. As such, we cannot guarantee consistent
+            availability, reliability, accuracy, or any other aspect of quality
+            regarding this Product.
           </p>
+          <p>
+            The design of <span class="brand-name">Join</span> is owned by the
+            <a
+              href="https://developerakademie.com"
+              target="_blank"
+              rel="noopener"
+              >Developer Akademie GmbH</a
+            >. Unauthorized use, reproduction, modification, distribution, or
+            replication of the design is strictly prohibited.
+          </p>
+        </section>
 
-          <h2>Disclaimer</h2>
-          <h3>Liability for Content</h3>
+        <section class="legal-section">
+          <h2>Proprietary rights</h2>
           <p>
-            The contents of our pages have been created with the greatest care.
-            However, we cannot guarantee the accuracy, completeness, and
-            timeliness of the content. As service providers, we are responsible
-            for our own content on these pages according to § 7 para. 1 TMG
-            under general laws. … (keep your full disclaimer text here)
+            Aside from the design owned by
+            <a
+              href="https://developerakademie.com"
+              target="_blank"
+              rel="noopener"
+              >Developer Akademie GmbH</a
+            >, we, the listed students, retain all proprietary rights in
+            <span class="brand-name">Join</span>, including any associated
+            copyrighted material, trademarks, and other proprietary information.
           </p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Use of the product</h2>
+          <p>
+            <span class="brand-name">Join</span> is intended to be used for
+            lawful purposes only, in accordance with all applicable laws and
+            regulations. Any use of <span class="brand-name">Join</span> for
+            illegal activities, or to harass, harm, threaten, or intimidate
+            another person, is strictly prohibited. You are solely responsible
+            for your interactions with other users of
+            <span class="brand-name">Join</span>.
+          </p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Disclaimer of warranties and limitation of liability</h2>
+          <p>
+            <span class="brand-name">Join</span> is provided "as is" without
+            warranty of any kind, whether express or implied, including but not
+            limited to the implied warranties of merchantability, fitness for a
+            particular purpose, and non-infringement. In no event will we, the
+            listed students, or the Developer Akademie, be liable for any
+            direct, indirect, incidental, special, consequential or exemplary
+            damages, including but not limited to, damages for loss of profits,
+            goodwill, use, data, or other intangible losses, even if we have
+            been advised of the possibility of such damages, arising out of or
+            in connection with the use or performance of
+            <span class="brand-name">Join</span>.
+          </p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Indemnity</h2>
+          <p>
+            You agree to indemnify, defend and hold harmless us, the listed
+            students, the Developer Akademie, and our affiliates, partners,
+            officers, directors, agents, and employees, from and against any
+            claim, demand, loss, damage, cost, or liability (including
+            reasonable legal fees) arising out of or relating to your use of
+            <span class="brand-name">Join</span> and/or your breach of this
+            Legal Notice.
+          </p>
+        </section>
+
+        <section class="legal-section contact-section">
+          <p>
+            For any questions or notices, please contact us at
+            <a href="mailto:info@gruppe-854.developerakademie.net"
+              >info@gruppe-854.developerakademie.net</a
+            >.
+          </p>
+          <p class="legal-date">Date: July 26, 2023</p>
         </section>
       </div>
     </main>
+
     <script src="scripts/config.js"></script>
     <script src="scripts/helpers.js"></script>
     <script src="scripts/storage.js"></script>

@@ -1,0 +1,38 @@
+/* Brand Name Styling */
+.brand-name {
+  color: #29abe2;
+}
+
+/* Step Container mit Einrückung */
+.step-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+  align-items: flex-start;
+}
+
+.step-number {
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  min-width: 30px;
+  flex-shrink: 0;
+}
+
+.step-content {
+  flex: 1;
+}
+
+.step-content h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+}
+
+.step-content p {
+  margin: 0;
+}
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+}
