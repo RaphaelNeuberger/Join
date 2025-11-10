@@ -6,10 +6,8 @@ body {
 
 .main-contact {
     padding: 0.5rem;
-    width: calc(100vw - 235px);
-    height: calc(100vh - 100px);
-    margin-left: 235px;
-    margin-top: 90px;
+    height: calc(100vh - 120px);
+    margin-left: 240px;
     box-sizing: border-box;
     display: flex;
 }
@@ -298,7 +296,7 @@ body {
     display: none;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
     .info-contact-area {
         display: none;
     }

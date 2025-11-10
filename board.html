@@ -21,20 +21,47 @@
                 <input type="text" placeholder="Find Task" />
                 <button >Add task +</button>
             </div>
-            
-
         </div>
-        <div class="board-content row">
-            <div class="column" style="background-color:#aaa;">
-                <div class="column-header">
-                    <H2>To Do</H2>
+
+        <div class="tasks-columns">
+
+            <div class="task-column">
+                <div class="task-header">
+                    <span>To Do</span>
                     <img src="./img/icons/plus button.svg" alt="">
                 </div>
-                
+                <div class="task-cards" id="to-do-tasks">
+                    <div class="card-no-task">
+                        <span>No tasks To do</span>
+                    </div>
+                </div>
             </div>
-            <div class="column" style="background-color:#bbb;"></div>
-            <div class="column" style="background-color:#ccc;"></div>
-            <div class="column" style="background-color:#ddd;"></div>
+
+            <div class="task-column">
+                <div class="task-header">
+                    <span>In progress</span>
+                    <img src="./img/icons/plus button.svg" alt="">
+                </div>
+            </div>
+
+            <div class="task-column">
+                <div class="task-header">
+                    <span>Await feedback</span>
+                    <img src="./img/icons/plus button.svg" alt="">
+                </div>
+            </div>
+
+            <div class="task-column">
+                <div class="task-header">
+                    <span>Done</span>
+                </div>
+                <div class="task-cards">
+                    <div class="card-no-task">
+                        <span>No tasks Done</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
      
     </main>
