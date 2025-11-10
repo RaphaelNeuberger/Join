@@ -35,13 +35,10 @@
 .nav-item {
   display: flex;
   align-items: center;
- 
+  text-decoration: none;
   gap: 12px;
   color: #ffff;
-  text-decoration: none;
   padding: 10px 12px;
-  
-
   padding-left: 36px;
 }
 
@@ -55,6 +52,7 @@
 .nav-item.active {
   background: #091931;
   color: #fff;
+  cursor: pointer;
 
 
 }
@@ -103,7 +101,7 @@
     flex-direction: column;
     text-align: center;
     gap: 4px;
-     height: 80px;
+    height: 80px;
   }
 
   .nav-item.active {
@@ -112,13 +110,13 @@
     height: 80px;
     align-items: center;
     justify-content: center;
-    padding:10px;
+    padding: 10px;
     border-radius: 16px;
 
   }
 
   .sidebar-nav {
-   display:flex ;
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
 
