@@ -404,10 +404,10 @@ body {
 
 /* Main Layout */
 .task-form-container {
-  margin-left: 250px; /* Account for sidebar */
+  margin-left: 240px; /* Account for sidebar */
   padding: var(--spacing-xl);
   min-height: 100vh;
-  padding-top: 100px; /* Account for header */
+  padding: 32px 40px 64px;
 }
 
 .task-form__title {
