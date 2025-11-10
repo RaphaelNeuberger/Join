@@ -296,7 +296,7 @@ body {
     display: none;
 }
 
-@media (max-width: 1023px) {
+@media (max-width: 1024px) {
     .info-contact-area {
         display: none;
     }
@@ -342,7 +342,7 @@ body {
         align-items: center;
         justify-content: center;
         cursor: pointer;
-        z-index: 5;
+        z-index: 1;
     }
 
 }
