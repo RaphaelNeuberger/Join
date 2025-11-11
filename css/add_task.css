@@ -1,45 +1,165 @@
-/* Layout nur für das Add Task Formular */
 .task-form-container {
+  margin-left: 244px; /* Platz für Sidebar */
+  padding: 48px 48px 32px;
+  background: #f6f7fb;
   min-height: 100vh;
-  margin-top: 32px;
 }
-
+.task-form__title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  margin-bottom: 32px;
+  font-family: "Inter", sans-serif;
+}
+.task-form {
+  border-radius: 16px;
+  font-size: 20px;
+  font-family: "inter";
+  font-weight: 400;
+  max-width: 100%;
+  margin: 0 auto;
+  gap: 14px;
+}
 .task-form__layout {
   display: grid;
-  grid-template-columns: 1fr 2fr;
+  grid-template-columns: 1fr 1fr;
   gap: 32px;
+  margin-bottom: 32px;
 }
-.task-form__column-left,
-.task-form__column-right {
+.task-form__column {
   display: flex;
   flex-direction: column;
   gap: 20px;
 }
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-/* Priority-specific Buttons (nur hier overrides) */
-.priority-buttons__button--active {
-  background: #ffa500;
+.form-group__input {
+  height: 48px;
+  font-size: 20px;
+
+  border: 1px var(--border);
+  border-radius: 10px;
+}
+
+.form-group__textarea {
+  height: 120px;
+  font-size: 20px;
+
+  border-radius: 10px;
+}
+
+.form-label {
+  font-weight: 500;
+  font-size: 15px;
+  margin-bottom: 2px;
+  color: #212529;
+}
+.form-control {
+  border: 1.5px solid #e2e6ea;
+  border-radius: 8px;
+  font-size: 16px;
+  font-family: "Inter", sans-serif;
+  padding: 10px 12px;
+  background: #fff;
+  color: #232729;
+}
+.form-control:focus {
+  border-color: #29abe2;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.12);
+}
+.text-error {
+  color: #fc5a5a;
+}
+.text-hint {
+  font-size: 13px;
+  display: block;
+  margin-top: 16px;
+}
+.priority-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  height: 56px;
+  border: 1p var(--border);
+}
+
+.priority-buttons__button {
+  border: 1px var(--border);
+  background-color: var(--panel);
+  border-radius: 10px;
+  gap: 12px;
+  color: var(--black);
+}
+
+.priority-btn {
+  border: none;
+  padding: 7px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  background: #f4f6fb;
+  color: #212529;
+  transition: background 0.18s;
+}
+.priority-btn--urgent {
+  color: #ff3d00;
+  background-color: var(--panel);
+}
+.priority-btn--medium {
   color: #fff;
-  border-color: #ffa500;
+  background: #ffab2b;
+}
+.priority-btn--low {
+  color: #31a64b;
 }
 
-.priority-buttons__button[data-priority="Urgent"].priority-buttons__button--active {
-  background: #ff6b6b;
+.form-actions {
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+.btn {
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  padding: 8px 30px;
+  border-radius: 8px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s;
 }
 
-/* Spezielle Fehleranzeige nur für Task */
-.form-group__error {
-  color: #ff6b6b;
-  font-size: 12px;
-  margin-top: 4px;
-}
-
-/* Mobile Override */
-@media (max-width: 768px) {
+@media (max-width: 1100px) {
   .task-form__layout {
     grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+@media (max-width: 900px) {
+  .task-form-container {
+    margin-left: 0;
+    padding: 24px 0 24px 0;
+  }
+  .task-form {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px 4px 8px 4px;
+  }
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
     gap: 12px;
   }
 }
-
-/* ... und alles andere, was global ist, raus! */
+@media (max-width: 500px) {
+  .task-form__title {
+    font-size: 2rem;
+  }
+}
