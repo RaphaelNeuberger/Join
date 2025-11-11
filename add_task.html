@@ -83,17 +83,7 @@
                   class="priority-buttons__button priority-buttons__button--active"
                   data-priority="Medium">
                   Medium
-                  <svg
-                    class="priority-buttons__icon"
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16">
-                    <path
-                      d="M3 6H13M3 10H13"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round" />
-                  </svg>
+                  <img src="./img/icons/Prio media.svg" alt="" />
                 </button>
                 <button
                   type="button"
@@ -157,13 +147,7 @@
                   type="button"
                   class="subtask-input__button"
                   id="addSubtaskBtn">
-                  <svg width="16" height="16" viewBox="0 0 16 16">
-                    <path
-                      d="M8 3V13M3 8H13"
-                      stroke="currentColor"
-                      stroke-width="2"
-                      stroke-linecap="round" />
-                  </svg>
+                  <svg width="16" height="16" viewBox="0 0 16 16"></svg>
                 </button>
               </div>
               <ul class="subtask-list" id="subtaskList"></ul>
@@ -173,42 +157,45 @@
 
         <!-- Form Actions -->
         <div class="form-actions">
-          <button
-            type="button"
-            class="form-actions__button form-actions__button--clear"
-            id="clearBtn">
-            Clear
-            <svg
-              class="form-actions__icon"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16">
-              <path
-                d="M4 4L12 12M12 4L4 12"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round" />
-            </svg>
-          </button>
-          <button
-            type="submit"
-            class="form-actions__button form-actions__button--submit"
-            id="submitBtn">
-            Create Task
-            <svg
-              class="form-actions__icon"
-              width="16"
-              height="16"
-              viewBox="0 0 16 16">
-              <path
-                d="M3 8L7 12L13 4"
-                stroke="currentColor"
-                stroke-width="2"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round" />
-            </svg>
-          </button>
+          <div><span>*This field is required</span></div>
+          <div class="button-action">
+            <button
+              type="button"
+              class="form-actions__button form-actions__button--clear"
+              id="clearBtn">
+              Clear
+              <svg
+                class="form-actions__icon"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16">
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round" />
+              </svg>
+            </button>
+            <button
+              type="submit"
+              class="form-actions__button form-actions__button--submit"
+              id="submitBtn">
+              Create Task
+              <svg
+                class="form-actions__icon"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16">
+                <path
+                  d="M3 8L7 12L13 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
+                  stroke-linejoin="round" />
+              </svg>
+            </button>
+          </div>
         </div>
       </form>
 
