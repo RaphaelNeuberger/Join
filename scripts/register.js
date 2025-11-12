@@ -78,8 +78,16 @@ function login() {
 }
 
 function guestLogin() {
-  localStorage.setItem("loggedInUser", JSON.stringify({ name: "Guest" }));
+  const guestUser = { 
+    name: "Guest", 
+    email: "guest@joinapp.local", 
+    isGuest: true 
+  };
+
+  localStorage.setItem("loggedInUser", JSON.stringify(guestUser));
   showNotification("👋 Eingeloggt als Gast", "success");
+
+  // nach kurzer Pause weiterleiten
   setTimeout(() => {
     window.location.href = "board.html";
   }, 1500);
