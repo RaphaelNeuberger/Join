@@ -61,6 +61,8 @@
                   class="form-group__input form-group__input--date"
                   placeholder="dd/mm/yyyy"
                   required />
+                <!-- Custom date icon (replaces native calendar icon) -->
+                <img src="./img/icons/event.svg" alt="date" class="date-icon" />
               </div>
               <span class="form-group__error" id="dueDateError"></span>
             </div>
@@ -157,7 +159,10 @@
 
         <!-- Form Actions -->
         <div class="form-actions">
-          <div><span>*This field is required</span></div>
+          <div>
+            <span class="form-group__required">*</span
+            ><span>This field is required</span>
+          </div>
           <div class="button-action">
             <button
               type="button"

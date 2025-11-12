@@ -40,8 +40,7 @@
 .form-group__input {
   height: 48px;
   font-size: 20px;
-
-  border: 1px var(--border);
+  border: 1px solid var(--border);
   border-radius: 10px;
 }
 
@@ -50,6 +49,56 @@
   font-size: 20px;
 
   border-radius: 10px;
+}
+
+/* Date input wrapper and custom icon */
+.form-group__date-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.form-group__input--date {
+  /* space for the custom icon on the right */
+  padding-right: 44px;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.form-group__date-wrapper .date-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  pointer-events: none; /* clicks go to the input */
+  display: block;
+}
+
+/* Hide native calendar picker indicator where possible */
+.form-group__input--date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  -webkit-appearance: none;
+  display: block;
+  width: 0;
+  height: 0;
+}
+.form-group__input--date::-webkit-clear-button {
+  display: none;
+}
+.form-group__input--date::-moz-clear {
+  /* Firefox fallback selectors */
+  display: none;
+}
+.form-group__input--date::-moz-calendar-picker-indicator {
+  opacity: 0;
+}
+
+/* Farbe für Pflicht-Sternchen */
+.form-group__required {
+  color: #ff8190;
+  font-weight: 700;
+  margin-right: 6px;
 }
 
 .form-label {
@@ -86,11 +135,11 @@
   gap: 12px;
   margin-bottom: 12px;
   height: 56px;
-  border: 1p var(--border);
+  border: 1px solid var(--border);
 }
 
 .priority-buttons__button {
-  border: 1px var(--border);
+  border: 1px solid var(--border);
   background-color: var(--panel);
   border-radius: 10px;
   gap: 12px;
@@ -110,7 +159,7 @@
 }
 .priority-btn--urgent {
   color: #ff3d00;
-  background-color: var(--panel);
+  background-color: var(--bg);
 }
 .priority-btn--medium {
   color: #fff;
@@ -130,16 +179,30 @@
 .form-actions__Button {
   display: flex;
   justify-content: space-between;
+  border-radius: 10px;
+}
+
+.form-actions__button--clear {
+  background-color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  gap: 12px;
+  width: 110px;
+  height: 56px;
 }
 
 .form-actions__button--submit {
-  border-bottom: #212529;
+  background-color: var(--bg);
+  border: 1px solid var(--ink);
+  border-radius: 10px;
+  gap: 12px;
+  height: 56px;
 }
 
 .button-action {
   display: flex;
   justify-content: space-between;
-  background-color: var(--panel);
+  color: var(--ink);
   gap: 12px;
 }
 
