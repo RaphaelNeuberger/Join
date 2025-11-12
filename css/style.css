@@ -40,7 +40,8 @@ body {
   --panel: #ffffff;
   --ink: #2a3647;
   --muted: #6b7280;
-  --border: #d1d1d1: --accent: #29abe2;
+  --border: #d1d1d1;
+  --accent: #29abe2;
   --urgent: #ff3d00;
   --black: #000000;
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
@@ -171,5 +172,5 @@ button {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
+    justify-content: center;
 }
