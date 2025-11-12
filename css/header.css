@@ -35,6 +35,12 @@ header {
   gap: 20px;
 }
 
+.header-user {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .header-user-round {
   width: 48px;
   height: 48px;
@@ -49,6 +55,38 @@ header {
   box-sizing: border-box;
   background: #fff;
   font-style: center;
+}
+
+/* User menu dropdown */
+.user-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 12px);
+  background: var(--ink);
+  color: var(--menu);
+  border-radius: 18px 0px 18px 18px;
+  padding: 12px 12px;
+  min-width: 125px;
+  box-shadow: 0 12px 30px rgba(18, 25, 36, 0.35);
+  display: none;
+  z-index: 40;
+}
+
+.user-menu.open {
+  display: block;
+}
+
+.user-menu__link {
+  display: block;
+  color: var(--panel);
+  text-decoration: none;
+  padding: 12px 8px;
+  font-size: 16px;
+  border-radius: 8px;
+}
+
+.user-menu__link:hover {
+  background: rgba(255, 255, 255, 0.04);
 }
 .nav-icon {
   width: 20px;

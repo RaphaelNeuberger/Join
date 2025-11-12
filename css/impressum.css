@@ -9,20 +9,10 @@ body {
 }
 
 .main-content {
-  margin-left: 280px; /* Platz für Sidebar */
-  margin-top: 120px; /* Abstand unter Header */
-  padding: 40px;
+  margin-left: 240px;
+  padding: 96px 84px 32px;
+  max-width: 1680px;
   box-sizing: border-box;
-  max-width: 900px;
-}
-
-.Datenschutz {
-  padding: 32px;
-  border-radius: 12px;
-}
-
-.Datenschutz h1 {
-  margin-top: 0;
 }
 
 .index a {

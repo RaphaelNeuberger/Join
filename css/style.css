@@ -46,6 +46,7 @@ body {
   --black: #000000;
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
   --placeholder-color: #d1d1d1;
+  --menu: #cdcdcd;
 }
 
 h1 {
