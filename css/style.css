@@ -5,7 +5,16 @@
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  
 }
+
+
+input::placeholder,
+textarea::placeholder {
+color: var(--placeholder-color);
+opacity: 1; / Firefox reduziert standardmäßig die Opazität */
+}
+
 
 html {
   height: 100%;
@@ -35,6 +44,7 @@ body {
   --urgent: #ff3d00;
   --black: #000000;
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+  --placeholder-color: #d1d1d1;
 }
 
 h1 {
