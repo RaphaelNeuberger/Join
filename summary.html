@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/sidebar.css" />
   <link rel="stylesheet" href="css/summary.css" />
   <link rel="stylesheet" href="css/fonts.css" />
-  <link rel="stylesheet" href="css/style.css" />
+  
 </head>
 
 <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
@@ -33,7 +33,7 @@
     <section class="dashboard">
       <section class="kpi-left">
         <div class="kpi-line">
-          <article class="kpi-card">
+          <a href="board.html" class="kpi-card" tabindex="0" role="link">
             <div class="kpi-icon">
               <img src="img/icons/edit-white.svg" class="edit" alt="To-do" />
             </div>
@@ -41,8 +41,8 @@
               <div class="kpi-value" id="kpi-todo">1</div>
               <div class="kpi-label">To-do</div>
             </div>
-          </article>
-          <article class="kpi-card">
+          </a>
+          <a href="board.html" class="kpi-card" tabindex="0" role="link">
             <div class="kpi-icon">
               <img src="img/icons/done.svg" alt="Done" />
             </div>
@@ -50,11 +50,11 @@
               <div class="kpi-value" id="kpi-done">1</div>
               <div class="kpi-label">Done</div>
             </div>
-          </article>
+          </a>
         </div>
 
         <div class="kpi-line">
-          <article class="kpi-card">
+          <a href="board.html" class="kpi-card" tabindex="0" role="link">
             <div class="kpi-iconurgent">
               <img src="img/icons/urgent.svg" alt="Urgent" />
             </div>
@@ -70,29 +70,24 @@
                 <div class="deadlinetext">Upcoming Deadline</div>
               </div>
             </div>
+          </a>
         </div>
-        </article>
-        </div>
-        <div class="kpi-valuelabel"></div>
 
-        </article>
-        </div>
-        </div>
         <div class="kpi-line">
-          <article class="kpi-card3">
+          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
             <div class="kpi-value" id="kpi-board">5</div>
             <div class="kpi-label">Tasks in Board</div>
-          </article>
+          </a>
 
-          <article class="kpi-card3">
+          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
             <div class="kpi-value" id="kpi-progress">2</div>
             <div class="kpi-label">Tasks In Progress</div>
-          </article>
+          </a>
 
-          <article class="kpi-card3">
+          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
             <div class="kpi-value" id="kpi-feedback">2</div>
             <div class="kpi-label">Awaiting Feedback</div>
-          </article>
+          </a>
         </div>
         <div class="kpi-line"></div>
       </section>

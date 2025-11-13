@@ -6,9 +6,10 @@
 
 /* Legal Content Container */
 .legal-content {
-  max-width: 900px;
-  padding: 40px 48px;
   margin-left: 240px;
+  padding: 96px 84px 32px;
+  max-width: 1680px;
+  box-sizing: border-box;
 }
 
 .legal-content h1 {

@@ -51,19 +51,6 @@ footer {
   text-decoration: underline;
 }
 
-.main-content {
-  margin-left: 280px; /* Abstand zur Sidebar */
-  margin-top: 120px; /* Abstand unter Header */
-  padding: 40px;
-  box-sizing: border-box;
-  max-width: 900px;
-}
-
-.Datenschutz {
-  padding: 32px;
-  border-radius: 12px;
-}
-
 .Datenschutz a {
   color: #2a3647;
   text-decoration: none;
