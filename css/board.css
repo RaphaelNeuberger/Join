@@ -1,126 +1,126 @@
 .board-container {
-    padding-left: 25px;
-    padding-right: 25px;
-    margin-left: 240px;
+  margin-left: 240px;
+  padding: 96px 84px 32px;
+  max-width: 1680px;
+  box-sizing: border-box;
 }
 
 .board-header {
-    height: 220px;
-    display: flex;
-    align-items: flex-end;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+  flex-wrap: wrap;
 }
 .serch-add-task-button {
-    display: flex;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }
 .board-header h2 {
-    margin-bottom: 0px;
-    padding-bottom: 0px;
-    font-size: 61px;
-    font-style: bold;
-    font-weight: 700;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  font-size: 61px;
+  font-style: bold;
+  font-weight: 700;
 }
 .board-header input {
-    height: 40px;
-    width: 321px;
-    border: 2px solid #D1D5DB;
-    border-radius: 8px;
-    padding-left: 1rem;
-    font-size: 16px;
+  height: 40px;
+  width: 321px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  padding-left: 1rem;
+  font-size: 16px;
 }
 .board-header button {
-    text-align: center;
-    height: 48px;
-    width: 160px;
-    font-size: 24px;
-    font-style: bold;
-    font-weight: 700;
-    background-color: #2a3647;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+  text-align: center;
+  height: 48px;
+  width: 160px;
+  font-size: 24px;
+  font-style: bold;
+  font-weight: 700;
+  background-color: #2a3647;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 .tasks-columns {
-    gap: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+  gap: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
-.task-column{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
-    width: 100%;
+.task-column {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  width: 100%;
 }
 .task-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-    margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 20px;
 }
 .task-header span {
-    font-size: 20px;
-    font-style: bold;
-    font-weight: 700;
+  font-size: 20px;
+  font-style: bold;
+  font-weight: 700;
 }
 .task-cards {
-    width: 100%;
+  width: 100%;
 }
-.card-no-task{
-    width: 100%;
-    height: 48px;
-    background-color: rgb(232, 232, 232);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: rgb(168, 168, 168);
-    font-size: 16px;
-    border-style: dashed;
+.card-no-task {
+  width: 100%;
+  height: 48px;
+  background-color: rgb(232, 232, 232);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(168, 168, 168);
+  font-size: 16px;
+  border-style: dashed;
 }
-.card-task{
-    width: 90%;
-    background-color: white;
-    border-radius: 8px;
-    padding: 15px;
+.card-task {
+  width: 90%;
+  background-color: white;
+  border-radius: 8px;
+  padding: 15px;
 }
-.card-type{
-    width: 40%;
-    background-color: #0038ff;
-    color: white;
-    font-size: 16px;
-    font-style: regular;
-    font-weight: 400;
-    border-radius: 8px;
-    padding: 0.5rem;
-    margin-bottom: 12px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+.card-type {
+  width: 40%;
+  background-color: #0038ff;
+  color: white;
+  font-size: 16px;
+  font-style: regular;
+  font-weight: 400;
+  border-radius: 8px;
+  padding: 0.5rem;
+  margin-bottom: 12px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
-.card-title{
-    font-size: 16px;
-    font-style: bold;
-    font-weight: 700;
-    margin-bottom: 8px;
+.card-title {
+  font-size: 16px;
+  font-style: bold;
+  font-weight: 700;
+  margin-bottom: 8px;
 }
-.story{
-    font-size: 14px;
-    font-style: regular;
-    font-weight: 400;
-    color: rgb(168, 168, 168)
+.story {
+  font-size: 14px;
+  font-style: regular;
+  font-weight: 400;
+  color: rgb(168, 168, 168);
 }
