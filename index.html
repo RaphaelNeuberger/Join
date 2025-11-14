@@ -72,8 +72,7 @@
 
       <!-- 🔥 NEU: Confirm Password + Live-Warnung -->
       <div class="input-group">
-        <input type="password" id="confirm-password" placeholder="Confirm Passwort" required
-          oninput="checkPasswordMatch()" />
+        <input type="password" id="confirm-password" placeholder="Confirm Passwort" required />
         <img src="img/icons/lock.svg" alt="Confirm Lock Icon" class="icon-lock" />
       </div>
       <span id="password-error" style="color: red; font-size: 14px;"></span>
@@ -238,6 +237,42 @@
         }, holdMs);
       }
     });
+  </script>
+
+
+  <!-- Firebase SDK (modular v10) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signInAnonymously, RecaptchaVerifier, signInWithPhoneNumber, updateProfile } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+    import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
+
+    // Deine Firebase Config (jetzt eingebunden!)
+    const firebaseConfig = {
+      apiKey: "AIzaSyBI4JD0XBE-srOGHaLT81iUZ6meuOjgV8M",
+      authDomain: "join-60a91.firebaseapp.com",
+      databaseURL: "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app",
+      projectId: "join-60a91",
+      storageBucket: "join-60a91.firebasestorage.app",
+      messagingSenderId: "1027472895369",
+      appId: "1:1027472895369:web:254e2439fa85bc74d08558",
+      measurementId: "G-K7ZPGG17YR"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getDatabase(app);
+
+    // Exportiere für register.js
+    window.firebaseAuth = auth;
+    window.firebaseDb = db;
+    window.createUserWithEmailAndPassword = createUserWithEmailAndPassword;
+    window.signInWithEmailAndPassword = signInWithEmailAndPassword;
+    window.signInAnonymously = signInAnonymously;
+    window.RecaptchaVerifier = RecaptchaVerifier;
+    window.signInWithPhoneNumber = signInWithPhoneNumber;
+    window.updateProfile = updateProfile;
+    window.ref = ref;
+    window.set = set;
   </script>
 
   <script src="scripts/register.js"></script>
