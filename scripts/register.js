@@ -1,8 +1,32 @@
-let users = JSON.parse(localStorage.getItem("users")) || [
-  { email: "junus@test.de", password: "tes123" }
-];
+// 🔔 Notification-Funktion (unverändert)
+function showNotification(message, type = "success") {
+  const container = document.getElementById("notification-container");
+  const notif = document.createElement("div");
+  notif.className = `notification ${type}`;
+  notif.textContent = message;
+  container.appendChild(notif);
 
-function addUser() {
+  // Automatisch entfernen nach 3.2s
+  setTimeout(() => notif.remove(), 3200);
+}
+
+// Helfer für reCAPTCHA (für Phone Auth, falls du's brauchst)
+let recaptchaVerifier;
+function initRecaptcha() {
+  if (!recaptchaVerifier) {
+    recaptchaVerifier = new RecaptchaVerifier(firebaseAuth, 'recaptcha-container', {
+      size: 'invisible',
+      callback: (response) => {
+        // reCAPTCHA gelöst – kannst hier fortfahren
+      },
+      'expired-callback': () => {
+        showNotification("reCAPTCHA abgelaufen – bitte neu laden.", "error");
+      }
+    });
+  }
+}
+
+async function addUser() {  // Email/Password Signup – Check nur hier beim Submit
   const name = document.getElementById("name").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("signup-password").value.trim();
@@ -15,80 +39,170 @@ function addUser() {
 
   if (password !== confirmPassword) {
     showNotification("⚠️ Passwörter stimmen nicht überein!", "error");
-    return;
+    return;  // Hier kommt die Meldung nur beim Klick auf "Sign up"
   }
 
-  const userExists = users.some(u => u.email === email);
-  if (userExists) {
-    showNotification("Diese E-Mail ist bereits registriert!", "error");
-    return;
+  try {
+    console.log("Starte Signup mit Email:", email);  // Debug-Log (kannst löschen)
+    const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email, password);
+    const user = userCredential.user;
+    console.log("User erstellt:", user.uid);  // Debug-Log
+
+    await updateProfile(user, { displayName: name });
+    console.log("Profil updated");  // Debug-Log
+
+    await set(ref(firebaseDb, 'users/' + user.uid), {
+      name: name,
+      email: email,
+      createdAt: new Date().toISOString()
+    });
+    console.log("Daten in RTDB gespeichert");  // Debug-Log
+
+    showNotification("✅ Du hast dich erfolgreich registriert!", "success");
+
+    setTimeout(() => {
+      window.location.href = "index.html?msg=Erfolgreich registriert";
+    }, 2000);
+  } catch (error) {
+    console.error("Signup Error Details:", error.code, error.message);  // Debug-Log
+    let errorMessage = "❌ Fehler bei der Registrierung: " + error.message;
+    if (error.code === "auth/email-already-in-use") {
+      errorMessage = "Diese E-Mail ist bereits registriert!";
+    } else if (error.code === "auth/weak-password") {
+      errorMessage = "Passwort zu schwach (mind. 6 Zeichen).";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Ungültige E-Mail-Adresse.";
+    } else if (error.code === "auth/network-request-failed") {
+      errorMessage = "Netzwerk-Fehler – check Internet oder Firewall.";
+    } else if (error.code === "auth/invalid-api-key") {
+      errorMessage = "Falscher API-Key – überprüfe Config.";
+    }
+    showNotification(errorMessage, "error");
   }
-
-  users.push({ name, email, password });
-  localStorage.setItem("users", JSON.stringify(users));
-
-  // 🎉 Schönes Erfolgs-Popup
-  showNotification("✅ Du hast dich erfolgreich registriert!", "success");
-
-  // Nach 2 Sekunden weiterleiten
-  setTimeout(() => {
-    window.location.href = "index.html?msg=Erfolgreich registriert";
-  }, 2000);
 }
 
-// 🔔 Notification-Funktion
-function showNotification(message, type = "success") {
-  const container = document.getElementById("notification-container");
-  const notif = document.createElement("div");
-  notif.className = `notification ${type}`;
-  notif.textContent = message;
-  container.appendChild(notif);
-
-  // Automatisch entfernen nach 3.2s (wie die Animation)
-  setTimeout(() => notif.remove(), 3200);
-}
-
-function login() {
+async function login() {  // Unverändert
   const email = document.getElementById("login-email").value.trim();
   const password = document.getElementById("login-password").value.trim();
 
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-
-  // 1️⃣ Eingaben prüfen
   if (!email || !password) {
     showNotification("Bitte fülle alle Felder aus.", "error");
     return;
   }
 
-  // 2️⃣ Nutzer suchen
-  const user = users.find(u => u.email === email && u.password === password);
+  try {
+    const userCredential = await signInWithEmailAndPassword(firebaseAuth, email, password);
+    const user = userCredential.user;
 
-  if (user) {
     showNotification("✅ Erfolgreich eingeloggt!", "success");
-    // optional: Nutzername speichern
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
 
-    // 3️⃣ Weiterleitung nach kurzer Pause
+    localStorage.setItem("loggedInUser", JSON.stringify({
+      uid: user.uid,
+      email: user.email,
+      name: user.displayName
+    }));
+
     setTimeout(() => {
-      window.location.href = "board.html"; // Zielseite anpassen
+      window.location.href = "board.html";
     }, 1500);
-  } else {
-    showNotification("❌ Falsche E-Mail oder Passwort.", "error");
+  } catch (error) {
+    let errorMessage = "❌ Falsche E-Mail oder Passwort.";
+    if (error.code === "auth/user-not-found" || error.code === "auth/wrong-password") {
+      errorMessage = "Falsche Anmeldedaten.";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Ungültige E-Mail.";
+    }
+    showNotification(errorMessage, "error");
+    console.error("Login Error:", error);
   }
 }
 
-function guestLogin() {
-  const guestUser = { 
-    name: "Guest", 
-    email: "guest@joinapp.local", 
-    isGuest: true 
-  };
+async function guestLogin() {  // Unverändert
+  try {
+    const userCredential = await signInAnonymously(firebaseAuth);
+    const user = userCredential.user;
 
-  localStorage.setItem("loggedInUser", JSON.stringify(guestUser));
-  showNotification("👋 Eingeloggt als Gast", "success");
+    await set(ref(firebaseDb, 'users/' + user.uid), {
+      name: "Guest",
+      email: "guest@joinapp.local",
+      isGuest: true,
+      createdAt: new Date().toISOString()
+    });
 
-  // nach kurzer Pause weiterleiten
-  setTimeout(() => {
-    window.location.href = "board.html";
-  }, 1500);
+    showNotification("👋 Eingeloggt als Gast", "success");
+
+    localStorage.setItem("loggedInUser", JSON.stringify({
+      uid: user.uid,
+      name: "Guest",
+      email: "guest@joinapp.local",
+      isGuest: true
+    }));
+
+    setTimeout(() => {
+      window.location.href = "board.html";
+    }, 1500);
+  } catch (error) {
+    showNotification("❌ Fehler beim Gast-Login.", "error");
+    console.error("Guest Login Error:", error);
+  }
+}
+
+// Phone-Funktionen (optional, unverändert – falls du's nicht brauchst, lösche sie)
+async function phoneSignup() {
+  initRecaptcha();
+  const phone = document.getElementById("phone").value.trim();
+  const name = document.getElementById("name").value.trim();
+
+  if (!phone) {
+    showNotification("Bitte Telefonnummer eingeben (z.B. +49123456789).", "error");
+    return;
+  }
+
+  try {
+    const confirmationResult = await signInWithPhoneNumber(firebaseAuth, phone, recaptchaVerifier);
+    window.confirmationResult = confirmationResult;
+
+    showNotification("SMS mit Code gesendet! Gib den Code ein.", "success");
+  } catch (error) {
+    showNotification("❌ Fehler beim Senden des Codes.", "error");
+    console.error("Phone Signup Error:", error);
+    recaptchaVerifier.render().then(widgetId => grecaptcha.reset(widgetId));
+  }
+}
+
+async function confirmPhoneCode() {
+  const code = document.getElementById("phone-code").value.trim();
+  const name = document.getElementById("name").value.trim();
+
+  if (!code) {
+    showNotification("Bitte Code eingeben.", "error");
+    return;
+  }
+
+  try {
+    const result = await window.confirmationResult.confirm(code);
+    const user = result.user;
+
+    await updateProfile(user, { displayName: name });
+    await set(ref(firebaseDb, 'users/' + user.uid), {
+      name: name || "Phone User",
+      phone: user.phoneNumber,
+      createdAt: new Date().toISOString()
+    });
+
+    showNotification("✅ Erfolgreich mit Phone registriert/eingeloggt!", "success");
+
+    localStorage.setItem("loggedInUser", JSON.stringify({
+      uid: user.uid,
+      phone: user.phoneNumber,
+      name: user.displayName
+    }));
+
+    setTimeout(() => {
+      window.location.href = "board.html";
+    }, 1500);
+  } catch (error) {
+    showNotification("❌ Falscher Code oder Fehler.", "error");
+    console.error("Phone Confirm Error:", error);
+  }
 }
