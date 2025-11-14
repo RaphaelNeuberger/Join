@@ -21,10 +21,21 @@
 }
 .task-form__layout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 32px;
+  /* now use three columns: left column, 1px divider column, right column */
+  grid-template-columns: 1fr 1px 1fr;
+  column-gap: 2.5rem; /* space on both sides of the divider */
+  row-gap: 32px;
   margin-bottom: 32px;
 }
+
+.task-form__column-left {
+  padding-right: 24px;
+}
+
+.task-form__column-right {
+  padding-left: 24px;
+}
+
 .task-form__column {
   display: flex;
   flex-direction: column;
@@ -139,6 +150,21 @@
   outline: none;
   box-shadow: 0 0 0 2px rgba(41, 171, 226, 0.12);
 }
+
+/* no pseudo-element: divider is placed in the HTML as .vertical-divider */
+
+/* Divider element placed between the two columns in the grid
+   - the grid uses a 1px middle column so the divider fills it
+   - margin top/bottom adds the 2rem vertical inset requested */
+.vertical-divider {
+  width: 100%; /* fills the 1px grid column */
+  background: var(--border);
+  margin: 2rem 0; /* vertical inset above/below the line */
+  justify-self: center; /* center in its column (not strictly necessary) */
+  align-self: stretch; /* stretch to the available height minus margins */
+  pointer-events: none;
+}
+
 .text-error {
   color: #fc5a5a;
 }
@@ -160,7 +186,6 @@
   border: 1px solid var(--border);
   background-color: #ffffff; /* white tile when inactive */
   border-radius: 10px;
-  gap: 12px;
   color: var(--ink);
   padding: 10px 18px;
   display: inline-flex;
@@ -343,11 +368,15 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
+  flex-wrap: nowrap;
+  min-width: 160px;
   transition: all 0.2s ease;
   width: auto;
 }
 
 .form-actions__button--submit:hover {
+  background-color: var(--accent);
   opacity: 0.9;
 }
 
@@ -374,6 +403,11 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
+
+  /* hide the explicit divider element on single-column layouts */
+  .vertical-divider {
+    display: none;
+  }
 }
 @media (max-width: 900px) {
   .task-form-container {
@@ -389,6 +423,10 @@
     flex-direction: column;
     align-items: stretch;
     gap: 12px;
+  }
+
+  .vertical-divider {
+    display: none;
   }
 }
 @media (max-width: 500px) {
