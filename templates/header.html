@@ -7,7 +7,27 @@
       <a class="nav-item" href="help.html">
         <img src="img/icons/help.svg" class="nav-icon-help" alt="help"
       /></a>
-      <span class="header-user-round">SM</span>
+
+      <div class="header-user" id="headerUser">
+        <button
+          class="header-user-round"
+          id="headerUserBtn"
+          aria-haspopup="true"
+          aria-expanded="false">
+          SM
+        </button>
+        <nav
+          class="user-menu"
+          id="userMenu"
+          aria-label="User menu"
+          aria-hidden="true">
+          <a class="user-menu__link" href="legal-notice.html">Legal Notice</a>
+          <a class="user-menu__link" href="privacypolicy.html"
+            >Privacy Policy</a
+          >
+          <a class="user-menu__link" href="logout.html">Log out</a>
+        </nav>
+      </div>
     </div>
   </div>
 </header>
