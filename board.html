@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/board.css" />
   </head>
-  <body onload="includeHeaderHTML();includeSidebarHTML();">
+  <body onload="loadScripts()">
     <nav header-html="./templates/header.html"></nav>
     <aside sidebar-html="./templates/sidebar.html"></aside>
 
@@ -26,6 +26,7 @@
         <div class="tasks-columns">
 
             <div class="task-column" id="columnToDo" ondrop="dropHandler(event)"   ondragover="dragoverHandler(event)">
+
                 <div class="task-header">
                     <span>To Do</span>
                     <img src="./img/icons/plus button.svg" alt="">

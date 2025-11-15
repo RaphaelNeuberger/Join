@@ -7,6 +7,10 @@ function noTaskTemplate() {
             </div>`;
 }
 
+
+
+
+
 function taskTemplate(id, type, title, description) {
   return `
             <div class="card-task" draggable="true">
@@ -15,5 +19,7 @@ function taskTemplate(id, type, title, description) {
                 <p class="story">${description}</p>
             </div>`;
 }
+
+
 
 
