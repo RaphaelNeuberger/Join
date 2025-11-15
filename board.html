@@ -16,7 +16,7 @@
 
     <main class="board-container">
         <div class="board-header">
-            <div><h2>Board</h2></div>
+            <h2>Board</h2>
             <div class="serch-add-task-button">
                 <input type="text" placeholder="Find Task" />
                 <button >Add task +</button>
@@ -25,57 +25,36 @@
 
         <div class="tasks-columns">
 
-            <div class="task-column">
+            <div class="task-column" id="columnToDo" ondrop="dropHandler(event)"   ondragover="dragoverHandler(event)">
                 <div class="task-header">
                     <span>To Do</span>
                     <img src="./img/icons/plus button.svg" alt="">
                 </div>
-                <div class="task-cards" id="to-do-tasks">
-                    <div class="card-no-task">
-                        <span>No tasks To do</span>
-                    </div>
-                </div>
+               <div class="task-cards" id="to-do-tasks" draggable="true" ondragstart="dragstartHandler(event)"></div> 
+
             </div>
 
-            <div class="task-column">
+            <div class="task-column" id="columnInProgress" ondrop="dropHandler(event)"   ondragover="dragoverHandler(event)">
                 <div class="task-header">
                     <span>In progress</span>
                     <img src="./img/icons/plus button.svg" alt="">
                 </div>
-                <div class="task-cards" id="in-progress-tasks" draggable="true">
-                    <div class="card-task" draggable="true">
-                        <p class="card-type">User Story</p>
-                        <span class="card-title">Kochwelt Page & Recipe Recommender</span>
-                        <p class="story">Build start page with recipe recommendation...</p>
-                    </div>
-
-                </div> 
+                <div class="task-cards" id="in-progress-tasks" draggable="true" ondragstart="dragstartHandler(event)"></div> 
             </div>
 
-            <div class="task-column">
+            <div class="task-column" id="columnAwaitFeedback" ondrop="dropHandler(event)"   ondragover="dragoverHandler(event)">
                 <div class="task-header">
                     <span>Await feedback</span>
                     <img src="./img/icons/plus button.svg" alt="">
                 </div>
-                    <div class="tasks" id="await-feedback-tasks" >
-                            <div class="task" draggable="true">
-                            <p class="card-type">User Story</p>
-                            <span class="card-title">Kochwelt Page & Recipe Recommender</span>
-                        <p class="story">Build start page with recipe recommendation...</p>
-                    </div>
-
-                </div>
+                <div class="task-cards" id="await-feedback-tasks" draggable="true" ondragstart="dragstartHandler(event)"></div>
             </div>
 
-            <div class="task-column">
+            <div class="task-column" id="columnDone" ondrop="dropHandler(event)"   ondragover="dragoverHandler(event)">
                 <div class="task-header">
                     <span>Done</span>
                 </div>
-                <div class="task-cards">
-                    <div class="card-no-task">
-                        <span>No tasks Done</span>
-                    </div>
-                </div>
+                <div class="task-cards" id="done-tasks" draggable="true" ondragstart="dragstartHandler(event)"></div>
             </div>
 
         </div>
@@ -83,6 +62,7 @@
     </main>
 
     <script src="scripts/templates.js"></script>
+    <script src="scripts/task_tamplates.js"></script>
     <script src="scripts/board.js"></script>   
 
     </body>
