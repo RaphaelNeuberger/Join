@@ -133,12 +133,29 @@ function showSuccess() {
 
 // Save Task
 function saveTask(taskData) {
+  // keep local copy
   tasks.push(taskData);
-  try {
-    const stored = JSON.stringify(tasks);
-    console.log("Task saved:", taskData);
-  } catch (e) {
-    console.log("Storage not available");
+
+  // If Firebase is available, push to Realtime Database under 'tasks'
+  if (window.firebaseDb && window.ref && window.push && window.set) {
+    try {
+      const tasksRef = window.ref(window.firebaseDb, "tasks");
+      const newTaskRef = window.push(tasksRef);
+      // include a server-like timestamp id if desired - we keep the id set earlier
+      window
+        .set(newTaskRef, taskData)
+        .then(() => console.log("Task saved to Firebase:", taskData))
+        .catch((err) => console.error("Firebase save error:", err));
+    } catch (err) {
+      console.error("Error writing to Firebase:", err);
+    }
+  } else {
+    // fallback: keep it in-memory (or you could implement localStorage fallback here)
+    try {
+      console.log("Firebase not available, task kept locally:", taskData);
+    } catch (e) {
+      console.log("Storage not available");
+    }
   }
 }
 
@@ -155,6 +172,7 @@ function handleSubmit(e) {
     priority: selectedPriority,
     assignedTo: assignedToSelect.value,
     category: categorySelect.value,
+    status: "todo",
     subtasks: [...subtasks],
     createdAt: new Date().toISOString(),
   };
