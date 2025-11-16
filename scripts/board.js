@@ -102,3 +102,5 @@ function getAvatarColor(name = '', index = 0) {
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
   return AVATAR_COLORS[(hash + index) % AVATAR_COLORS.length];
 }
+
+
