@@ -8,16 +8,16 @@ function noTaskTemplate() {
 }
 
 
-
-
-
-function taskTemplate(id, type, title, description) {
+function taskTemplate(task) {
   return `
-            <div class="card-task" draggable="true">
-                <p class="card-type">${type}</p>
-                <span class="card-title">${title}</span>
-                <p class="story">${description}</p>
-            </div>`;
+    <div class="card-task"
+         draggable="true"
+         ondragstart="dragstartHandler(event)"
+         data-task-id="${task.id}">
+      <p class="card-type">${task.Category}</p>
+      <span class="card-title">${task.Title}</span>
+      <p class="story">${task.Description}</p>
+    </div>`;
 }
 
 
