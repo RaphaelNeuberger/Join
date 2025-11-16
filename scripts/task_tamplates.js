@@ -14,12 +14,17 @@ function taskTemplate(task) {
          draggable="true"
          ondragstart="dragstartHandler(event)"
          data-task-id="${task.id}">
-      <p class="card-type">${task.Category}</p>
-      <span class="card-title">${task.Title}</span>
-      <p class="story">${task.Description}</p>
+      <p class="card-type">${task.category}</p>
+      <span class="card-title">${task.title}</span>
+      <p class="story">${task.description}</p>
+      <div class="card-footer">
+        <div class="assigned-list">
+          ${renderAssignees(task.assignedTo)}
+        </div>
+        <div class="priority"> 
+          ${task.priority.toLowerCase()}
+        </div>
+      </div>
     </div>`;
 }
-
-
-
 

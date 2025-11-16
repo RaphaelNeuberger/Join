@@ -107,14 +107,14 @@
   padding: 15px;
 }
 .card-type{
-  width: 40%;
+  padding: 4px 8px;
+  font-size: 16px;
+  width: fit-content;
   background-color: #0038ff;
   color: white;
-  font-size: 16px;
   font-style: regular;
   font-weight: 400;
   border-radius: 8px;
-  padding: 0.5rem;
   margin-bottom: 12px;
   cursor: pointer;
   display: flex;
@@ -133,4 +133,30 @@
   font-style: regular;
   font-weight: 400;
   color: rgb(168, 168, 168)
+}
+.assigned-list{
+  display: flex;
+  gap: 0;
+  margin-top: 12px;
+}
+.assigned-avatar{
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #ffffff;
+}
+.assigned-avatar:not(:first-child){
+  margin-left: -12px;
+}
+.card-footer {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
