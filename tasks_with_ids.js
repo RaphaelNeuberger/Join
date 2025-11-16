@@ -1,13 +1,13 @@
-[
+let tasks = [
   {
     "id": 0,
-    "Category": "User Story",
-    "Title": "Kochwelt Page & Recipe Recommender",
-    "Description": "Build start page with dynamic recipe recommendation.",
-    "Due date": "2025-03-12",
-    "Priority": "Medium",
-    "Assigned to": "Clara Meyer",
-    "Subtasks": [
+    "category": "User Story",
+    "title": "Kochwelt Page & Recipe Recommender",
+    "description": "Build start page with dynamic recipe recommendation.",
+    "dueDate": "2025-03-12",
+    "priority": "Medium",
+    "assignedTo": ["Clara Meyer", "Jonas Weber"],
+    "subtasks": [
       "Design layout for start page",
       "Implement recipe API connector",
       "Create recommendation algorithm",
@@ -17,13 +17,13 @@
   },
   {
     "id": 1,
-    "Category": "User Story",
-    "Title": "User Profile Dashboard Redesign",
-    "Description": "Improve the user profile overview with modern UI elements and better usability.",
-    "Due date": "2025-04-08",
-    "Priority": "High",
-    "Assigned to": "Giulia Steiner",
-    "Subtasks": [
+    "title": "User Profile Dashboard Redesign",
+    "description": "Improve the user profile overview with modern UI elements and better usability.",
+    "dueDate": "2025-04-08",
+    "priority": "High",
+    "assignedTo": ["Giulia Steiner"],
+    "category": "User Story",
+    "subtasks": [
       "Create new dashboard wireframes",
       "Add statistics widgets",
       "Implement responsive layout",
@@ -33,13 +33,13 @@
   },
   {
     "id": 2,
-    "Category": "Technical Task",
-    "Title": "API Authentication Refactor",
-    "Description": "Refactor token-based authentication to support refresh tokens and role-based access.",
-    "Due date": "2025-05-21",
-    "Priority": "Medium",
-    "Assigned to": "David Schmid",
-    "Subtasks": [
+    "title": "API Authentication Refactor",
+    "description": "Refactor token-based authentication to support refresh tokens and role-based access.",
+    "dueDate": "2025-05-21",
+    "priority": "Medium",
+    "assignedTo": ["David Schmid", "Eva Keller"],
+    "category": "Technical Task",
+    "subtasks": [
       "Add refresh token endpoint",
       "Update JWT middleware",
       "Refactor role-check helpers",
@@ -49,13 +49,13 @@
   },
   {
     "id": 3,
-    "Category": "User Story",
-    "Title": "Shopping Cart Real-Time Update Feature",
-    "Description": "Enable cart totals to update instantly when users modify item quantities.",
-    "Due date": "2025-03-30",
-    "Priority": "Low",
-    "Assigned to": "Olivia Roth",
-    "Subtasks": [
+    "title": "Shopping Cart Real-Time Update Feature",
+    "description": "Enable cart totals to update instantly when users modify item quantities.",
+    "dueDate": "2025-03-30",
+    "priority": "Low",
+    "assignedTo": ["Olivia Roth"],
+    "category": "User Story",
+    "subtasks": [
       "Add event listener for cart inputs",
       "Recalculate prices dynamically",
       "Animate cart update changes",
