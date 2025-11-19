@@ -170,7 +170,7 @@ overlay-modal {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -223,7 +223,6 @@ overlay-modal {
   appearance: none;
 }
 
-
 .form-group__date-wrapper .date-icon {
   position: absolute;
   right: 19px;
@@ -235,61 +234,106 @@ overlay-modal {
   display: block;
 }
 .priority-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-    height: 56px;
-    border: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  height: 56px;
+  padding: 4px;
+  border-radius: 10px;
+  border: 1px solid #d1d5db;
+  background-color: #f9fafb;
 }
 
-.priority-btn--urgent {
+.priority-buttons__button {
+  flex: 1;
+  border: none;
+  border-radius: 10px;
+  background-color: #ffffff;
+  color: #2a3647;
+  font-size: 16px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+
+.priority-buttons__button svg {
+  pointer-events: none;
+}
+
+/* Nicht aktive Varianten (nur Text farbig) */
+.priority-buttons__button--urgent {
   color: #ff3d00;
-  background-color: var(--bg);
 }
-.priority-btn--medium {
-  color: #fff;
-  background: #ffa800;
+
+.priority-buttons__button--medium {
+  color: #2a3647;
 }
-.priority-btn--low {
+
+.priority-buttons__button--low {
   color: #7ae229;
 }
-.priority-buttons__button .priority-btn.is-active,
-.priority-buttons__button .priority-btn[aria-pressed="true"] {
-  border: none;
-  color: #fff;
+
+/* Allgemeiner aktiver Zustand */
+.priority-buttons__button.is-active {
+  color: #ffffff;
   box-shadow: 0 6px 18px rgba(18, 25, 36, 0.12);
 }
 
-.priority-buttons__button .priority-btn--urgent.is-active,
-.priority-buttons__button .priority-btn--urgent[aria-pressed="true"] {
-  background: #ff3d00; /* strong red */
+/* Aktive Farben je Button */
+.priority-buttons__button--urgent.is-active {
+  background-color: #ff3d00;
 }
 
-.priority-buttons__button .priority-btn--medium.is-active,
-.priority-buttons__button .priority-btn--medium[aria-pressed="true"] {
-  background: #ffab2b; /* orange */
+.priority-buttons__button--medium.is-active {
+  background-color: #ffab2b;
 }
 
-.priority-buttons__button .priority-btn--low.is-active,
-.priority-buttons__button .priority-btn--low[aria-pressed="true"] {
-  background: #5be84a; /* bright green */
+.priority-buttons__button--low.is-active {
+  background-color: #5be84a;
 }
 
-/* Keyboard focus visible style (keeps accessibility while matching visual design) */
-.priority-buttons__button .priority-btn:focus {
-  outline: 3px solid rgba(41, 171, 226, 0.12);
+/* Tastatur-Fokus */
+.priority-buttons__button:focus {
+  outline: 3px solid rgba(41, 171, 226, 0.25);
   outline-offset: 2px;
 }
+
+
 .form-actions {
   display: flex;
   gap: 18px;
   justify-content: space-between;
   margin-top: 20px;
+  align-items: center;
+}
+
+.button-action{
+  gap: 8px;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
 }
 
 .form-actions__Button {
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
+}
+
+.form-actions__button--submit{
+  background-color:  #2a3647; 
+  color: white;
+  padding: 6px 2px;
+  font-size: 21px;
+  font-weight: 700;
+  border-radius: 8px;
 }

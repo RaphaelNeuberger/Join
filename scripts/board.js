@@ -3,7 +3,7 @@ function loadScripts() {
   includeSidebarHTML();
   renderToDoTasks();      
   renderNoTasksIfEmpty(); 
-
+  initPriorityButtons();
 
 }
 function renderNoTasksIfEmpty() {
@@ -104,3 +104,46 @@ function getAvatarColor(name = '', index = 0) {
 }
 
 
+let selectedPriority = 'Medium';
+
+function setPriorityActive(buttons, activeButton) {
+  buttons.forEach((button) => {
+    button.classList.remove('is-active');
+    button.setAttribute('aria-pressed', 'false');
+  });
+
+  activeButton.classList.add('is-active');
+  activeButton.setAttribute('aria-pressed', 'true');
+  selectedPriority = activeButton.dataset.priority || 'Medium';
+}
+
+function initPriorityButtons() {
+  const buttons = document.querySelectorAll('.priority-buttons__button');
+  if (!buttons.length) {
+    return;
+  }
+
+  buttons.forEach((button) => {
+    button.setAttribute('role', 'button');
+    button.setAttribute('tabindex', '0');
+
+    button.addEventListener('click', () => {
+      setPriorityActive(buttons, button);
+    });
+
+    button.addEventListener('keydown', (event) => {
+      if (event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        setPriorityActive(buttons, button);
+      }
+    });
+  });
+
+  const defaultButton = document.querySelector(
+    '.priority-buttons__button.priority-buttons__button--active'
+  );
+
+  if (defaultButton) {
+    setPriorityActive(buttons, defaultButton);
+  }
+}
