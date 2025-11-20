@@ -57,6 +57,12 @@
 
 }
 
+.nav-item:hover {
+  background: #2a3d59;
+  color: #fff;
+  cursor: pointer;
+}
+
 .sidebar-footer {
   display: flex;
   flex-direction: column;
@@ -71,11 +77,10 @@
   color: #a8a8a8;
   text-decoration: none;
   font-size: 16px;
-  font-
 }
 
 .footer-link:hover {
-  color: #fff;
+  color: #29ABE2;
 }
 
 @media (max-width: 1023px) {

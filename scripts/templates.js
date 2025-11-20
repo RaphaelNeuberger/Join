@@ -1,19 +1,18 @@
 function includeSidebarHTML() {
-  const placeholder = document.querySelector("[sidebar-html]");
-  if (!placeholder) return;
-  const src = placeholder.getAttribute("sidebar-html");
-  fetch(src)
-    .then((r) => r.text())
-    .then((html) => {
-      placeholder.outerHTML = html;
-      requestAnimationFrame(() => {
-        try {
-          setupHeaderMenu();
-        } catch (e) {}
+  let includeElements = document.querySelectorAll("[sidebar-html]");
+  includeElements.forEach(el => {
+    let file = el.getAttribute("sidebar-html");
+    fetch(file)
+      .then(resp => resp.text())
+      .then(html => {
+        el.innerHTML = html;
+
+        // ⬅️ WICHTIG: Hier Sidebar ist fertig → jetzt aktivieren!
+        highlightActiveSidebarLink();
       });
-    })
-    .catch(() => {});
+  });
 }
+
 
 function includeHeaderHTML() {
   const placeholder = document.querySelector("[header-html]");
@@ -58,5 +57,20 @@ function setupHeaderMenu() {
   // close on Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") toggle(false);
+  });
+}
+
+
+function highlightActiveSidebarLink() {
+  const current = window.location.pathname.split("/").pop();
+  const items = document.querySelectorAll(".nav-item");
+
+  items.forEach(item => {
+    const link = item.getAttribute("href");
+    if (link === current) {
+      item.classList.add("active");
+    } else {
+      item.classList.remove("active");
+    }
   });
 }
