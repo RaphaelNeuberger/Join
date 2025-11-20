@@ -7,23 +7,33 @@ function includeSidebarHTML() {
       .then(html => {
         el.innerHTML = html;
 
-        // ⬅️ WICHTIG: Hier Sidebar ist fertig → jetzt aktivieren!
-        highlightActiveSidebarLink();
+        // ⬇️ GANZ WICHTIG: kommt direkt nach dem innerHTML!
+        updateSidebarForLoginState();
+
+        // und dann z.B. dein Active-Highlight (falls vorhanden)
+        if (typeof highlightActiveSidebarLink === "function") {
+          highlightActiveSidebarLink();
+        }
       });
   });
 }
 
 
+
 function includeHeaderHTML() {
   const placeholder = document.querySelector("[header-html]");
   if (!placeholder) return;
+
   const src = placeholder.getAttribute("header-html");
+
   fetch(src)
     .then((r) => r.text())
     .then((html) => {
       placeholder.outerHTML = html;
+
+      initHeaderUserMenu();
     })
-    .catch(() => {});
+    .catch(() => { });
 }
 
 function setupHeaderMenu() {
@@ -71,6 +81,74 @@ function highlightActiveSidebarLink() {
       item.classList.add("active");
     } else {
       item.classList.remove("active");
+    }
+  });
+}
+
+/////
+function updateSidebarForLoginState() {
+  const navAuth = document.querySelector(".nav-auth");
+  const navGuest = document.querySelector(".nav-guest");
+
+  if (!navAuth || !navGuest) {
+    console.warn("Sidebar nav elements not found.");
+    return;
+  }
+
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  console.log("loggedInUser in Sidebar:", loggedInUser); // zum Debuggen
+
+  if (loggedInUser) {
+    // Eingeloggt → App-Menü zeigen
+    navAuth.style.display = "flex";
+    navGuest.style.display = "none";
+  } else {
+    // Nicht eingeloggt → nur Login zeigen
+    navAuth.style.display = "none";
+    navGuest.style.display = "flex";
+  }
+}
+
+
+function logout() {
+  // LocalStorage leeren
+  localStorage.removeItem("loggedInUser");
+
+  // Falls Firebase Auth genutzt wird:
+  if (window.firebaseAuth && window.firebaseAuth.signOut) {
+    firebaseAuth.signOut().catch((err) => {
+      console.error("Firebase Logout Error:", err);
+    });
+  }
+
+  // Weiterleiten zur Login-Seite
+  window.location.href = "index.html";
+}
+
+function initHeaderUserMenu() {
+  const btn = document.getElementById("headerUserBtn");
+  const menu = document.getElementById("userMenu");
+
+  if (!btn || !menu) {
+    return; // auf Seiten ohne Header einfach nix tun
+  }
+
+  // Toggle beim Klick auf den Button
+  btn.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const isOpen = menu.classList.toggle("open");
+    menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+    btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+  });
+
+  // Klick außerhalb schließt das Menü
+  document.addEventListener("click", (event) => {
+    if (!menu.contains(event.target) && !btn.contains(event.target)) {
+      if (menu.classList.contains("open")) {
+        menu.classList.remove("open");
+        menu.setAttribute("aria-hidden", "true");
+        btn.setAttribute("aria-expanded", "false");
+      }
     }
   });
 }

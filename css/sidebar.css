@@ -142,3 +142,30 @@
     margin-bottom: 90px;
   }
 }
+
+/* Standard: sicherheitshalber Gast-Ansicht */
+.nav-auth {
+  display: none;
+}
+.nav-guest {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Wenn eingeloggt */
+body.logged-in .nav-auth {
+  display: flex;
+  flex-direction: column;
+}
+body.logged-in .nav-guest {
+  display: none;
+}
+
+/* Wenn NICHT eingeloggt */
+body.logged-out .nav-auth {
+  display: none;
+}
+body.logged-out .nav-guest {
+  display: flex;
+  flex-direction: column;
+}
