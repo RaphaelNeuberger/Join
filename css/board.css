@@ -59,6 +59,9 @@
   border-radius: 8px;
   cursor: pointer;
 }
+.add-btn-mobile{
+  display: none;
+}
 .tasks-columns {
   flex: 1;
   overflow-y: auto;
@@ -365,4 +368,29 @@ overlay-modal {
   font-size: 21px;
   font-weight: 700;
   border-radius: 8px;
+}
+
+
+@media (max-width: 1023px) {
+  .board-container {
+      margin-left: 0;
+      padding: 32px 16px 16px;
+  }
+  .add-btn-desk{
+    display: none;
+  }
+  .add-btn-mobile {
+    display: flex;
+  }
+  .tasks-columns {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .task-column{
+    width: 100% ;
+    padding: 0px;
+  }
+
 }

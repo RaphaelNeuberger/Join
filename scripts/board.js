@@ -142,22 +142,23 @@ function initPriorityButtons() {
 }
 
 function setupPriorityButtonInteractions(buttons) {
-  buttons.forEach((button) => {
-    button.setAttribute('role', 'button');
-    button.setAttribute('tabindex', '0');
+  buttons.forEach((btn) => {
+    btn.setAttribute('role', 'button');
+    btn.setAttribute('tabindex', '0');
 
-    button.addEventListener('click', () => {
-      setPriorityActive(buttons, button);
-    });
+    const activate = () => setPriorityActive(buttons, btn);
 
-    button.addEventListener('keydown', (event) => {
-      if (event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        setPriorityActive(buttons, button);
+    btn.addEventListener('click', activate);
+
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        activate();
       }
     });
   });
 }
+
 
 function setInitialPriority(buttons) {
   const defaultButton = document.querySelector(
