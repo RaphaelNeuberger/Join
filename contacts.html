@@ -31,132 +31,8 @@
             alt="Add Icon" />
         </button>
 
-        <div class="contact-list">
-          <div class="user-list">
-            <span>A</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">AB</span>
-              <div class="user">
-                <span class="user-name">Alexander Beck</span><br />
-                <span class="user-email">alexander.beck@example.com</span>
-              </div>
-            </div>
-          </div>
-          
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="user-list">
-            <span>A</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">AB</span>
-              <div class="user">
-                <span class="user-name">Alexander Beck</span><br />
-                <span class="user-email">alexander.beck@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="user-list">
-            <span>A</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">AB</span>
-              <div class="user">
-                <span class="user-name">Alexander Beck</span><br />
-                <span class="user-email">alexander.beck@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-
-          <div class="user-list">
-            <span>A</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">AB</span>
-              <div class="user">
-                <span class="user-name">Alexander Beck</span><br />
-                <span class="user-email">alexander.beck@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
-          <div class="user-list">
-            <span>B</span>
-            <hr />
-            <div class="contact-item">
-              <span class="name-logo">BJ</span>
-              <div class="user">
-                <span class="user-name">Beatrice Johnson</span><br />
-                <span class="user-email">beatrice.johnson@example.com</span>
-              </div>
-            </div>
-          </div>
+        <div class="contact-list" id="contact-list">
+          <!-- Kontakte werden dynamisch aus Firebase geladen -->
         </div>
         <div class="add-person-mobile">
           <img src="img/icons/person_add.svg" alt="Add Person" />
@@ -242,6 +118,7 @@
       </div>
     </div>
   </body>
-   <script src="scripts/templates.js"></script>
-
+  <script type="module" src="scripts/firebase-init.js"></script>
+  <script src="scripts/contacts.js"></script>
+  <script src="scripts/templates.js"></script>
 </html>
