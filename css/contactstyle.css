@@ -5,9 +5,9 @@ body {
 }
 
 .main-contact {
+  height: calc(100vh - 120px);
   padding: 0.5rem;
   margin-left: 240px;
-  padding: 96px 84px 32px;
   max-width: 1680px;
   box-sizing: border-box;
   display: flex;
@@ -63,11 +63,11 @@ body {
 .contact-list {
   box-sizing: border-box;
   position: sticky;
-  overflow: auto;
-  padding: 0.6rem;
-  padding-left: 1.5rem;
+  top: 96px; /* oder 0, je nach gewünschtem Verhalten */
+  padding: 0.6rem 0 0.6rem 1.5rem;
+  overflow: auto; /* Nur nötig, wenn der Bereich selbst scrollen soll */
+  max-height: calc(100vh - 96px); /* optional für eigenes Scrollen */
 }
-
 .contact-item {
   display: flex;
   align-items: center;
