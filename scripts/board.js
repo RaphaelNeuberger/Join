@@ -1,3 +1,6 @@
+
+let selectedPriority = 'Medium';
+
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -11,9 +14,32 @@ function initLayout() {
 
 async function initBoard() {
   await fetchTasks();
-  renderToDoTasks();
+  renderBoard();
+}
+
+function renderBoard() {
+  renderColumn('todo', 'to-do-tasks');
+  renderColumn('inProgress', 'in-progress-tasks');
+  renderColumn('awaitFeedback', 'await-feedback-tasks');
+  renderColumn('done', 'done-tasks');
   renderNoTasksIfEmpty();
 }
+
+function renderColumn(status, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '';
+
+  if (!Array.isArray(tasks) || !tasks.length) return;
+
+  tasks
+    .filter((task) => task.status === status)
+    .forEach((task) => {
+      container.innerHTML += taskTemplate(task);
+    });
+}
+
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll('.task-cards');
 
@@ -31,20 +57,6 @@ function renderNoTasksIfEmpty() {
   });
 }
 
-function renderToDoTasks() {
-  const toDoContainer = document.getElementById('to-do-tasks');
-  if (!toDoContainer) return;
-
-  toDoContainer.innerHTML = '';
-  if (!Array.isArray(tasks) || !tasks.length) return;
-
-  tasks
-    .filter((task) => task.status === 'todo')
-    .forEach((task) => {
-      toDoContainer.innerHTML += taskTemplate(task);
-    });
-}
-
 function dragstartHandler(event) {
   const taskElement = event.target;
   const taskId = taskElement.dataset.taskId;
@@ -58,20 +70,20 @@ function dragoverHandler(event) {
   event.preventDefault();
 }
 
-function dropHandler(event) {
+async function dropHandler(event) {
   event.preventDefault();
 
   if (!event.dataTransfer) return;
 
   const taskId = event.dataTransfer.getData('text/plain');
   const column = event.currentTarget;
-  const dropZone = column.querySelector('.task-cards');
-  const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+  const newStatus = column?.dataset?.status;
 
-  if (taskElement && dropZone) {
-    dropZone.appendChild(taskElement);
-    renderNoTasksIfEmpty();
-  }
+  if (!taskId || !newStatus) return;
+
+  await updateTaskStatus(taskId, newStatus);
+
+  renderBoard();
 }
 
 const AVATAR_COLORS = [
@@ -120,8 +132,6 @@ function getAvatarColor(name = '', index = 0) {
   return AVATAR_COLORS[(hash + index) % AVATAR_COLORS.length];
 }
 
-let selectedPriority = 'Medium';
-
 function setPriorityActive(buttons, activeButton) {
   buttons.forEach((button) => {
     button.classList.remove('is-active');
@@ -159,7 +169,6 @@ function setupPriorityButtonInteractions(buttons) {
   });
 }
 
-
 function setInitialPriority(buttons) {
   const defaultButton = document.querySelector(
     '.priority-buttons__button.priority-buttons__button--active'
@@ -172,6 +181,7 @@ function setInitialPriority(buttons) {
 
 function addTaskBtn() {
   const overlay = document.querySelector('.overlay-modal');
-  if (!overlay) return; // element not found
+  if (!overlay) return;
+
   overlay.style.display = 'flex';
 }

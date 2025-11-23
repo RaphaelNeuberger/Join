@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
     <title>Board • Join</title>
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="css/header.css" />
@@ -16,7 +17,7 @@
 
     <main class="board-container">
       <div class="board-header">
-        <h2>Board</h2>
+        <h1>Board</h1>
         <img onclick="addTaskBtn()" class="add-btn-mobile" src="./img/buttons/plus add task mobile.svg" alt="">
         <div class="serch-add-task-button">
           <input type="text" placeholder="Find Task" />
@@ -28,6 +29,7 @@
         <div
           class="task-column"
           id="columnToDo"
+          data-status="todo"
           ondrop="dropHandler(event)"
           ondragover="dragoverHandler(event)">
           <div class="task-header">
@@ -42,6 +44,7 @@
         <div
           class="task-column"
           id="columnInProgress"
+          data-status="inProgress"
           ondrop="dropHandler(event)"
           ondragover="dragoverHandler(event)">
           <div class="task-header">
@@ -57,6 +60,7 @@
         <div
           class="task-column"
           id="columnAwaitFeedback"
+          data-status="awaitFeedback"
           ondrop="dropHandler(event)"
           ondragover="dragoverHandler(event)">
           <div class="task-header">
@@ -72,6 +76,7 @@
         <div
           class="task-column"
           id="columnDone"
+          data-status="done"
           ondrop="dropHandler(event)"
           ondragover="dragoverHandler(event)">
           <div class="task-header">
@@ -90,7 +95,7 @@
         <div class="modal-content">
           <div class="overlay-header">
              <h1>Add Task</h1>
-             <span onclick="closeTaskBtn()">X</span>
+             <span onclick="closeAddTaskBtn()">X</span>
           </div>
             
 
@@ -308,7 +313,7 @@
                   stroke-linecap="round" />
               </svg>
             </button>
-            <button
+            <button onclick="creatTask()"
               type="submit"
               class="form-actions__button form-actions__button--submit"
               id="submitBtn">
@@ -348,17 +353,6 @@
 
       
     </div>
-
-
-
-
-
-
-
-
-
-
-
         
     </overlay-modal>
 

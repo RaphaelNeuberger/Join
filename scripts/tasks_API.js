@@ -1,5 +1,8 @@
 let tasks = [];
 
+const TASKS_URL =
+  'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app/tasks.json';
+
 async function fetchTasks() {
   try {
     const data = await requestTasksFromFirebase();
@@ -11,12 +14,8 @@ async function fetchTasks() {
   }
 }
 
-
 async function requestTasksFromFirebase() {
-  const url =
-    'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app/tasks.json';
-
-  const response = await fetch(url, { cache: 'no-store' });
+  const response = await fetch(TASKS_URL, { cache: 'no-store' });
 
   if (!response.ok) {
     throw new Error('Fetch failed');
@@ -25,12 +24,9 @@ async function requestTasksFromFirebase() {
   return response.json();
 }
 
-function dispatchTasksLoaded(tasksArray) {
-  document.dispatchEvent(
-    new CustomEvent('tasksLoaded', { detail: tasksArray })
-  );
-}
-
+/**
+ * Normalisiert verschiedene Firebase-Strukturen zu einem Array.
+ */
 function normalizeTasks(raw) {
   if (!raw) return [];
 
@@ -43,6 +39,9 @@ function normalizeTasks(raw) {
   });
 }
 
+/**
+ * Ergänzt fehlende Felder mit Defaults.
+ */
 function enrichTask(task) {
   return {
     id: task.id || generateId(),
@@ -60,12 +59,57 @@ function enrichTask(task) {
     status: task.status || 'todo'
   };
 }
-function closeTaskBtn(){
-  document.querySelector('.overlay-modal').style.display = 'none';
+
+/**
+ * Wandelt das Task-Array in ein Objekt { id: task } für Firebase.
+ */
+function mapTasksToObject(taskList) {
+  return taskList.reduce((acc, task) => {
+    acc[task.id] = task;
+    return acc;
+  }, {});
 }
 
+/**
+ * Speichert alle Tasks gesammelt in Firebase (ohne LocalStorage).
+ */
+async function saveTasks() {
+  const payload = mapTasksToObject(tasks);
 
+  await fetch(TASKS_URL, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+}
+
+/**
+ * Aktualisiert NUR den Status eines Tasks im Array + in Firebase.
+ */
+async function updateTaskStatus(taskId, newStatus) {
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return;
+
+  tasks[index] = {
+    ...tasks[index],
+    status: newStatus
+  };
+
+  await saveTasks();
+}
+
+/**
+ * Schließt das Add-Task-Overlay.
+ */
+function closeTaskBtn() {
+  const overlay = document.querySelector('.overlay-modal');
+  if (!overlay) return;
+  overlay.style.display = 'none';
+}
+
+/**
+ * Erzeugt eine eindeutige ID.
+ */
 function generateId() {
   return String(Date.now() + Math.random());
 }
-

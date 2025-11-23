@@ -392,5 +392,10 @@ overlay-modal {
     width: 100% ;
     padding: 0px;
   }
+  .task-form__layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
 
 }
