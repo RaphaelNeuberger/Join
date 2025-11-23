@@ -8,19 +8,20 @@
     scrollbar-width: none;
 }
 .board-container {
-    padding-left: 25px;
-    padding-right: 25px;
     margin-left: 240px;
+    padding: 96px 84px 32px;
+    background: #f6f7fb;
+    min-height: 100vh;
 }
 
 .board-header {
-    height: 220px;
-    display: flex;
-    align-items: flex-end;
-    flex-direction: row;
-    justify-content: space-between;
-    align-content: center;
-    flex-wrap: wrap;
+  top: 100px;
+  height: auto;
+  flex-wrap: nowrap;
+  padding-bottom: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 .serch-add-task-button {
   display: flex;
@@ -59,25 +60,25 @@
   cursor: pointer;
 }
 .tasks-columns {
-  gap: 20px;
+  flex: 1;
+  overflow-y: auto;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
 }
 .task-column{
-    display: flex;
-    flex-direction: column;
-    align-content: center;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  align-items: center;
+  padding: 12px;
+  width: 90%;
 }
 .task-header {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row;
-    margin-bottom: 20px;
+  width: 100%;  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-bottom: 20px;
 }
 .task-header span {
   font-size: 20px;

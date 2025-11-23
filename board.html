@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/board.css" />
   </head>
-  <body onload="loadScripts()">
+  <body onload="loadScripts(); includeHeaderHTML(); includeSidebarHTML()">
     <nav header-html="./templates/header.html"></nav>
     <aside sidebar-html="./templates/sidebar.html"></aside>
 
@@ -366,7 +366,7 @@
     <script src="scripts/templates.js"></script>
     <script src="scripts/task_tamplates.js"></script>
     <script src="scripts/board.js"></script>   
-    <script src="tasks_with_ids.js"></script>
+    <script src="./scripts/tasks_API.js"></script>
 
     </body>
 </html>
