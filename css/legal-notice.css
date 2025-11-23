@@ -76,3 +76,11 @@
   margin-top: 24px;
   color: #000;
 }
+
+
+@media (max-width: 1023px)
+{
+  .legal-content {
+    margin-left: auto;
+  }
+}

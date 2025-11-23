@@ -107,6 +107,11 @@
     text-align: center;
     gap: 4px;
     height: 80px;
+    width: 70px;
+    align-items: center;
+    margin-top: 10px;
+    padding: 10px;
+    border-radius: 16px;
   }
 
   .nav-item.active {
