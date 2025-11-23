@@ -1,13 +1,19 @@
 async function loadScripts() {
+  initLayout();
+  await initBoard();
+}
+
+function initLayout() {
   includeHeaderHTML();
   includeSidebarHTML();
   initPriorityButtons();
+}
 
+async function initBoard() {
   await fetchTasks();
   renderToDoTasks();
   renderNoTasksIfEmpty();
 }
-
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll('.task-cards');
 
@@ -25,7 +31,6 @@ function renderNoTasksIfEmpty() {
   });
 }
 
-
 function renderToDoTasks() {
   const toDoContainer = document.getElementById('to-do-tasks');
   if (!toDoContainer) return;
@@ -40,7 +45,6 @@ function renderToDoTasks() {
     });
 }
 
-
 function dragstartHandler(event) {
   const taskElement = event.target;
   const taskId = taskElement.dataset.taskId;
@@ -50,12 +54,9 @@ function dragstartHandler(event) {
   event.dataTransfer.setData('text/plain', taskId);
 }
 
-
-
 function dragoverHandler(event) {
   event.preventDefault();
 }
-
 
 function dropHandler(event) {
   event.preventDefault();
@@ -73,8 +74,6 @@ function dropHandler(event) {
   }
 }
 
-
-// Avatar-Farben für zugewiesene Benutzer
 const AVATAR_COLORS = [
   'rgb(110, 82, 255)',
   'rgb(253, 112, 255)',
@@ -84,12 +83,6 @@ const AVATAR_COLORS = [
   'rgb(255, 123, 0)'
 ];
 
-
-/**
- * Erzeugt Initialen aus einem Namen.
- * @param {string} [name='']
- * @returns {string}
- */
 function getInitials(name = '') {
   return name
     .trim()
@@ -98,12 +91,6 @@ function getInitials(name = '') {
     .join('');
 }
 
-
-/**
- * Rendert die Avatare der zugewiesenen Personen.
- * @param {Array<string>|string} [assignees=[]]
- * @returns {string} HTML-String
- */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
     assignees = assignees ? [assignees] : [];
@@ -123,13 +110,6 @@ function renderAssignees(assignees = []) {
     .join('');
 }
 
-
-/**
- * Gibt eine konsistente Farbe für einen Namen zurück.
- * @param {string} [name='']
- * @param {number} [index=0]
- * @returns {string}
- */
 function getAvatarColor(name = '', index = 0) {
   if (!AVATAR_COLORS.length) return '#ff7a00';
 
@@ -152,7 +132,6 @@ function setPriorityActive(buttons, activeButton) {
   activeButton.setAttribute('aria-pressed', 'true');
   selectedPriority = activeButton.dataset.priority || 'Medium';
 }
-
 
 function initPriorityButtons() {
   const buttons = document.querySelectorAll('.priority-buttons__button');
@@ -188,4 +167,10 @@ function setInitialPriority(buttons) {
   if (defaultButton) {
     setPriorityActive(buttons, defaultButton);
   }
+}
+
+function addTaskBtn() {
+  const overlay = document.querySelector('.overlay-modal');
+  if (!overlay) return; // element not found
+  overlay.style.display = 'flex';
 }

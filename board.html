@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/board.css" />
   </head>
-  <body onload="loadScripts(); includeHeaderHTML(); includeSidebarHTML()">
+  <body onload="loadScripts();">
     <nav header-html="./templates/header.html"></nav>
     <aside sidebar-html="./templates/sidebar.html"></aside>
 
@@ -19,7 +19,7 @@
         <h2>Board</h2>
         <div class="serch-add-task-button">
           <input type="text" placeholder="Find Task" />
-          <button>Add task +</button>
+          <button onclick="addTaskBtn()">Add task +</button>
         </div>
       </div>
 
@@ -31,13 +31,11 @@
           ondragover="dragoverHandler(event)">
           <div class="task-header">
             <span>To Do</span>
-            <img src="./img/icons/plus button.svg" alt="" />
+            <img onclick="addTaskBtn()"src="./img/icons/plus button.svg" alt="" />
           </div>
           <div
             class="task-cards"
-            id="to-do-tasks"
-            draggable="true"
-            ondragstart="dragstartHandler(event)"></div>
+            id="to-do-tasks"></div>
         </div>
 
         <div
@@ -47,13 +45,12 @@
           ondragover="dragoverHandler(event)">
           <div class="task-header">
             <span>In progress</span>
-            <img src="./img/icons/plus button.svg" alt="" />
+            <img onclick="addTaskBtn()"src="./img/icons/plus button.svg" alt="" />
           </div>
           <div
             class="task-cards"
-            id="in-progress-tasks"
-            draggable="true"
-            ondragstart="dragstartHandler(event)"></div>
+            id="in-progress-tasks">
+          </div>
         </div>
 
         <div
@@ -63,13 +60,12 @@
           ondragover="dragoverHandler(event)">
           <div class="task-header">
             <span>Await feedback</span>
-            <img src="./img/icons/plus button.svg" alt="" />
+            <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="" />
           </div>
           <div
             class="task-cards"
-            id="await-feedback-tasks"
-            draggable="true"
-            ondragstart="dragstartHandler(event)"></div>
+            id="await-feedback-tasks">
+          </div>
         </div>
 
         <div
@@ -82,18 +78,20 @@
           </div>
           <div
             class="task-cards"
-            id="done-tasks"
-            draggable="true"
-            ondragstart="dragstartHandler(event)"></div>
+            id="done-tasks">
+          </div>
         </div>
       </div>
     </main>
 
 
-    <overlay-modal>
+    <overlay-modal class="overlay-modal">
         <div class="modal-content">
-
+          <div class="overlay-header">
              <h1>Add Task</h1>
+             <span onclick="closeTaskBtn()">X</span>
+          </div>
+            
 
       <form class="task-form" id="taskForm" novalidate>
         <div class="task-form__layout">

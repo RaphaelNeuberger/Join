@@ -20,8 +20,8 @@
   flex-wrap: nowrap;
   padding-bottom: 16px;
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
+  flex-wrap: wrap;
 }
 .serch-add-task-button {
   display: flex;
@@ -176,7 +176,21 @@ overlay-modal {
   justify-content: center;
   z-index: 1000;
 }
+.overlay-header {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  align-items: flex-start;
 
+}
+.overlay-header span {
+  cursor: pointer;
+  padding: 0.5rem 0.8rem;
+  border-radius: 50%;
+}
+.overlay-header span:hover {
+  background-color: #f3f4f6;
+}
 .modal-content {
   background-color: #ffffff;
   padding: 24px;
@@ -322,12 +336,26 @@ overlay-modal {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
+  width: 40%;
 }
 
 .form-actions__Button {
+  padding: 8px 16px;
   display: flex;
   justify-content: space-between;
   border-radius: 10px;
+}
+.form-actions__button--clear{
+  background-color:  white;
+  color:  #2a3647;
+  border-style: solid ;
+  padding: 6px 2px;
+  font-size: 21px;
+  font-weight: 700;
+  border-radius: 8px;
+}
+.button-action svg {
+  margin-left: 0.8rem;
 }
 
 .form-actions__button--submit{

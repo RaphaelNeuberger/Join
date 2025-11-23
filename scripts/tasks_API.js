@@ -60,12 +60,12 @@ function enrichTask(task) {
     status: task.status || 'todo'
   };
 }
-
+function closeTaskBtn(){
+  document.querySelector('.overlay-modal').style.display = 'none';
+}
 
 
 function generateId() {
   return String(Date.now() + Math.random());
 }
 
-
-document.addEventListener('DOMContentLoaded', fetchTasks);
