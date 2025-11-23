@@ -1,11 +1,13 @@
-function loadScripts() {
+async function loadScripts() {
   includeHeaderHTML();
   includeSidebarHTML();
-  renderToDoTasks();      
-  renderNoTasksIfEmpty(); 
   initPriorityButtons();
 
+  await fetchTasks();
+  renderToDoTasks();
+  renderNoTasksIfEmpty();
 }
+
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll('.task-cards');
 
@@ -15,7 +17,9 @@ function renderNoTasksIfEmpty() {
 
     if (hasTask && placeholder) {
       placeholder.remove();
-    } if (!hasTask && !placeholder) {
+    }
+
+    if (!hasTask && !placeholder) {
       board.innerHTML = noTaskTemplate();
     }
   });
@@ -24,34 +28,39 @@ function renderNoTasksIfEmpty() {
 
 function renderToDoTasks() {
   const toDoContainer = document.getElementById('to-do-tasks');
-  toDoContainer.innerHTML = '';
+  if (!toDoContainer) return;
 
-  tasks.forEach((task) => {
-    toDoContainer.innerHTML += taskTemplate(task);
-  });
+  toDoContainer.innerHTML = '';
+  if (!Array.isArray(tasks) || !tasks.length) return;
+
+  tasks
+    .filter((task) => task.status === 'todo')
+    .forEach((task) => {
+      toDoContainer.innerHTML += taskTemplate(task);
+    });
 }
-/**
- * Speichert die Task-ID beim Start des Drag-Vorgangs.
- * @param {DragEvent} event
- */
+
+
 function dragstartHandler(event) {
   const taskElement = event.target;
   const taskId = taskElement.dataset.taskId;
+
+  if (!event.dataTransfer || !taskId) return;
+
   event.dataTransfer.setData('text/plain', taskId);
 }
-/**
- * Erlaubt das Droppen auf einer Spalte.
- * @param {DragEvent} event
- */
+
+
+
 function dragoverHandler(event) {
   event.preventDefault();
 }
-/**
- * 
- * @param {DragEvent} event
- */
+
+
 function dropHandler(event) {
   event.preventDefault();
+
+  if (!event.dataTransfer) return;
 
   const taskId = event.dataTransfer.getData('text/plain');
   const column = event.currentTarget;
@@ -64,6 +73,8 @@ function dropHandler(event) {
   }
 }
 
+
+// Avatar-Farben für zugewiesene Benutzer
 const AVATAR_COLORS = [
   'rgb(110, 82, 255)',
   'rgb(253, 112, 255)',
@@ -74,6 +85,11 @@ const AVATAR_COLORS = [
 ];
 
 
+/**
+ * Erzeugt Initialen aus einem Namen.
+ * @param {string} [name='']
+ * @returns {string}
+ */
 function getInitials(name = '') {
   return name
     .trim()
@@ -83,26 +99,46 @@ function getInitials(name = '') {
 }
 
 
+/**
+ * Rendert die Avatare der zugewiesenen Personen.
+ * @param {Array<string>|string} [assignees=[]]
+ * @returns {string} HTML-String
+ */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
     assignees = assignees ? [assignees] : [];
   }
+
   return assignees
     .map((name, index) => {
       const color = getAvatarColor(name, index);
-      return `<span class="assigned-avatar" style="background-color: ${color};">${getInitials(name)}</span>`;
+      const initials = getInitials(name);
+
+      return `
+        <span class="assigned-avatar" style="background-color: ${color};">
+          ${initials}
+        </span>
+      `;
     })
     .join('');
 }
 
+
+/**
+ * Gibt eine konsistente Farbe für einen Namen zurück.
+ * @param {string} [name='']
+ * @param {number} [index=0]
+ * @returns {string}
+ */
 function getAvatarColor(name = '', index = 0) {
   if (!AVATAR_COLORS.length) return '#ff7a00';
+
   const hash = name
     .split('')
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
   return AVATAR_COLORS[(hash + index) % AVATAR_COLORS.length];
 }
-
 
 let selectedPriority = 'Medium';
 
@@ -117,12 +153,16 @@ function setPriorityActive(buttons, activeButton) {
   selectedPriority = activeButton.dataset.priority || 'Medium';
 }
 
+
 function initPriorityButtons() {
   const buttons = document.querySelectorAll('.priority-buttons__button');
-  if (!buttons.length) {
-    return;
-  }
+  if (!buttons.length) return;
 
+  setupPriorityButtonInteractions(buttons);
+  setInitialPriority(buttons);
+}
+
+function setupPriorityButtonInteractions(buttons) {
   buttons.forEach((button) => {
     button.setAttribute('role', 'button');
     button.setAttribute('tabindex', '0');
@@ -138,7 +178,9 @@ function initPriorityButtons() {
       }
     });
   });
+}
 
+function setInitialPriority(buttons) {
   const defaultButton = document.querySelector(
     '.priority-buttons__button.priority-buttons__button--active'
   );

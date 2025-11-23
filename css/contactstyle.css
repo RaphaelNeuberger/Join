@@ -301,6 +301,7 @@ body {
     display: none;
   }
   .main-contact {
+    padding: 0px;
     height: auto;
     margin-left: 0;
   }
