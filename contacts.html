@@ -24,7 +24,9 @@
     <!-- contact section -->
     <div class="main-contact">
       <div class="all-contacts">
-        <button class="add-contact-button dark-button">
+        <button
+          class="add-contact-button dark-button"
+          onclick="openAddContactDialog()">
           Add new contact<img
             class="add-icon"
             src="img/buttons/person_add.svg"
@@ -34,7 +36,7 @@
         <div class="contact-list" id="contact-list">
           <!-- Kontakte werden dynamisch aus Firebase geladen -->
         </div>
-        <div class="add-person-mobile">
+        <div class="add-person-mobile" onclick="openAddContactDialog()">
           <img src="img/icons/person_add.svg" alt="Add Person" />
         </div>
       </div>
@@ -45,21 +47,21 @@
           <span class="slogan">Better with a team</span>
         </div>
         <div class="user-infos">
-          <span class="name-logo-large">AB</span>
+          <span class="name-logo-large" id="contactLogoLarge">AB</span>
           <div class="user-details-large">
-            <span class="name-large">Tatjana Wolf</span>
+            <span class="name-large" id="contactNameLarge">Tatjana Wolf</span>
             <div class="edit-area">
-              <span
-                ><img
+              <span onclick="openEditContactDialog()" class="edit-button">
+                <img
                   class="edit-elements"
                   src="./img/icons/edit.svg"
                   alt="edit" />Edit</span
               >
-              <span
-                ><img
+              <span onclick="deleteCurrentContact()" class="edit-button">
+                <img
                   class="edit-elements"
                   src="./img/icons/delete.svg"
-                  alt="edit" />Delete</span
+                  alt="delete" />Delete</span
               >
             </div>
           </div>
@@ -75,7 +77,125 @@
       </div>
     </div>
 
-    <div class="edit-overay">
+    <!-- Add Contact Dialog -->
+    <div class="add-contact-dialog" id="addContactDialog">
+      <div class="dialog-overlay" onclick="closeAddContactDialog()"></div>
+      <div class="dialog-content">
+        <button class="dialog-close" onclick="closeAddContactDialog()">
+          ✕
+        </button>
+        <div class="dialog-left">
+          <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
+          <h2>Add contact</h2>
+          <p class="dialog-subtitle">Tasks are better with a team!</p>
+          <div class="dialog-underline"></div>
+        </div>
+        <div class="dialog-right">
+          <div class="dialog-avatar">
+            <img src="./img/icons/person_add.svg" alt="Person Icon" />
+          </div>
+          <form class="dialog-form" id="addContactForm">
+            <div class="input-group">
+              <input
+                type="text"
+                id="newContactName"
+                placeholder="Name"
+                required />
+              <img src="./img/icons/person.svg" alt="Name" class="input-icon" />
+            </div>
+            <div class="input-group">
+              <input
+                type="email"
+                id="newContactEmail"
+                placeholder="Email"
+                required />
+              <img src="./img/icons/mail.svg" alt="Email" class="input-icon" />
+            </div>
+            <div class="input-group">
+              <input
+                type="tel"
+                id="newContactPhone"
+                placeholder="Phone"
+                pattern="[\+]?[0-9\s\-\(\)]+"
+                title="Bitte geben Sie eine gültige Telefonnummer ein (Zahlen, +, -, Leerzeichen, Klammern erlaubt)"
+                required />
+              <img src="./img/icons/call.svg" alt="Phone" class="input-icon" />
+            </div>
+            <div class="dialog-buttons">
+              <button
+                type="button"
+                class="btn-cancel"
+                onclick="closeAddContactDialog()">
+                Cancel ✕
+              </button>
+              <button type="submit" class="btn-create">
+                Create contact <span class="check-icon">✓</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Edit Contact Dialog -->
+    <div class="edit-contact-dialog" id="editContactDialog">
+      <div class="dialog-overlay" onclick="closeEditContactDialog()"></div>
+      <div class="dialog-content">
+        <button class="dialog-close" onclick="closeEditContactDialog()">
+          ✕
+        </button>
+        <div class="dialog-left">
+          <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
+          <h2>Edit contact</h2>
+          <div class="dialog-underline"></div>
+        </div>
+        <div class="dialog-right">
+          <div class="dialog-avatar" id="editContactAvatar">AM</div>
+          <form class="dialog-form" id="editContactForm">
+            <div class="input-group">
+              <input
+                type="text"
+                id="editContactName"
+                placeholder="Name"
+                required />
+              <img src="./img/icons/person.svg" alt="Name" class="input-icon" />
+            </div>
+            <div class="input-group">
+              <input
+                type="email"
+                id="editContactEmail"
+                placeholder="Email"
+                required />
+              <img src="./img/icons/mail.svg" alt="Email" class="input-icon" />
+            </div>
+            <div class="input-group">
+              <input
+                type="tel"
+                id="editContactPhone"
+                placeholder="Phone"
+                pattern="[\+]?[0-9\s\-\(\)]+"
+                title="Bitte geben Sie eine gültige Telefonnummer ein (Zahlen, +, -, Leerzeichen, Klammern erlaubt)"
+                required />
+              <img src="./img/icons/call.svg" alt="Phone" class="input-icon" />
+            </div>
+            <div class="dialog-buttons">
+              <button
+                type="button"
+                class="btn-delete"
+                onclick="deleteContactFromDialog()">
+                Delete
+              </button>
+              <button type="submit" class="btn-save">
+                Save <span class="check-icon">✓</span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Old Edit Contact Dialog (can be removed) -->
+    <div class="edit-overay" style="display: none">
       <div class="left-section">
         <img src="./img/logo/join_logo_white.svg" alt="" />
         <p>Edit contact</p>

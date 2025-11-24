@@ -1,6 +1,8 @@
 // scripts/contacts.js
 // Lädt Kontakte aus Firebase Realtime Database und rendert sie in .contact-list
 (function () {
+  let currentContact = null; // Speichert den aktuell ausgewählten Kontakt
+
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
       // firebase-init.js noch nicht geladen -> nochmal in 100ms versuchen
@@ -57,6 +59,7 @@
   let lastSelectedItem = null;
 
   function selectContact(contact, itemEl) {
+    currentContact = contact; // Speichere den aktuellen Kontakt
     try {
       const logoEl = document.querySelector(".name-logo-large");
       const nameEl = document.querySelector(".name-large");
@@ -82,6 +85,11 @@
       console.warn("selectContact error", e);
     }
   }
+
+  // Mache currentContact global verfügbar
+  window.getCurrentContact = function () {
+    return currentContact;
+  };
 
   function render(contacts) {
     const container =
@@ -146,3 +154,196 @@
 
   document.addEventListener("DOMContentLoaded", init);
 })();
+
+// Dialog functions
+function openAddContactDialog() {
+  const dialog = document.getElementById("addContactDialog");
+  if (dialog) {
+    dialog.classList.add("active");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeAddContactDialog() {
+  const dialog = document.getElementById("addContactDialog");
+  if (dialog) {
+    dialog.classList.remove("active");
+    document.body.style.overflow = "";
+    // Form zurücksetzen
+    const form = document.getElementById("addContactForm");
+    if (form) form.reset();
+  }
+}
+
+// Form submit handler
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("addContactForm");
+  if (form) {
+    form.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const name = document.getElementById("newContactName").value.trim();
+      const email = document.getElementById("newContactEmail").value.trim();
+      const phone = document.getElementById("newContactPhone").value.trim();
+
+      if (!name || !email || !phone) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+      }
+
+      try {
+        // Neuen Kontakt zu Firebase hinzufügen
+        await window.push(window.ref(window.firebaseDb, "contacts"), {
+          name,
+          email,
+          phone,
+        });
+
+        // Dialog schließen
+        closeAddContactDialog();
+
+        // Erfolgsmeldung (optional)
+        console.log("Kontakt erfolgreich hinzugefügt!");
+      } catch (error) {
+        console.error("Fehler beim Hinzufügen des Kontakts:", error);
+        alert(
+          "Fehler beim Hinzufügen des Kontakts. Bitte versuchen Sie es erneut."
+        );
+      }
+    });
+  }
+
+  // Edit Contact Form Handler
+  const editForm = document.getElementById("editContactForm");
+  if (editForm) {
+    editForm.addEventListener("submit", async function (e) {
+      e.preventDefault();
+
+      const contact = window.getCurrentContact();
+      if (!contact || !contact.id) {
+        alert("Kein Kontakt ausgewählt!");
+        return;
+      }
+
+      const name = document.getElementById("editContactName").value.trim();
+      const email = document.getElementById("editContactEmail").value.trim();
+      const phone = document.getElementById("editContactPhone").value.trim();
+
+      if (!name || !email || !phone) {
+        alert("Bitte alle Felder ausfüllen!");
+        return;
+      }
+
+      try {
+        // Warte bis Firebase bereit ist
+        if (!window.set || !window.ref || !window.firebaseDb) {
+          alert(
+            "Firebase ist noch nicht bereit. Bitte versuchen Sie es erneut."
+          );
+          return;
+        }
+
+        // Kontakt in Firebase aktualisieren
+        const contactRef = window.ref(
+          window.firebaseDb,
+          `contacts/${contact.id}`
+        );
+
+        await window.set(contactRef, {
+          name: name,
+          email: email,
+          phone: phone,
+        });
+
+        console.log("Kontakt erfolgreich aktualisiert!");
+
+        // Dialog schließen
+        closeEditContactDialog();
+      } catch (error) {
+        console.error("Fehler beim Aktualisieren des Kontakts:", error);
+        console.error("Error details:", error.code, error.message);
+        alert(
+          "Fehler beim Aktualisieren des Kontakts: " +
+            (error.message || "Unbekannter Fehler")
+        );
+      }
+    });
+  }
+});
+
+// Edit Contact Dialog Functions
+function openEditContactDialog() {
+  const contact = window.getCurrentContact();
+  if (!contact) {
+    alert("Bitte wählen Sie zuerst einen Kontakt aus!");
+    return;
+  }
+
+  const dialog = document.getElementById("editContactDialog");
+  if (!dialog) return;
+
+  // Formularfelder mit aktuellen Daten füllen
+  document.getElementById("editContactName").value = contact.name || "";
+  document.getElementById("editContactEmail").value = contact.email || "";
+  document.getElementById("editContactPhone").value = contact.phone || "";
+
+  // Avatar-Initialen setzen
+  const avatar = document.getElementById("editContactAvatar");
+  if (avatar) {
+    const initials = (contact.name || "")
+      .split(" ")
+      .map((s) => s.charAt(0))
+      .filter(Boolean)
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+    avatar.textContent = initials;
+  }
+
+  dialog.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeEditContactDialog() {
+  const dialog = document.getElementById("editContactDialog");
+  if (dialog) {
+    dialog.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+}
+
+function deleteContactFromDialog() {
+  deleteCurrentContact();
+  closeEditContactDialog();
+}
+
+async function deleteCurrentContact() {
+  const contact = window.getCurrentContact();
+  if (!contact || !contact.id) {
+    alert("Kein Kontakt ausgewählt!");
+    return;
+  }
+
+  if (!confirm(`Möchten Sie ${contact.name} wirklich löschen?`)) {
+    return;
+  }
+
+  try {
+    // Warte bis Firebase bereit ist
+    if (!window.remove || !window.ref || !window.firebaseDb) {
+      alert("Firebase ist noch nicht bereit. Bitte versuchen Sie es erneut.");
+      return;
+    }
+
+    const contactRef = window.ref(window.firebaseDb, `contacts/${contact.id}`);
+    await window.remove(contactRef);
+    console.log("Kontakt erfolgreich gelöscht!");
+  } catch (error) {
+    console.error("Fehler beim Löschen des Kontakts:", error);
+    console.error("Error details:", error.code, error.message);
+    alert(
+      "Fehler beim Löschen des Kontakts: " +
+        (error.message || "Unbekannter Fehler")
+    );
+  }
+}

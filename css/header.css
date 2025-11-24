@@ -94,6 +94,14 @@ header {
 }
 
 @media (max-width: 1023px) {
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
   .header-content {
     margin-left: 0px;
     display: flex;
