@@ -5,12 +5,14 @@ body {
 }
 
 .main-contact {
-  height: calc(100vh - 120px);
-  padding: 0.5rem;
-  margin-left: 240px;
+  margin-left: 240px; /* Platz für Sidebar */
+  padding: 96px 84px 32px;
+  background: #f6f7fb;
+  min-height: 100vh;
   max-width: 1680px;
   box-sizing: border-box;
   display: flex;
+  background-color: var(--panel, #ffffff);
 }
 
 .all-contacts {
