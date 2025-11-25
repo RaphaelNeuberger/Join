@@ -103,7 +103,7 @@ async function login() {  // Unverändert
     }));
 
     setTimeout(() => {
-      window.location.href = "board.html";
+      window.location.href = "summary.html";
     }, 1500);
   } catch (error) {
     let errorMessage = "❌ Falsche E-Mail oder Passwort.";
@@ -139,7 +139,7 @@ async function guestLogin() {  // Unverändert
     }));
 
     setTimeout(() => {
-      window.location.href = "board.html";
+      window.location.href = "summary.html";
     }, 1500);
   } catch (error) {
     showNotification("❌ Fehler beim Gast-Login.", "error");
