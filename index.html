@@ -125,39 +125,52 @@
     const signupBtns = document.querySelectorAll(".signup-btn");
     const backArrow = document.getElementById("back-to-login");
 
-    function toggleForms() {
-      const isLoginVisible = loginForm.classList.contains("active");
+   function toggleForms() {
+  const isLoginVisible = loginForm.classList.contains("active");
 
-      if (isLoginVisible) {
-        loginForm.classList.remove("active");
-        loginForm.classList.add("hidden");
-        signupForm.classList.remove("hidden");
-        signupForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Already have an account?"));
-        signupBtns.forEach((el) => (el.textContent = "Log in"));
-      } else {
-        signupForm.classList.remove("active");
-        signupForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-        signupBtns.forEach((el) => (el.textContent = "Sign up"));
-      }
-    }
+  if (isLoginVisible) {
+    // → Wechsel zu SIGN UP
+    loginForm.classList.remove("active");
+    loginForm.classList.add("hidden");
+
+    signupForm.classList.remove("hidden");
+    signupForm.classList.add("active");
+
+    // Signup-Boxen komplett ausblenden
+    signupTexts.forEach((el) => (el.style.display = "none"));
+    signupBtns.forEach((el) => (el.style.display = "none"));
+
+  } else {
+    // → Wechsel zu LOGIN
+    signupForm.classList.remove("active");
+    signupForm.classList.add("hidden");
+
+    loginForm.classList.remove("hidden");
+    loginForm.classList.add("active");
+
+    // Signup-Boxen wieder einblenden
+    signupTexts.forEach((el) => (el.style.display = "inline"));
+    signupBtns.forEach((el) => (el.style.display = "inline"));
+  }
+}
 
     if (toggleForm) toggleForm.addEventListener("click", toggleForms);
     if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
 
-    if (backArrow) {
-      backArrow.addEventListener("click", () => {
-        signupForm.classList.remove("active");
-        signupForm.classList.add("hidden");
-        loginForm.classList.remove("hidden");
-        loginForm.classList.add("active");
-        signupTexts.forEach((el) => (el.textContent = "Not a Join user?"));
-        signupBtns.forEach((el) => (el.textContent = "Sign up"));
-      });
-    }
+   if (backArrow) {
+  backArrow.addEventListener("click", () => {
+    signupForm.classList.remove("active");
+    signupForm.classList.add("hidden");
+
+    loginForm.classList.remove("hidden");
+    loginForm.classList.add("active");
+
+    // Einblenden der Texte/Buttons
+    signupTexts.forEach((el) => (el.style.display = "inline"));
+    signupBtns.forEach((el) => (el.style.display = "inline"));
+  });
+}
+
 
     // === STARTANIMATION RESPONSIVE ===
     window.addEventListener("load", () => {
