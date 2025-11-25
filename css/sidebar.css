@@ -29,7 +29,7 @@
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding-bottom: 360px;
+  padding-bottom: 240px;
 }
 
 .nav-item {
@@ -39,7 +39,7 @@
   gap: 12px;
   color: #ffff;
   padding: 10px 12px;
-  padding-left: 36px;
+  padding-left: 55px;
 }
 
 .nav-item .material-icons {
@@ -69,7 +69,7 @@
   gap: 12px;
   padding: 8px;
   align-items: flex-start;
-  padding-left: 36px;
+  padding-left: 55px;
   padding-bottom: 48px;
 }
 
@@ -106,12 +106,15 @@
     flex-direction: column;
     text-align: center;
     gap: 4px;
-    height: 80px;
+    height: 70px;
     width: 70px;
     align-items: center;
     margin-top: 10px;
-    padding: 10px;
+    padding: 6px 4px;
     border-radius: 16px;
+    margin-top: 4px;
+    display: flex;
+    justify-content: center; 
   }
 
   .nav-item.active {
@@ -146,12 +149,22 @@
     margin-left: 0;
     margin-bottom: 90px;
   }
+
+  .nav-item.active,
+  .nav-item:hover {
+    height: 59px;
+    /* gleiche Höhe, kein Überlauf */
+    padding: 6px 4px;
+  }
+  
+
 }
 
 /* Standard: sicherheitshalber Gast-Ansicht */
 .nav-auth {
   display: none;
 }
+
 .nav-guest {
   display: flex;
   flex-direction: column;
@@ -162,6 +175,7 @@ body.logged-in .nav-auth {
   display: flex;
   flex-direction: column;
 }
+
 body.logged-in .nav-guest {
   display: none;
 }
@@ -170,7 +184,35 @@ body.logged-in .nav-guest {
 body.logged-out .nav-auth {
   display: none;
 }
+
 body.logged-out .nav-guest {
   display: flex;
   flex-direction: column;
+}
+
+
+@media (max-width: 500px) {
+  .sidebar {
+    height: 72px;
+  }
+
+  .nav-item {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  .nav-item .material-icons {
+    font-size: 18px;
+  }
+
+  /* Wenn du einzelne Labels zeigen willst, kannst du sie hier wieder sichtbar machen, mit kleiner Schrift:
+  .nav-item .nav-label {
+    display: block;
+    font-size: 10px;
+    margin-top: 2px;
+  }
+  */
 }
