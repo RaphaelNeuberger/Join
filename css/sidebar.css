@@ -196,6 +196,12 @@ body.logged-out .nav-guest {
     height: 72px;
   }
 
+  .nav-item.active,
+  .nav-item:hover {
+    height: 47px;
+    /* gleiche Höhe, kein Überlauf */
+    padding: 6px 4px;
+  }
   .nav-item {
     width: 52px;
     height: 52px;
@@ -204,15 +210,99 @@ body.logged-out .nav-guest {
     padding: 4px;
   }
 
-  .nav-item .material-icons {
-    font-size: 18px;
-  }
-
-  /* Wenn du einzelne Labels zeigen willst, kannst du sie hier wieder sichtbar machen, mit kleiner Schrift:
-  .nav-item .nav-label {
-    display: block;
+  .nav-item span {
     font-size: 10px;
     margin-top: 2px;
   }
-  */
+
+  .nav-item .nav-icon {
+    height: 18px;
+    width: auto;
+  }
+
+  .nav-item.active {
+    width: 52px;
+    height: 52px;
+  }
+
+  .sidebar-nav {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 375px) {
+  .sidebar {
+    height: 64px;
+  }
+
+  .nav-item {
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 2px;
+  }
+
+  .nav-item.active,
+  .nav-item:hover {
+    height: 40px;
+    /* gleiche Höhe, kein Überlauf */
+    padding: 4px 2px;
+  }
+
+  .nav-item span {
+    font-size: 9px;
+    margin-top: 1px;
+  }
+
+  .nav-item .nav-icon {
+    height: 16px;
+    width: auto;
+  }
+
+  .nav-item.active {
+    width: 48px;
+    height: 48px;
+  }
+
+  .sidebar-nav {
+    gap: 6px;
+  }
+}
+
+@media (max-width: 320px) {
+  .sidebar {
+    height: 56px;
+  }
+
+  .nav-item {
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 6px;
+    padding: 2px;
+    gap: 2px;
+  }
+
+  .nav-item span {
+    font-size: 8px;
+    margin-top: 0;
+  }
+
+  .nav-item .nav-icon {
+    height: 14px;
+    width: auto;
+  }
+
+  .nav-item.active {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sidebar-nav {
+    gap: 4px;
+    justify-content: space-between;
+    padding: 0 8px;
+  }
 }

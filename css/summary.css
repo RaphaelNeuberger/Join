@@ -321,9 +321,6 @@ main.addtask-wrap {
     height: 2px;
   }
 
-  .nav-item {
-    padding-left: 0px;
-  }
 }
 
 @media (max-width: 900px) {
