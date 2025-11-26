@@ -1,115 +1,170 @@
+
 let tasks = [];
 
-const TASKS_URL =
-  'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app/tasks.json';
+
+const TASKS_BASE_URL =
+  'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app/tasks';
+
+
+function normalizeTaskStatus(status = '') {
+  const value = String(status).trim().toLowerCase();
+
+  if (!value) {
+    return 'todo';
+  }
+
+  if (value === 'inprogress' || value === 'in-progress' || value === 'in_progress') {
+    return 'inprogress';
+  }
+
+  if (value === 'awaitfeedback' || value === 'await-feedback' || value === 'await_feedback') {
+    return 'await_feedback';
+  }
+
+  if (value === 'done') {
+    return 'done';
+  }
+
+  if (value === 'todo') {
+    return 'todo';
+  }
+
+  return value;
+}
+
 
 async function fetchTasks() {
   try {
-    const data = await requestTasksFromFirebase();
+    const response = await fetch(`${TASKS_BASE_URL}.json`, {
+      cache: 'no-store'
+    });
+
+    if (!response.ok) {
+      tasks = [];
+      return tasks;
+    }
+
+    const data = await response.json();
     tasks = normalizeTasks(data);
     return tasks;
-  } catch {
+  } catch (_error) {
     tasks = [];
     return tasks;
   }
 }
 
-async function requestTasksFromFirebase() {
-  const response = await fetch(TASKS_URL, { cache: 'no-store' });
 
-  if (!response.ok) {
-    throw new Error('Fetch failed');
-  }
-
-  return response.json();
-}
-
-/**
- * Normalisiert verschiedene Firebase-Strukturen zu einem Array.
- */
 function normalizeTasks(raw) {
-  if (!raw) return [];
+  if (!raw) {
+    return [];
+  }
 
   if (Array.isArray(raw)) {
-    return raw.filter(Boolean).map(enrichTask);
+    return raw
+      .filter(Boolean)
+      .map((value) => enrichTask(value));
   }
 
-  return Object.entries(raw).map(([key, value]) => {
-    return enrichTask({ ...value, id: value.id || key });
-  });
+  return Object.entries(raw).map(([firebaseId, value]) =>
+    enrichTask({ ...value, firebaseId })
+  );
 }
 
-/**
- * Ergänzt fehlende Felder mit Defaults.
- */
 function enrichTask(task) {
+  const idFromTask = task.id || task.firebaseId;
+  const id = idFromTask || generateId();
+
+  const assigned = Array.isArray(task.assignedTo)
+    ? task.assignedTo
+    : task.assignedTo
+    ? [task.assignedTo]
+    : [];
+
+  const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
+
+  const status = normalizeTaskStatus(task.status || 'todo');
+
   return {
-    id: task.id || generateId(),
+    id,
+    firebaseId: task.firebaseId || id,
     title: task.title || '',
     description: task.description || '',
     dueDate: task.dueDate || '',
     priority: task.priority || 'Medium',
     category: task.category || 'User Story',
-    assignedTo: Array.isArray(task.assignedTo)
-      ? task.assignedTo
-      : task.assignedTo
-      ? [task.assignedTo]
-      : [],
-    subtasks: Array.isArray(task.subtasks) ? task.subtasks : [],
-    status: task.status || 'todo'
+    assignedTo: assigned,
+    subtasks,
+    status
   };
 }
 
-/**
- * Wandelt das Task-Array in ein Objekt { id: task } für Firebase.
- */
-function mapTasksToObject(taskList) {
-  return taskList.reduce((acc, task) => {
-    acc[task.id] = task;
-    return acc;
-  }, {});
-}
+async function addTask(taskData) {
+  const cleanTask = enrichTask({
+    ...taskData,
+    id: undefined,
+    firebaseId: undefined
+  });
 
-/**
- * Speichert alle Tasks gesammelt in Firebase (ohne LocalStorage).
- */
-async function saveTasks() {
-  const payload = mapTasksToObject(tasks);
+  const { firebaseId: _ignore, ...payload } = cleanTask;
 
-  await fetch(TASKS_URL, {
-    method: 'PUT',
+  const response = await fetch(`${TASKS_BASE_URL}.json`, {
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   });
+
+  if (!response.ok) {
+    throw new Error('addTask: Firebase-Request fehlgeschlagen');
+  }
+
+  const result = await response.json();
+  const firebaseId = result && result.name ? result.name : cleanTask.id;
+
+  const newTask = enrichTask({
+    ...payload,
+    firebaseId
+  });
+
+  tasks.push(newTask);
+  return newTask;
 }
 
-/**
- * Aktualisiert NUR den Status eines Tasks im Array + in Firebase.
- */
+
 async function updateTaskStatus(taskId, newStatus) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (index === -1) return;
+  if (index === -1) {
+    return;
+  }
+
+  const task = tasks[index];
+  const firebaseId = task.firebaseId || task.id;
+
+  const normalizedStatus = normalizeTaskStatus(newStatus);
+
+  if (!firebaseId) {
+    tasks[index] = {
+      ...task,
+      status: normalizedStatus
+    };
+    return;
+  }
+
+  const response = await fetch(`${TASKS_BASE_URL}/${firebaseId}.json`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status: normalizedStatus })
+  });
+
+  if (!response.ok) {
+    throw new Error('updateTaskStatus: Firebase-Request fehlgeschlagen');
+  }
 
   tasks[index] = {
-    ...tasks[index],
-    status: newStatus
+    ...task,
+    status: normalizedStatus
   };
-
-  await saveTasks();
 }
 
-/**
- * Schließt das Add-Task-Overlay.
- */
-function closeTaskBtn() {
-  const overlay = document.querySelector('.overlay-modal');
-  if (!overlay) return;
-  overlay.style.display = 'none';
-}
-
-/**
- * Erzeugt eine eindeutige ID.
- */
 function generateId() {
   return String(Date.now() + Math.random());
 }
