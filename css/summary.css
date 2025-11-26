@@ -9,7 +9,7 @@ main.addtask-wrap {
 
 /* title row */
 .summary-head {
-  margin: 8px 0 48px;
+  margin: 0px 0 48px;
   display: flex;
   align-items: center;
   gap: 24px;
