@@ -7,6 +7,57 @@ function noTaskTemplate() {
   );
 }
 
+const AVATAR_COLORS = [
+  'rgb(110, 82, 255)',
+  'rgb(253, 112, 255)',
+  'rgb(70, 47, 138)',
+  'rgb(255, 188, 43)',
+  'rgb(30, 214, 193)',
+  'rgb(255, 123, 0)'
+];
+
+function getInitials(name = '') {
+  return name
+    .trim()
+    .split(/\s+/)
+    .map((part) => (part[0] || '').toUpperCase())
+    .join('');
+}
+
+function getAvatarColor(name = '', index = 0) {
+  if (!AVATAR_COLORS.length) {
+    return '#ff7a00';
+  }
+
+  const hash = name
+    .split('')
+    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+  const colorIndex = (hash + index) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[colorIndex];
+}
+
+function renderAssignees(assignees = []) {
+  if (!Array.isArray(assignees)) {
+    assignees = assignees ? [assignees] : [];
+  }
+
+  return assignees
+    .map((name, index) => {
+      const color = getAvatarColor(name, index);
+      const initials = getInitials(name);
+
+      return (
+        '<span class="assigned-avatar" style="background-color: ' +
+        color +
+        ';">' +
+        initials +
+        '</span>'
+      );
+    })
+    .join('');
+}
+
 
 function taskTemplate(task) {
   return (
