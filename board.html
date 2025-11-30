@@ -341,7 +341,6 @@
         </div>
       </form>
 
-      <!-- Success Message -->
       <div class="success-message" id="successMessage">
         <svg width="20" height="20" viewBox="0 0 20 20">
           <circle cx="10" cy="10" r="9" fill="#4CAF50" />
@@ -361,7 +360,7 @@
         
     </overlay-modal>
 
-    <!-- overlay task card -->  
+
     <overlay-task-card class="overlay-task-card">
       <div class="task-card-content" id="taskCardContent">
         <div class="task-card-header">
@@ -374,24 +373,80 @@
 
         <div class="task-card-body">
           <p class="task-card-story">Build start page with recipe recommendation.</p>
-          <span>
-            <p><strong>Due Date:</strong> 20.09.2023</p>
-            <p><strong>Priority:</strong> Medium</p>
-            <p><strong>Assigned to:</strong> John Doe</p>
-            <p><strong>Subtasks:</strong></p>
-            <ul>
-              <li>Design homepage layout</li>
-              <li>Implement recipe recommendation algorithm</li>
-              <li>Test responsiveness on mobile devices</li>
+          <table>
+            <tr>
+              <td>Due date:</td>
+              <td>10/05/2023</td>
+            </tr>
+            <tr>
+              <td>Priority:</td>
+              <td>Medium</td>
+            </tr>
+
+          </table>
+
+          <!-- ASSIGNED TO -->
+          <div class="overlay-task-card-section">
+            <p class="overlay-task-card-label-big">Assigned To:</p>
+
+            <div class="assigned-list-detail">
+              <div class="assigned-item">
+                <div class="assigned-avatar-detail assigned-avatar--mint">EM</div>
+                <span class="assigned-name">Emmanuel Mauer</span>
+              </div>
+
+              <div class="assigned-item">
+                <div class="assigned-avatar-detail assigned-avatar--purple">MB</div>
+                <!-- unterstrichen wie ein Link -->
+                <a href="#" class="assigned-name assigned-name--link">
+                  Marcel Bauer
+                </a>
+              </div>
+
+              <div class="assigned-item">
+                <div class="assigned-avatar-detail assigned-avatar--blue">AM</div>
+                <span class="assigned-name">Anton Mayer</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- SUBTASKS -->
+          <div class="overlay-task-card-section">
+            <p class="overlay-task-card-label-big">Subtasks</p>
+
+            <ul class="subtask-list-detail">
+              <li class="subtask-item">
+                <label class="subtask-checkbox">
+                  <input type="checkbox" checked />
+                  <span class="subtask-custom-box"></span>
+                  <span class="subtask-title">Implement Recipe Recommendation</span>
+                </label>
+              </li>
+
+              <li class="subtask-item">
+                <label class="subtask-checkbox">
+                  <input type="checkbox" />
+                  <span class="subtask-custom-box"></span>
+                  <span class="subtask-title">Start Page Layout</span>
+                </label>
+              </li>
             </ul>
+          </div>
+
+          <!-- Aktionen unten (hast du schon – hier nur zur Vollständigkeit) -->
+          <div class="overlay-task-card-actions">
             
-          </span>
+          </div>
+          
         </div>
+        
 
 
 
-
-        <div class="task-card-footer"></div>  
+        <div class="task-card-footer">
+          <button class="overlay-task-card-delete">🗑 Delete</button>
+          <button class="overlay-task-card-edit">✏ Edit</button>
+        </div>  
       </div>
     </overlay-task-card>
 

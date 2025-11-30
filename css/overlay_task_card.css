@@ -40,8 +40,135 @@
 }
 .task-card-story {
   display: grid;
+  padding-top: 8px;
   grid-gap: 24px;
   font-family: Inter, sans-serif;
   font-weight: 400;
   font-size: 20px;
+}
+table{
+  width: 50%;
+}
+
+th, td {
+  text-align: left;
+  padding-bottom: 8px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; 
+  font-size: 20px;
+}
+
+
+.overlay-task-card-section {
+  margin-top: 24px;
+}
+
+.overlay-task-card-label-big {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin: 0 0 12px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400; 
+  font-size: 20px;
+}
+
+.assigned-list-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.assigned-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.assigned-avatar-detail {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.assigned-avatar--mint {
+  background: #34d399; 
+}
+
+.assigned-avatar--purple {
+  background: #4f46e5; /* lila */
+}
+
+.assigned-avatar--blue {
+  background: #2563eb; /* blau */
+}
+
+.assigned-name {
+  font-size: 16px;
+  color: #111827;
+}
+
+.assigned-name--link {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
+  color: #4f46e5;
+  cursor: pointer;
+}
+
+.subtask-list-detail {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subtask-item {
+  display: flex;
+}
+
+.subtask-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.subtask-checkbox input {
+  display: none;
+}
+
+.subtask-custom-box {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid #111827;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+
+.subtask-checkbox input:checked + .subtask-custom-box::after {
+  content: "✓";
+  color: #111827;
+  font-size: 14px;
+  font-weight: 700;
+}
+.subtask-title {
+  font-size: 16px;
+  color: #111827;
+}
+.task-card-footer{
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px; 
 }
