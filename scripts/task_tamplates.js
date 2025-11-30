@@ -249,7 +249,6 @@ function taskCardEditTemplate(task) {
 
 
 
-
 function capitalize(str) {
   if (!str) return '';
   str = String(str);
