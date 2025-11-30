@@ -1,107 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
-    <title>Board • Join</title>
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/fonts.css" />
-    <link rel="stylesheet" href="css/board.css" />
-    <link rel="stylesheet" href="css/overlay_add_task.css" />
-    <link rel="stylesheet" href="css/overlay_task_card.css" />
-  </head>
-  <body onload="loadScripts();">
-    <nav header-html="./templates/header.html"></nav>
-    <aside sidebar-html="./templates/sidebar.html"></aside>
 
-    <main class="board-container">
-      <div class="board-header">
-        <h1>Board</h1>
-        <img onclick="addTaskBtn()" class="add-btn-mobile" src="./img/buttons/plus add task mobile.svg" alt="">
-        <div class="serch-add-task-button">
-          <input type="text" placeholder="Find Task" />
-          <button class="add-btn-desk" onclick="addTaskBtn()">Add task +</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
+  <title>Board • Join</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/header.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/board.css" />
+  <link rel="stylesheet" href="css/overlay_add_task.css" />
+  <link rel="stylesheet" href="css/overlay_task_card.css" />
+</head>
+
+<body onload="loadScripts();">
+  <nav header-html="./templates/header.html"></nav>
+  <aside sidebar-html="./templates/sidebar.html"></aside>
+
+  <main class="board-container">
+    <div class="board-header">
+      <h1>Board</h1>
+      <img onclick="addTaskBtn()" class="add-btn-mobile" src="./img/buttons/plus add task mobile.svg" alt="">
+
+      <div class="serch-add-task-button">
+        <input id="taskSearch" type="text" placeholder="Find Task" aria-label="Search tasks" />
+        <button class="add-btn-desk" onclick="addTaskBtn()">Add task +</button>
+      </div>
+
+    </div>
+
+    <div class="tasks-columns">
+      <div class="task-column" id="columnToDo" data-status="todo" ondrop="dropHandler(event)"
+        ondragover="dragoverHandler(event)">
+        <div class="task-header">
+          <span>To Do</span>
+          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="" />
+        </div>
+        <div class="task-cards" id="to-do-tasks"></div>
+      </div>
+
+      <div class="task-column" id="columnInProgress" data-status="inProgress" ondrop="dropHandler(event)"
+        ondragover="dragoverHandler(event)">
+        <div class="task-header">
+          <span>In progress</span>
+          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="" />
+        </div>
+        <div class="task-cards" id="in-progress-tasks">
         </div>
       </div>
 
-      <div class="tasks-columns">
-        <div
-          class="task-column"
-          id="columnToDo"
-          data-status="todo"
-          ondrop="dropHandler(event)"
-          ondragover="dragoverHandler(event)">
-          <div class="task-header">
-            <span>To Do</span>
-            <img onclick="addTaskBtn()"src="./img/icons/plus button.svg" alt="" />
-          </div>
-          <div
-            class="task-cards"
-            id="to-do-tasks"></div>
+      <div class="task-column" id="columnAwaitFeedback" data-status="awaitFeedback" ondrop="dropHandler(event)"
+        ondragover="dragoverHandler(event)">
+        <div class="task-header">
+          <span>Await feedback</span>
+          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="" />
         </div>
-
-        <div
-          class="task-column"
-          id="columnInProgress"
-          data-status="inProgress"
-          ondrop="dropHandler(event)"
-          ondragover="dragoverHandler(event)">
-          <div class="task-header">
-            <span>In progress</span>
-            <img onclick="addTaskBtn()"src="./img/icons/plus button.svg" alt="" />
-          </div>
-          <div
-            class="task-cards"
-            id="in-progress-tasks">
-          </div>
-        </div>
-
-        <div
-          class="task-column"
-          id="columnAwaitFeedback"
-          data-status="awaitFeedback"
-          ondrop="dropHandler(event)"
-          ondragover="dragoverHandler(event)">
-          <div class="task-header">
-            <span>Await feedback</span>
-            <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="" />
-          </div>
-          <div
-            class="task-cards"
-            id="await-feedback-tasks">
-          </div>
-        </div>
-
-        <div
-          class="task-column"
-          id="columnDone"
-          data-status="done"
-          ondrop="dropHandler(event)"
-          ondragover="dragoverHandler(event)">
-          <div class="task-header">
-            <span>Done</span>
-          </div>
-          <div
-            class="task-cards"
-            id="done-tasks">
-          </div>
+        <div class="task-cards" id="await-feedback-tasks">
         </div>
       </div>
-    </main>
+
+      <div class="task-column" id="columnDone" data-status="done" ondrop="dropHandler(event)"
+        ondragover="dragoverHandler(event)">
+        <div class="task-header">
+          <span>Done</span>
+        </div>
+        <div class="task-cards" id="done-tasks">
+        </div>
+      </div>
+    </div>
+  </main>
 
 
-     <!-- overlay add task -->
+  <!-- overlay add task -->
 
-    <overlay-modal class="overlay-modal">
-        <div class="modal-content">
-          <div class="overlay-header">
-             <h1>Add Task</h1>
-             <span onclick="closeAddTaskBtn()">X</span>
-          </div>
-            
+  <overlay-modal class="overlay-modal">
+    <div class="modal-content">
+      <div class="overlay-header">
+        <h1>Add Task</h1>
+        <span onclick="closeAddTaskBtn()">X</span>
+      </div>
+
 
       <form class="task-form" id="taskForm" novalidate>
         <div class="task-form__layout">
@@ -112,27 +92,16 @@
               <label class="form-group__label" for="title">
                 Title <span class="form-group__required">*</span>
               </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                class="form-group__input"
-                placeholder="Enter a title"
+              <input type="text" id="title" name="title" class="form-group__input" placeholder="Enter a title"
                 required />
               <span class="form-group__error" id="titleError"></span>
             </div>
 
             <!-- Description Field -->
             <div class="form-group">
-              <label class="form-group__label" for="description"
-                >Description</label
-              >
-              <textarea
-                id="description"
-                name="description"
-                class="form-group__textarea"
-                placeholder="Enter a Description"
-                rows="4"></textarea>
+              <label class="form-group__label" for="description">Description</label>
+              <textarea id="description" name="description" class="form-group__textarea"
+                placeholder="Enter a Description" rows="4"></textarea>
             </div>
 
             <!-- Due Date Field -->
@@ -141,11 +110,7 @@
                 Due date <span class="form-group__required">*</span>
               </label>
               <div class="form-group__date-wrapper">
-                <input
-                  type="date"
-                  id="dueDate"
-                  name="dueDate"
-                  class="form-group__input form-group__ input--date"
+                <input type="date" id="dueDate" name="dueDate" class="form-group__input form-group__ input--date"
                   placeholder="dd/mm/yyyy" />
                 <!-- Custom date icon (replaces native calendar icon) -->
                 <img src="./img/icons/event.svg" alt="date" class="date-icon" />
@@ -162,18 +127,11 @@
             <div class="form-group">
               <label class="form-group__label">Priority</label>
               <div class="priority-buttons">
-                <button
-                  type="button"
-                  class="priority-buttons__button priority-buttons__button--urgent"
+                <button type="button" class="priority-buttons__button priority-buttons__button--urgent"
                   data-priority="Urgent">
                   Urgent
                   <!-- inline SVG so we can recolor via CSS (currentColor) -->
-                  <svg
-                    width="20"
-                    height="15"
-                    viewBox="0 0 20 15"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
                     <path
                       d="M18.9043 14.5096C18.6696 14.51 18.4411 14.4351 18.2522 14.2961L10.0001 8.21288L1.74809 14.2961C1.63224 14.3816 1.50066 14.4435 1.36086 14.4783C1.22106 14.513 1.07577 14.5199 0.933305 14.4986C0.790837 14.4772 0.653973 14.428 0.530528 14.3538C0.407083 14.2796 0.299474 14.1818 0.213845 14.0661C0.128216 13.9503 0.0662437 13.8188 0.0314671 13.6791C-0.00330956 13.5394 -0.0102098 13.3943 0.0111604 13.2519C0.0543195 12.9644 0.21001 12.7058 0.443982 12.533L9.34809 5.96249C9.53679 5.8229 9.76536 5.74756 10.0001 5.74756C10.2349 5.74756 10.4635 5.8229 10.6522 5.96249L19.5563 12.533C19.7422 12.6699 19.8801 12.862 19.9503 13.0819C20.0204 13.3018 20.0193 13.5382 19.9469 13.7573C19.8746 13.9765 19.7349 14.1673 19.5476 14.3024C19.3604 14.4375 19.1352 14.51 18.9043 14.5096Z"
@@ -183,45 +141,20 @@
                       fill="currentColor" />
                   </svg>
                 </button>
-                <button
-                  type="button"
+                <button type="button"
                   class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
                   data-priority="Medium">
                   Medium
-                  <svg
-                    width="20"
-                    height="12"
-                    viewBox="0 0 20 12"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="12" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
-                    <rect
-                      x="2"
-                      y="3"
-                      width="16"
-                      height="2"
-                      rx="1"
-                      fill="currentColor" />
-                    <rect
-                      x="2"
-                      y="7"
-                      width="16"
-                      height="2"
-                      rx="1"
-                      fill="currentColor" />
+                    <rect x="2" y="3" width="16" height="2" rx="1" fill="currentColor" />
+                    <rect x="2" y="7" width="16" height="2" rx="1" fill="currentColor" />
                   </svg>
                 </button>
-                <button
-                  type="button"
-                  class="priority-buttons__button priority-buttons__button--low"
+                <button type="button" class="priority-buttons__button priority-buttons__button--low"
                   data-priority="Low">
                   Low
-                  <svg
-                    width="20"
-                    height="15"
-                    viewBox="0 0 20 15"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
                     <path
                       d="M10 8.76077C9.7654 8.76118 9.53687 8.68634 9.34802 8.54726L0.444913 1.97752C0.329075 1.89197 0.231235 1.78445 0.15698 1.66111C0.0827245 1.53777 0.033508 1.40102 0.0121402 1.25868C-0.031014 0.971193 0.0418855 0.678356 0.214802 0.444584C0.387718 0.210811 0.646486 0.0552534 0.934181 0.0121312C1.22188 -0.0309911 1.51493 0.0418545 1.74888 0.214643L10 6.29712L18.2511 0.214643C18.367 0.129087 18.4985 0.0671675 18.6383 0.0324205C18.7781 -0.00232646 18.9234 -0.00922079 19.0658 0.0121312C19.2083 0.0334832 19.3451 0.0826633 19.4685 0.156864C19.592 0.231064 19.6996 0.328831 19.7852 0.444584C19.8708 0.560336 19.9328 0.691806 19.9676 0.831488C20.0023 0.97117 20.0092 1.11633 19.9879 1.25868C19.9665 1.40102 19.9173 1.53777 19.843 1.66111C19.7688 1.78445 19.6709 1.89197 19.5551 1.97752L10.652 8.54726C10.4631 8.68634 10.2346 8.76118 10 8.76077Z"
@@ -236,13 +169,8 @@
 
             <!-- Assigned To Field -->
             <div class="form-group">
-              <label class="form-group__label" for="assignedTo"
-                >Assigned to</label
-              >
-              <select
-                id="assignedTo"
-                name="assignedTo"
-                class="form-group__select">
+              <label class="form-group__label" for="assignedTo">Assigned to</label>
+              <select id="assignedTo" name="assignedTo" class="form-group__select">
                 <option value="">Select contacts to assign</option>
                 <option value="John Doe">John Doe</option>
                 <option value="Jane Smith">Jane Smith</option>
@@ -256,11 +184,7 @@
               <label class="form-group__label" for="category">
                 Category <span class="form-group__required">*</span>
               </label>
-              <select
-                id="category"
-                name="category"
-                class="form-group__select"
-                required>
+              <select id="category" name="category" class="form-group__select" required>
                 <option value="">Select task category</option>
                 <option value="Development">Development</option>
                 <option value="Design">Design</option>
@@ -273,19 +197,10 @@
 
             <!-- Subtasks Field -->
             <div class="form-group">
-              <label class="form-group__label" for="subtaskInput"
-                >Subtasks</label
-              >
+              <label class="form-group__label" for="subtaskInput">Subtasks</label>
               <div class="subtask-input">
-                <input
-                  type="text"
-                  id="subtaskInput"
-                  class="subtask-input__field"
-                  placeholder="Add new subtask" />
-                <button
-                  type="button"
-                  class="subtask-input__button"
-                  id="addSubtaskBtn">
+                <input type="text" id="subtaskInput" class="subtask-input__field" placeholder="Add new subtask" />
+                <button type="button" class="subtask-input__button" id="addSubtaskBtn">
                   <svg width="16" height="16" viewBox="0 0 16 16"></svg>
                 </button>
               </div>
@@ -297,43 +212,19 @@
         <!-- Form Actions -->
         <div class="form-actions">
           <div>
-            <span class="form-group__required">*</span
-            ><span>This field is required</span>
+            <span class="form-group__required">*</span><span>This field is required</span>
           </div>
           <div class="button-action">
-            <button
-              type="button"
-              class="form-actions__button form-actions__button--clear"
-              id="clearBtn">
+            <button type="button" class="form-actions__button form-actions__button--clear" id="clearBtn">
               Clear
-              <svg
-                class="form-actions__icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16">
-                <path
-                  d="M4 4L12 12M12 4L4 12"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round" />
+              <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+                <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
               </svg>
             </button>
-            <button
-              type="submit"
-              class="form-actions__button form-actions__button--submit"
-              id="submitBtn">
+            <button type="submit" class="form-actions__button form-actions__button--submit" id="submitBtn">
               Create Task
-              <svg
-                class="form-actions__icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16">
-                <path
-                  d="M3 8L7 12L13 4"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  fill="none"
-                  stroke-linecap="round"
+              <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+                <path d="M3 8L7 12L13 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
                   stroke-linejoin="round" />
               </svg>
             </button>
@@ -344,127 +235,133 @@
       <div class="success-message" id="successMessage">
         <svg width="20" height="20" viewBox="0 0 20 20">
           <circle cx="10" cy="10" r="9" fill="#4CAF50" />
-          <path
-            d="M5 10L8 13L15 6"
-            stroke="white"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
+          <path d="M5 10L8 13L15 6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"
             stroke-linejoin="round" />
         </svg>
         Task created successfully!
       </div>
 
-      
+
     </div>
-        
-    </overlay-modal>
+
+  </overlay-modal>
 
 
-    <overlay-task-card class="overlay-task-card">
-      <div class="task-card-content" id="taskCardContent">
-        <div class="task-card-header">
-          <div class="task-card-header-category-close">           
-            <div class="task-card-category" id="taskCardCategory">Category</div>
-            <span class="task-card-close" onclick="closeTaskCard()">X</span>  
-          </div>
-          <h1>Kochwelt Page & Recipe Recommender</h1>
+  <overlay-task-card class="overlay-task-card">
+    <div class="task-card-content" id="taskCardContent">
+      <div class="task-card-header">
+        <div class="task-card-header-category-close">
+          <div class="task-card-category" id="taskCardCategory">Category</div>
+          <span class="task-card-close" onclick="closeTaskCard()">X</span>
         </div>
+        <h1>Kochwelt Page & Recipe Recommender</h1>
+      </div>
 
-        <div class="task-card-body">
-          <p class="task-card-story">Build start page with recipe recommendation.</p>
-          <table>
-            <tr>
-              <td>Due date:</td>
-              <td>10/05/2023</td>
-            </tr>
-            <tr>
-              <td>Priority:</td>
-              <td>Medium</td>
-            </tr>
+      <div class="task-card-body">
+        <p class="task-card-story">Build start page with recipe recommendation.</p>
+        <table>
+          <tr>
+            <td>Due date:</td>
+            <td>10/05/2023</td>
+          </tr>
+          <tr>
+            <td>Priority:</td>
+            <td>Medium</td>
+          </tr>
 
-          </table>
+        </table>
 
-          <!-- ASSIGNED TO -->
-          <div class="overlay-task-card-section">
-            <p class="overlay-task-card-label-big">Assigned To:</p>
+        <!-- ASSIGNED TO -->
+        <div class="overlay-task-card-section">
+          <p class="overlay-task-card-label-big">Assigned To:</p>
 
-            <div class="assigned-list-detail">
-              <div class="assigned-item">
-                <div class="assigned-avatar-detail assigned-avatar--mint">EM</div>
-                <span class="assigned-name">Emmanuel Mauer</span>
-              </div>
+          <div class="assigned-list-detail">
+            <div class="assigned-item">
+              <div class="assigned-avatar-detail assigned-avatar--mint">EM</div>
+              <span class="assigned-name">Emmanuel Mauer</span>
+            </div>
 
-              <div class="assigned-item">
-                <div class="assigned-avatar-detail assigned-avatar--purple">MB</div>
-                <!-- unterstrichen wie ein Link -->
-                <a href="#" class="assigned-name assigned-name--link">
-                  Marcel Bauer
-                </a>
-              </div>
+            <div class="assigned-item">
+              <div class="assigned-avatar-detail assigned-avatar--purple">MB</div>
+              <!-- unterstrichen wie ein Link -->
+              <a href="#" class="assigned-name assigned-name--link">
+                Marcel Bauer
+              </a>
+            </div>
 
-              <div class="assigned-item">
-                <div class="assigned-avatar-detail assigned-avatar--blue">AM</div>
-                <span class="assigned-name">Anton Mayer</span>
-              </div>
+            <div class="assigned-item">
+              <div class="assigned-avatar-detail assigned-avatar--blue">AM</div>
+              <span class="assigned-name">Anton Mayer</span>
             </div>
           </div>
-
-          <!-- SUBTASKS -->
-          <div class="overlay-task-card-section">
-            <p class="overlay-task-card-label-big">Subtasks</p>
-
-            <ul class="subtask-list-detail">
-              <li class="subtask-item">
-                <label class="subtask-checkbox">
-                  <input type="checkbox" checked />
-                  <span class="subtask-custom-box"></span>
-                  <span class="subtask-title">Implement Recipe Recommendation</span>
-                </label>
-              </li>
-
-              <li class="subtask-item">
-                <label class="subtask-checkbox">
-                  <input type="checkbox" />
-                  <span class="subtask-custom-box"></span>
-                  <span class="subtask-title">Start Page Layout</span>
-                </label>
-              </li>
-            </ul>
-          </div>
-
-          <!-- Aktionen unten (hast du schon – hier nur zur Vollständigkeit) -->
-          <div class="overlay-task-card-actions">
-            
-          </div>
-          
         </div>
-        
 
+        <!-- SUBTASKS -->
+        <div class="overlay-task-card-section">
+          <p class="overlay-task-card-label-big">Subtasks</p>
 
+          <ul class="subtask-list-detail">
+            <li class="subtask-item">
+              <label class="subtask-checkbox">
+                <input type="checkbox" checked />
+                <span class="subtask-custom-box"></span>
+                <span class="subtask-title">Implement Recipe Recommendation</span>
+              </label>
+            </li>
 
-        <div class="task-card-footer">
-          <button class="overlay-task-card-delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="16" viewBox="0 0 24 24" fill="none">
-            <mask id="mask0_397780_5477" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-            <rect width="24" height="24" fill="#D9D9D9"/></mask><g mask="url(#mask0_397780_5477)">
-            <path d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6C4.71667 6 4.47917 5.90417 4.2875 5.7125C4.09583 5.52083 4 5.28333 4 5C4 4.71667 4.09583 4.47917 4.2875 4.2875C4.47917 4.09583 4.71667 4 5 4H9C9 3.71667 9.09583 3.47917 9.2875 3.2875C9.47917 3.09583 9.71667 3 10 3H14C14.2833 3 14.5208 3.09583 14.7125 3.2875C14.9042 3.47917 15 3.71667 15 4H19C19.2833 4 19.5208 4.09583 19.7125 4.2875C19.9042 4.47917 20 4.71667 20 5C20 5.28333 19.9042 5.52083 19.7125 5.7125C19.5208 5.90417 19.2833 6 19 6V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM7 6V19H17V6H7ZM9 16C9 16.2833 9.09583 16.5208 9.2875 16.7125C9.47917 16.9042 9.71667 17 10 17C10.2833 17 10.5208 16.9042 10.7125 16.7125C10.9042 16.5208 11 16.2833 11 16V9C11 8.71667 10.9042 8.47917 10.7125 8.2875C10.5208 8.09583 10.2833 8 10 8C9.71667 8 9.47917 8.09583 9.2875 8.2875C9.09583 8.47917 9 8.71667 9 9V16ZM13 16C13 16.2833 13.0958 16.5208 13.2875 16.7125C13.4792 16.9042 13.7167 17 14 17C14.2833 17 14.5208 16.9042 14.7125 16.7125C14.9042 16.5208 15 16.2833 15 16V9C15 8.71667 14.9042 8.47917 14.7125 8.2875C14.5208 8.09583 14.2833 8 14 8C13.7167 8 13.4792 8.09583 13.2875 8.2875C13.0958 8.47917 13 8.71667 13 9V16Z" fill="#2A3647"/>
-            </g></svg> Delete</button>
+            <li class="subtask-item">
+              <label class="subtask-checkbox">
+                <input type="checkbox" />
+                <span class="subtask-custom-box"></span>
+                <span class="subtask-title">Start Page Layout</span>
+              </label>
+            </li>
+          </ul>
+        </div>
 
-          <button class="overlay-task-card-edit"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19" viewBox="0 0 19 19" fill="none">
-              <path d="M2 16.25H3.4L12.025 7.625L10.625 6.225L2 14.85V16.25ZM16.3 6.175L12.05 1.975L13.45 0.575C13.8333 0.191667 14.3042 0 14.8625 0C15.4208 0 15.8917 0.191667 16.275 0.575L17.675 1.975C18.0583 2.35833 18.2583 2.82083 18.275 3.3625C18.2917 3.90417 18.1083 4.36667 17.725 4.75L16.3 6.175ZM14.85 7.65L4.25 18.25H0V14L10.6 3.4L14.85 7.65Z" fill="#2A3647"/>
-              </svg> Edit</button>
-        </div>  
+        <!-- Aktionen unten (hast du schon – hier nur zur Vollständigkeit) -->
+        <div class="overlay-task-card-actions">
+
+        </div>
+
       </div>
-    </overlay-task-card>
 
 
 
 
-    <script src="scripts/templates.js"></script>
-    <script src="scripts/task_tamplates.js"></script>
-    <script src="scripts/task_form.js"></script>
-    <script src="scripts/board.js"></script>
-    <script src="scripts/tasks_API.js"></script>
+      <div class="task-card-footer">
+        <button class="overlay-task-card-delete"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="16"
+            viewBox="0 0 24 24" fill="none">
+            <mask id="mask0_397780_5477" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+              height="24">
+              <rect width="24" height="24" fill="#D9D9D9" />
+            </mask>
+            <g mask="url(#mask0_397780_5477)">
+              <path
+                d="M7 21C6.45 21 5.97917 20.8042 5.5875 20.4125C5.19583 20.0208 5 19.55 5 19V6C4.71667 6 4.47917 5.90417 4.2875 5.7125C4.09583 5.52083 4 5.28333 4 5C4 4.71667 4.09583 4.47917 4.2875 4.2875C4.47917 4.09583 4.71667 4 5 4H9C9 3.71667 9.09583 3.47917 9.2875 3.2875C9.47917 3.09583 9.71667 3 10 3H14C14.2833 3 14.5208 3.09583 14.7125 3.2875C14.9042 3.47917 15 3.71667 15 4H19C19.2833 4 19.5208 4.09583 19.7125 4.2875C19.9042 4.47917 20 4.71667 20 5C20 5.28333 19.9042 5.52083 19.7125 5.7125C19.5208 5.90417 19.2833 6 19 6V19C19 19.55 18.8042 20.0208 18.4125 20.4125C18.0208 20.8042 17.55 21 17 21H7ZM7 6V19H17V6H7ZM9 16C9 16.2833 9.09583 16.5208 9.2875 16.7125C9.47917 16.9042 9.71667 17 10 17C10.2833 17 10.5208 16.9042 10.7125 16.7125C10.9042 16.5208 11 16.2833 11 16V9C11 8.71667 10.9042 8.47917 10.7125 8.2875C10.5208 8.09583 10.2833 8 10 8C9.71667 8 9.47917 8.09583 9.2875 8.2875C9.09583 8.47917 9 8.71667 9 9V16ZM13 16C13 16.2833 13.0958 16.5208 13.2875 16.7125C13.4792 16.9042 13.7167 17 14 17C14.2833 17 14.5208 16.9042 14.7125 16.7125C14.9042 16.5208 15 16.2833 15 16V9C15 8.71667 14.9042 8.47917 14.7125 8.2875C14.5208 8.09583 14.2833 8 14 8C13.7167 8 13.4792 8.09583 13.2875 8.2875C13.0958 8.47917 13 8.71667 13 9V16Z"
+                fill="#2A3647" />
+            </g>
+          </svg> Delete</button>
 
-  </body>
+        <button class="overlay-task-card-edit"><svg xmlns="http://www.w3.org/2000/svg" width="19" height="19"
+            viewBox="0 0 19 19" fill="none">
+            <path
+              d="M2 16.25H3.4L12.025 7.625L10.625 6.225L2 14.85V16.25ZM16.3 6.175L12.05 1.975L13.45 0.575C13.8333 0.191667 14.3042 0 14.8625 0C15.4208 0 15.8917 0.191667 16.275 0.575L17.675 1.975C18.0583 2.35833 18.2583 2.82083 18.275 3.3625C18.2917 3.90417 18.1083 4.36667 17.725 4.75L16.3 6.175ZM14.85 7.65L4.25 18.25H0V14L10.6 3.4L14.85 7.65Z"
+              fill="#2A3647" />
+          </svg> Edit</button>
+      </div>
+    </div>
+  </overlay-task-card>
+
+
+
+
+  <script src="scripts/templates.js"></script>
+  <script src="scripts/task_tamplates.js"></script>
+  <script src="scripts/task_form.js"></script>
+  <script src="scripts/board.js"></script>
+  <script src="scripts/tasks_API.js"></script>
+
+</body>
+
 </html>
