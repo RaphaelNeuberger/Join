@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="css/sidebar.css" />
     <link rel="stylesheet" href="css/fonts.css" />
     <link rel="stylesheet" href="css/board.css" />
+    <link rel="stylesheet" href="css/overlay_add_task.css" />
+    <link rel="stylesheet" href="css/overlay_task_card.css" />
   </head>
   <body onload="loadScripts();">
     <nav header-html="./templates/header.html"></nav>
@@ -91,6 +93,8 @@
     </main>
 
 
+     <!-- overlay add task -->
+
     <overlay-modal class="overlay-modal">
         <div class="modal-content">
           <div class="overlay-header">
@@ -102,6 +106,7 @@
       <form class="task-form" id="taskForm" novalidate>
         <div class="task-form__layout">
           <div class="task-form__column-left">
+
             <!-- Title Field -->
             <div class="form-group">
               <label class="form-group__label" for="title">
@@ -355,6 +360,43 @@
     </div>
         
     </overlay-modal>
+
+    <!-- overlay task card -->  
+    <overlay-task-card class="overlay-task-card">
+      <div class="task-card-content" id="taskCardContent">
+        <div class="task-card-header">
+          <div class="task-card-header-category-close">           
+            <div class="task-card-category" id="taskCardCategory">Category</div>
+            <span class="task-card-close" onclick="closeTaskCard()">X</span>  
+          </div>
+          <h1>Kochwelt Page & Recipe Recommender</h1>
+        </div>
+
+        <div class="task-card-body">
+          <p class="task-card-story">Build start page with recipe recommendation.</p>
+          <span>
+            <p><strong>Due Date:</strong> 20.09.2023</p>
+            <p><strong>Priority:</strong> Medium</p>
+            <p><strong>Assigned to:</strong> John Doe</p>
+            <p><strong>Subtasks:</strong></p>
+            <ul>
+              <li>Design homepage layout</li>
+              <li>Implement recipe recommendation algorithm</li>
+              <li>Test responsiveness on mobile devices</li>
+            </ul>
+            
+          </span>
+        </div>
+
+
+
+
+        <div class="task-card-footer"></div>  
+      </div>
+    </overlay-task-card>
+
+
+
 
     <script src="scripts/templates.js"></script>
     <script src="scripts/task_tamplates.js"></script>

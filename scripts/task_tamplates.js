@@ -60,29 +60,50 @@ function renderAssignees(assignees = []) {
 
 
 function taskTemplate(task) {
-  return (
-    '<div class="card-task" draggable="true" ' +
-    'ondragstart="dragstartHandler(event)" ' +
-    'data-task-id="' +
-    task.id +
-    '">' +
-    '<p class="card-type">' +
-    task.category +
-    '</p>' +
-    '<span class="card-title">' +
-    task.title +
-    '</span>' +
-    '<p class="story">' +
-    task.description +
-    '</p>' +
-    '<div class="card-footer">' +
-    '<div class="assigned-list">' +
-    renderAssignees(task.assignedTo) +
-    '</div>' +
-    '<div class="priority">' +
-    String(task.priority || '').toLowerCase() +
-    '</div>' +
-    '</div>' +
-    '</div>'
-  );
+  return `
+    <div class="card-task"
+         draggable="true"
+         ondragstart="dragstartHandler(event)"
+         data-task-id="${task.id}">
+      <p class="card-type">${task.category}</p>
+      <span class="card-title">${task.title}</span>
+      <p class="story">${task.description || ''}</p>
+      <div class="card-footer">
+        <div class="assigned-list">
+          ${renderAssignees(task.assignedTo)}
+        </div>
+        <div class="priority">${String(task.priority || '').toLowerCase()}</div>
+      </div>
+    </div>
+  `;
 }
+/*
+function overlayTaskCard( ) {
+  return `
+<div class="card-task"
+         draggable="true"
+         ondragstart="dragstartHandler(event)"
+         data-task-id="${task.id}">
+         
+      <p class="card-type">${task.category}</p>
+      
+      <span class="card-title">${task.title}</span>
+      
+      <p class="story">
+        ${task.description}
+      </p>
+
+      <div class="card-footer">
+        <div class="assigned-list">
+          ${renderAssignees(task.assignedTo)}
+        </div>
+
+        <div class="priority">
+          ${String(task.priority || "").toLowerCase()}
+        </div>
+      </div>
+
+    </div>  
+  `;   
+}
+*/

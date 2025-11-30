@@ -105,5 +105,3 @@ async function dropHandler(event) {
   renderBoard();
 }
 
-
-
