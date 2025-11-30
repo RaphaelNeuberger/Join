@@ -202,7 +202,11 @@ body {
 /* Responsive */
 @media (max-width: 1126px) {
   .board-container {
+<<<<<<< HEAD
     padding: 120px 16px 16px;
+=======
+      padding: 196px 84px 32px;
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
   }
 }
 

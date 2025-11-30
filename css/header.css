@@ -115,9 +115,6 @@ header {
   .header-title {
     display: none;
   }
-  .nav-icon-help {
-    display: none;
-  }
   .header-logo {
     display: flex;
   }

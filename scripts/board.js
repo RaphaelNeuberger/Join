@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+=======
+/* scripts/board.js */
+
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -8,11 +13,13 @@ function initLayout() {
   includeSidebarHTML();
   initPriorityButtons();
   initAddTaskForm();
+  initSearch(); // <-- neu: Search initialisieren
 }
 async function initBoard() {
   await fetchTasks();
   renderBoard();
 }
+<<<<<<< HEAD
 function renderBoard() {
   renderColumn('todo', 'to-do-tasks');
   renderColumn('inprogress', 'in-progress-tasks');
@@ -20,6 +27,35 @@ function renderBoard() {
   renderColumn('done', 'done-tasks');
   renderNoTasksIfEmpty();
 }
+=======
+
+/* ---------- Render-Logik ---------- */
+
+function renderBoard(searchQuery = '') {
+  // searchQuery optional, leer = keine Filterung
+  renderColumn('todo', 'to-do-tasks', searchQuery);
+  renderColumn('inprogress', 'in-progress-tasks', searchQuery);
+  renderColumn('await_feedback', 'await-feedback-tasks', searchQuery);
+  renderColumn('done', 'done-tasks', searchQuery);
+  renderNoTasksIfEmpty();
+}
+
+function renderColumn(status, containerId, searchQuery = '') {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+
+  container.innerHTML = '';
+  const tasksForStatus = getTasksByStatus(status);
+
+  // Falls Suche aktiv: filtern
+  const filtered = searchQuery ? filterTasks(tasksForStatus, searchQuery) : tasksForStatus;
+
+  fillColumn(container, filtered);
+}
+
+/* ---------- Task-Helfer ---------- */
+
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 function getTasksByStatus(status) {
   if (!Array.isArray(tasks) || tasks.length === 0) {
     return [];
@@ -28,12 +64,19 @@ function getTasksByStatus(status) {
   return tasks.filter((task) => normalizeTaskStatus(task.status) === status);
 }
 function fillColumn(container, tasksForStatus) {
+<<<<<<< HEAD
   if (!tasksForStatus.length) return;
+=======
+  if (!tasksForStatus || tasksForStatus.length === 0) {
+    return;
+  }
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 
   tasksForStatus.forEach((task) => {
     container.innerHTML += taskTemplate(task);
   });
 }
+<<<<<<< HEAD
 function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -42,6 +85,9 @@ function renderColumn(status, containerId) {
   const tasksForStatus = getTasksByStatus(status);
   fillColumn(container, tasksForStatus);
 }
+=======
+
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll('.task-cards');
 
@@ -58,6 +104,12 @@ function renderNoTasksIfEmpty() {
     }
   });
 }
+<<<<<<< HEAD
+=======
+
+/* ---------- Drag & Drop (unverändert) ---------- */
+
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 function dragstartHandler(event) {
   const taskElement = event.target.closest('.card-task');
   if (!taskElement || !event.dataTransfer) return;
@@ -82,7 +134,7 @@ async function dropHandler(event) {
   if (!taskId || !newStatus) return;
 
   await updateTaskStatus(taskId, newStatus);
-  renderBoard();
+  renderBoard(getCurrentSearchQuery());
 }
 function initTaskCardEvents() {
   const columns = document.querySelector('.tasks-columns');
@@ -94,6 +146,7 @@ function onTaskCardClick(event) {
   const card = event.target.closest('.card-task');
   if (!card) return;
 
+<<<<<<< HEAD
   const taskId = card.getAttribute('data-task-id');
   openTaskCardById(taskId);
 }
@@ -192,4 +245,52 @@ async function onOverlayDeleteClick(taskId) {
     console.error(err);
     alert('Task konnte nicht gelöscht werden (siehe Konsole).');
   }
+=======
+/* ---------- Suche ---------- */
+
+function filterTasks(taskArray, query) {
+  if (!query) return taskArray;
+  const q = query.trim().toLowerCase();
+
+  return taskArray.filter((t) => {
+    const title = (t.title || '').toString().toLowerCase();
+    const description = (t.description || '').toString().toLowerCase();
+    // mögliche Erweiterung: category, assignedTo, subtasks, etc.
+    return title.includes(q) || description.includes(q);
+  });
+}
+
+function initSearch() {
+  const input = document.getElementById('taskSearch');
+  if (!input) return;
+
+  const debouncedHandler = debounce(() => {
+    const q = input.value;
+    renderBoard(q);
+  }, 200);
+
+  input.addEventListener('input', debouncedHandler);
+
+  // Optional: Enter drücken -> Fokus weg (kein Reload)
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      input.blur();
+    }
+  });
+}
+
+function getCurrentSearchQuery() {
+  const input = document.getElementById('taskSearch');
+  return input ? input.value : '';
+}
+
+/* Kleine, einfache Debounce-Implementierung */
+function debounce(fn, wait) {
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn.apply(this, args), wait);
+  };
+>>>>>>> a518af8a80a199005c74447fc0f51e73197f5f44
 }
