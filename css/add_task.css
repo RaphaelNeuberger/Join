@@ -1,6 +1,6 @@
 .task-form-container {
   margin-left: 240px; /* Platz für Sidebar */
-  padding: 96px 84px 32px;
+  padding: 196px 84px 32px;
   background: #f6f7fb;
   min-height: 100vh;
 }
@@ -409,7 +409,7 @@
     display: none;
   }
 }
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   .task-form-container {
     margin-left: 0;
     padding: 24px 0 24px 0;

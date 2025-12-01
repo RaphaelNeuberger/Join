@@ -1,10 +1,7 @@
-
-let selectedPriority = 'Medium';
-
-
 async function loadScripts() {
   initLayout();
   await initBoard();
+  initTaskCardEvents();
 }
 
 function initLayout() {
@@ -14,38 +11,10 @@ function initLayout() {
   initAddTaskForm();
 }
 
-function normalizeStatusKey(status = '') {
-  const value = String(status).trim().toLowerCase();
-
-  if (!value) {
-    return 'todo';
-  }
-
-  if (value === 'inprogress' || value === 'in-progress' || value === 'in_progress') {
-    return 'inprogress';
-  }
-
-  if (value === 'awaitfeedback' || value === 'await-feedback' || value === 'await_feedback') {
-    return 'await_feedback';
-  }
-
-  if (value === 'done') {
-    return 'done';
-  }
-
-  if (value === 'todo') {
-    return 'todo';
-  }
-
-  return value;
-}
-
-
 async function initBoard() {
   await fetchTasks();
   renderBoard();
 }
-
 
 function renderBoard() {
   renderColumn('todo', 'to-do-tasks');
@@ -55,23 +24,29 @@ function renderBoard() {
   renderNoTasksIfEmpty();
 }
 
+function getTasksByStatus(status) {
+  if (!Array.isArray(tasks) || tasks.length === 0) {
+    return [];
+  }
+
+  return tasks.filter((task) => normalizeTaskStatus(task.status) === status);
+}
+
+function fillColumn(container, tasksForStatus) {
+  if (!tasksForStatus.length) return;
+
+  tasksForStatus.forEach((task) => {
+    container.innerHTML += taskTemplate(task);
+  });
+}
+
 function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
-  if (!container) {
-    return;
-  }
+  if (!container) return;
 
   container.innerHTML = '';
-
-  if (!Array.isArray(tasks) || tasks.length === 0) {
-    return;
-  }
-
-  tasks
-    .filter((task) => normalizeStatusKey(task.status) === status)
-    .forEach((task) => {
-      container.innerHTML += taskTemplate(task);
-    });
+  const tasksForStatus = getTasksByStatus(status);
+  fillColumn(container, tasksForStatus);
 }
 
 function renderNoTasksIfEmpty() {
@@ -92,12 +67,11 @@ function renderNoTasksIfEmpty() {
 }
 
 function dragstartHandler(event) {
-  const taskElement = event.target;
-  const taskId = taskElement.dataset.taskId;
+  const taskElement = event.target.closest('.card-task');
+  if (!taskElement || !event.dataTransfer) return;
 
-  if (!event.dataTransfer || !taskId) {
-    return;
-  }
+  const taskId = taskElement.dataset.taskId;
+  if (!taskId) return;
 
   event.dataTransfer.setData('text/plain', taskId);
 }
@@ -108,300 +82,134 @@ function dragoverHandler(event) {
 
 async function dropHandler(event) {
   event.preventDefault();
-
-  if (!event.dataTransfer) {
-    return;
-  }
+  if (!event.dataTransfer) return;
 
   const taskId = event.dataTransfer.getData('text/plain');
   const column = event.currentTarget;
   const rawStatus = column && column.dataset ? column.dataset.status : '';
-  const newStatus = normalizeStatusKey(rawStatus);
+  const newStatus = normalizeTaskStatus(rawStatus);
 
-  if (!taskId || !newStatus) {
-    return;
-  }
+  if (!taskId || !newStatus) return;
 
   await updateTaskStatus(taskId, newStatus);
   renderBoard();
 }
 
-const AVATAR_COLORS = [
-  'rgb(110, 82, 255)',
-  'rgb(253, 112, 255)',
-  'rgb(70, 47, 138)',
-  'rgb(255, 188, 43)',
-  'rgb(30, 214, 193)',
-  'rgb(255, 123, 0)'
-];
+function initTaskCardEvents() {
+  const columns = document.querySelector('.tasks-columns');
+  if (!columns) return;
 
-function getInitials(name = '') {
-  return name
-    .trim()
-    .split(/\s+/)
-    .map((part) => (part[0] || '').toUpperCase())
-    .join('');
+  columns.addEventListener('click', onTaskCardClick);
 }
 
-function renderAssignees(assignees = []) {
-  if (!Array.isArray(assignees)) {
-    assignees = assignees ? [assignees] : [];
-  }
+function onTaskCardClick(event) {
+  const card = event.target.closest('.card-task');
+  if (!card) return;
 
-  return assignees
-    .map((name, index) => {
-      const color = getAvatarColor(name, index);
-      const initials = getInitials(name);
-
-      return (
-        '<span class="assigned-avatar" style="background-color: ' +
-        color +
-        ';">' +
-        initials +
-        '</span>'
-      );
-    })
-    .join('');
+  const taskId = card.getAttribute('data-task-id');
+  openTaskCardById(taskId);
 }
 
-function getAvatarColor(name = '', index = 0) {
-  if (!AVATAR_COLORS.length) {
-    return '#ff7a00';
-  }
+function openTaskCardById(taskId) {
+  const overlay = document.querySelector('.overlay-task-card');
+  const content = document.getElementById('taskCardContent');
+  if (!overlay || !content) return;
 
-  const hash = name
-    .split('')
-    .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const task = tasks.find((t) => String(t.id) === String(taskId));
+  if (!task) return;
 
-  const colorIndex = (hash + index) % AVATAR_COLORS.length;
-  return AVATAR_COLORS[colorIndex];
-}
-
-function setPriorityActive(buttons, activeButton) {
-  buttons.forEach((button) => {
-    button.classList.remove('is-active');
-    button.setAttribute('aria-pressed', 'false');
-  });
-
-  activeButton.classList.add('is-active');
-  activeButton.setAttribute('aria-pressed', 'true');
-  selectedPriority = activeButton.dataset.priority || 'Medium';
-}
-
-function initPriorityButtons() {
-  const buttons = document.querySelectorAll('.priority-buttons__button');
-  if (!buttons.length) {
-    return;
-  }
-
-  setupPriorityButtonInteractions(buttons);
-  setInitialPriority(buttons);
-}
-
-
-function setupPriorityButtonInteractions(buttons) {
-  buttons.forEach((btn) => {
-    btn.setAttribute('role', 'button');
-    btn.setAttribute('tabindex', '0');
-
-    const activate = function () {
-      setPriorityActive(buttons, btn);
-    };
-
-    btn.addEventListener('click', activate);
-
-    btn.addEventListener('keydown', (event) => {
-      if (event.key === ' ' || event.key === 'Enter') {
-        event.preventDefault();
-        activate();
-      }
-    });
-  });
-}
-
-function setInitialPriority(buttons) {
-  let defaultButton = document.querySelector(
-    '.priority-buttons__button.priority-buttons__button--active'
-  );
-
-  if (!defaultButton) {
-    defaultButton =
-      document.querySelector(
-        '.priority-buttons__button.priority-buttons__button--medium'
-      ) || buttons[0];
-  }
-
-  if (defaultButton) {
-    setPriorityActive(buttons, defaultButton);
-  }
-}
-
-function resetPriorityButtons() {
-  const buttons = document.querySelectorAll('.priority-buttons__button');
-  if (!buttons.length) {
-    return;
-  }
-  setInitialPriority(buttons);
-}
-
-function addTaskBtn() {
-  const overlay = document.querySelector('.overlay-modal');
-  if (!overlay) {
-    return;
-  }
+  content.innerHTML = taskCardContentTemplate(task);
   overlay.style.display = 'flex';
 }
 
-function closeAddTaskBtn() {
-  const overlay = document.querySelector('.overlay-modal');
-  if (!overlay) {
-    return;
-  }
+function closeTaskCard() {
+  const overlay = document.querySelector('.overlay-task-card');
+  if (!overlay) return;
   overlay.style.display = 'none';
 }
 
-function initAddTaskForm() {
-  const form = document.getElementById('taskForm');
-  if (!form) {
-    return;
-  }
-
-  form.addEventListener('submit', handleCreateTask);
-
-  const clearBtn = document.getElementById('clearBtn');
-  if (clearBtn) {
-    clearBtn.addEventListener('click', handleClearTaskForm);
-  }
+function onOverlayEditClick(taskId) {
+  onTaskEditClick(taskId);
 }
 
+function onTaskEditClick(taskId) {
+  const content = document.getElementById('taskCardContent');
+  if (!content) return;
 
-async function handleCreateTask(event) {
-  if (event) {
-    event.preventDefault();
-  }
+  const task = tasks.find((t) => String(t.id) === String(taskId));
+  if (!task) return;
 
-  const taskData = readTaskForm();
-  if (!taskData) {
-    return;
-  }
-
-  await addTask(taskData);
-  renderBoard();
-  showSuccessMessage();
-  resetTaskForm();
-  closeAddTaskBtn();
+  content.innerHTML = taskCardEditTemplate(task); // aus task_tamplates.js
 }
 
+function onEditPriorityClick(event) {
+  event.preventDefault();
 
-function readTaskForm() {
-  clearFormErrors();
+  const button = event.currentTarget;
+  const wrapper = button.closest('.priority-buttons');
+  if (!wrapper) return;
 
-  const title = getInputValue('title');
-  const description = getInputValue('description');
-  const dueDate = getInputValue('dueDate');
-  const category = getInputValue('category');
-  const assignedTo = getAssignedTo();
+  const allButtons = wrapper.querySelectorAll('.priority-buttons__button');
+  allButtons.forEach((btn) => btn.classList.remove('is-active'));
 
-  if (!validateTaskForm(title, dueDate, category)) {
-    return null;
-  }
+  button.classList.add('is-active');
 
-  return buildTaskData(title, description, dueDate, category, assignedTo);
+  const hiddenInput = wrapper.querySelector('input[name="priority"]');
+  if (!hiddenInput) return;
+
+  hiddenInput.value =
+    (button.getAttribute('data-priority') || 'Medium').toLowerCase();
 }
 
-
-function getInputValue(id) {
-  const element = document.getElementById(id);
-  return element ? element.value.trim() : '';
+function onTaskEditCancel(taskId) {
+  openTaskCardById(taskId);
 }
 
+async function onTaskEditSave(event, taskId) {
+  event.preventDefault();
 
-function getAssignedTo() {
-  const element = document.getElementById('assignedTo');
-  return element && element.value ? [element.value] : [];
-}
+  const form = event.target.closest('form');
+  if (!form) return;
 
+  const task = tasks.find((t) => String(t.id) === String(taskId));
+  if (!task) return;
 
-function validateTaskForm(title, dueDate, category) {
-  let valid = true;
-
-  if (!title) {
-    showError('titleError', 'Title is required');
-    valid = false;
-  }
-  if (!dueDate) {
-    showError('dueDateError', 'Due date is required');
-    valid = false;
-  }
-  if (!category) {
-    showError('categoryError', 'Category is required');
-    valid = false;
-  }
-  return valid;
-}
-
-
-function buildTaskData(title, description, dueDate, category, assignedTo) {
-  return {
-    title,
-    description,
-    dueDate,
-    category,
-    assignedTo,
-    priority: selectedPriority || 'Medium',
-    subtasks: [],
-    status: 'todo'
+  const updatedTask = {
+    ...task,
+    title: form.elements.title.value.trim(),
+    description: form.elements.description.value.trim(),
+    dueDate: form.elements.dueDate.value,
+    priority: (form.elements.priority.value || 'medium').toLowerCase()
   };
-}
 
+  try {
+    await saveTask(updatedTask);
 
-function showError(id, message) {
-  const element = document.getElementById(id);
-  if (element) {
-    element.textContent = message;
-  }
-}
-
-
-function clearFormErrors() {
-  const errorIds = ['titleError', 'dueDateError', 'categoryError'];
-
-  errorIds.forEach((id) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.textContent = '';
+    const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+    if (index !== -1) {
+      tasks[index] = updatedTask;
     }
-  });
+
+    renderBoard();
+    openTaskCardById(taskId);
+  } catch (error) {
+    console.error('onTaskEditSave:', error);
+    alert('Änderungen konnten nicht gespeichert werden.');
+  }
 }
 
+async function onOverlayDeleteClick(taskId) {
+  if (!confirm('Diesen Task wirklich löschen?')) return;
 
-function resetTaskForm() {
-  const form = document.getElementById('taskForm');
-  if (form) {
-    form.reset();
+  try {
+    await deleteTaskById(taskId);
+
+    tasks = tasks.filter((t) => String(t.id) !== String(taskId));
+
+    renderBoard();
+    closeTaskCard();
+  } catch (err) {
+    console.error(err);
+    alert('Task konnte nicht gelöscht werden (siehe Konsole).');
   }
-  clearFormErrors();
-  resetPriorityButtons();
-}
-
-
-function handleClearTaskForm(event) {
-  if (event) {
-    event.preventDefault();
-  }
-  resetTaskForm();
-}
-
-
-function showSuccessMessage() {
-  const messageElement = document.getElementById('successMessage');
-  if (!messageElement) {
-    return;
-  }
-
-  messageElement.style.display = 'flex';
-
-  setTimeout(() => {
-    messageElement.style.display = 'none';
-  }, 2000);
 }

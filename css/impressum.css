@@ -10,7 +10,7 @@ body {
 
 .main-content {
   margin-left: 240px;
-  padding: 96px 84px 32px;
+  padding: 196px 84px 32px;
   max-width: 1680px;
   box-sizing: border-box;
 }
@@ -60,7 +60,7 @@ footer {
   text-decoration: underline;
 }
 /* ===== NUR RESPONSIVE, Desktop bleibt unverändert ===== */
-@media (max-width: 900px) {
+@media (max-width: 1023px) {
   /* Sidebar ausblenden */
   .main-sidebar {
     display: none;

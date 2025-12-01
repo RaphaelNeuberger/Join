@@ -13,6 +13,9 @@ header {
   padding-right: 40px;
   padding-left: 96px;
   max-width: 1680px;
+  position: fixed;
+  left: 0;
+  right: 0;
 }
 
 .header-title {
@@ -110,9 +113,6 @@ header {
     padding-right: 20px;
   }
   .header-title {
-    display: none;
-  }
-  .nav-icon-help {
     display: none;
   }
   .header-logo {

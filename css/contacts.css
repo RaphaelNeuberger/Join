@@ -6,7 +6,11 @@ body {
 
 .main-contact {
   margin-left: 240px; /* Platz für Sidebar */
+<<<<<<< HEAD
   padding-left: 84px;
+=======
+  padding: 196px 84px 32px;
+>>>>>>> f41dcef9ec69fcced524d01daef43576de6d8ebf
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
