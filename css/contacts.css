@@ -6,7 +6,7 @@ body {
 
 .main-contact {
   margin-left: 240px; /* Platz für Sidebar */
-  padding: 96px 84px 32px;
+  padding-left: 84px;
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -19,7 +19,7 @@ body {
   flex: 0 0 320px;
   text-align: center;
   min-width: 280px;
-  max-width: 400px;
+  max-width: 500px;
   background-color: var(--panel, #ffffff);
   border-right: 1px solid #d3d3d3;
   padding-right: 1rem;
@@ -27,6 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding-top: 96px;
 }
 
 .add-contact-button {
