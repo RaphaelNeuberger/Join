@@ -6,6 +6,14 @@ function noTaskTemplate() {
   );
 }
 
+function noResultsTemplate() {
+  return (
+    '<div class="card-no-task">' +
+    '<span>No results found</span>' +
+    '</div>'
+  );
+}
+
 const AVATAR_COLORS = [
   'rgb(110, 82, 255)',
   'rgb(253, 112, 255)',
