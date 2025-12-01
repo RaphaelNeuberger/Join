@@ -2,6 +2,7 @@ async function loadScripts() {
   initLayout();
   await initBoard();
   initTaskCardEvents();
+  initBoardSearch();
 }
 
 function initLayout() {
@@ -9,6 +10,19 @@ function initLayout() {
   includeSidebarHTML();
   initPriorityButtons();
   initAddTaskForm();
+}
+
+function initBoardSearch() {
+  const input = document.getElementById('boardSearch');
+  if (!input) return;
+  let t;
+  input.addEventListener('input', function () {
+    clearTimeout(t);
+    const q = this.value.trim().toLowerCase();
+    t = setTimeout(function () {
+      renderBoardFiltered(q);
+    }, 150);
+  });
 }
 
 async function initBoard() {
@@ -21,6 +35,26 @@ function renderBoard() {
   renderColumn('inprogress', 'in-progress-tasks');
   renderColumn('await_feedback', 'await-feedback-tasks');
   renderColumn('done', 'done-tasks');
+  renderNoTasksIfEmpty();
+}
+
+function renderBoardFiltered(query) {
+  if (!query) {
+    renderBoard();
+    return;
+  }
+  const match = function (t) {
+    const a = String(t.title || '').toLowerCase();
+    const b = String(t.description || '').toLowerCase();
+    return a.includes(query) || b.includes(query);
+  };
+  const by = function (s) {
+    return getTasksByStatus(s).filter(match);
+  };
+  renderColumnWithTasks(by('todo'), 'to-do-tasks');
+  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks');
+  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks');
+  renderColumnWithTasks(by('done'), 'done-tasks');
   renderNoTasksIfEmpty();
 }
 
@@ -46,6 +80,13 @@ function renderColumn(status, containerId) {
 
   container.innerHTML = '';
   const tasksForStatus = getTasksByStatus(status);
+  fillColumn(container, tasksForStatus);
+}
+
+function renderColumnWithTasks(tasksForStatus, containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.innerHTML = '';
   fillColumn(container, tasksForStatus);
 }
 
@@ -78,17 +119,22 @@ function dragstartHandler(event) {
 
 function dragoverHandler(event) {
   event.preventDefault();
+  const col = event.currentTarget;
+  if (col && col.classList) col.classList.add('drag-over');
 }
-
+function dragleaveHandler(event) {
+  const col = event.currentTarget;
+  if (col && col.classList) col.classList.remove('drag-over');
+}
 async function dropHandler(event) {
   event.preventDefault();
+  const col = event.currentTarget;
+  if (col && col.classList) col.classList.remove('drag-over');
+
   if (!event.dataTransfer) return;
-
   const taskId = event.dataTransfer.getData('text/plain');
-  const column = event.currentTarget;
-  const rawStatus = column && column.dataset ? column.dataset.status : '';
+  const rawStatus = col && col.dataset ? col.dataset.status : '';
   const newStatus = normalizeTaskStatus(rawStatus);
-
   if (!taskId || !newStatus) return;
 
   await updateTaskStatus(taskId, newStatus);
@@ -139,7 +185,7 @@ function onTaskEditClick(taskId) {
   const task = tasks.find((t) => String(t.id) === String(taskId));
   if (!task) return;
 
-  content.innerHTML = taskCardEditTemplate(task); // aus task_tamplates.js
+  content.innerHTML = taskCardEditTemplate(task); 
 }
 
 function onEditPriorityClick(event) {
@@ -193,13 +239,12 @@ async function onTaskEditSave(event, taskId) {
     renderBoard();
     openTaskCardById(taskId);
   } catch (error) {
-    console.error('onTaskEditSave:', error);
-    alert('Änderungen konnten nicht gespeichert werden.');
+    alert('Could not save changes.');
   }
 }
 
 async function onOverlayDeleteClick(taskId) {
-  if (!confirm('Diesen Task wirklich löschen?')) return;
+  if (!confirm('Do you really want to delete this task?')) return;
 
   try {
     await deleteTaskById(taskId);
@@ -209,7 +254,6 @@ async function onOverlayDeleteClick(taskId) {
     renderBoard();
     closeTaskCard();
   } catch (err) {
-    console.error(err);
-    alert('Task konnte nicht gelöscht werden (siehe Konsole).');
+    alert('Task could not be deleted.');
   }
 }

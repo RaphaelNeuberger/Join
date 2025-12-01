@@ -56,87 +56,72 @@ function renderAssignees(assignees = []) {
     })
     .join('');
 }
+
 function taskTemplate(task) {
+  const { id, category, title, description, assignedTo, priority, subtasks } = task;
   return `
-    <div class="card-task"
-         draggable="true"
+    <div class="card-task" draggable="true"
          ondragstart="dragstartHandler(event)"
-         data-task-id="${task.id}">
-      <p class="card-type">${escapeHtml(task.category || '')}</p>
-      <span class="card-title">${escapeHtml(task.title || '')}</span>
-      <p class="story">${escapeHtml(task.description || '')}</p>
+         data-task-id="${id}"
+         onclick="openTaskCardById('${id}')"> <!-- WICHTIG: richtige Funktion -->
+
+      <p class="card-type">${category || ''}</p>
+
+      <span class="card-title">${title || ''}</span>
+      <p class="story">${description || ''}</p>
+
+      ${subtaskProgressHTML(subtasks)}
+
       <div class="card-footer">
-        <div class="assigned-list">
-          ${renderAssignees(task.assignedTo)}
-        </div>
-        <div class="priority">${String(task.priority || '').toLowerCase()}</div>
+        <div class="assigned-list">${renderAssignees(assignedTo)}</div>
+        <div class="priority">${priorityIcon(priority)}</div> <!-- ICON-ONLY -->
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || '-';
-  const priority = (task.priority || 'medium').toLowerCase();
+  const cat = task.category || 'Category';
 
   return `
     <div class="task-card-header">
       <div class="task-card-header-category-close">
-        <div class="task-card-category">
-          ${escapeHtml(task.category || 'Category')}
-        </div>
+        <div class="task-card-category">${escapeHtml(cat)}</div>
         <span class="task-card-close" onclick="closeTaskCard()">X</span>
       </div>
       <h1>${escapeHtml(task.title || '')}</h1>
     </div>
 
     <div class="task-card-body">
-      <p class="task-card-story">
-        ${escapeHtml(task.description || '')}
-      </p>
+      <p class="task-card-story">${escapeHtml(task.description || '')}</p>
 
       <table>
+        <tr><td><strong>Due date:</strong></td><td>${escapeHtml(dueDate)}</td></tr>
         <tr>
-          <td>Due date:</td>
-          <td>${escapeHtml(dueDate)}</td>
-        </tr>
-        <tr>
-          <td>Priority:</td>
-          <td>${capitalize(priority)}</td>
+          <td><strong>Priority:</strong></td>
+          <td class="prio-cell">${priorityIcon(task.priority)} <span class="prio-text">${normalizePriority(task.priority)}</span></td>
         </tr>
       </table>
 
-      <div class="overlay-task-card-section">
-        <p class="overlay-task-card-label-big">Assigned To:</p>
-        <div class="assigned-list-detail">
-          ${renderAssigneesDetail(task.assignedTo || [])}
-        </div>
-      </div>
+      <label class="overlay-task-card-label-big">Assigned To</label>
+      <div class="assigned-list-detail">${renderAssigneesDetail(task.assignedTo || [])}</div>
 
-      <div class="overlay-task-card-section">
-        <p class="overlay-task-card-label-big">Subtasks</p>
-        <ul class="subtask-list-detail">
-          ${renderSubtasksDetail(task.subtasks || [])}
-        </ul>
-      </div>
-    </div>
+      <p class="overlay-task-card-label-big">Subtasks</p>
+      <ul class="subtask-list-detail">
+        ${renderSubtasksDetail(task.subtasks || [])}
+      </ul>
 
-    <div class="task-card-footer">
-      <button class="overlay-task-card-delete"
-              onclick="onOverlayDeleteClick('${task.id}')">
-        Delete
-      </button>
-      <button class="overlay-task-card-edit"
-              onclick="onOverlayEditClick('${task.id}')">
-        Edit
-      </button>
-    </div>
-  `;
+      <div class="task-card-footer">
+        <button onclick="onTaskEditClick('${task.id}')">Edit</button>
+        <button onclick="onOverlayDeleteClick('${task.id}')">Delete</button>
+      </div>
+    </div>`;
 }
+
 
 function taskCardEditTemplate(task) {
   const priority = (task.priority || 'medium').toLowerCase();
-  const dueDate = task.dueDate || '';
+  const dueDate = task.dueDate || '/';
 
   const urgentActive = priority === 'urgent' ? ' is-active' : '';
   const mediumActive = priority === 'medium' ? ' is-active' : '';
@@ -315,4 +300,72 @@ function getInitialsFromName(name) {
     parts[0].charAt(0).toUpperCase() +
     parts[parts.length - 1].charAt(0).toUpperCase()
   );
+}
+
+function normalizePriority(p) {
+  const v = String(p || 'Medium').toLowerCase();
+  if (v.startsWith('u')) return 'Urgent';
+  if (v.startsWith('l')) return 'Low';
+  return 'Medium';
+}
+
+function priorityIcon(priority) {
+  const p = normalizePriority(priority);
+  return `<span class="prio-icon" aria-label="${p}" title="${p}">${priorityIconSVG(p)}</span>`;
+}
+function priorityIconSVG(priority) {
+  const p = normalizePriority(priority);
+
+  // URGENT: Doppel-Chevron ↑↑
+  if (p === 'Urgent') {
+    return `
+      <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
+        <polyline points="3,12 10,5 17,12"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="3,8 10,1 17,8"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+  }
+
+  // LOW: Doppel-Chevron ↓↓
+  if (p === 'Low') {
+    return `
+      <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
+        <polyline points="3,4 10,11 17,4"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+        <polyline points="3,8 10,15 17,8"
+          fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+  }
+
+  // MEDIUM: zwei Balken ‖
+  return `
+    <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true">
+      <rect x="2" y="3" width="16" height="2" rx="1" fill="currentColor"/>
+      <rect x="2" y="7" width="16" height="2" rx="1" fill="currentColor"/>
+    </svg>`;
+}
+
+
+function priorityBadge(priority, withText = true) {
+  const p = normalizePriority(priority);
+  const cls = p === 'Urgent' ? 'urgent' : p === 'Low' ? 'low' : 'medium';
+  const txt = withText ? `<span class="priority-badge__text">${p}</span>` : '';
+  return `<span class="priority-badge priority-badge--${cls}" title="${p}">${priorityIconSVG(p)}${txt}</span>`;
+}
+function subtaskProgressHTML(subtasks) {
+  const list = Array.isArray(subtasks) ? subtasks : [];
+  if (!list.length) return '';
+  const done = list.filter(s => s && (s.done === true || s.checked === true)).length;
+  const total = list.length;
+  const pct = Math.round((done / total) * 100);
+  return `
+    <div class="subtask-progress">
+      <div class="subtask-progress__bar"><div style="width:${pct}%"></div></div>
+      <span class="subtask-progress__text">${done}/${total} Subtasks</span>
+    </div>`;
 }
