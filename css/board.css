@@ -199,14 +199,6 @@ body {
   justify-content: space-between;
 }
 
-
-@media (max-width: 1126px) {
-  .board-container {
-    padding: 120px 16px 16px;
-  }
-}
-
-
 @media (max-width: 1023px) {
   .board-container {
     margin-top: 120px;
