@@ -107,7 +107,7 @@ function taskCardContentTemplate(task) {
         <tr><td><strong>Due date:</strong></td><td>${escapeHtml(dueDate)}</td></tr>
         <tr>
           <td><strong>Priority:</strong></td>
-          <td class="prio-cell">${priorityIcon(task.priority)} <span class="prio-text">${normalizePriority(task.priority)}</span></td>
+          <td class="prio-cell"> <span class="prio-text">${normalizePriority(task.priority)}</span> ${priorityIcon(task.priority)}</td>
         </tr>
       </table>
 
@@ -319,8 +319,11 @@ function normalizePriority(p) {
 
 function priorityIcon(priority) {
   const p = normalizePriority(priority);
-  return `<span class="prio-icon" aria-label="${p}" title="${p}">${priorityIconSVG(p)}</span>`;
+  const color = priorityColor(p);
+  // style color auf dem wrapper (SVGs nutzen currentColor)
+  return `<span class="prio-icon" aria-label="${p}" title="${p}" style="color: ${color};">${priorityIconSVG(p)}</span>`;
 }
+
 function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
@@ -362,9 +365,11 @@ function priorityIconSVG(priority) {
 function priorityBadge(priority, withText = true) {
   const p = normalizePriority(priority);
   const cls = p === 'Urgent' ? 'urgent' : p === 'Low' ? 'low' : 'medium';
+  const color = priorityColor(p);
   const txt = withText ? `<span class="priority-badge__text">${p}</span>` : '';
-  return `<span class="priority-badge priority-badge--${cls}" title="${p}">${priorityIconSVG(p)}${txt}</span>`;
+  return `<span class="priority-badge priority-badge--${cls}" title="${p}" style="color: ${color}; display:inline-flex; align-items:center; gap:6px;">${priorityIconSVG(p)}${txt}</span>`;
 }
+
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
   if (!list.length) return '';
@@ -376,4 +381,11 @@ function subtaskProgressHTML(subtasks) {
       <div class="subtask-progress__bar"><div style="width:${pct}%"></div></div>
       <span class="subtask-progress__text">${done}/${total} Subtasks</span>
     </div>`;
+}
+
+function priorityColor(priority) {
+  const p = normalizePriority(priority);
+  if (p === 'Urgent') return '#ff3d00';  
+  if (p === 'Low') return '#5be84a';     
+  return '#ffab2b';                     
 }
