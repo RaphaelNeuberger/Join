@@ -182,132 +182,170 @@ body.logged-out .nav-guest {
   flex-direction: column;
 }
 
+
+
+
+
 @media (max-width: 500px) {
   .sidebar {
     height: 72px;
+    padding: 6px 8px;
   }
 
-  .nav-item.active,
-  .nav-item:hover {
-    height: 47px;
-    /* gleiche Höhe, kein Überlauf */
-    padding: 6px 4px;
+  /* Icons-only: Labels ausblenden, damit es nicht überläuft */
+  .nav-item span {
+    display: none; /* nur Icon sichtbar */
+    line-height: 1;
+    font-size: 0.85rem;
   }
+
   .nav-item {
     width: 52px;
     height: 52px;
     min-width: 52px;
     border-radius: 10px;
-    padding: 4px;
-  }
-
-  .nav-item span {
-    font-size: 1rem;
-    margin-top: 2px;
+    padding: 6px;               /* gleichmäßiger Innenabstand */
+    gap: 0;                     /* Icon + kein Text = kein Gap */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 4px;              /* Abstand zwischen Buttons */
+    box-sizing: border-box;
   }
 
   .nav-item .nav-icon {
-    height: 18px;
+    height: 22px;               /* einheitliche Icon-Größe */
     width: auto;
   }
 
+  /* Active-Style kompakt und zentriert */
   .nav-item.active {
-    width: 52px;
     height: 52px;
+    width: 52px;
+    padding: 6px;
+    border-radius: 10px;
+    background: #091931;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Hover sollte aktivem Eintrag nichts wegnehmen */
+  .nav-item:not(.active):hover {
+    background: #2a3d59;
+    color: #cdcdcd;
+    cursor: pointer;
+  }
+
+  /* active on hover bleibt unverändert und nicht klickbar */
+  .nav-item.active:hover {
+    background: #091931;
+    color: #ffffff;
+    cursor: default;
   }
 
   .sidebar-nav {
     gap: 8px;
+    padding: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
-@media (max-width: 375px) {
-  .sidebar {
-    height: 64px;
-  }
 
-  .nav-item {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    border-radius: 8px;
-    padding: 4px;
-    gap: 2px;
-  }
-
-  .nav-item.active,
-  .nav-item:hover {
-    height: 40px;
-    /* gleiche Höhe, kein Überlauf */
-    padding: 4px 2px;
-  }
-
-  .nav-item span {
-    font-size: 1rem;
-    margin-top: 1px;
-  }
-
-  .nav-item .nav-icon {
-    height: 16px;
-    width: auto;
-  }
-
-  .nav-item.active {
-    width: 48px;
-    height: 48px;
-  }
-
+/* ===== Prevent hover-shift when Icons-only (<=380px) ===== */
+@media (max-width: 380px) {
   .sidebar-nav {
-    gap: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;                /* fixer Abstand zwischen Items */
+    padding: 6px 8px;
+    justify-content: space-around;
   }
-}
 
-@media (max-width: 320px) {
-  .sidebar {
-    height: 56px;
-  }
-
+  /* FIXED BOX for all nav items: width/height never change */
   .nav-item {
-    width: 40px;
-    height: 40px;
+    box-sizing: border-box;
+    flex: 0 0 40px;          /* fixiert Breite (kein Dehnen/Shrinken) */
+    width: 40px;             /* explizit damit nichts schwankt */
+    height: 40px;            /* feste Höhe */
     min-width: 40px;
-    border-radius: 6px;
-    padding: 2px;
-    gap: 2px;
+    border-radius: 8px;
+    padding: 4px;            /* bleibt konstant */
+    margin: 0;               /* keine margin-Änderungen beim hover */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+    -webkit-font-smoothing: antialiased;
   }
 
-  .nav-item span {
-    font-size: 1rem;
-    margin-top: 0;
-  }
+  /* Icons nur anzeigen (Labels aus) */
+  .nav-item span { display: none; }
 
   .nav-item .nav-icon {
-    height: 14px;
+    height: 18px;
     width: auto;
+    display: block;
+    pointer-events: none;    /* Icon selbst soll keine Hover-Events auslösen */
   }
 
+  /* Hover: nur visuelle Effekte, keine Layout-Änderungen */
+  .nav-item:not(.active):hover {
+    background-color: #2a3d59;
+    transform: translateY(-3px);     /* rein visuell, beeinflusst kein Layout */
+    box-shadow: 0 6px 12px rgba(10,20,40,0.12); /* keine Border (Border könnte Layout verschieben) */
+    cursor: pointer;
+  }
+
+  /* Active: optisch markiert, gleiche Box-Größe */
   .nav-item.active {
-    width: 40px;
-    height: 40px;
+    background-color: #091931;
+    transform: none;
+    box-shadow: none;
+    cursor: default;
   }
 
-  .sidebar-nav {
-    gap: 4px;
-    justify-content: space-between;
-    padding: 0 8px;
+  .nav-item.active:hover {
+    /* bleibt unverändert — kein Größenwechsel */
+    background-color: #091931;
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* WICHTIG: Entferne oder überschreibe alle anderen Regeln, die Größe/padding/width/height/margin beim :hover/:active ändern */
+  .nav-item:hover,
+  .nav-item:active,
+  .nav-item:focus {
+    outline: none; /* wenn du Fokus sichtbar brauchst, verwende box-shadow statt outline, weil outline manchmal Layout beeinflussen kann */
   }
 }
 
-.nav-item.active .nav-icon {
-  filter: brightness(0) invert(1);
+/* optional: sorgen dass zwischen 381px und 500px ebenfalls kein Hover-Springen vorkommt */
+@media (min-width: 381px) and (max-width: 500px) {
+  .sidebar-nav { gap: 8px; }
+  .nav-item {
+    box-sizing: border-box;
+    flex: 0 0 70px;
+    width: 70px;
+    height: 52px;
+    padding: 6px 8px;
+    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+  .nav-item:not(.active):hover {
+    transform: translateY(-3px);
+    background-color: #2a3d59;
+    box-shadow: 0 6px 12px rgba(10,20,40,0.08);
+  }
+  .nav-item span { display: block; }
 }
 
-.nav-item.active:hover {
-  background: #091931; /* gleicher Hintergrund wie active */
-  cursor: default;
-}
 
-.nav-item.active:hover {
-  background: #091931; /* bleibt wie active */
-  color: #ffffff; /* bleibt weiß */
+.add-task-btn {
+  
+  white-space: nowrap;
 }

@@ -1,11 +1,4 @@
-/* board.css */
 
-/* Grund-Setup */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
 
 body {
   margin: 0;
