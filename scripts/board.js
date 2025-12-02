@@ -1,3 +1,4 @@
+// Board Script
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -259,5 +260,47 @@ async function onOverlayDeleteClick(taskId) {
     closeTaskCard();
   } catch (err) {
     alert('Task could not be deleted.');
+  }
+}
+async function onSubtaskToggle(taskId, subIndex, isChecked) {
+  const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (taskIndex === -1) return;
+
+  const task = tasks[taskIndex];
+  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+
+  if (!subtasks[subIndex]) return;
+
+  subtasks[subIndex] = {
+    ...subtasks[subIndex],
+    done: !!isChecked
+  };
+
+  const updatedTask = {
+    ...task,
+    subtasks
+  };
+
+  try {
+    await saveTask(updatedTask);
+
+    tasks[taskIndex] = updatedTask;
+
+
+    renderBoard();
+
+    const content = document.getElementById('taskCardContent');
+    if (content) {
+      const listEl = content.querySelector('.subtask-list-detail');
+      if (listEl) {
+        listEl.innerHTML = renderSubtasksDetail(
+          updatedTask.subtasks || [],
+          updatedTask.id
+        );
+      }
+    }
+  } catch (err) {
+    console.error('onSubtaskToggle error:', err);
+    alert('Subtask konnte nicht gespeichert werden.');
   }
 }

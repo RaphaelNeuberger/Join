@@ -1,3 +1,4 @@
+// API
 let tasks = [];
 const FIREBASE_BASE_URL =
   'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app';

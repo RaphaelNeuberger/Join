@@ -1,3 +1,4 @@
+//task_templates
 function noTaskTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
@@ -124,12 +125,27 @@ function taskCardContentTemplate(task) {
 
       <p class="overlay-task-card-label-big">Subtasks</p>
       <ul class="subtask-list-detail">
-        ${renderSubtasksDetail(task.subtasks || [])}
+        ${renderSubtasksDetail(task.subtasks || [], task.id)}
       </ul>
 
       <div class="task-card-footer">
-        <button onclick="onTaskEditClick('${task.id}')">Edit</button>
-        <button onclick="onOverlayDeleteClick('${task.id}')">Delete</button>
+              <button onclick="onOverlayDeleteClick('${task.id}')">
+          <img
+            src="./img/icons/delete.svg"
+            alt="Delete"
+            class="task-card-footer-icon"
+          />
+          Delete
+        </button>
+        <button onclick="onTaskEditClick('${task.id}')">
+          <img
+            src="./img/icons/edit.svg"
+            alt="Edit"
+            class="task-card-footer-icon"
+          />
+          Edit
+        </button>
+
       </div>
     </div>`;
 }
@@ -227,7 +243,8 @@ function taskCardEditTemplate(task) {
         <div class="overlay-task-card-section">
           <p class="overlay-task-card-label-big">Subtasks</p>
           <ul class="subtask-list-detail">
-            ${renderSubtasksDetail(task.subtasks || [])}
+            ${renderSubtasksDetail(task.subtasks || [], task.id)}
+
           </ul>
         </div>
       </div>
@@ -283,29 +300,31 @@ function renderAssigneesDetail(list) {
     .join("");
 }
 
-function renderSubtasksDetail(list) {
+function renderSubtasksDetail(list, taskId) {
   if (!list || !list.length) {
     return '<li class="subtask-item"><span class="subtask-title">No subtasks</span></li>';
   }
+
   return list
-    .map(function (s) {
-      var checked = s.done ? "checked" : "";
+    .map(function (s, index) {
+      const checked = s.done === true || s.checked === true ? 'checked' : '';
       return (
         '<li class="subtask-item">' +
-        '<label class="subtask-checkbox">' +
-        '<input type="checkbox" disabled ' +
-        checked +
-        " />" +
-        '<span class="subtask-custom-box"></span>' +
-        '<span class="subtask-title">' +
-        escapeHtml(s.title || "") +
-        "</span>" +
-        "</label>" +
+          '<label class="subtask-checkbox">' +
+            '<input type="checkbox" ' +
+              checked +
+              ' onchange="onSubtaskToggle(\'' + taskId + '\',' + index + ', this.checked)" />' +
+            '<span class="subtask-custom-box"></span>' +
+            '<span class="subtask-title">' +
+              escapeHtml(s.title || "") +
+            "</span>" +
+          "</label>" +
         "</li>"
       );
     })
     .join("");
 }
+
 
 function getInitialsFromName(name) {
   var parts = String(name).trim().split(" ");
