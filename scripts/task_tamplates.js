@@ -74,7 +74,7 @@ function taskTemplate(task) {
     <div class="card-task" draggable="true"
          ondragstart="dragstartHandler(event)"
          data-task-id="${id}"
-         onclick="openTaskCardById('${id}')"> <!-- WICHTIG: richtige Funktion -->
+         onclick="openTaskCardById('${id}')">
 
       <p class="card-type">${category || ""}</p>
 
@@ -88,6 +88,16 @@ function taskTemplate(task) {
         <div class="priority">${priorityIcon(priority)}</div> <!-- ICON-ONLY -->
       </div>
     </div>`;
+}
+
+// Datum für Anzeige im Overlay von YYYY-MM-DD zu DD/MM/YY
+function formatDateToDDMMYY(dateStr) {
+  if (!dateStr) return "-";
+  const parts = String(dateStr).split("-");
+  if (parts.length !== 3) return dateStr;
+  const [y, m, d] = parts;
+  const yy = y.slice(2);
+  return `${d}/${m}/${yy}`;
 }
 
 function taskCardContentTemplate(task) {
@@ -107,21 +117,23 @@ function taskCardContentTemplate(task) {
       <p class="task-card-story">${escapeHtml(task.description || "")}</p>
 
       <table>
-        <tr><td><strong>Due date:</strong></td><td>${escapeHtml(
-          dueDate
-        )}</td></tr>
+        <tr>
+          <td><strong>Due date:</strong></td>
+          <td>${formatDateToDDMMYY(dueDate)}</td>
+        </tr>
         <tr>
           <td><strong>Priority:</strong></td>
-          <td class="prio-cell"> <span class="prio-text">${normalizePriority(
-            task.priority
-          )}</span> ${priorityIcon(task.priority)}</td>
+          <td class="prio-cell">
+            <span class="prio-text">${normalizePriority(task.priority)}</span>
+            ${priorityIcon(task.priority)}
+          </td>
         </tr>
       </table>
 
       <label class="overlay-task-card-label-big">Assigned To</label>
-      <div class="assigned-list-detail">${renderAssigneesDetail(
-        task.assignedTo || []
-      )}</div>
+      <div class="assigned-list-detail">
+        ${renderAssigneesDetail(task.assignedTo || [])}
+      </div>
 
       <p class="overlay-task-card-label-big">Subtasks</p>
       <ul class="subtask-list-detail">
@@ -129,14 +141,6 @@ function taskCardContentTemplate(task) {
       </ul>
 
       <div class="task-card-footer">
-              <button onclick="onOverlayDeleteClick('${task.id}')">
-          <img
-            src="./img/icons/delete.svg"
-            alt="Delete"
-            class="task-card-footer-icon"
-          />
-          Delete
-        </button>
         <button onclick="onTaskEditClick('${task.id}')">
           <img
             src="./img/icons/edit.svg"
@@ -145,31 +149,34 @@ function taskCardContentTemplate(task) {
           />
           Edit
         </button>
-
+        <button onclick="onOverlayDeleteClick('${task.id}')">
+          <img
+            src="./img/icons/delete.svg"
+            alt="Delete"
+            class="task-card-footer-icon"
+          />
+          Delete
+        </button>
       </div>
     </div>`;
 }
 
 function taskCardEditTemplate(task) {
   const priority = (task.priority || "medium").toLowerCase();
-  const dueDate = task.dueDate || "/";
+  const dueDate = task.dueDate || "";
 
   const urgentActive = priority === "urgent" ? " is-active" : "";
   const mediumActive = priority === "medium" ? " is-active" : "";
   const lowActive = priority === "low" ? " is-active" : "";
 
   return `
-    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${
-      task.id
-    }')">
+    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${task.id}')">
       <div class="task-card-header">
         <div class="task-card-header-category-close">
           <div class="task-card-category">
             ${escapeHtml(task.category || "Category")}
           </div>
-          <span class="task-card-close" onclick="onTaskEditCancel('${
-            task.id
-          }')">X</span>
+          <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
         </div>
         <input
           type="text"
@@ -244,7 +251,6 @@ function taskCardEditTemplate(task) {
           <p class="overlay-task-card-label-big">Subtasks</p>
           <ul class="subtask-list-detail">
             ${renderSubtasksDetail(task.subtasks || [], task.id)}
-
           </ul>
         </div>
       </div>
@@ -257,10 +263,150 @@ function taskCardEditTemplate(task) {
         </button>
         <button type="submit"
                 class="overlay-task-card-edit">
-          Save
+          Ok ✓
         </button>
       </div>
     </form>
+  `;
+}
+
+function renderSubtasksDetail(list, taskId) {
+  if (!list || !list.length) {
+    return '<li class="subtask-item"><span class="subtask-title">No subtasks</span></li>';
+  }
+
+  return list
+    .map(function (s, index) {
+      const checked = s.done === true || s.checked === true ? "checked" : "";
+      return (
+        '<li class="subtask-item">' +
+          '<label class="subtask-checkbox">' +
+            '<input type="checkbox" ' +
+              checked +
+              ' onchange="onSubtaskToggle(\'' + taskId + '\',' + index + ', this.checked)" />' +
+            '<span class="subtask-custom-box"></span>' +
+            '<span class="subtask-title">' +
+              escapeHtml(s.title || "") +
+            "</span>" +
+          "</label>" +
+        "</li>"
+      );
+    })
+    .join("");
+}
+
+async function onSubtaskToggle(taskId, subIndex, isChecked) {
+  const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (taskIndex === -1) return;
+
+  const task = tasks[taskIndex];
+  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+  if (!subtasks[subIndex]) return;
+
+  subtasks[subIndex] = {
+    ...subtasks[subIndex],
+    done: !!isChecked
+  };
+
+  const updatedTask = {
+    ...task,
+    subtasks
+  };
+
+  try {
+    await saveTask(updatedTask);
+
+    tasks[taskIndex] = updatedTask;
+
+    // Board (Karten + Progress) aktualisieren
+    renderBoard();
+
+    // Overlay-Subtasks neu zeichnen
+    const content = document.getElementById("taskCardContent");
+    if (content) {
+      const listEl = content.querySelector(".subtask-list-detail");
+      if (listEl) {
+        listEl.innerHTML = renderSubtasksDetail(
+          updatedTask.subtasks || [],
+          updatedTask.id
+        );
+      }
+    }
+  } catch (err) {
+    console.error("onSubtaskToggle error:", err);
+    alert("Subtask konnte nicht gespeichert werden.");
+  }
+}
+
+
+function taskCardEditTemplate(task) {
+  const priority = (task.priority || "medium").toLowerCase();
+  const dueDate = task.dueDate || "/";
+
+  const urgentActive = priority === "urgent" ? " is-active" : "";
+  const mediumActive = priority === "medium" ? " is-active" : "";
+  const lowActive = priority === "low" ? " is-active" : "";
+
+  return `
+    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${task.id}')">
+
+  <!-- FIXED HEADER -->
+  <div class="task-edit-header">
+    <div class="task-card-header-category-close">
+      <div class="task-card-category">${escapeHtml(task.category || "Category")}</div>
+      <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
+    </div>
+    <input type="text" name="title" class="form-group__input"
+      placeholder="Enter a title" value="${escapeHtml(task.title || "")}" required />
+  </div>
+
+  <!-- SCROLLABLE CONTENT -->
+  <div class="task-edit-scroll">
+    <div class="form-group">
+      <label class="form-group__label">Description</label>
+      <textarea name="description" class="form-group__textarea" rows="4"
+      placeholder="Enter a description">${escapeHtml(task.description || "")}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-group__label">Due date</label>
+      <input type="date" name="dueDate"
+             class="form-group__input form-group__input--date"
+             value="${escapeHtml(task.dueDate || "")}">
+    </div>
+
+    <div class="form-group">
+      <label class="form-group__label">Priority</label>
+      <div class="priority-buttons">
+        <button type="button" class="priority-buttons__button priority-buttons__button--urgent${urgentActive}"
+          data-priority="Urgent" onclick="onEditPriorityClick(event)">Urgent</button>
+        <button type="button" class="priority-buttons__button priority-buttons__button--medium${mediumActive}"
+          data-priority="Medium" onclick="onEditPriorityClick(event)">Medium</button>
+        <button type="button" class="priority-buttons__button priority-buttons__button--low${lowActive}"
+          data-priority="Low" onclick="onEditPriorityClick(event)">Low</button>
+        <input type="hidden" name="priority" value="${priority}" />
+      </div>
+    </div>
+
+    <div class="overlay-task-card-section">
+      <p class="overlay-task-card-label-big">Assigned To:</p>
+      <div class="assigned-list-detail">${renderAssigneesDetail(task.assignedTo || [])}</div>
+    </div>
+
+    <div class="overlay-task-card-section">
+      <p class="overlay-task-card-label-big">Subtasks</p>
+      <ul class="subtask-list-detail">${renderSubtasksDetail(task.subtasks || [], task.id)}</ul>
+    </div>
+  </div>
+
+  <!-- FIXED FOOTER -->
+  <div class="task-edit-footer">
+    <button type="button" class="overlay-task-card-delete" onclick="onTaskEditCancel('${task.id}')">Cancel</button>
+    <button type="submit" class="overlay-task-card-edit">Ok ✓</button>
+  </div>
+
+</form>
+
   `;
 }
 
@@ -420,3 +566,4 @@ function priorityColor(priority) {
   if (p === "Low") return "#5be84a";
   return "#ffab2b";
 }
+

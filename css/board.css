@@ -1,6 +1,5 @@
 /* board.css */
 
-/* Grund-Setup */
 *,
 *::before,
 *::after {
@@ -137,7 +136,11 @@ body {
   padding: 15px;
   cursor: grab;
 }
-
+.task-card-footer-icon {
+  width: 16px;
+  height: 18px;
+  pointer-events: none;
+}
 .card-task:active {
   cursor: grabbing;
 }
