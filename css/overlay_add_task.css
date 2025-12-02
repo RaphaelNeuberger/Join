@@ -76,7 +76,7 @@ overlay-modal {
 }
 
 .form-group__label {
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 500;
   color: #374151;
 }
@@ -91,8 +91,8 @@ overlay-modal {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   padding: 10px 12px;
-  font-size: 14px;
-  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-family: "Inter", sans-serif;
   outline: none;
 }
 
@@ -108,7 +108,7 @@ overlay-modal {
 }
 
 .form-group__error {
-  font-size: 12px;
+  font-size: 1rem;
   color: #dc2626;
 }
 .form-group__date-wrapper {
@@ -158,9 +158,7 @@ overlay-modal {
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease,
+  transition: background-color 0.15s ease, color 0.15s ease,
     box-shadow 0.15s ease;
 }
 
@@ -212,7 +210,7 @@ overlay-modal {
   border-radius: 8px;
   border: 1px solid #d1d5db;
   padding: 8px 10px;
-  font-size: 14px;
+  font-size: 1rem;
 }
 
 .subtask-input__button {
@@ -242,7 +240,7 @@ overlay-modal {
   justify-content: space-between;
   margin-top: 20px;
   align-items: center;
-  font-size: 13px;
+  font-size: 1rem;
   color: #6b7280;
 }
 
@@ -269,7 +267,7 @@ overlay-modal {
   background-color: #ffffff;
   color: #2a3647;
   border: 1px solid #2a3647;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   border-radius: 8px;
 }
@@ -277,14 +275,14 @@ overlay-modal {
 .form-actions__button--submit {
   background-color: #2a3647;
   color: white;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 700;
   border-radius: 8px;
 }
 .success-message {
   display: none;
   margin-top: 12px;
-  font-size: 14px;
+  font-size: 1rem;
   color: #16a34a;
   display: inline-flex;
   align-items: center;

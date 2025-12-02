@@ -186,8 +186,8 @@
         initials
       )}</span>
         <div class="user">
-          <span class="user-name">${escapeHtml(name)}</span><br />
-          <span class="user-email">${escapeHtml(c.email || "")}</span>
+          <div class="user-name">${escapeHtml(name)}</div>
+          <div class="user-email">${escapeHtml(c.email || "")}</div>
         </div>
       `;
       // Klick-Handler: fülle das Info-Panel
