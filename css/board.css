@@ -378,6 +378,7 @@ body {
 
 .assigned-to-dropdown .checkbox {
   margin-right: 8px;
+  display: none;
 }
 
 .assigned-to-dropdown .avatar {
