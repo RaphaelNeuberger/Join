@@ -26,6 +26,34 @@
     return AVATAR_COLORS[colorIndex];
   }
 
+  async function checkEmailExists(email) {
+    try {
+      const snap = await window.get(
+        window.child(window.ref(window.firebaseDb), "contacts")
+      );
+      if (!snap || !snap.exists()) {
+        return false;
+      }
+
+      const contacts = snap.val();
+      for (let id in contacts) {
+        if (
+          contacts[id].email &&
+          contacts[id].email.toLowerCase() === email.toLowerCase()
+        ) {
+          return true;
+        }
+      }
+      return false;
+    } catch (error) {
+      console.error("Fehler beim Überprüfen der E-Mail:", error);
+      return false;
+    }
+  }
+
+  // Mache checkEmailExists global verfügbar
+  window.checkEmailExists = checkEmailExists;
+
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
       // firebase-init.js noch nicht geladen -> nochmal in 100ms versuchen
@@ -223,18 +251,42 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
+      // Prüfe E-Mail-Format (muss @ und Domain enthalten)
+      const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+      if (!emailPattern.test(email)) {
+        alert("Please enter a valid email address (e.g. name@domain.com)");
+        return;
+      }
+
+      // Prüfe, ob E-Mail bereits existiert
+      const emailExists = await window.checkEmailExists(email);
+      if (emailExists) {
+        alert("Contact already established with this email address");
+        return;
+      }
+
       try {
         // Neuen Kontakt zu Firebase hinzufügen
-        await window.push(window.ref(window.firebaseDb, "contacts"), {
-          name,
-          email,
-          phone,
-        });
+        const newContactRef = await window.push(
+          window.ref(window.firebaseDb, "contacts"),
+          {
+            name,
+            email,
+            phone,
+          }
+        );
 
         // Dialog schließen
         closeAddContactDialog();
 
-        // Erfolgsmeldung (optional)
+        // Zeige Erfolgsmeldung zuerst
+        showSuccessMessage("Contact successfully created");
+
+        // Warte 2 Sekunden, dann wähle den neuen Kontakt aus (nach der Meldung)
+        setTimeout(() => {
+          selectNewlyAddedContact(newContactRef.key, name, email, phone);
+        }, 2000);
+
         console.log("Kontakt erfolgreich hinzugefügt!");
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Kontakts:", error);
@@ -378,4 +430,48 @@ async function deleteCurrentContact() {
         (error.message || "Unbekannter Fehler")
     );
   }
+}
+
+// Hilfsfunktionen für neuen Kontakt
+function selectNewlyAddedContact(id, name, email, phone) {
+  const contact = { id, name, email, phone };
+
+  // Suche das entsprechende contact-item Element
+  const contactItems = document.querySelectorAll(".contact-item");
+  let targetItem = null;
+
+  contactItems.forEach((item) => {
+    const nameEl = item.querySelector(".user-name");
+    if (nameEl && nameEl.textContent === name) {
+      targetItem = item;
+    }
+  });
+
+  if (targetItem) {
+    // Simuliere einen Klick auf das Element
+    targetItem.click();
+  }
+}
+
+function showSuccessMessage(message) {
+  // Finde den info-contact-area Container
+  const infoArea = document.querySelector(".info-contact-area");
+  if (!infoArea) return;
+
+  // Speichere den aktuellen Inhalt
+  const originalContent = infoArea.innerHTML;
+
+  // Ersetze den Inhalt mit der Erfolgsmeldung
+  infoArea.innerHTML = `
+    <div class="success-message-wrapper">
+      <div class="contact-success-message">
+        ${message}
+      </div>
+    </div>
+  `;
+
+  // Nach 2 Sekunden: Stelle den ursprünglichen Inhalt wieder her
+  setTimeout(() => {
+    infoArea.innerHTML = originalContent;
+  }, 2000);
 }
