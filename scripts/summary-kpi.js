@@ -28,8 +28,18 @@
       (t) => t.priority === "urgent" || t.priority === "Urgent"
     );
     const urgent = urgentTasks.length;
-    const progress = tasks.filter((t) => t.status === "inProgress").length;
-    const feedback = tasks.filter((t) => t.status === "awaitFeedback").length;
+    const progress = tasks.filter(
+      (t) =>
+        t.status === "inprogress" ||
+        t.status === "inProgress" ||
+        t.status === "in-progress"
+    ).length;
+    const feedback = tasks.filter(
+      (t) =>
+        t.status === "await_feedback" ||
+        t.status === "awaitFeedback" ||
+        t.status === "await-feedback"
+    ).length;
     const total = tasks.length;
 
     // Aktualisiere die DOM-Elemente

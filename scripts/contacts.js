@@ -3,6 +3,29 @@
 (function () {
   let currentContact = null; // Speichert den aktuell ausgewählten Kontakt
 
+  // Avatar-Farben (gleiche wie in task_tamplates.js)
+  const AVATAR_COLORS = [
+    "rgb(110, 82, 255)",
+    "rgb(253, 112, 255)",
+    "rgb(70, 47, 138)",
+    "rgb(255, 188, 43)",
+    "rgb(30, 214, 193)",
+    "rgb(255, 123, 0)",
+  ];
+
+  function getAvatarColor(name = "") {
+    if (!AVATAR_COLORS.length) {
+      return "#ff7a00";
+    }
+
+    const hash = name
+      .split("")
+      .reduce((acc, char) => acc + char.charCodeAt(0), 0);
+
+    const colorIndex = hash % AVATAR_COLORS.length;
+    return AVATAR_COLORS[colorIndex];
+  }
+
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
       // firebase-init.js noch nicht geladen -> nochmal in 100ms versuchen
@@ -66,14 +89,19 @@
       const emailLabel = document.querySelector(".contact-information .para-3");
       const phoneLabel = document.querySelector(".contact-information .para-4");
 
-      if (logoEl)
-        logoEl.textContent = (contact.name || "")
-          .split(" ")
-          .map((s) => s.charAt(0))
-          .filter(Boolean)
-          .slice(0, 2)
-          .join("")
-          .toUpperCase();
+      const initials = (contact.name || "")
+        .split(" ")
+        .map((s) => s.charAt(0))
+        .filter(Boolean)
+        .slice(0, 2)
+        .join("")
+        .toUpperCase();
+
+      if (logoEl) {
+        logoEl.textContent = initials;
+        // Setze die Farbe basierend auf dem Namen
+        logoEl.style.backgroundColor = getAvatarColor(contact.name || "");
+      }
       if (nameEl) nameEl.textContent = contact.name || "";
       if (emailLabel) emailLabel.textContent = contact.email || "";
       if (phoneLabel) phoneLabel.textContent = contact.phone || "";
@@ -123,8 +151,12 @@
         .join("")
         .toUpperCase();
 
+      const avatarColor = getAvatarColor(name);
+
       item.innerHTML = `
-        <span class="name-logo">${escapeHtml(initials)}</span>
+        <span class="name-logo" style="background-color: ${avatarColor}">${escapeHtml(
+        initials
+      )}</span>
         <div class="user">
           <span class="user-name">${escapeHtml(name)}</span><br />
           <span class="user-email">${escapeHtml(c.email || "")}</span>

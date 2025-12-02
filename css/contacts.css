@@ -6,11 +6,7 @@ body {
 
 .main-contact {
   margin-left: 240px; /* Platz für Sidebar */
-<<<<<<< HEAD
   padding-left: 84px;
-=======
-  padding: 196px 84px 32px;
->>>>>>> f41dcef9ec69fcced524d01daef43576de6d8ebf
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -82,11 +78,11 @@ body {
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 .name-logo {
   text-align: center;
   padding: 0.7rem;
-  background-color: rgb(255, 123, 0);
   color: white;
   font-size: 12px;
   border-radius: 50%;
@@ -97,13 +93,23 @@ body {
   background-color: #2a3647;
   color: white;
 }
+
+.contact-item.active-contact {
+  background-color: #2a3647;
+  color: white;
+}
+
+.contact-item.active-contact .user-email {
+  color: var(--email);
+}
+
 .user-name {
   font-size: 20px;
   font-weight: 400;
 }
 .user-email {
   font-size: 16px;
-  color: #007cee;
+  color: var(--email);
   font-weight: 400;
 }
 
@@ -111,8 +117,8 @@ body {
   background-color: rgb(245, 246, 247);
   width: calc(100% - 320px);
   box-sizing: border-box;
-  padding-top: 7rem;
-  padding-left: 2rem;
+  padding-top: 12rem;
+  padding-left: 4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -131,7 +137,7 @@ body {
   font-size: 61px;
   font-style: bold;
   padding-right: 1rem;
-  border-right: #007cee 2px solid;
+  border-right: var(--accent) 3px solid;
 }
 .slogan {
   font-size: 27px;
@@ -153,7 +159,6 @@ body {
   width: 120px;
   font-weight: 500;
   font-style: medium;
-  background-color: rgb(255, 123, 0);
   color: white;
   font-size: 47px;
   border-radius: 50%;
@@ -201,14 +206,16 @@ body {
   font-style: regular;
   font-size: 20px;
   margin-bottom: 20px;
+  padding-bottom: 1rem;
 }
 .para-2 {
   font-size: 16px;
   font-weight: 700;
   font-style: bold;
+  margin-bottom: 1rem;
 }
 .para-3 {
-  color: #007cee;
+  color: var(--email);
   font-size: 16px;
   font-weight: 400;
   font-style: regular;
@@ -253,7 +260,7 @@ body {
 }
 .left-section hr {
   width: 20%;
-  border: 0.5px solid #007cee;
+  border: 0.5px solid var(--accent);
   margin: 0;
   margin-right: auto;
 }
@@ -376,32 +383,35 @@ body {
 .dialog-left {
   background-color: #2a3647;
   width: 40%;
-  padding: 66px 46px;
+  padding: 80px 46px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
   color: white;
 }
 
 .dialog-left img {
   width: 55px;
   height: auto;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .dialog-left h2 {
   font-size: 61px;
   font-weight: 700;
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   line-height: 1.2;
+  color: white;
 }
 
 .dialog-subtitle {
   font-size: 27px;
   font-weight: 400;
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  color: white;
 }
 
 .dialog-underline {

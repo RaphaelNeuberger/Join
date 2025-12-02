@@ -6,16 +6,13 @@
   -moz-appearance: none;
   appearance: none;
   text-decoration: none;
-  
 }
-
 
 input::placeholder,
 textarea::placeholder {
-color: var(--placeholder-color);
-opacity: 1; /* Firefox reduziert standardmäßig die Opazität */
+  color: var(--placeholder-color);
+  opacity: 1; /* Firefox reduziert standardmäßig die Opazität */
 }
-
 
 html {
   height: 100%;
@@ -48,6 +45,7 @@ body {
   --shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
   --placeholder-color: #d1d1d1;
   --menu: #cdcdcd;
+  --email: #007cee;
 }
 
 h1 {
@@ -114,7 +112,6 @@ h3 {
   padding: 0 16px;
 }
 
-
 /* ========================================
    FORM ELEMENTS RESET
    ======================================== */
@@ -126,13 +123,13 @@ button {
   /* Entfernt alle Browser-Defaults */
   all: unset;
   box-sizing: border-box;
-  
+
   /* Basis-Styles */
   font-family: inherit;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
-  
+
   /* Display */
   display: block;
   width: 100%;
@@ -174,5 +171,5 @@ button {
   cursor: pointer;
   display: inline-flex;
   align-items: center;
-    justify-content: center;
+  justify-content: center;
 }
