@@ -1,109 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Summary • Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/sidebar.css" />
+    <link rel="stylesheet" href="css/summary.css" />
+    <link rel="stylesheet" href="css/fonts.css" />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Summary • Join</title>
-  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/header.css" />
-  <link rel="stylesheet" href="css/sidebar.css" />
-  <link rel="stylesheet" href="css/summary.css" />
-  <link rel="stylesheet" href="css/fonts.css" />
-  
-</head>
-
-<body onload="includeHeaderHTML();includeSidebarHTML();">
-  <nav header-html="./templates/header.html"></nav>
-  <aside class="sidebar" sidebar-html="./templates/sidebar.html"></aside>
-
-
-
-  <main class="addtask-wrap">
-
-    <div class="summary-head">
-      <h1 class="page-title">Join 360</h1>
-      <span class="divider1"></span>
-      <span class="subtitle">Key Metrics at a Glance</span>
-      <span class="divider2"></span>
+  <body onload="includeHeaderHTML();includeSidebarHTML();">
+    <!-- Greeting Splash Screen -->
+    <div id="greeting-splash" class="greeting-splash">
+      <div class="greeting-content">
+        <p class="greet-text">Good morning,</p>
+        <span class="greet-name" id="greet-name-splash">Sofia Müller</span>
+      </div>
     </div>
 
-    <section class="dashboard">
-      <section class="kpi-left">
-        <div class="kpi-line">
-          <a href="board.html" class="kpi-card" tabindex="0" role="link">
-            <div class="kpi-icon">
-              <img src="img/icons/edit-white.svg" class="edit" alt="To-do" />
-            </div>
-            <div class="kpi-valuelabel">
-              <div class="kpi-value" id="kpi-todo">1</div>
-              <div class="kpi-label">To-do</div>
-            </div>
-          </a>
-          <a href="board.html" class="kpi-card" tabindex="0" role="link">
-            <div class="kpi-icon">
-              <img src="img/icons/done.svg" alt="Done" />
-            </div>
-            <div class="kpi-valuelabel">
-              <div class="kpi-value" id="kpi-done">1</div>
-              <div class="kpi-label">Done</div>
-            </div>
-          </a>
-        </div>
+    <nav header-html="./templates/header.html"></nav>
+    <aside class="sidebar" sidebar-html="./templates/sidebar.html"></aside>
 
-        <div class="kpi-line">
-          <a href="board.html" class="kpi-card" tabindex="0" role="link">
-            <div class="kpi-iconurgent">
-              <img src="img/icons/urgent.svg" alt="Urgent" />
-            </div>
-            <div class="kpi-valuelabel">
-              <div class="kpi-value" id="kpi-urgent">1</div>
-              <div class="kpi-label">Urgent</div>
-            </div>
-            <div class="dividerdeadline"></div>
-            <div></div>
-            <div class="kpi-label">
-              <strong class="deadlinedate">October 16, 2022</strong>
-              <div>
-                <div class="deadlinetext">Upcoming Deadline</div>
+    <main class="addtask-wrap">
+      <div class="summary-head">
+        <h1 class="page-title">Join 360</h1>
+        <span class="divider1"></span>
+        <span class="subtitle">Key Metrics at a Glance</span>
+        <span class="divider2"></span>
+      </div>
+
+      <section class="dashboard">
+        <section class="kpi-left">
+          <div class="kpi-line">
+            <a href="board.html" class="kpi-card" tabindex="0" role="link">
+              <div class="kpi-icon">
+                <img src="img/icons/edit-white.svg" class="edit" alt="To-do" />
               </div>
-            </div>
-          </a>
-        </div>
+              <div class="kpi-valuelabel">
+                <div class="kpi-value" id="kpi-todo">1</div>
+                <div class="kpi-label">To-do</div>
+              </div>
+            </a>
+            <a href="board.html" class="kpi-card" tabindex="0" role="link">
+              <div class="kpi-icon">
+                <img src="img/icons/done.svg" alt="Done" />
+              </div>
+              <div class="kpi-valuelabel">
+                <div class="kpi-value" id="kpi-done">1</div>
+                <div class="kpi-label">Done</div>
+              </div>
+            </a>
+          </div>
 
-        <div class="kpi-line">
-          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
-            <div class="kpi-value" id="kpi-board">5</div>
-            <div class="kpi-label">Tasks in Board</div>
-          </a>
+          <div class="kpi-line">
+            <a href="board.html" class="kpi-card" tabindex="0" role="link">
+              <div class="kpi-iconurgent">
+                <img src="img/icons/urgent.svg" alt="Urgent" />
+              </div>
+              <div class="kpi-valuelabel">
+                <div class="kpi-value" id="kpi-urgent">1</div>
+                <div class="kpi-label">Urgent</div>
+              </div>
+              <div class="dividerdeadline"></div>
+              <div></div>
+              <div class="kpi-label">
+                <strong class="deadlinedate">October 16, 2022</strong>
+                <div>
+                  <div class="deadlinetext">Upcoming Deadline</div>
+                </div>
+              </div>
+            </a>
+          </div>
 
-          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
-            <div class="kpi-value" id="kpi-progress">2</div>
-            <div class="kpi-label">Tasks In Progress</div>
-          </a>
+          <div class="kpi-line">
+            <a href="board.html" class="kpi-card3" tabindex="0" role="link">
+              <div class="kpi-value" id="kpi-board">5</div>
+              <div class="kpi-label">Tasks in Board</div>
+            </a>
 
-          <a href="board.html" class="kpi-card3" tabindex="0" role="link">
-            <div class="kpi-value" id="kpi-feedback">2</div>
-            <div class="kpi-label">Awaiting Feedback</div>
-          </a>
-        </div>
-        <div class="kpi-line"></div>
+            <a href="board.html" class="kpi-card3" tabindex="0" role="link">
+              <div class="kpi-value" id="kpi-progress">2</div>
+              <div class="kpi-label">Tasks In Progress</div>
+            </a>
+
+            <a href="board.html" class="kpi-card3" tabindex="0" role="link">
+              <div class="kpi-value" id="kpi-feedback">2</div>
+              <div class="kpi-label">Awaiting Feedback</div>
+            </a>
+          </div>
+          <div class="kpi-line"></div>
+        </section>
+        <section class="kpi-right">
+          <p class="greet-text">Good morning,</p>
+          <span class="greet-name" id="greet-name">Sofia Müller</span>
+        </section>
       </section>
-      <section class="kpi-right">
-
-        <p class="greet-text">Good morning,</p>
-        <span class="greet-name" id="greet-name">Sofia Müller</span>
-
-      </section>
-    </section>
-  </main>
-  <script type="module" src="scripts/firebase-init.js"></script>
-  <script src="scripts/summary-kpi.js"></script>
-  <script src="scripts/config.js"></script>
-  <script src="scripts/helpers.js"></script>
-  <script src="scripts/storage.js"></script>
-  <script src="scripts/templates.js"></script>
-</body>
-
+    </main>
+    <script type="module" src="scripts/firebase-init.js"></script>
+    <script src="scripts/summary-kpi.js"></script>
+    <script src="scripts/summary.js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/helpers.js"></script>
+    <script src="scripts/storage.js"></script>
+    <script src="scripts/templates.js"></script>
+    <script>
+      // Begrüßung nur auf mobilen Geräten anzeigen
+      if (window.innerWidth <= 640) {
+        showGreeting();
+      } else {
+        // Auf Desktop Splash sofort ausblenden
+        document.getElementById("greeting-splash").style.display = "none";
+      }
+    </script>
+  </body>
 </html>
