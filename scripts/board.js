@@ -1,3 +1,4 @@
+// Board Script
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -51,10 +52,10 @@ function renderBoardFiltered(query) {
   const by = function (s) {
     return getTasksByStatus(s).filter(match);
   };
-  renderColumnWithTasks(by('todo'), 'to-do-tasks');
-  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks');
-  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks');
-  renderColumnWithTasks(by('done'), 'done-tasks');
+  renderColumnWithTasks(by('todo'), 'to-do-tasks', true);
+  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks', true);
+  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks', true);
+  renderColumnWithTasks(by('done'), 'done-tasks', true);
   renderNoTasksIfEmpty();
 }
 
@@ -83,10 +84,14 @@ function renderColumn(status, containerId) {
   fillColumn(container, tasksForStatus);
 }
 
-function renderColumnWithTasks(tasksForStatus, containerId) {
+function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
+  if (!tasksForStatus || !tasksForStatus.length) {
+    container.innerHTML = isSearch ? noResultsTemplate() : noTaskTemplate();
+    return;
+  }
   fillColumn(container, tasksForStatus);
 }
 
@@ -255,5 +260,47 @@ async function onOverlayDeleteClick(taskId) {
     closeTaskCard();
   } catch (err) {
     alert('Task could not be deleted.');
+  }
+}
+async function onSubtaskToggle(taskId, subIndex, isChecked) {
+  const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (taskIndex === -1) return;
+
+  const task = tasks[taskIndex];
+  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+
+  if (!subtasks[subIndex]) return;
+
+  subtasks[subIndex] = {
+    ...subtasks[subIndex],
+    done: !!isChecked
+  };
+
+  const updatedTask = {
+    ...task,
+    subtasks
+  };
+
+  try {
+    await saveTask(updatedTask);
+
+    tasks[taskIndex] = updatedTask;
+
+
+    renderBoard();
+
+    const content = document.getElementById('taskCardContent');
+    if (content) {
+      const listEl = content.querySelector('.subtask-list-detail');
+      if (listEl) {
+        listEl.innerHTML = renderSubtasksDetail(
+          updatedTask.subtasks || [],
+          updatedTask.id
+        );
+      }
+    }
+  } catch (err) {
+    console.error('onSubtaskToggle error:', err);
+    alert('Subtask konnte nicht gespeichert werden.');
   }
 }

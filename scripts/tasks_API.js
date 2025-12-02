@@ -1,3 +1,4 @@
+// API
 let tasks = [];
 const FIREBASE_BASE_URL =
   'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app';
@@ -95,7 +96,7 @@ async function addTask(taskData) {
   });
 
   if (!response.ok) {
-    throw new Error('addTask: Firebase-Request fehlgeschlagen');
+    throw new Error('addTask: request failed');
   }
 
   const result = await response.json();
@@ -129,7 +130,7 @@ async function updateTaskStatus(taskId, newStatus) {
   });
 
   if (!response.ok) {
-    throw new Error('updateTaskStatus: Firebase-Request fehlgeschlagen');
+    throw new Error('updateTaskStatus: request failed');
   }
 
   tasks[index] = { ...task, status: normalizedStatus };
@@ -173,7 +174,6 @@ async function deleteTaskById(taskId) {
   });
 
   if (!response.ok) {
-    console.error('deleteTaskById:', response.status, await response.text());
-    throw new Error('Task löschen fehlgeschlagen');
+    throw new Error('deleteTaskById: request failed');
   }
 }
