@@ -6,11 +6,7 @@ body {
 
 .main-contact {
   margin-left: 240px; /* Platz für Sidebar */
-<<<<<<< HEAD
   padding-left: 84px;
-=======
-  padding: 196px 84px 32px;
->>>>>>> f41dcef9ec69fcced524d01daef43576de6d8ebf
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -111,8 +107,8 @@ body {
   background-color: rgb(245, 246, 247);
   width: calc(100% - 320px);
   box-sizing: border-box;
-  padding-top: 7rem;
-  padding-left: 2rem;
+  padding-top: 12rem;
+  padding-left: 4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -201,11 +197,13 @@ body {
   font-style: regular;
   font-size: 20px;
   margin-bottom: 20px;
+  padding-bottom: 1rem;
 }
 .para-2 {
   font-size: 16px;
   font-weight: 700;
   font-style: bold;
+  margin-bottom: 1rem;
 }
 .para-3 {
   color: #007cee;
