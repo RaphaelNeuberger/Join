@@ -412,7 +412,8 @@
 @media (max-width: 1023px) {
   .task-form-container {
     margin-left: 0;
-    padding: 24px 0 24px 0;
+    padding: 96px 20px 20px;
+    margin-bottom: 90px;
   }
   .task-form {
     border-radius: 0;
@@ -429,6 +430,115 @@
     display: none;
   }
 }
+
+@media (max-width: 640px) {
+  .task-form-container {
+    padding: 96px 10px 16px;
+    margin-bottom: 80px;
+    min-width: 320px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .task-form__title {
+    font-size: 32px;
+    margin-bottom: 20px;
+  }
+
+  .task-form {
+    padding: 12px 0;
+    font-size: 16px;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+
+  .task-form__layout {
+    padding: 0;
+  }
+
+  .task-form__column-left,
+  .task-form__column-right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  .form-group__input {
+    height: 40px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-group__textarea {
+    height: 80px;
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-label {
+    font-size: 16px;
+  }
+
+  .form-control {
+    font-size: 16px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .text-hint {
+    font-size: 16px;
+  }
+
+  .priority-buttons {
+    gap: 8px;
+    height: auto;
+    border: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .priority-buttons__button {
+    min-width: auto;
+    flex: 1;
+    padding: 8px 12px;
+    font-size: 16px;
+  }
+
+  .priority-buttons__button svg {
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+  }
+
+  .form-actions {
+    margin-top: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+  }
+
+  .form-actions__button--clear,
+  .form-actions__button--submit {
+    height: 48px;
+    font-size: 16px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .btn {
+    font-size: 16px;
+  }
+}
+
 @media (max-width: 500px) {
   .task-form__title {
     font-size: 2rem;
