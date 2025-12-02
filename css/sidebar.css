@@ -21,7 +21,6 @@
 }
 
 .sidebar-logo {
-  height: 120px;
   padding-top: 45px;
 }
 
@@ -305,4 +304,18 @@ body.logged-out .nav-guest {
     justify-content: space-between;
     padding: 0 8px;
   }
+}
+
+.nav-item.active .nav-icon {
+  filter: brightness(0) invert(1);
+}
+
+.nav-item.active:hover {
+  background: #091931; /* gleicher Hintergrund wie active */
+  cursor: default;
+}
+
+.nav-item.active:hover {
+  background: #091931;   /* bleibt wie active */
+  color: #ffffff;        /* bleibt weiß */
 }
