@@ -51,10 +51,10 @@ function renderBoardFiltered(query) {
   const by = function (s) {
     return getTasksByStatus(s).filter(match);
   };
-  renderColumnWithTasks(by('todo'), 'to-do-tasks');
-  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks');
-  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks');
-  renderColumnWithTasks(by('done'), 'done-tasks');
+  renderColumnWithTasks(by('todo'), 'to-do-tasks', true);
+  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks', true);
+  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks', true);
+  renderColumnWithTasks(by('done'), 'done-tasks', true);
   renderNoTasksIfEmpty();
 }
 
@@ -83,10 +83,14 @@ function renderColumn(status, containerId) {
   fillColumn(container, tasksForStatus);
 }
 
-function renderColumnWithTasks(tasksForStatus, containerId) {
+function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
   container.innerHTML = '';
+  if (!tasksForStatus || !tasksForStatus.length) {
+    container.innerHTML = isSearch ? noResultsTemplate() : noTaskTemplate();
+    return;
+  }
   fillColumn(container, tasksForStatus);
 }
 
