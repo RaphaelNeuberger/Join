@@ -247,7 +247,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const phone = document.getElementById("newContactPhone").value.trim();
 
       if (!name || !email || !phone) {
-        alert("Bitte alle Felder ausfüllen!");
+        alert("Please fill in all fields!");
         return;
       }
 
@@ -255,6 +255,13 @@ document.addEventListener("DOMContentLoaded", function () {
       const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
       if (!emailPattern.test(email)) {
         alert("Please enter a valid email address (e.g. name@domain.com)");
+        return;
+      }
+
+      // Prüfe Telefonnummer-Format (mindestens 6 Ziffern)
+      const phoneDigits = phone.replace(/[^0-9]/g, "");
+      if (phoneDigits.length < 6) {
+        alert("Please enter a valid phone number with at least 6 digits");
         return;
       }
 
@@ -290,9 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Kontakt erfolgreich hinzugefügt!");
       } catch (error) {
         console.error("Fehler beim Hinzufügen des Kontakts:", error);
-        alert(
-          "Fehler beim Hinzufügen des Kontakts. Bitte versuchen Sie es erneut."
-        );
+        alert("Error adding contact. Please try again.");
       }
     });
   }
@@ -305,7 +310,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const contact = window.getCurrentContact();
       if (!contact || !contact.id) {
-        alert("Kein Kontakt ausgewählt!");
+        alert("No contact selected!");
         return;
       }
 
@@ -314,16 +319,21 @@ document.addEventListener("DOMContentLoaded", function () {
       const phone = document.getElementById("editContactPhone").value.trim();
 
       if (!name || !email || !phone) {
-        alert("Bitte alle Felder ausfüllen!");
+        alert("Please fill in all fields!");
+        return;
+      }
+
+      // Prüfe Telefonnummer-Format (mindestens 6 Ziffern)
+      const phoneDigits = phone.replace(/[^0-9]/g, "");
+      if (phoneDigits.length < 6) {
+        alert("Please enter a valid phone number with at least 6 digits");
         return;
       }
 
       try {
         // Warte bis Firebase bereit ist
         if (!window.set || !window.ref || !window.firebaseDb) {
-          alert(
-            "Firebase ist noch nicht bereit. Bitte versuchen Sie es erneut."
-          );
+          alert("Firebase is not ready yet. Please try again.");
           return;
         }
 
@@ -346,10 +356,7 @@ document.addEventListener("DOMContentLoaded", function () {
       } catch (error) {
         console.error("Fehler beim Aktualisieren des Kontakts:", error);
         console.error("Error details:", error.code, error.message);
-        alert(
-          "Fehler beim Aktualisieren des Kontakts: " +
-            (error.message || "Unbekannter Fehler")
-        );
+        alert("Error updating contact: " + (error.message || "Unknown error"));
       }
     });
   }
@@ -359,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function openEditContactDialog() {
   const contact = window.getCurrentContact();
   if (!contact) {
-    alert("Bitte wählen Sie zuerst einen Kontakt aus!");
+    alert("Please select a contact first!");
     return;
   }
 
@@ -404,18 +411,18 @@ function deleteContactFromDialog() {
 async function deleteCurrentContact() {
   const contact = window.getCurrentContact();
   if (!contact || !contact.id) {
-    alert("Kein Kontakt ausgewählt!");
+    alert("No contact selected!");
     return;
   }
 
-  if (!confirm(`Möchten Sie ${contact.name} wirklich löschen?`)) {
+  if (!confirm(`Do you really want to delete ${contact.name}?`)) {
     return;
   }
 
   try {
     // Warte bis Firebase bereit ist
     if (!window.remove || !window.ref || !window.firebaseDb) {
-      alert("Firebase ist noch nicht bereit. Bitte versuchen Sie es erneut.");
+      alert("Firebase is not ready yet. Please try again.");
       return;
     }
 
@@ -425,10 +432,7 @@ async function deleteCurrentContact() {
   } catch (error) {
     console.error("Fehler beim Löschen des Kontakts:", error);
     console.error("Error details:", error.code, error.message);
-    alert(
-      "Fehler beim Löschen des Kontakts: " +
-        (error.message || "Unbekannter Fehler")
-    );
+    alert("Error deleting contact: " + (error.message || "Unknown error"));
   }
 }
 
