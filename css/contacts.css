@@ -6,11 +6,7 @@ body {
 
 .main-contact {
   margin-left: 240px; /* Platz für Sidebar */
-<<<<<<< HEAD
   padding-left: 84px;
-=======
-  padding: 196px 84px 32px;
->>>>>>> f41dcef9ec69fcced524d01daef43576de6d8ebf
   background: #f6f7fb;
   min-height: 100vh;
   max-width: 1680px;
@@ -31,7 +27,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 96px;
+  padding-top: 1rem !important;
 }
 
 .add-contact-button {
@@ -62,11 +58,23 @@ body {
 .user-list {
   text-align: left;
   margin-top: 2rem;
-  font-weight: bold;
-  font-size: 20px;
+  margin-bottom: 0.5rem;
   font-weight: 400;
-  font-style: regular;
+  font-size: 20px;
   color: #555555;
+}
+
+.user-list span {
+  display: block;
+  margin-left: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.user-list hr {
+  margin: 0;
+  border: none;
+  border-top: 1px solid #d1d1d1;
+  width: 100%;
 }
 .contact-list {
   box-sizing: border-box;
@@ -75,6 +83,7 @@ body {
   padding: 0.6rem 0 0.6rem 1.5rem;
   overflow: auto; /* Nur nötig, wenn der Bereich selbst scrollen soll */
   max-height: calc(100vh - 96px); /* optional für eigenes Scrollen */
+  background-color: #ffffff;
 }
 .contact-item {
   display: flex;
@@ -82,28 +91,51 @@ body {
   padding: 0.5rem;
   border-radius: 8px;
   cursor: pointer;
+  transition: background-color 0.2s ease;
 }
 .name-logo {
+  width: 42px;
+  height: 42px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   text-align: center;
-  padding: 0.7rem;
-  background-color: rgb(255, 123, 0);
   color: white;
-  font-size: 12px;
+  font-size: 1rem;
   border-radius: 50%;
   margin-right: 1rem;
+  flex-shrink: 0;
 }
 
 .contact-item:hover {
   background-color: #2a3647;
   color: white;
 }
+
+.contact-item.active-contact {
+  background-color: #2a3647;
+  color: white;
+}
+
+.contact-item.active-contact .user-email {
+  color: var(--email);
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  line-height: 1.2;
+}
+
 .user-name {
   font-size: 20px;
   font-weight: 400;
+  margin-bottom: 2px;
 }
 .user-email {
   font-size: 16px;
-  color: #007cee;
+  color: var(--email);
   font-weight: 400;
 }
 
@@ -111,8 +143,8 @@ body {
   background-color: rgb(245, 246, 247);
   width: calc(100% - 320px);
   box-sizing: border-box;
-  padding-top: 7rem;
-  padding-left: 2rem;
+  padding-top: 1rem !important;
+  padding-left: 4rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -131,7 +163,7 @@ body {
   font-size: 61px;
   font-style: bold;
   padding-right: 1rem;
-  border-right: #007cee 2px solid;
+  border-right: var(--accent) 3px solid;
 }
 .slogan {
   font-size: 27px;
@@ -153,7 +185,6 @@ body {
   width: 120px;
   font-weight: 500;
   font-style: medium;
-  background-color: rgb(255, 123, 0);
   color: white;
   font-size: 47px;
   border-radius: 50%;
@@ -201,14 +232,16 @@ body {
   font-style: regular;
   font-size: 20px;
   margin-bottom: 20px;
+  padding-bottom: 1rem;
 }
 .para-2 {
   font-size: 16px;
   font-weight: 700;
   font-style: bold;
+  margin-bottom: 1rem;
 }
 .para-3 {
-  color: #007cee;
+  color: var(--email);
   font-size: 16px;
   font-weight: 400;
   font-style: regular;
@@ -253,7 +286,7 @@ body {
 }
 .left-section hr {
   width: 20%;
-  border: 0.5px solid #007cee;
+  border: 0.5px solid var(--accent);
   margin: 0;
   margin-right: auto;
 }
@@ -376,32 +409,35 @@ body {
 .dialog-left {
   background-color: #2a3647;
   width: 40%;
-  padding: 66px 46px;
+  padding: 80px 46px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center;
+  align-items: flex-start;
   color: white;
 }
 
 .dialog-left img {
   width: 55px;
   height: auto;
-  margin-bottom: 15px;
+  margin-bottom: 25px;
 }
 
 .dialog-left h2 {
   font-size: 61px;
   font-weight: 700;
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
   line-height: 1.2;
+  color: white;
 }
 
 .dialog-subtitle {
   font-size: 27px;
   font-weight: 400;
   margin: 0;
-  margin-bottom: 12px;
+  margin-bottom: 15px;
+  color: white;
 }
 
 .dialog-underline {
@@ -606,9 +642,12 @@ body {
     padding: 0px;
     margin-left: 0;
     margin-top: 80px;
-    height: calc(100vh - 80px);
+    margin-bottom: 80px;
+    height: calc(100vh - 160px);
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
+    z-index: 1;
   }
   .add-contact-button {
     display: none;
@@ -619,10 +658,14 @@ body {
     max-width: none;
     border-right: none;
     padding-bottom: 1rem;
+    padding-left: 1rem;
+    position: relative;
+    z-index: 1;
   }
   .contact-list {
     width: 100%;
     position: relative;
+    top: 0;
     overflow: visible;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -636,62 +679,85 @@ body {
   }
 
   .add-person-mobile {
-    display: block;
+    display: flex;
     position: fixed;
-    bottom: 20px;
+    bottom: 100px;
     right: 20px;
     width: 56px;
     height: 56px;
     background-color: #2a3647;
     border-radius: 50%;
-    box-shadow: 0 4px 8px #2a3647;
-    display: flex;
+    box-shadow: 0 4px 8px rgba(42, 54, 71, 0.4);
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    z-index: 10;
+    z-index: 100;
+  }
+
+  .add-person-mobile img {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
   }
 
   /* Add Contact Dialog Mobile */
   .dialog-content {
     flex-direction: column;
     width: 95%;
+    max-width: 350px;
     height: auto;
-    max-height: 90vh;
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
+    border-radius: 20px;
   }
 
   .dialog-left {
     width: 100%;
-    padding: 40px 30px 30px;
+    padding: 30px 20px 20px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .dialog-left img {
+    display: none;
   }
 
   .dialog-left h2 {
-    font-size: 40px;
+    font-size: 32px;
+    margin-bottom: 5px;
   }
 
   .dialog-subtitle {
-    font-size: 20px;
+    font-size: 16px;
+    margin-bottom: 10px;
+  }
+
+  .dialog-underline {
+    width: 60px;
+    height: 3px;
   }
 
   .dialog-right {
     flex-direction: column;
-    padding: 30px;
-    gap: 30px;
+    padding: 20px 20px 30px;
+    gap: 20px;
   }
 
   .dialog-avatar {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
+    margin-top: -40px;
+    background-color: #d1d1d1;
+    border: 4px solid white;
   }
 
   .dialog-avatar img {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
 
   .dialog-form {
     width: 100%;
+    gap: 15px;
   }
 
   .input-group input {
@@ -700,20 +766,60 @@ body {
   }
 
   .dialog-buttons {
-    flex-direction: column-reverse;
+    flex-direction: row;
     gap: 15px;
+    margin-top: 10px;
   }
 
   .btn-cancel,
   .btn-create {
     width: 100%;
-    font-size: 18px;
-    padding: 15px;
+    font-size: 16px;
+    padding: 12px 15px;
+  }
+
+  .btn-cancel {
+    display: none;
   }
 
   .dialog-close {
-    top: 20px;
-    right: 20px;
-    font-size: 28px;
+    top: 15px;
+    right: 15px;
+    font-size: 24px;
+    color: white;
+  }
+}
+
+/* Contact Success Message */
+.success-message-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.contact-success-message {
+  background-color: #2a3647;
+  color: white;
+  padding: 25px 50px;
+  border-radius: 25px;
+  font-size: 20px;
+  font-weight: 400;
+  text-align: center;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  opacity: 1;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

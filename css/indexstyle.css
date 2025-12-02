@@ -99,7 +99,7 @@ h1 {
 }
 
 .input-group input::placeholder {
-  color: #D1D1D1;
+  color: #d1d1d1;
   opacity: 1;
   /* wichtig, damit Browser keine Transparenz drauflegen */
 }
@@ -108,7 +108,7 @@ h1 {
   width: 100%;
   padding: 12px 40px 12px 12px;
   font-size: 16px;
-  border: 1px solid #D1D1D1;
+  border: 1px solid #d1d1d1;
   border-radius: 8px;
   outline: none;
   box-sizing: border-box;
@@ -134,7 +134,7 @@ h1 {
   gap: 8px;
   margin-top: -5px;
   margin-bottom: 20px;
-  font-size: 14px;
+  font-size: 1rem;
   color: #a8a8a8;
 }
 
@@ -281,11 +281,11 @@ button:not(.dark-button):hover {
   .footer-links {
     flex-direction: column;
     gap: 12px;
-    font-size: 14px;
+    font-size: 1rem;
   }
 
   .privacy-accept {
-    font-size: 13px;
+    font-size: 1rem;
   }
 }
 
@@ -298,7 +298,6 @@ button:not(.dark-button):hover {
     display: flex;
   }
 }
-
 
 /* === SIGN-UP HEADER (mit Pfeil) === */
 .signup-header {
@@ -372,15 +371,17 @@ button:not(.dark-button):hover {
 }
 
 .input-group img.icon-mail {
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
+    contrast(90%);
 }
 
 .input-group img.icon-lock {
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
+    contrast(90%);
 }
 
 /* Wenn du bei Hover oder Focus leichten Effekt willst */
-.input-group input:focus+img {
+.input-group input:focus + img {
   opacity: 1;
   filter: none;
 }
@@ -397,11 +398,12 @@ button:not(.dark-button):hover {
   height: 22px;
   pointer-events: none;
   opacity: 0.7;
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
+    contrast(90%);
 }
 
 /* Effekt bei Fokus */
-.input-group input:focus+img {
+.input-group input:focus + img {
   opacity: 1;
   filter: none;
 }
@@ -437,9 +439,12 @@ button:not(.dark-button):hover {
     transform: scale(0.35) translate(-120vw, -120vh);
   }
 }
-.join-logo { visibility: hidden; }
-body.loaded .join-logo { visibility: visible; }
-
+.join-logo {
+  visibility: hidden;
+}
+body.loaded .join-logo {
+  visibility: visible;
+}
 
 /* Body unsichtbar bis Animation endet */
 body.loaded main,
@@ -509,7 +514,8 @@ header,
     opacity: 0;
     transform: translateY(-10px);
   }
-  10%, 80% {
+  10%,
+  80% {
     opacity: 1;
     transform: translateY(0);
   }

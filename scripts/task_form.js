@@ -266,8 +266,11 @@ function getInputValue(id) {
  * Assigned-To aus dem Select lesen (einfaches Single-Select → Array).
  */
 function getAssignedTo() {
-  const element = document.getElementById('assignedTo');
-  return element && element.value ? [element.value] : [];
+  // Return array of selected names (or IDs if preferred)
+  return selectedAssignees.map(id => {
+    const contact = contacts.find(c => c.id === id);
+    return contact ? contact.name : '';
+  });
 }
 
 /**
@@ -352,6 +355,9 @@ function resetTaskForm() {
   // Fehler löschen
   clearFormErrors();
 
+  selectedAssignees = [];
+  renderSelectedBadges();
+
   // Subtasks zurücksetzen
   subtaskDrafts = [];
   renderSubtaskDrafts();
@@ -399,3 +405,134 @@ function escapeHtml(str) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
+
+// Hardcoded contacts (replace with API fetch if needed)
+const contacts = [
+  { id: 'sm', name: 'Sofia Müller', avatarClass: 'avatar-sm', initials: 'SM' },
+  { id: 'am', name: 'Anton Mayer', avatarClass: 'avatar-am', initials: 'AM' },
+  { id: 'as', name: 'Anja Schulz', avatarClass: 'avatar-as', initials: 'AS' },
+  { id: 'bz', name: 'Benedikt Ziegler', avatarClass: 'avatar-bz', initials: 'BZ' },
+  { id: 'de', name: 'David Eisenberg', avatarClass: 'avatar-de', initials: 'DE' }
+];
+
+let selectedAssignees = []; // Array to store selected contact IDs
+
+/**
+ * Initializes the Assigned To multi-select.
+ */
+function initAssignedTo() {
+  const input = document.getElementById('assignedToInput');
+  const dropdown = document.getElementById('assignedToDropdown');
+  const list = document.getElementById('assignedToList');
+  const selectedContainer = document.getElementById('assignedToSelected');
+
+  if (!input || !dropdown || !list || !selectedContainer) return;
+
+  // Render initial dropdown options
+  renderContactOptions();
+
+  // Open dropdown on click/focus
+  input.addEventListener('focus', showDropdown);
+  input.addEventListener('click', showDropdown);
+
+  // Filter on input
+  input.addEventListener('input', filterContacts);
+
+  // Close dropdown on outside click
+  document.addEventListener('click', (event) => {
+    if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+      hideDropdown();
+    }
+  });
+}
+
+/**
+ * Shows the dropdown.
+ */
+function showDropdown() {
+  const dropdown = document.getElementById('assignedToDropdown');
+  dropdown.style.display = 'block';
+  filterContacts(); // Refresh based on current input
+}
+
+/**
+ * Hides the dropdown.
+ */
+function hideDropdown() {
+  const dropdown = document.getElementById('assignedToDropdown');
+  dropdown.style.display = 'none';
+}
+
+/**
+ * Renders contact options in dropdown.
+ * @param {Array} filteredContacts - Optional filtered list.
+ */
+function renderContactOptions(filteredContacts = contacts) {
+  const list = document.getElementById('assignedToList');
+  list.innerHTML = '';
+  filteredContacts.forEach(contact => {
+    const li = document.createElement('li');
+    const isSelected = selectedAssignees.includes(contact.id);
+    li.innerHTML = `
+      <input type="checkbox" class="checkbox" ${isSelected ? 'checked' : ''} data-id="${contact.id}">
+      <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
+      <span class="contact-name">${escapeHtml(contact.name)}</span>
+    `;
+    li.addEventListener('click', (event) => {
+      if (event.target.tagName !== 'INPUT') {
+        const checkbox = li.querySelector('input');
+        checkbox.checked = !checkbox.checked;
+      }
+      toggleAssignee(contact.id);
+    });
+    list.appendChild(li);
+  });
+}
+
+/**
+ * Filters contacts based on input value.
+ */
+function filterContacts() {
+  const input = document.getElementById('assignedToInput');
+  const query = input.value.trim().toLowerCase();
+  const filtered = contacts.filter(contact => contact.name.toLowerCase().includes(query));
+  renderContactOptions(filtered);
+}
+
+/**
+ * Toggles a contact's selection and updates badges.
+ * @param {string} id - Contact ID.
+ */
+function toggleAssignee(id) {
+  const index = selectedAssignees.indexOf(id);
+  if (index === -1) {
+    selectedAssignees.push(id);
+  } else {
+    selectedAssignees.splice(index, 1);
+  }
+  renderSelectedBadges();
+  filterContacts(); // Refresh dropdown to show checked state
+}
+
+/**
+ * Renders selected assignees as badges.
+ */
+function renderSelectedBadges() {
+  const selectedContainer = document.getElementById('assignedToSelected');
+  selectedContainer.innerHTML = '';
+  selectedAssignees.forEach(id => {
+    const contact = contacts.find(c => c.id === id);
+    if (!contact) return;
+    const badge = document.createElement('div');
+    badge.className = 'assigned-to-badge';
+    badge.innerHTML = `
+      <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
+      <span>${escapeHtml(contact.name)}</span>
+      <span class="remove" onclick="toggleAssignee('${id}')">✕</span>
+    `;
+    selectedContainer.appendChild(badge);
+  });
+}
+
+// Call this in initAddTaskForm() after other inits
+initAssignedTo();

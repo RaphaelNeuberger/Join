@@ -1,8 +1,6 @@
 function noTaskTemplate() {
   return (
-    '<div class="card-no-task">' +
-    '<span>No tasks To do</span>' +
-    '</div>'
+    '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
   );
 }
 
@@ -15,29 +13,30 @@ function noResultsTemplate() {
 }
 
 const AVATAR_COLORS = [
-  'rgb(110, 82, 255)',
-  'rgb(253, 112, 255)',
-  'rgb(70, 47, 138)',
-  'rgb(255, 188, 43)',
-  'rgb(30, 214, 193)',
-  'rgb(255, 123, 0)'
+  "rgb(110, 82, 255)",
+  "rgb(253, 112, 255)",
+  "rgb(70, 47, 138)",
+  "rgb(255, 188, 43)",
+  "rgb(30, 214, 193)",
+  "rgb(255, 123, 0)",
 ];
 
-function getInitials(name = '') {
+function getInitials(name = "") {
   return name
     .trim()
     .split(/\s+/)
-    .map((part) => (part[0] || '').toUpperCase())
-    .join('');
+    .map((part) => (part[0] || "").toUpperCase())
+    .join("");
 }
 
-function getAvatarColor(name = '', index = 0) {
+function getAvatarColor(name = "", index = 0) {
   if (!AVATAR_COLORS.length) {
-    return '#ff7a00';
+    return "#ff7a00";
   }
 
-  const hash = name
-    .split('')
+  const nameStr = String(name || "");
+  const hash = nameStr
+    .split("")
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
   const colorIndex = (hash + index) % AVATAR_COLORS.length;
@@ -50,7 +49,9 @@ function renderAssignees(assignees = []) {
   }
 
   return assignees
-    .map((name, index) => {
+    .map((item, index) => {
+      // Handle both string names and objects with name property
+      const name = typeof item === "string" ? item : item?.name || "";
       const color = getAvatarColor(name, index);
       const initials = getInitials(name);
 
@@ -59,24 +60,25 @@ function renderAssignees(assignees = []) {
         color +
         ';">' +
         initials +
-        '</span>'
+        "</span>"
       );
     })
-    .join('');
+    .join("");
 }
 
 function taskTemplate(task) {
-  const { id, category, title, description, assignedTo, priority, subtasks } = task;
+  const { id, category, title, description, assignedTo, priority, subtasks } =
+    task;
   return `
     <div class="card-task" draggable="true"
          ondragstart="dragstartHandler(event)"
          data-task-id="${id}"
          onclick="openTaskCardById('${id}')"> <!-- WICHTIG: richtige Funktion -->
 
-      <p class="card-type">${category || ''}</p>
+      <p class="card-type">${category || ""}</p>
 
-      <span class="card-title">${title || ''}</span>
-      <p class="story">${description || ''}</p>
+      <span class="card-title">${title || ""}</span>
+      <p class="story">${description || ""}</p>
 
       ${subtaskProgressHTML(subtasks)}
 
@@ -88,8 +90,8 @@ function taskTemplate(task) {
 }
 
 function taskCardContentTemplate(task) {
-  const dueDate = task.dueDate || '-';
-  const cat = task.category || 'Category';
+  const dueDate = task.dueDate || "-";
+  const cat = task.category || "Category";
 
   return `
     <div class="task-card-header">
@@ -97,22 +99,28 @@ function taskCardContentTemplate(task) {
         <div class="task-card-category">${escapeHtml(cat)}</div>
         <span class="task-card-close" onclick="closeTaskCard()">X</span>
       </div>
-      <h1>${escapeHtml(task.title || '')}</h1>
+      <h1>${escapeHtml(task.title || "")}</h1>
     </div>
 
     <div class="task-card-body">
-      <p class="task-card-story">${escapeHtml(task.description || '')}</p>
+      <p class="task-card-story">${escapeHtml(task.description || "")}</p>
 
       <table>
-        <tr><td><strong>Due date:</strong></td><td>${escapeHtml(dueDate)}</td></tr>
+        <tr><td><strong>Due date:</strong></td><td>${escapeHtml(
+          dueDate
+        )}</td></tr>
         <tr>
           <td><strong>Priority:</strong></td>
-          <td class="prio-cell"> <span class="prio-text">${normalizePriority(task.priority)}</span> ${priorityIcon(task.priority)}</td>
+          <td class="prio-cell"> <span class="prio-text">${normalizePriority(
+            task.priority
+          )}</span> ${priorityIcon(task.priority)}</td>
         </tr>
       </table>
 
       <label class="overlay-task-card-label-big">Assigned To</label>
-      <div class="assigned-list-detail">${renderAssigneesDetail(task.assignedTo || [])}</div>
+      <div class="assigned-list-detail">${renderAssigneesDetail(
+        task.assignedTo || []
+      )}</div>
 
       <p class="overlay-task-card-label-big">Subtasks</p>
       <ul class="subtask-list-detail">
@@ -126,30 +134,33 @@ function taskCardContentTemplate(task) {
     </div>`;
 }
 
-
 function taskCardEditTemplate(task) {
-  const priority = (task.priority || 'medium').toLowerCase();
-  const dueDate = task.dueDate || '/';
+  const priority = (task.priority || "medium").toLowerCase();
+  const dueDate = task.dueDate || "/";
 
-  const urgentActive = priority === 'urgent' ? ' is-active' : '';
-  const mediumActive = priority === 'medium' ? ' is-active' : '';
-  const lowActive = priority === 'low' ? ' is-active' : '';
+  const urgentActive = priority === "urgent" ? " is-active" : "";
+  const mediumActive = priority === "medium" ? " is-active" : "";
+  const lowActive = priority === "low" ? " is-active" : "";
 
   return `
-    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${task.id}')">
+    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${
+      task.id
+    }')">
       <div class="task-card-header">
         <div class="task-card-header-category-close">
           <div class="task-card-category">
-            ${escapeHtml(task.category || 'Category')}
+            ${escapeHtml(task.category || "Category")}
           </div>
-          <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
+          <span class="task-card-close" onclick="onTaskEditCancel('${
+            task.id
+          }')">X</span>
         </div>
         <input
           type="text"
           name="title"
           class="form-group__input"
           placeholder="Enter a title"
-          value="${escapeHtml(task.title || '')}"
+          value="${escapeHtml(task.title || "")}"
           required
         />
       </div>
@@ -162,7 +173,7 @@ function taskCardEditTemplate(task) {
             class="form-group__textarea"
             rows="4"
             placeholder="Enter a description"
-          >${escapeHtml(task.description || '')}</textarea>
+          >${escapeHtml(task.description || "")}</textarea>
         </div>
 
         <div class="form-group">
@@ -236,24 +247,18 @@ function taskCardEditTemplate(task) {
   `;
 }
 
-
-
-
-
-
-
 function capitalize(str) {
-  if (!str) return '';
+  if (!str) return "";
   str = String(str);
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function escapeHtml(str) {
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function renderAssigneesDetail(list) {
@@ -261,19 +266,21 @@ function renderAssigneesDetail(list) {
     return '<span class="assigned-name">No assignees</span>';
   }
   return list
-    .map(function (name) {
+    .map(function (item) {
+      // Handle both string names and objects with name property
+      const name = typeof item === "string" ? item : item?.name || "";
       return (
         '<div class="assigned-item">' +
         '<div class="assigned-avatar-detail assigned-avatar--blue">' +
         getInitialsFromName(name) +
-        '</div>' +
+        "</div>" +
         '<span class="assigned-name">' +
         escapeHtml(name) +
-        '</span>' +
-        '</div>'
+        "</span>" +
+        "</div>"
       );
     })
-    .join('');
+    .join("");
 }
 
 function renderSubtasksDetail(list) {
@@ -282,27 +289,27 @@ function renderSubtasksDetail(list) {
   }
   return list
     .map(function (s) {
-      var checked = s.done ? 'checked' : '';
+      var checked = s.done ? "checked" : "";
       return (
         '<li class="subtask-item">' +
         '<label class="subtask-checkbox">' +
         '<input type="checkbox" disabled ' +
         checked +
-        ' />' +
+        " />" +
         '<span class="subtask-custom-box"></span>' +
         '<span class="subtask-title">' +
-        escapeHtml(s.title || '') +
-        '</span>' +
-        '</label>' +
-        '</li>'
+        escapeHtml(s.title || "") +
+        "</span>" +
+        "</label>" +
+        "</li>"
       );
     })
-    .join('');
+    .join("");
 }
 
 function getInitialsFromName(name) {
-  var parts = String(name).trim().split(' ');
-  if (!parts.length) return '';
+  var parts = String(name).trim().split(" ");
+  if (!parts.length) return "";
   if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
   return (
     parts[0].charAt(0).toUpperCase() +
@@ -311,24 +318,26 @@ function getInitialsFromName(name) {
 }
 
 function normalizePriority(p) {
-  const v = String(p || 'Medium').toLowerCase();
-  if (v.startsWith('u')) return 'Urgent';
-  if (v.startsWith('l')) return 'Low';
-  return 'Medium';
+  const v = String(p || "Medium").toLowerCase();
+  if (v.startsWith("u")) return "Urgent";
+  if (v.startsWith("l")) return "Low";
+  return "Medium";
 }
 
 function priorityIcon(priority) {
   const p = normalizePriority(priority);
   const color = priorityColor(p);
   // style color auf dem wrapper (SVGs nutzen currentColor)
-  return `<span class="prio-icon" aria-label="${p}" title="${p}" style="color: ${color};">${priorityIconSVG(p)}</span>`;
+  return `<span class="prio-icon" aria-label="${p}" title="${p}" style="color: ${color};">${priorityIconSVG(
+    p
+  )}</span>`;
 }
 
 function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
   // URGENT: Doppel-Chevron ↑↑
-  if (p === 'Urgent') {
+  if (p === "Urgent") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
         <polyline points="3,12 10,5 17,12"
@@ -341,7 +350,7 @@ function priorityIconSVG(priority) {
   }
 
   // LOW: Doppel-Chevron ↓↓
-  if (p === 'Low') {
+  if (p === "Low") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
         <polyline points="3,4 10,11 17,4"
@@ -361,19 +370,22 @@ function priorityIconSVG(priority) {
     </svg>`;
 }
 
-
 function priorityBadge(priority, withText = true) {
   const p = normalizePriority(priority);
-  const cls = p === 'Urgent' ? 'urgent' : p === 'Low' ? 'low' : 'medium';
+  const cls = p === "Urgent" ? "urgent" : p === "Low" ? "low" : "medium";
   const color = priorityColor(p);
-  const txt = withText ? `<span class="priority-badge__text">${p}</span>` : '';
-  return `<span class="priority-badge priority-badge--${cls}" title="${p}" style="color: ${color}; display:inline-flex; align-items:center; gap:6px;">${priorityIconSVG(p)}${txt}</span>`;
+  const txt = withText ? `<span class="priority-badge__text">${p}</span>` : "";
+  return `<span class="priority-badge priority-badge--${cls}" title="${p}" style="color: ${color}; display:inline-flex; align-items:center; gap:6px;">${priorityIconSVG(
+    p
+  )}${txt}</span>`;
 }
 
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
-  if (!list.length) return '';
-  const done = list.filter(s => s && (s.done === true || s.checked === true)).length;
+  if (!list.length) return "";
+  const done = list.filter(
+    (s) => s && (s.done === true || s.checked === true)
+  ).length;
   const total = list.length;
   const pct = Math.round((done / total) * 100);
   return `
@@ -385,7 +397,7 @@ function subtaskProgressHTML(subtasks) {
 
 function priorityColor(priority) {
   const p = normalizePriority(priority);
-  if (p === 'Urgent') return '#ff3d00';  
-  if (p === 'Low') return '#5be84a';     
-  return '#ffab2b';                     
+  if (p === "Urgent") return "#ff3d00";
+  if (p === "Low") return "#5be84a";
+  return "#ffab2b";
 }

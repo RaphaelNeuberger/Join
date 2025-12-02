@@ -43,7 +43,7 @@
   border-radius: 8px;
   background: #0038ff;
   color: #ffffff;
-   font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 23px;
   font-weight: 400;
 }
@@ -73,7 +73,7 @@
   display: grid;
   padding-top: 8px;
   grid-gap: 24px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 20px;
 }
@@ -81,24 +81,22 @@
 .task-card-body table {
   width: 60%;
   border-collapse: collapse;
-
 }
 
 .task-card-body th,
 .task-card-body td {
   text-align: left;
   padding-bottom: 8px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-weight: 400;
   font-size: 20px;
 }
-
 
 .overlay-task-card-label-big {
   font-size: 20px;
   font-weight: 400;
   margin: 0 0 12px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 .assigned-list-detail {
   margin-left: 16px;
@@ -140,7 +138,7 @@
 .assigned-name {
   font-size: 19px;
   font-weight: 400;
-  font-family: 'Open Sans', sans-serif;
+  font-family: "Open Sans", sans-serif;
 }
 
 .assigned-name--link {
@@ -186,14 +184,14 @@
 }
 
 .subtask-checkbox input:checked + .subtask-custom-box::after {
-  content: '✓';
+  content: "✓";
   color: #111827;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 700;
 }
 
 .subtask-title {
-  font-size: 14px;
+  font-size: 1rem;
   color: #111827;
 }
 .task-card-footer {
@@ -208,7 +206,7 @@
   border: none;
   width: 10%;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 1rem;
   font-weight: 600;
   padding: 8px 12px;
   border-radius: 999px;
@@ -218,8 +216,10 @@
   gap: 6px;
 }
 
-.task-card-body table td:first-child { width: 120px; color: #6b7280; }
-.task-card-body .priority-badge { transform: translateY(2px); }
-
-
-
+.task-card-body table td:first-child {
+  width: 120px;
+  color: #6b7280;
+}
+.task-card-body .priority-badge {
+  transform: translateY(2px);
+}

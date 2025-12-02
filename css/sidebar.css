@@ -21,7 +21,6 @@
 }
 
 .sidebar-logo {
-  height: 120px;
   padding-top: 45px;
 }
 
@@ -37,7 +36,7 @@
   align-items: center;
   text-decoration: none;
   gap: 12px;
-  color: #CDCDCD;
+  color: #cdcdcd;
   padding: 10px 12px;
   padding-left: 60px;
 }
@@ -47,19 +46,15 @@
   opacity: 0.9;
 }
 
-
-
 .nav-item.active {
   background: #091931;
   color: #ffffff;
   cursor: pointer;
-
-
 }
 
 .nav-item:hover {
   background: #2a3d59;
-  color: #CDCDCD;
+  color: #cdcdcd;
   cursor: pointer;
 }
 
@@ -80,7 +75,7 @@
 }
 
 .footer-link:hover {
-  color: #29ABE2;
+  color: #29abe2;
 }
 
 @media (max-width: 1023px) {
@@ -100,6 +95,7 @@
     border-top: 1px solid #3a4859;
     color: #fff;
     gap: 12px;
+    z-index: 100;
   }
 
   .nav-item {
@@ -114,18 +110,16 @@
     border-radius: 16px;
     margin-top: 4px;
     display: flex;
-    justify-content: center; 
+    justify-content: center;
   }
 
   .nav-item.active {
-
     width: 70px;
     height: 80px;
     align-items: center;
     justify-content: center;
     padding: 10px;
     border-radius: 16px;
-
   }
 
   .sidebar-nav {
@@ -156,8 +150,6 @@
     /* gleiche Höhe, kein Überlauf */
     padding: 6px 4px;
   }
-  
-
 }
 
 /* Standard: sicherheitshalber Gast-Ansicht */
@@ -190,7 +182,6 @@ body.logged-out .nav-guest {
   flex-direction: column;
 }
 
-
 @media (max-width: 500px) {
   .sidebar {
     height: 72px;
@@ -211,7 +202,7 @@ body.logged-out .nav-guest {
   }
 
   .nav-item span {
-    font-size: 10px;
+    font-size: 1rem;
     margin-top: 2px;
   }
 
@@ -252,7 +243,7 @@ body.logged-out .nav-guest {
   }
 
   .nav-item span {
-    font-size: 9px;
+    font-size: 1rem;
     margin-top: 1px;
   }
 
@@ -286,7 +277,7 @@ body.logged-out .nav-guest {
   }
 
   .nav-item span {
-    font-size: 8px;
+    font-size: 1rem;
     margin-top: 0;
   }
 
@@ -305,4 +296,18 @@ body.logged-out .nav-guest {
     justify-content: space-between;
     padding: 0 8px;
   }
+}
+
+.nav-item.active .nav-icon {
+  filter: brightness(0) invert(1);
+}
+
+.nav-item.active:hover {
+  background: #091931; /* gleicher Hintergrund wie active */
+  cursor: default;
+}
+
+.nav-item.active:hover {
+  background: #091931; /* bleibt wie active */
+  color: #ffffff; /* bleibt weiß */
 }
