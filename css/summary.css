@@ -234,6 +234,79 @@ main.addtask-wrap {
   font-size: 64px;
 }
 
+/* Greeting Splash Screen */
+.greeting-splash {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 72px;
+  width: 100%;
+  height: auto;
+  background: var(--bg);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  animation: fadeOut 1.5s ease 3s forwards;
+}
+
+.greeting-content {
+  text-align: center;
+  animation: slideIn 1s ease;
+}
+
+.greeting-splash .greet-text {
+  font-size: 36px;
+  color: #2a3647;
+  margin: 0 0 16px 0;
+  animation: fadeIn 1s ease;
+}
+
+.greeting-splash .greet-name {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 48px;
+  animation: fadeIn 1s ease 0.5s both;
+}
+
+body.splash-active {
+  overflow: hidden;
+}
+
+body.splash-active .greeting-splash {
+  display: flex;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 /* responsive */
 @media (max-width: 1438px) {
   .kpi-grid {
@@ -256,7 +329,6 @@ main.addtask-wrap {
     font-weight: 600;
     font-style: normal;
     color: var(--black);
-
     margin: 0px;
   }
 
@@ -266,35 +338,19 @@ main.addtask-wrap {
 
   .kpi-label {
     display: flex;
-
     font-size: 16px;
     font-family: "Inter";
-
     font-weight: 400;
     font-style: normal;
     color: var(--ink);
   }
 }
 
-/* Mobile Ansicht */
-@media (max-width: 640px) {
-  .greeting-block {
-    margin-top: 18px;
-    margin-bottom: 28px;
-  }
-
-  .greet-text {
-    font-size: 22px;
-  }
-
-  .greet-name {
-    font-size: 22px;
-  }
-}
-
 @media (max-width: 1023px) {
   main.addtask-wrap {
-    padding: 12px;
+    padding: 96px 20px 20px;
+    margin-left: 0;
+    margin-bottom: 90px;
   }
 
   .kpi-right {
@@ -303,10 +359,18 @@ main.addtask-wrap {
 
   .summary-head {
     display: flex;
-
     flex-direction: column;
-
     align-items: flex-start;
+    margin-bottom: 32px;
+  }
+
+  .page-title {
+    font-size: 47px;
+    margin: 0;
+  }
+
+  .subtitle {
+    font-size: 20px;
   }
 
   .divider1 {
@@ -316,7 +380,8 @@ main.addtask-wrap {
   .divider2 {
     background-color: var(--accent);
     width: 59px;
-    height: 2px;
+    height: 3px;
+    margin: 0;
   }
 }
 
@@ -369,16 +434,102 @@ main.addtask-wrap {
 
   .kpi-card {
     flex-wrap: nowrap;
-    padding: 12px;
+    padding: 3px;
   }
 }
 
 @media (max-width: 640px) {
   main.addtask-wrap {
     margin-left: 0;
+    padding: 96px 10px 16px;
+    margin-bottom: 80px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .summary-head {
+    margin-bottom: 24px;
+  }
+
+  .page-title {
+    font-size: 47px;
+    display: block;
+  }
+
+  .subtitle {
+    font-size: 16px;
+    display: block;
   }
 
   .kpi-grid {
     grid-template-columns: 1fr;
+  }
+
+  .kpi-left {
+    width: 100%;
+  }
+
+  .kpi-line {
+    gap: 8px;
+    width: 100%;
+  }
+
+  .kpi-card {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+
+  .kpi-card3 {
+    padding: 8px 12px;
+    margin-bottom: 12px;
+    gap: 2px;
+    min-height: 70px;
+  }
+
+  .kpi-value {
+    font-size: 47px;
+  }
+
+  .kpi-label {
+    font-size: 16px;
+  }
+
+  .deadlinedate {
+    font-size: 16px;
+  }
+
+  .deadlinetext {
+    font-size: 16px;
+  }
+
+  .kpi-icon {
+    width: 18px;
+    height: 18px;
+    margin: 0 8px 0 0;
+  }
+
+  .kpi-icon img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .kpi-iconurgent {
+    width: 18px;
+    height: 18px;
+    padding: 8px;
+    margin: 6px 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kpi-iconurgent img {
+    width: 12px;
+    height: 12px;
+  }
+
+  .dividerdeadline {
+    margin: 6px 8px;
+    height: 48px;
   }
 }
