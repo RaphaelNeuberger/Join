@@ -9,7 +9,7 @@
 
 body {
   margin: 0;
-  font-family: "Inter", sans-serif;
+  font-family: 'Inter', sans-serif;
   font-size: 16px;
 }
 
@@ -164,7 +164,7 @@ body {
 }
 
 .story {
-  font-size: 1rem;
+  font-size: 14px;
   font-weight: 400;
   color: rgb(168, 168, 168);
 }
@@ -181,7 +181,7 @@ body {
   border-radius: 50%;
   color: #ffffff;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -199,7 +199,6 @@ body {
   justify-content: space-between;
 }
 
-<<<<<<< HEAD
 .priority-badge {
   display: inline-flex;
   align-items: center;
@@ -233,8 +232,6 @@ body {
 }
 
 
-=======
->>>>>>> 4574f7aa19a0d6c7f7ea3869b70c91a28665a45b
 @media (max-width: 1023px) {
   .board-container {
     margin-top: 120px;
@@ -267,189 +264,4 @@ body {
     flex-direction: column;
     gap: 2.5rem;
   }
-<<<<<<< HEAD
 }
-=======
-}
-
-.priority-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-weight: 600;
-  line-height: 1;
-}
-.priority-badge svg {
-  display: inline-block;
-  vertical-align: middle;
-}
-.priority-badge--urgent {
-  color: #ff3d00;
-}
-.priority-badge--medium {
-  color: #ffab2b;
-}
-.priority-badge--low {
-  color: #5be84a;
-}
-.card-footer .priority {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-}
-.subtask-progress {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.subtask-progress__bar {
-  flex: 1;
-  height: 6px;
-  background: #e5e7eb;
-  border-radius: 999px;
-  overflow: hidden;
-}
-.subtask-progress__bar > div {
-  height: 100%;
-  background: #2a3647;
-}
-.subtask-progress__text {
-  font-size: 12px;
-  color: #6b7280;
-}
-
-.task-column.drag-over .task-cards {
-  outline: 2px dashed #a3a3a3;
-  outline-offset: -6px;
-  border-radius: 8px;
-  background: #fafafa;
-}
-.prio-icon {
-  display: inline-flex;
-  align-items: center;
-  line-height: 1;
-}
-.prio-icon svg {
-  display: block;
-  width: 16px;
-  height: 12px;
-}
-
-.assigned-to-wrapper {
-  position: relative;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background: white;
-}
-
-.assigned-to-selected {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 4px;
-  min-height: 32px; /* Space for badges */
-}
-
-.assigned-to-badge {
-  display: flex;
-  align-items: center;
-  background: #f0f0f0;
-  border-radius: 16px;
-  padding: 4px 8px;
-  margin: 2px;
-  font-size: 12px;
-}
-
-.assigned-to-badge .avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  margin-right: 4px;
-}
-
-.assigned-to-badge .remove {
-  cursor: pointer;
-  margin-left: 4px;
-  color: #999;
-}
-
-.assigned-to-input {
-  width: 100%;
-  border: none;
-  padding: 8px;
-  box-sizing: border-box;
-}
-
-.assigned-to-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: white;
-  border: 1px solid #ccc;
-  border-top: none;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 10;
-}
-
-.assigned-to-dropdown ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.assigned-to-dropdown li {
-  display: flex;
-  align-items: center;
-  padding: 8px;
-  cursor: pointer;
-}
-
-.assigned-to-dropdown li:hover {
-  background: #f0f0f0;
-}
-
-.assigned-to-dropdown .checkbox {
-  margin-right: 8px;
-  display: none;
-}
-
-.assigned-to-dropdown .avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-  margin-right: 8px;
-}
-
-.assigned-to-dropdown .contact-name {
-  flex: 1;
-}
-
-/* Color examples from screenshots */
-.avatar-sm {
-  background: #00bfff;
-} /* Sofia Müller - cyan */
-.avatar-am {
-  background: #ff8c00;
-} /* Anton Mayer - orange */
-.avatar-as {
-  background: #9932cc;
-} /* Anja Schulz - purple */
-.avatar-bz {
-  background: #4169e1;
-} /* Benedikt Ziegler - blue */
-.avatar-de {
-  background: #ff69b4;
-} /* David Eisenberg - pink */
->>>>>>> 4574f7aa19a0d6c7f7ea3869b70c91a28665a45b
