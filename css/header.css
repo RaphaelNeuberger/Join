@@ -118,4 +118,7 @@ header {
   .header-logo {
     display: flex;
   }
+  .nav-icon-help {
+    display: none;
+  }
 }
