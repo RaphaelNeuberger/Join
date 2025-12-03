@@ -65,15 +65,20 @@ async function login() {
 async function guestLogin() {
   try {
     const { user } = await signInAnonymously(firebaseAuth);
+    // In der Datenbank kann der Gast weiterhin "Guest" heißen — fürs UI speichern wir aber keinen Namen.
     await set(ref(firebaseDb, 'users/' + user.uid), { name: "Guest", email: "guest@joinapp.local", isGuest: true, createdAt: new Date().toISOString() });
     showNotification("👋 Eingeloggt als Gast", "success");
-    localStorage.setItem("loggedInUser", JSON.stringify({ uid: user.uid, name: "Guest", email: "guest@joinapp.local", isGuest: true }));
+
+    // Wichtig: lokal speichern wir name als leerer String => Summary zeigt nur "Good morning," ohne Namen
+    localStorage.setItem("loggedInUser", JSON.stringify({ uid: user.uid, name: "", email: "guest@joinapp.local", isGuest: true }));
+
     setTimeout(() => window.location.href = "summary.html", 1500);
   } catch (e) {
     showNotification("❌ Fehler beim Gast-Login.", "error");
     console.error("Guest Login Error:", e);
   }
 }
+
 
 
 async function phoneSignup() {
