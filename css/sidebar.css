@@ -10,7 +10,6 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
   box-sizing: border-box;
 }
 
@@ -39,6 +38,7 @@
   color: #cdcdcd;
   padding: 10px 12px;
   padding-left: 60px;
+  transition: background-color 0.2s ease;
 }
 
 .nav-item .material-icons {
@@ -48,12 +48,25 @@
 
 .nav-item.active {
   background: #091931;
-  color: #ffffff;
-  cursor: pointer;
+  color: #ffffff !important;
+  cursor: default;
 }
 
 .nav-item:hover {
   background: #2a3d59;
+  color: #cdcdcd;
+  cursor: pointer;
+}
+
+.nav-item.active:hover {
+  background: #091931 !important;
+  /* bleibt dunkel */
+  color: #ffffff !important;
+}
+
+.nav-item:not(.active):hover {
+  background: #2a3d59;
+  /* dein normaler Hover */
   color: #cdcdcd;
   cursor: pointer;
 }
@@ -78,6 +91,46 @@
   color: #29abe2;
 }
 
+/* LOGIN STATES */
+.nav-auth {
+  display: none;
+}
+
+.nav-guest {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item.active:hover {
+  background-color: #091931 !important;
+}
+
+.nav-item.active svg,
+.nav-item.active i,
+.nav-item.active .material-icons {
+  color: white !important;
+  fill: white !important;
+}
+
+body.logged-in .nav-auth {
+  display: flex;
+  flex-direction: column;
+}
+
+body.logged-in .nav-guest {
+  display: none;
+}
+
+body.logged-out .nav-auth {
+  display: none;
+}
+
+body.logged-out .nav-guest {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Tablet / Mobile Horizontal Layout */
 @media (max-width: 1023px) {
   .sidebar {
     position: fixed;
@@ -90,7 +143,6 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
-
     background: #2a3647;
     border-top: 1px solid #3a4859;
     color: #fff;
@@ -105,10 +157,9 @@
     height: 70px;
     width: 70px;
     align-items: center;
-    margin-top: 10px;
+    margin-top: 4px;
     padding: 6px 4px;
     border-radius: 16px;
-    margin-top: 4px;
     display: flex;
     justify-content: center;
   }
@@ -123,10 +174,8 @@
   }
 
   .sidebar-nav {
-    display: flex;
     flex-direction: row;
     justify-content: space-around;
-
     width: 100%;
   }
 
@@ -147,205 +196,135 @@
   .nav-item.active,
   .nav-item:hover {
     height: 59px;
-    /* gleiche Höhe, kein Überlauf */
     padding: 6px 4px;
   }
 }
 
-/* Standard: sicherheitshalber Gast-Ansicht */
-.nav-auth {
-  display: none;
-}
-
-.nav-guest {
-  display: flex;
-  flex-direction: column;
-}
-
-/* Wenn eingeloggt */
-body.logged-in .nav-auth {
-  display: flex;
-  flex-direction: column;
-}
-
-body.logged-in .nav-guest {
-  display: none;
-}
-
-/* Wenn NICHT eingeloggt */
-body.logged-out .nav-auth {
-  display: none;
-}
-
-body.logged-out .nav-guest {
-  display: flex;
-  flex-direction: column;
-}
-
-
-
-
-
+/* ===== MOBILE <= 500px — Labels bleiben sichtbar ===== */
 @media (max-width: 500px) {
   .sidebar {
-    height: 72px;
-    padding: 6px 8px;
-  }
-
-  /* Icons-only: Labels ausblenden, damit es nicht überläuft */
-  .nav-item span {
-    display: none; /* nur Icon sichtbar */
-    line-height: 1;
-    font-size: 0.85rem;
-  }
-
-  .nav-item {
-    width: 52px;
-    height: 52px;
-    min-width: 52px;
-    border-radius: 10px;
-    padding: 6px;               /* gleichmäßiger Innenabstand */
-    gap: 0;                     /* Icon + kein Text = kein Gap */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 4px;              /* Abstand zwischen Buttons */
-    box-sizing: border-box;
-  }
-
-  .nav-item .nav-icon {
-    height: 22px;               /* einheitliche Icon-Größe */
-    width: auto;
-  }
-
-  /* Active-Style kompakt und zentriert */
-  .nav-item.active {
-    height: 52px;
-    width: 52px;
-    padding: 6px;
-    border-radius: 10px;
-    background: #091931;
-    color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  /* Hover sollte aktivem Eintrag nichts wegnehmen */
-  .nav-item:not(.active):hover {
-    background: #2a3d59;
-    color: #cdcdcd;
-    cursor: pointer;
-  }
-
-  /* active on hover bleibt unverändert und nicht klickbar */
-  .nav-item.active:hover {
-    background: #091931;
-    color: #ffffff;
-    cursor: default;
+    height: 106px; /* höher, damit alles sichtbar bleibt */
+    padding: 8px 8px;
   }
 
   .sidebar-nav {
-    gap: 8px;
-    padding: 6px 8px;
     display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap; /* keine Zeilenumbruch */
+    gap: 10px;
+    padding: 0 8px;
     align-items: center;
-    justify-content: center;
-  }
-}
-
-
-/* ===== Prevent hover-shift when Icons-only (<=380px) ===== */
-@media (max-width: 380px) {
-  .sidebar-nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;                /* fixer Abstand zwischen Items */
-    padding: 6px 8px;
-    justify-content: space-around;
-  }
-
-  /* FIXED BOX for all nav items: width/height never change */
-  .nav-item {
+    overflow-x: hidden; /* Scroll verhindern */
+    width: 100%;
     box-sizing: border-box;
-    flex: 0 0 40px;          /* fixiert Breite (kein Dehnen/Shrinken) */
-    width: 40px;             /* explizit damit nichts schwankt */
-    height: 40px;            /* feste Höhe */
-    min-width: 40px;
-    border-radius: 8px;
-    padding: 4px;            /* bleibt konstant */
-    margin: 0;               /* keine margin-Änderungen beim hover */
+  }
+
+  .nav-item {
+    flex: 0 0 auto;
+    height: 72px;     /* höher */
+    gap: 10px;
     display: inline-flex;
     align-items: center;
-    justify-content: center;
-    gap: 0;
+    justify-content: center; /* mittig */
+    border-radius: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
-    -webkit-font-smoothing: antialiased;
   }
 
-  /* Icons nur anzeigen (Labels aus) */
-  .nav-item span { display: none; }
-
-  .nav-item .nav-icon {
-    height: 18px;
+  .nav-item .nav-icon,
+  .nav-item .material-icons {
+    height: 28px;    /* Icons größer */
     width: auto;
-    display: block;
-    pointer-events: none;    /* Icon selbst soll keine Hover-Events auslösen */
+    flex: 0 0 auto;
+    font-size: 22px;
   }
 
-  /* Hover: nur visuelle Effekte, keine Layout-Änderungen */
+  .nav-item span {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
   .nav-item:not(.active):hover {
-    background-color: #2a3d59;
-    transform: translateY(-3px);     /* rein visuell, beeinflusst kein Layout */
-    box-shadow: 0 6px 12px rgba(10,20,40,0.12); /* keine Border (Border könnte Layout verschieben) */
+    background: #2a3d59;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(10, 20, 40, 0.08);
+  }
+
+  .nav-item.active {
+    background: #091931;
+    color: #fff;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* ===== VERY SMALL <= 380px ===== */
+@media (max-width: 380px) {
+  .sidebar {
+    height: 106px;
+    padding: 8px 4px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: #2a3647;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;               /* alles in einer Reihe */
+    justify-content: space-between;  /* gleichmäßiger Abstand */
+    align-items: center;
+    width: 100%;
+    overflow-x: hidden;              /* kein Scroll */
+    padding: 0 4px;
+    box-sizing: border-box;
+  }
+
+  .nav-item {
+    flex: 1 1 auto;      /* Buttons schrumpfen automatisch */
+    max-width: 86px;     /* kleiner, damit alles passt */
+    height: 64px;
+    padding: 4px 4px;    /* kleineres Padding */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: #2a3647;
+    color: #fff;
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    gap: 2px;            /* Abstand Icon-Label minimal */
+    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+  }
+
+  .nav-item .nav-icon,
+  .nav-item .material-icons {
+    height: 22px;        /* Icons proportional kleiner */
+    font-size: 16px;
+    margin-bottom: 2px;
+  }
+
+  .nav-item:not(.active):hover {
+    background: #2a3d59;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(10, 20, 40, 0.08);
     cursor: pointer;
   }
 
-  /* Active: optisch markiert, gleiche Box-Größe */
   .nav-item.active {
-    background-color: #091931;
-    transform: none;
-    box-shadow: none;
+    background: #091931;
+    color: #fff;
     cursor: default;
-  }
-
-  .nav-item.active:hover {
-    /* bleibt unverändert — kein Größenwechsel */
-    background-color: #091931;
     transform: none;
     box-shadow: none;
   }
-
-  /* WICHTIG: Entferne oder überschreibe alle anderen Regeln, die Größe/padding/width/height/margin beim :hover/:active ändern */
-  .nav-item:hover,
-  .nav-item:active,
-  .nav-item:focus {
-    outline: none; /* wenn du Fokus sichtbar brauchst, verwende box-shadow statt outline, weil outline manchmal Layout beeinflussen kann */
-  }
-}
-
-/* optional: sorgen dass zwischen 381px und 500px ebenfalls kein Hover-Springen vorkommt */
-@media (min-width: 381px) and (max-width: 500px) {
-  .sidebar-nav { gap: 8px; }
-  .nav-item {
-    box-sizing: border-box;
-    flex: 0 0 70px;
-    width: 70px;
-    height: 52px;
-    padding: 6px 8px;
-    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
-  }
-  .nav-item:not(.active):hover {
-    transform: translateY(-3px);
-    background-color: #2a3d59;
-    box-shadow: 0 6px 12px rgba(10,20,40,0.08);
-  }
-  .nav-item span { display: block; }
-}
-
-
-.add-task-btn {
-  
-  white-space: nowrap;
 }

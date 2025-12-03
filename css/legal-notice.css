@@ -86,6 +86,7 @@
     max-width: 100%;   /* Inhalt nicht größer als Bildschirm */
     box-sizing: border-box;
     margin-top: 100px;
+    margin-bottom: 60px;
   }
 }
 

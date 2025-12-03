@@ -428,14 +428,19 @@ function renderAssigneesDetail(list) {
   if (!list || !list.length) {
     return '<span class="assigned-name">No assignees</span>';
   }
+
   return list
-    .map(function (item) {
-      // Handle both string names and objects with name property
+    .map(function (item, index) {
       const name = typeof item === "string" ? item : item?.name || "";
+
+      // exakt wie im original
+      const color = getAvatarColor(name, index);
+      const initials = getInitials(name); // wie in renderAssignees()
+
       return (
         '<div class="assigned-item">' +
-        '<div class="assigned-avatar-detail assigned-avatar--blue">' +
-        getInitialsFromName(name) +
+        '<div class="assigned-avatar-detail" style="background-color:' + color + '">' +
+        initials +
         "</div>" +
         '<span class="assigned-name">' +
         escapeHtml(name) +
@@ -445,6 +450,7 @@ function renderAssigneesDetail(list) {
     })
     .join("");
 }
+
 
 function renderSubtasksDetail(list, taskId) {
   if (!list || !list.length) {
