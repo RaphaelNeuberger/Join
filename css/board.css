@@ -1,12 +1,9 @@
 
-<<<<<<< HEAD
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-=======
->>>>>>> fc2f53ffec6524a8b0a844281ec747067d4ebef7
 
 body {
   margin: 0;
@@ -273,132 +270,102 @@ body {
 
 .assigned-to-wrapper {
   position: relative;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   background: white;
 }
 
 .assigned-to-selected {
-  display: none !important; /* Badges weg */
+  display: flex;
+  flex-wrap: wrap;
+  padding: 4px;
+  min-height: 32px; /* Space for badges */
 }
 
-.assigned-to-input {
-  width: 100%;
-  border: none;
-  padding: 14px 16px;
-  font-size: 16px;
-  cursor: pointer;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E") no-repeat right 16px center;
-  background-size: 12px;
-  outline: none;
-}
-
-.assigned-to-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #d1d5db;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
-  max-height: 280px;
-  overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-}
-
-.assigned-to-dropdown ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.assigned-to-dropdown li {
+.assigned-to-badge {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 20px;
-  cursor: pointer;
-  transition: background 0.2s;
-  margin: 5px 0;                    /* ← das macht den 3px weißen Abstand! */
-  border-radius: 8px;
+  background: #f0f0f0;
+  border-radius: 16px;
+  padding: 4px 8px;
+  margin: 2px;
+  font-size: 12px;
 }
 
-.assigned-to-dropdown li:hover {
-  background: #f8f9fa;
-}
-
-.assigned-to-dropdown li.selected {
-  background: #2a3647;
- color: white !important;
-}
-
-/* Avatar + Name linksbündig, aber insgesamt zentriert wirkend */
-.assigned-to-dropdown .contact-info {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  flex: 1;
-  justify-content: flex-start;
-}
-
-.assigned-to-dropdown .avatar {
-  width: 42px;
-  height: 42px;
+.assigned-to-badge .avatar {
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-weight: bold;
-  font-size: 14px;
-  flex-shrink: 0;
+  margin-right: 4px;
+}
+
+.assigned-to-badge .remove {
+  cursor: pointer;
+  margin-left: 4px;
+  color: #999;
+}
+
+.assigned-to-input {
+  width: 100%;
+  border: none;
+  padding: 8px;
+  box-sizing: border-box;
+}
+
+.assigned-to-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #ccc;
+  border-top: none;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 10;
+}
+
+.assigned-to-dropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.assigned-to-dropdown li {
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.assigned-to-dropdown li:hover {
+  background: #f0f0f0;
+}
+
+.assigned-to-dropdown .checkbox {
+  margin-right: 8px;
+  display: none;
+}
+
+.assigned-to-dropdown .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  margin-right: 8px;
 }
 
 .assigned-to-dropdown .contact-name {
-  font-size: 16px;
-  color: #2a3647;
-}
-
-/* Weiße Schrift auch für Name und Initialen, wenn ausgewählt */
-.assigned-to-dropdown li.selected .contact-name,
-.assigned-to-dropdown li.selected .avatar {
-  color: white !important;
-}
-
-/* Das reine Kästchen rechts – genau wie bei Join */
-.checkmark-box {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #a8a8a8;
-  border-radius: 4px;
-  flex-shrink: 0;
-  transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;     /* ← das macht’s! */
-}
-
-.checkmark-box.checked {
-  background-color: #2a3647;
-  border-color: #2a3647;
-}
-
-.checkmark-box.checked::after {
-  content: "✓";
-  color: white;
-  font-size: 14px;
-  font-weight: bold;
-  line-height: 1;              /* ← wichtig für perfekte Zentrierung */
-}
-
-/* Native Checkbox unsichtbar */
-.assigned-to-dropdown input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+  flex: 1;
 }
 
 /* Color examples from screenshots */
