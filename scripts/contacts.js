@@ -216,43 +216,43 @@
 
   // Toast Notification
   function showToast(message) {
-    const toast = document.getElementById('toastNotification');
-    const toastMessage = document.getElementById('toastMessage');
-    
+    const toast = document.getElementById("toastNotification");
+    const toastMessage = document.getElementById("toastMessage");
+
     if (toast && toastMessage) {
       toastMessage.textContent = message;
-      toast.classList.add('show');
-      
+      toast.classList.add("show");
+
       setTimeout(() => {
-        toast.classList.remove('show');
+        toast.classList.remove("show");
       }, 3000);
     }
   }
 
   // Mobile Contact Detail View
   function showMobileContactDetail(contact) {
-    const mobileDetail = document.getElementById('mobileContactDetail');
+    const mobileDetail = document.getElementById("mobileContactDetail");
     if (!mobileDetail) return;
 
     const isMobile = window.innerWidth <= 1023;
     if (!isMobile) return;
 
     // Update mobile view content
-    const avatar = document.getElementById('mobileContactAvatar');
-    const name = document.getElementById('mobileContactName');
-    const email = document.getElementById('mobileContactEmail');
-    const phone = document.getElementById('mobileContactPhone');
+    const avatar = document.getElementById("mobileContactAvatar");
+    const name = document.getElementById("mobileContactName");
+    const email = document.getElementById("mobileContactEmail");
+    const phone = document.getElementById("mobileContactPhone");
 
     if (avatar && name && email && phone) {
       const initials = contact.name
-        .split(' ')
-        .map(n => n[0])
-        .join('')
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
         .toUpperCase()
         .substring(0, 2);
-      
+
       const avatarColor = getAvatarColor(contact.name);
-      
+
       avatar.textContent = initials;
       avatar.style.backgroundColor = avatarColor;
       name.textContent = contact.name;
@@ -261,21 +261,21 @@
       phone.textContent = contact.phone;
     }
 
-    mobileDetail.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    mobileDetail.classList.add("active");
+    document.body.style.overflow = "hidden";
   }
 
   function closeMobileContactDetail() {
-    const mobileDetail = document.getElementById('mobileContactDetail');
+    const mobileDetail = document.getElementById("mobileContactDetail");
     if (mobileDetail) {
-      mobileDetail.classList.remove('active');
-      document.body.style.overflow = '';
+      mobileDetail.classList.remove("active");
+      document.body.style.overflow = "";
     }
   }
 
   function toggleMobileContactMenu() {
     // Placeholder for mobile menu functionality
-    console.log('Mobile contact menu toggled');
+    console.log("Mobile contact menu toggled");
   }
 
   // Make functions globally available
@@ -513,7 +513,7 @@ function selectNewlyAddedContact(id, name, email, phone) {
 
   // Check if mobile view
   const isMobile = window.innerWidth <= 1023;
-  
+
   if (isMobile) {
     // Show mobile contact detail view
     showMobileContactDetail(contact);

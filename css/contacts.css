@@ -926,7 +926,7 @@ span.name-logo {
 }
 
 .mobile-contact-header::after {
-  content: '';
+  content: "";
   display: block;
   width: 90px;
   height: 3px;
