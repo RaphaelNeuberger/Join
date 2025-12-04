@@ -470,21 +470,28 @@ function hideDropdown() {
 function renderContactOptions(filteredContacts = contacts) {
   const list = document.getElementById('assignedToList');
   list.innerHTML = '';
+
   filteredContacts.forEach(contact => {
-    const li = document.createElement('li');
     const isSelected = selectedAssignees.includes(contact.id);
+
+    const li = document.createElement('li');
+    li.classList.toggle('selected', isSelected); // für blauen Hintergrund bei Auswahl
+
     li.innerHTML = `
-      <input type="checkbox" class="checkbox" ${isSelected ? 'checked' : ''} data-id="${contact.id}">
-      <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
-      <span class="contact-name">${escapeHtml(contact.name)}</span>
+      <div class="contact-info">
+        <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
+        <span class="contact-name">${escapeHtml(contact.name)}</span>
+      </div>
+      <div class="checkmark-box ${isSelected ? 'checked' : ''}"></div>
     `;
-    li.addEventListener('click', (event) => {
-      if (event.target.tagName !== 'INPUT') {
-        const checkbox = li.querySelector('input');
-        checkbox.checked = !checkbox.checked;
-      }
-      toggleAssignee(contact.id);
+
+    // Klick auf die gesamte Zeile toggelt die Auswahl
+    li.addEventListener('click', (e) => {
+      // Verhindert doppeltes Triggern, falls man direkt auf das Kästchen klickt
+      e.preventDefault();
+      toggleAssignee(contact.id, li);
     });
+
     list.appendChild(li);
   });
 }
@@ -503,16 +510,31 @@ function filterContacts() {
  * Toggles a contact's selection and updates badges.
  * @param {string} id - Contact ID.
  */
-function toggleAssignee(id) {
+function toggleAssignee(id, listItemElement = null) {
   const index = selectedAssignees.indexOf(id);
-  if (index === -1) {
-    selectedAssignees.push(id);
+  const wasSelected = index !== -1;
+
+  if (wasSelected) {
+    selectedAssignees = selectedAssignees.filter(x => x !== id);
   } else {
-    selectedAssignees.splice(index, 1);
+    selectedAssignees.push(id);
   }
-  renderSelectedBadges();
-  filterContacts(); // Refresh dropdown to show checked state
+
+  // Wenn wir das aktuelle <li> haben → UI sofort aktualisieren
+  if (listItemElement) {
+    listItemElement.classList.toggle('selected', !wasSelected);
+    const box = listItemElement.querySelector('.checkmark-box');
+    box.classList.toggle('checked', !wasSelected);
+  }
+
+  // Dropdown neu rendern (für Filter + korrekte Zustände überall)
+  filterContacts();
 }
+
+// Verhindert, dass das Dropdown beim Klick auf einen Kontakt schließt
+document.getElementById('assignedToDropdown').addEventListener('click', function(e) {
+  e.stopPropagation();
+});
 
 /**
  * Renders selected assignees as badges.

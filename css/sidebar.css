@@ -203,8 +203,7 @@ body.logged-out .nav-guest {
 /* ===== MOBILE <= 500px — Labels bleiben sichtbar ===== */
 @media (max-width: 500px) {
   .sidebar {
-    height: 106px; /* höher, damit alles sichtbar bleibt */
-    padding: 8px 8px;
+    height: 85px; /* höher, damit alles sichtbar bleibt */
   }
 
   .sidebar-nav {
@@ -221,7 +220,7 @@ body.logged-out .nav-guest {
 
   .nav-item {
     flex: 0 0 auto;
-    height: 72px;     /* höher */
+    height: 62px;     /* höher */
     gap: 10px;
     display: inline-flex;
     align-items: center;
@@ -265,7 +264,7 @@ body.logged-out .nav-guest {
 /* ===== VERY SMALL <= 380px ===== */
 @media (max-width: 380px) {
   .sidebar {
-    height: 106px;
+    height: 85px;
     padding: 8px 4px;
     display: flex;
     flex-direction: row;
@@ -274,6 +273,10 @@ body.logged-out .nav-guest {
     background: #2a3647;
   }
 
+    .nav-item.active, .nav-item:hover {
+        padding: 6px 6px;
+    }
+  
   .sidebar-nav {
     display: flex;
     flex-direction: row;
@@ -315,7 +318,6 @@ body.logged-out .nav-guest {
 
   .nav-item:not(.active):hover {
     background: #2a3d59;
-    transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(10, 20, 40, 0.08);
     cursor: pointer;
   }
@@ -326,5 +328,45 @@ body.logged-out .nav-guest {
     cursor: default;
     transform: none;
     box-shadow: none;
+  }
+}
+
+
+@media (max-width: 319px) {
+
+  .sidebar {
+    height: 80px;
+    padding: 6px;
+  }
+
+  .sidebar-nav {
+    gap: 6px;
+    padding: 0 6px;
+  }
+
+  /* Buttons: nur Icons, aber gleiche Größe */
+  .nav-item {
+    max-width: 60px;
+    height: 60px;
+    padding: 6px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Label ausblenden */
+  .nav-item span {
+    display: none !important;
+  }
+
+  /* Icons zentral */
+  .nav-item .nav-icon,
+  .nav-item .material-icons {
+    font-size: 24px;
+    height: 26px;
+    margin: 0;
+  }
+
+  .nav-item.active {
+    background: #091931;
   }
 }

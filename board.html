@@ -170,20 +170,20 @@
               </div>
             </div>
 
-            <!-- Assigned To Field -->
             <div class="form-group">
               <label class="form-group__label" for="assignedToInput">
                 Assigned to
               </label>
               <div class="assigned-to-wrapper">
-                <div class="assigned-to-selected" id="assignedToSelected">
-                  <!-- Selected assignees will appear here as badges -->
+                <!-- Wir entfernen die Badges komplett oder machen sie optional -->
+                <div class="assigned-to-selected" id="assignedToSelected" style="display: none;">
+                  <!-- Hier waren früher die Badges -->
                 </div>
                 <input type="text" id="assignedToInput" class="form-group__input assigned-to-input"
                   placeholder="Select contacts to assign" autocomplete="off" />
-                <div class="assigned-to-dropdown" id="assignedToDropdown" style="display: none;">
+                <div class="assigned-to-dropdown" id="assignedToDropdown">
                   <ul id="assignedToList">
-                    <!-- Contact options will be rendered here -->
+                    <!-- Checkbox-Liste wird hier reingerendert -->
                   </ul>
                 </div>
               </div>
@@ -264,6 +264,7 @@
   <script src="scripts/task_tamplates.js"></script>
   <script src="scripts/task_form.js"></script>
   <script src="scripts/board.js"></script>
+  <script src="scripts/headerUser.js"></script>
 </body>
 
 </html>

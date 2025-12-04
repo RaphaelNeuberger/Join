@@ -1,12 +1,9 @@
 
-<<<<<<< HEAD
 *,
 *::before,
 *::after {
   box-sizing: border-box;
 }
-=======
->>>>>>> fc2f53ffec6524a8b0a844281ec747067d4ebef7
 
 body {
   margin: 0;

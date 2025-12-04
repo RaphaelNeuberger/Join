@@ -53,7 +53,7 @@ function showGreeting() {
     } else {
       // Kein Name (Gast oder nicht eingeloggt) -> nur "Good morning," ohne Namen
       greetNameSplash.style.display = "none";
-      greetTextSplash.textContent = "Good morning,";
+      greetTextSplash.textContent = "Good morning!";
     }
   }
 
@@ -65,7 +65,7 @@ function showGreeting() {
       greetTextMain.textContent = "Good morning,";
     } else {
       greetNameMain.style.display = "none";
-      greetTextMain.textContent = "Good morning,";
+      greetTextMain.textContent = "Good morning!";
     }
   }
 
