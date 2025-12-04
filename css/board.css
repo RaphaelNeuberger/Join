@@ -315,7 +315,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 12px 20px;
+  padding: 8px 20px;
   cursor: pointer;
   transition: all 0.2s;
   margin: 3px 0;                    /* ← das macht den 3px weißen Abstand! */
