@@ -25,6 +25,7 @@ body {
   padding: 196px 84px 32px;
   background: #f6f7fb;
   min-height: 100vh;
+  box-sizing: border-box  ;
 }
 
 /* Header */
@@ -259,6 +260,9 @@ body {
   .task-column {
     width: 100%;
     padding: 0px;
+  }
+  #done-tasks{
+    margin-bottom: 100px;
   }
 
   .task-form__layout {
