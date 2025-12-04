@@ -213,6 +213,77 @@
   }
 
   document.addEventListener("DOMContentLoaded", init);
+
+  // Toast Notification
+  function showToast(message) {
+    const toast = document.getElementById('toastNotification');
+    const toastMessage = document.getElementById('toastMessage');
+    
+    if (toast && toastMessage) {
+      toastMessage.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+  }
+
+  // Mobile Contact Detail View
+  function showMobileContactDetail(contact) {
+    const mobileDetail = document.getElementById('mobileContactDetail');
+    if (!mobileDetail) return;
+
+    const isMobile = window.innerWidth <= 1023;
+    if (!isMobile) return;
+
+    // Update mobile view content
+    const avatar = document.getElementById('mobileContactAvatar');
+    const name = document.getElementById('mobileContactName');
+    const email = document.getElementById('mobileContactEmail');
+    const phone = document.getElementById('mobileContactPhone');
+
+    if (avatar && name && email && phone) {
+      const initials = contact.name
+        .split(' ')
+        .map(n => n[0])
+        .join('')
+        .toUpperCase()
+        .substring(0, 2);
+      
+      const avatarColor = getAvatarColor(contact.name);
+      
+      avatar.textContent = initials;
+      avatar.style.backgroundColor = avatarColor;
+      name.textContent = contact.name;
+      email.textContent = contact.email;
+      email.href = `mailto:${contact.email}`;
+      phone.textContent = contact.phone;
+    }
+
+    mobileDetail.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileContactDetail() {
+    const mobileDetail = document.getElementById('mobileContactDetail');
+    if (mobileDetail) {
+      mobileDetail.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  }
+
+  function toggleMobileContactMenu() {
+    // Placeholder for mobile menu functionality
+    console.log('Mobile contact menu toggled');
+  }
+
+  // Make functions globally available
+  window.showToast = showToast;
+  window.showMobileContactDetail = showMobileContactDetail;
+  window.closeMobileContactDetail = closeMobileContactDetail;
+  window.toggleMobileContactMenu = toggleMobileContactMenu;
+  window.getAvatarColor = getAvatarColor;
 })();
 
 // Dialog functions
@@ -286,13 +357,13 @@ document.addEventListener("DOMContentLoaded", function () {
         // Dialog schließen
         closeAddContactDialog();
 
-        // Zeige Erfolgsmeldung zuerst
-        showSuccessMessage("Contact successfully created");
+        // Zeige Toast-Nachricht
+        showToast("Contact successfully created");
 
-        // Warte 2 Sekunden, dann wähle den neuen Kontakt aus (nach der Meldung)
+        // Warte kurz, dann zeige den Kontakt an
         setTimeout(() => {
           selectNewlyAddedContact(newContactRef.key, name, email, phone);
-        }, 2000);
+        }, 500);
 
         console.log("Kontakt erfolgreich hinzugefügt!");
       } catch (error) {
@@ -440,20 +511,27 @@ async function deleteCurrentContact() {
 function selectNewlyAddedContact(id, name, email, phone) {
   const contact = { id, name, email, phone };
 
-  // Suche das entsprechende contact-item Element
-  const contactItems = document.querySelectorAll(".contact-item");
-  let targetItem = null;
+  // Check if mobile view
+  const isMobile = window.innerWidth <= 1023;
+  
+  if (isMobile) {
+    // Show mobile contact detail view
+    showMobileContactDetail(contact);
+  } else {
+    // Desktop: find and click the contact item
+    const contactItems = document.querySelectorAll(".contact-item");
+    let targetItem = null;
 
-  contactItems.forEach((item) => {
-    const nameEl = item.querySelector(".user-name");
-    if (nameEl && nameEl.textContent === name) {
-      targetItem = item;
+    contactItems.forEach((item) => {
+      const nameEl = item.querySelector(".user-name");
+      if (nameEl && nameEl.textContent === name) {
+        targetItem = item;
+      }
+    });
+
+    if (targetItem) {
+      targetItem.click();
     }
-  });
-
-  if (targetItem) {
-    // Simuliere einen Klick auf das Element
-    targetItem.click();
   }
 }
 

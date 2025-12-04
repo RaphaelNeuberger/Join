@@ -42,6 +42,43 @@
         <img src="img/icons/person_add.svg" alt="Add Person" />
       </div>
 
+      <!-- Mobile Contact Detail View -->
+      <div class="mobile-contact-detail" id="mobileContactDetail">
+        <div class="mobile-contact-header">
+          <button class="mobile-back-btn" onclick="closeMobileContactDetail()">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18L9 12L15 6" stroke="#29ABE2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <h1>Contacts</h1>
+          <span class="mobile-contact-subtitle">Better with a team</span>
+        </div>
+        <div class="mobile-contact-content">
+          <div class="mobile-contact-avatar-section">
+            <span class="mobile-contact-avatar" id="mobileContactAvatar">TW</span>
+            <h2 class="mobile-contact-name" id="mobileContactName">Tatjana Wolf</h2>
+          </div>
+          <div class="mobile-contact-info">
+            <p class="mobile-contact-info-title">Contact Information</p>
+            <div class="mobile-contact-info-item">
+              <p class="mobile-contact-label">Email</p>
+              <a class="mobile-contact-value" id="mobileContactEmail" href="mailto:wolf@gmail.com">wolf@gmail.com</a>
+            </div>
+            <div class="mobile-contact-info-item">
+              <p class="mobile-contact-label">Phone</p>
+              <p class="mobile-contact-value" id="mobileContactPhone">+49 2222 222 22 2</p>
+            </div>
+          </div>
+        </div>
+        <button class="mobile-more-btn" onclick="toggleMobileContactMenu()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="6" r="2" fill="white"/>
+            <circle cx="12" cy="12" r="2" fill="white"/>
+            <circle cx="12" cy="18" r="2" fill="white"/>
+          </svg>
+        </button>
+      </div>
+
       <div class="info-contact-area">
         <div class="info-contact-header">
           <h2>Contacts</h2>
@@ -244,4 +281,9 @@
   <script type="module" src="scripts/firebase-init.js"></script>
   <script src="scripts/contacts.js"></script>
   <script src="scripts/templates.js"></script>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toastNotification">
+    <span id="toastMessage">Contact successfully created</span>
+  </div>
 </html>
