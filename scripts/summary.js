@@ -65,7 +65,7 @@ function showGreeting() {
       greetTextMain.textContent = "Good morning,";
     } else {
       greetNameMain.style.display = "none";
-      greetTextMain.textContent = "Good morning,";
+      greetTextMain.textContent = "Good morning!";
     }
   }
 
