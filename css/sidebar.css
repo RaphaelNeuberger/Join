@@ -273,6 +273,10 @@ body.logged-out .nav-guest {
     background: #2a3647;
   }
 
+    .nav-item.active, .nav-item:hover {
+        padding: 6px 6px;
+    }
+  
   .sidebar-nav {
     display: flex;
     flex-direction: row;
@@ -324,5 +328,45 @@ body.logged-out .nav-guest {
     cursor: default;
     transform: none;
     box-shadow: none;
+  }
+}
+
+
+@media (max-width: 319px) {
+
+  .sidebar {
+    height: 80px;
+    padding: 6px;
+  }
+
+  .sidebar-nav {
+    gap: 6px;
+    padding: 0 6px;
+  }
+
+  /* Buttons: nur Icons, aber gleiche Größe */
+  .nav-item {
+    max-width: 60px;
+    height: 60px;
+    padding: 6px;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  /* Label ausblenden */
+  .nav-item span {
+    display: none !important;
+  }
+
+  /* Icons zentral */
+  .nav-item .nav-icon,
+  .nav-item .material-icons {
+    font-size: 24px;
+    height: 26px;
+    margin: 0;
+  }
+
+  .nav-item.active {
+    background: #091931;
   }
 }
