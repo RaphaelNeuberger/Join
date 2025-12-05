@@ -370,3 +370,9 @@ body.logged-out .nav-guest {
     background: #091931;
   }
 }
+
+/* Icons bei aktivem Menüpunkt weiß */
+.nav-item.active .nav-icon,
+.nav-item.active .material-icons {
+  filter: brightness(0) invert(1);
+}
