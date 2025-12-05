@@ -223,12 +223,6 @@ body {
 .prio-icon { display:inline-flex; align-items:center; line-height:1; }
 .prio-icon svg { display:block; width:16px; height:12px; }
 
-@media (max-width: 1126px) {
-  .board-container {
-    padding: 120px 16px 16px;
-  }
-}
-
 
 @media (max-width: 1023px) {
   .board-container {
