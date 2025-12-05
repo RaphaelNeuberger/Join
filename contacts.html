@@ -46,13 +46,21 @@
       <div class="mobile-contact-detail" id="mobileContactDetail">
         <div class="mobile-contact-header">
           <button class="mobile-back-btn" onclick="closeMobileContactDetail()">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <path
-                d="M15 18L9 12L15 6"
+                d="M20 24L12 16L20 8"
                 stroke="#29ABE2"
-                stroke-width="2"
+                stroke-width="3"
                 stroke-linecap="round"
                 stroke-linejoin="round" />
+              <line
+                x1="12"
+                y1="16"
+                x2="28"
+                y2="16"
+                stroke="#29ABE2"
+                stroke-width="3"
+                stroke-linecap="round" />
             </svg>
           </button>
           <h1>Contacts</h1>
@@ -80,9 +88,12 @@
             </div>
             <div class="mobile-contact-info-item">
               <p class="mobile-contact-label">Phone</p>
-              <p class="mobile-contact-value" id="mobileContactPhone">
+              <a
+                class="mobile-contact-value"
+                id="mobileContactPhone"
+                href="tel:+4922222222222">
                 +49 2222 222 22 2
-              </p>
+              </a>
             </div>
           </div>
         </div>
@@ -93,6 +104,16 @@
             <circle cx="12" cy="18" r="2" fill="white" />
           </svg>
         </button>
+        <div class="mobile-contact-menu" id="mobileContactMenu">
+          <button class="mobile-menu-item" onclick="editMobileContact()">
+            <img src="./img/icons/edit.svg" alt="edit" />
+            Edit
+          </button>
+          <button class="mobile-menu-item" onclick="deleteMobileContact()">
+            <img src="./img/icons/delete.svg" alt="delete" />
+            Delete
+          </button>
+        </div>
       </div>
 
       <div class="info-contact-area">
@@ -126,7 +147,7 @@
           <p class="para-2">Email:</p>
           <p class="para-3">tatjana.wolf@example.com</p>
           <p class="para-2">Phone:</p>
-          <p class="para-4">+1 (555) 123-4567</p>
+          <a class="para-3" href="tel:+15551234567">+1 (555) 123-4567</a>
         </div>
       </div>
     </div>
@@ -146,7 +167,7 @@
         </div>
         <div class="dialog-right">
           <div class="dialog-avatar">
-            <img src="./img/icons/person_add.svg" alt="Person Icon" />
+            <img src="./img/icons/person.svg" alt="Person Icon" />
           </div>
           <form class="dialog-form" id="addContactForm">
             <div class="input-group">

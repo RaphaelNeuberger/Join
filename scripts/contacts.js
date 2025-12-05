@@ -143,7 +143,10 @@
       }
       if (nameEl) nameEl.textContent = contact.name || "";
       if (emailLabel) emailLabel.textContent = contact.email || "";
-      if (phoneLabel) phoneLabel.textContent = contact.phone || "";
+      if (phoneLabel) {
+        phoneLabel.textContent = contact.phone || "";
+        phoneLabel.href = `tel:${(contact.phone || "").replace(/\\s/g, "")}`;
+      }
 
       if (lastSelectedItem) lastSelectedItem.classList.remove("active-contact");
       if (itemEl) itemEl.classList.add("active-contact");
@@ -270,6 +273,7 @@
       email.textContent = contact.email;
       email.href = `mailto:${contact.email}`;
       phone.textContent = contact.phone;
+      phone.href = `tel:${contact.phone.replace(/\s/g, "")}`;
     }
 
     mobileDetail.classList.add("active");
@@ -282,11 +286,40 @@
       mobileDetail.classList.remove("active");
       document.body.style.overflow = "";
     }
+    // Close menu if open
+    const menu = document.getElementById("mobileContactMenu");
+    if (menu) {
+      menu.classList.remove("show");
+    }
   }
 
   function toggleMobileContactMenu() {
-    // Placeholder for mobile menu functionality
-    console.log("Mobile contact menu toggled");
+    const menu = document.getElementById("mobileContactMenu");
+    if (menu) {
+      menu.classList.toggle("show");
+    }
+  }
+
+  function editMobileContact() {
+    // Close menu
+    const menu = document.getElementById("mobileContactMenu");
+    if (menu) {
+      menu.classList.remove("show");
+    }
+    // Close mobile detail view
+    closeMobileContactDetail();
+    // Open edit dialog
+    openEditContactDialog();
+  }
+
+  function deleteMobileContact() {
+    // Close menu
+    const menu = document.getElementById("mobileContactMenu");
+    if (menu) {
+      menu.classList.remove("show");
+    }
+    // Delete contact
+    deleteCurrentContact();
   }
 
   // Make functions globally available
@@ -294,6 +327,8 @@
   window.showMobileContactDetail = showMobileContactDetail;
   window.closeMobileContactDetail = closeMobileContactDetail;
   window.toggleMobileContactMenu = toggleMobileContactMenu;
+  window.editMobileContact = editMobileContact;
+  window.deleteMobileContact = deleteMobileContact;
   window.getAvatarColor = getAvatarColor;
 })();
 
@@ -482,6 +517,15 @@ function closeEditContactDialog() {
   if (dialog) {
     dialog.classList.remove("active");
     document.body.style.overflow = "";
+  }
+
+  // Wenn mobile Ansicht, zeige den Kontakt wieder an
+  const isMobile = window.innerWidth <= 1023;
+  if (isMobile) {
+    const contact = window.getCurrentContact();
+    if (contact) {
+      showMobileContactDetail(contact);
+    }
   }
 }
 
