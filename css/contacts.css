@@ -901,16 +901,25 @@ span.name-logo {
 
 .mobile-back-btn {
   position: absolute;
-  top: 100px;
+  top: 30px;
   right: 20px;
   background: none;
   border: none;
   cursor: pointer;
   padding: 8px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-back-btn svg {
+  width: 32px;
+  height: 32px;
 }
 
 .mobile-contact-header h1 {
-  font-size: 61px;
+  font-size: 47px;
   font-weight: 700;
   margin: 0;
   margin-bottom: 8px;
@@ -918,7 +927,7 @@ span.name-logo {
 }
 
 .mobile-contact-subtitle {
-  font-size: 27px;
+  font-size: 20px;
   font-weight: 400;
   color: #2a3647;
   display: block;
