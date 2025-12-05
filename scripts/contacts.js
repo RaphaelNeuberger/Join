@@ -111,16 +111,16 @@
 
   function selectContact(contact, itemEl) {
     currentContact = contact; // Speichere den aktuellen Kontakt
-    
+
     // Check if mobile view
     const isMobile = window.innerWidth <= 1023;
-    
+
     if (isMobile) {
       // Show mobile contact detail view
       showMobileContactDetail(contact);
       return;
     }
-    
+
     // Desktop view: update info panel
     try {
       const logoEl = document.querySelector(".name-logo-large");
