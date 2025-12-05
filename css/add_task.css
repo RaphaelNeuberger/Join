@@ -544,3 +544,369 @@
     font-size: 2rem;
   }
 }
+
+
+
+.assigned-to-wrapper {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+}
+
+.assigned-to-selected {
+  display: none !important; /* Badges weg */
+}
+
+.assigned-to-input {
+  width: 100%;
+  border: none;
+  padding: 14px 16px;
+  font-size: 16px;
+  cursor: pointer;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E") no-repeat right 16px center;
+  background-size: 12px;
+  outline: none;
+}
+
+.assigned-to-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #d1d5db;
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  max-height: 280px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+.assigned-to-dropdown ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.assigned-to-dropdown li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin: 3px 0;                    /* ← das macht den 3px weißen Abstand! */
+  border-radius: 8px;               /* damit der Hintergrund schön abgerundet ist */
+  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.assigned-to-dropdown li:hover {
+  background: #f0f0f0;
+  border-radius: 8px;
+}
+
+.assigned-to-dropdown li.selected {
+  background: #2a3647 !important;   /* Original Join-Dunkelblau */
+  border-radius: 8px;
+  color: white !important;          /* ← weiße Schrift */
+}
+
+/* Avatar + Name linksbündig, aber insgesamt zentriert wirkend */
+.assigned-to-dropdown .contact-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1;
+  justify-content: flex-start;
+}
+
+.assigned-to-dropdown li.selected .contact-name,
+.assigned-to-dropdown li.selected .avatar {
+  color: white !important;
+}
+
+.assigned-to-dropdown .avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  flex-shrink: 0;
+}
+
+.assigned-to-dropdown .contact-name {
+  font-size: 16px;
+  color: #2a3647;
+}
+
+/* Das reine Kästchen rechts – genau wie bei Join */
+.checkmark-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #a8a8a8;
+  border-radius: 4px;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;     /* ← das macht’s! */
+}
+
+.checkmark-box.checked {
+  background-color: #2a3647;
+  border-color: #2a3647;
+}
+
+.checkmark-box.checked::after {
+  content: "✓";
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;              /* ← wichtig für perfekte Zentrierung */
+}
+
+/* Native Checkbox unsichtbar */
+.assigned-to-dropdown input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+/* Color examples from screenshots */
+.avatar-sm { background: #00bfff; } /* Sofia Müller - cyan */
+.avatar-am { background: #ff8c00; } /* Anton Mayer - orange */
+.avatar-as { background: #9932cc; } /* Anja Schulz - purple */
+.avatar-bz { background: #4169e1; } /* Benedikt Ziegler - blue */
+.avatar-de { background: #ff69b4; } /* David Eisenberg - pink */
+
+
+/* -----------------------------
+  Responsive Ergänzungen für Add Task
+  (ans Ende deiner Datei einfügen)
+   ----------------------------- */
+
+/* ---- Global tweaks for container on smaller viewports ----- */
+/* keep desktop behaviour intact; tweak progressively smaller breakpoints */
+@media (max-width: 1100px) {
+  .task-form__layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .vertical-divider { display: none; }
+
+  /* Reduce heavy paddings so content fits */
+  .task-form-container {
+    padding: 120px 28px 28px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .task-form-container {
+    margin-left: 0;               /* sidebar collapsed/hidden on small widths */
+    padding: 96px 20px 20px;      /* header space + breathing room */
+    margin-bottom: 90px;
+  }
+
+  .task-form {
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px 8px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .priority-buttons {
+    gap: 10px;
+    height: auto;
+    border: none;
+    width: 100%;
+  }
+
+  .priority-buttons__button {
+    min-width: 0;
+    flex: 1;
+    padding: 10px 12px;
+    font-size: 16px;
+  }
+
+  /* assigned-to dropdown: use full width and remove outer margins */
+  .assigned-to-dropdown {
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    margin-right: 0;
+    border-radius: 8px;
+  }
+
+  .assigned-to-dropdown li {
+    margin: 3px 8px;
+  }
+}
+
+@media (max-width: 640px) {
+  .task-form-container {
+    padding: 96px 12px 16px;
+    margin-bottom: 80px;
+    min-width: 320px;
+    box-sizing: border-box;
+  }
+
+  .task-form__title {
+    font-size: 32px;
+    margin-bottom: 18px;
+  }
+
+  .task-form {
+    padding: 12px 0;
+    font-size: 16px;
+  }
+
+  .task-form__column-left,
+  .task-form__column-right {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .form-group {
+    margin-bottom: 14px;
+  }
+
+  .form-group__input {
+    height: 44px;
+    font-size: 16px;
+  }
+
+  .form-group__textarea {
+    height: 88px;
+    font-size: 16px;
+  }
+
+  .form-label { font-size: 16px; }
+
+  .text-hint { font-size: 14px; }
+
+  /* Priority buttons stack on very small screens */
+  .priority-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+  }
+  .priority-buttons__button {
+    padding: 8px 10px;
+    font-size: 14px;
+  }
+
+  /* Action buttons: equal width row or stacked depending on space */
+  .form-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+  }
+  .form-actions__button--clear,
+  .form-actions__button--submit {
+    height: 48px;
+    font-size: 16px;
+    flex: 1;
+  }
+
+  /* assigned-to input: reduce big icon padding */
+  .assigned-to-input {
+    padding-right: 36px;
+  }
+
+  /* dropdown list items: remove left/right offsets */
+  .assigned-to-dropdown li {
+    margin-left: 6px;
+    margin-right: 6px;
+    padding: 10px 12px;
+  }
+
+  .assigned-to-dropdown {
+    max-height: 220px;
+  }
+}
+
+/* extra small phones */
+@media (max-width: 420px) {
+  .task-form-container { padding: 88px 10px 14px; }
+  .task-form__title { font-size: 1.6rem; }
+  .priority-buttons { grid-template-columns: 1fr; }
+}
+
+/* ---- Accessibility / touch targets ----- */
+/* ensure buttons and inputs have comfortable touch areas on mobile */
+@media (max-width: 768px) {
+  .priority-buttons__button,
+  .form-actions__button--clear,
+  .form-actions__button--submit,
+  .subtask-input__button {
+    min-height: 48px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+/* ---- Assigned-to dropdown spacing fix (removes unwanted 3px gaps) ---- */
+.assigned-to-dropdown li {
+  /* override previously set margins that caused small gaps */
+  margin: 4px 8px; /* small uniform spacing */
+}
+
+/* ---- Make sure vertical divider doesn't collapse column height on mobile when hidden ---- */
+.vertical-divider {
+  /* When visible it fills column; when hidden we keep no visual side effects */
+  width: 100%;
+  background: var(--border);
+  margin: 2rem 0;
+  align-self: stretch;
+  pointer-events: none;
+}
+
+/* ---- Subtask list responsiveness ---- */
+.subtask-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-left: 0;
+  margin: 0;
+  list-style: none;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+/* small screens: subtasks smaller */
+@media (max-width: 480px) {
+  .subtask-list { max-height: 180px; }
+  .subtask-item .subtask-text { font-size: 14px; }
+}
+
+/* ---- minor utility: center success message on mobile ---- */
+#successMessage {
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-radius: 8px;
+}
+
+/* ensure date icon remains clickable area on mobile (if you later allow pointer-events) */
+@media (max-width: 640px) {
+  .form-group__date-wrapper .date-icon {
+    width: 22px;
+    height: 22px;
+    right: 10px;
+  }
+}

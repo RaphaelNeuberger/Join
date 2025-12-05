@@ -1,97 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      rel="icon"
-      href="img/logo/Logo for Favicon construction.svg"
-      type="image/svg+xml" />
-    <title>Add Task • Join</title>
-    <link rel="stylesheet" href="css/fonts.css" />
-    <link rel="stylesheet" href="css/style.css" />
-    <link rel="stylesheet" href="css/header.css" />
-    <link rel="stylesheet" href="css/sidebar.css" />
-    <link rel="stylesheet" href="css/add_task.css" />
-  </head>
-  <body onload="includeHeaderHTML();includeSidebarHTML();initAddTaskPage()">
-    <nav header-html="./templates/header.html"></nav>
-    <aside sidebar-html="./templates/sidebar.html"></aside>
 
-    <main class="task-form-container">
-      <h1>Add Task</h1>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
+  <title>Add Task • Join</title>
 
-      <form class="task-form" id="taskForm" novalidate>
-        <div class="task-form__layout">
-          <div class="task-form__column-left">
-            <!-- Title Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="title">
-                Title <span class="form-group__required">*</span>
-              </label>
-              <input
-                type="text"
-                id="title"
-                name="title"
-                class="form-group__input"
-                placeholder="Enter a title"
-                required />
-              <span class="form-group__error" id="titleError"></span>
-            </div>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/header.css" />
+  <link rel="stylesheet" href="css/sidebar.css" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/board.css" />
+  <link rel="stylesheet" href="css/overlay_add_task.css" />
+  <link rel="stylesheet" href="css/overlay_task_card.css" />
+  <!-- Deine Task-Form Styles (die du geschickt hast) -->
+  <style>
+    /* paste deine task-form CSS here or keep it in css/overlay_add_task.css */
+  </style>
+</head>
 
-            <!-- Description Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="description"
-                >Description</label
-              >
-              <textarea
-                id="description"
-                name="description"
-                class="form-group__textarea"
-                placeholder="Enter a Description"
-                rows="4"></textarea>
-            </div>
+<body onload="loadScripts();">
+  <nav header-html="./templates/header.html"></nav>
+  <aside class="sidebar" sidebar-html="./templates/sidebar.html"></aside>
 
-            <!-- Due Date Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="dueDate">
-                Due date <span class="form-group__required">*</span>
-              </label>
-              <div class="form-group__date-wrapper">
-                <input
-                  type="date"
-                  id="dueDate"
-                  name="dueDate"
-                  class="form-group__input form-group__input--date"
-                  placeholder="dd/mm/yyyy"
-                  required />
-                <!-- Custom date icon (replaces native calendar icon) -->
-                <img src="./img/icons/event.svg" alt="date" class="date-icon" />
-              </div>
-              <span class="form-group__error" id="dueDateError"></span>
-            </div>
+  <!-- PAGE: Add Task (vollständige Seite, kein Modal) -->
+  <main class="task-form-container">
+    <h1 class="task-form__title">Add Task</h1>
+
+    <form class="task-form" id="taskForm" novalidate>
+      <div class="task-form__layout">
+        <!-- Left column -->
+        <div class="task-form__column-left">
+          <div class="form-group">
+            <label class="form-group__label" for="title">Title <span class="form-group__required">*</span></label>
+            <input type="text" id="title" name="title" class="form-group__input" placeholder="Enter a title" required />
+            <span class="form-group__error" id="titleError"></span>
           </div>
 
-          <!-- explicit divider element between columns -->
-          <div class="vertical-divider" aria-hidden="true"></div>
+          <div class="form-group">
+            <label class="form-group__label" for="description">Description</label>
+            <textarea id="description" name="description" class="form-group__textarea" placeholder="Enter a Description" rows="4"></textarea>
+          </div>
 
+          <div class="form-group">
+            <label class="form-group__label" for="dueDate">Due date <span class="form-group__required">*</span></label>
+            <div class="form-group__date-wrapper">
+              <input type="date" id="dueDate" name="dueDate" class="form-group__input form-group__input--date" placeholder="dd/mm/yyyy" />
+              <img src="./img/icons/event.svg" alt="date" class="date-icon" />
+            </div>
+            <span class="form-group__error" id="dueDateError"></span>
+          </div>
+        </div>
+
+        <!-- Divider column (the 1px grid column) -->
+        <div class="vertical-divider" aria-hidden="true"></div>
+
+        <!-- Right column -->
+        <!-- Right column -->
           <div class="task-form__column-right">
             <!-- Priority Selection -->
             <div class="form-group">
               <label class="form-group__label">Priority</label>
               <div class="priority-buttons">
-                <button
-                  type="button"
-                  class="priority-buttons__button"
+                <button type="button" class="priority-buttons__button priority-buttons__button--urgent"
                   data-priority="Urgent">
                   Urgent
-                  <!-- inline SVG so we can recolor via CSS (currentColor) -->
-                  <svg
-                    width="20"
-                    height="15"
-                    viewBox="0 0 20 15"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
                     <path
                       d="M18.9043 14.5096C18.6696 14.51 18.4411 14.4351 18.2522 14.2961L10.0001 8.21288L1.74809 14.2961C1.63224 14.3816 1.50066 14.4435 1.36086 14.4783C1.22106 14.513 1.07577 14.5199 0.933305 14.4986C0.790837 14.4772 0.653973 14.428 0.530528 14.3538C0.407083 14.2796 0.299474 14.1818 0.213845 14.0661C0.128216 13.9503 0.0662437 13.8188 0.0314671 13.6791C-0.00330956 13.5394 -0.0102098 13.3943 0.0111604 13.2519C0.0543195 12.9644 0.21001 12.7058 0.443982 12.533L9.34809 5.96249C9.53679 5.8229 9.76536 5.74756 10.0001 5.74756C10.2349 5.74756 10.4635 5.8229 10.6522 5.96249L19.5563 12.533C19.7422 12.6699 19.8801 12.862 19.9503 13.0819C20.0204 13.3018 20.0193 13.5382 19.9469 13.7573C19.8746 13.9765 19.7349 14.1673 19.5476 14.3024C19.3604 14.4375 19.1352 14.51 18.9043 14.5096Z"
@@ -101,45 +76,22 @@
                       fill="currentColor" />
                   </svg>
                 </button>
-                <button
-                  type="button"
-                  class="priority-buttons__button priority-buttons__button--active"
+
+                <button type="button"
+                  class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
                   data-priority="Medium">
                   Medium
-                  <svg
-                    width="20"
-                    height="12"
-                    viewBox="0 0 20 12"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="12" viewBox="0 0 20 12" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
-                    <rect
-                      x="2"
-                      y="3"
-                      width="16"
-                      height="2"
-                      rx="1"
-                      fill="currentColor" />
-                    <rect
-                      x="2"
-                      y="7"
-                      width="16"
-                      height="2"
-                      rx="1"
-                      fill="currentColor" />
+                    <rect x="2" y="3" width="16" height="2" rx="1" fill="currentColor" />
+                    <rect x="2" y="7" width="16" height="2" rx="1" fill="currentColor" />
                   </svg>
                 </button>
-                <button
-                  type="button"
-                  class="priority-buttons__button"
+
+                <button type="button" class="priority-buttons__button priority-buttons__button--low"
                   data-priority="Low">
                   Low
-                  <svg
-                    width="20"
-                    height="15"
-                    viewBox="0 0 20 15"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
+                  <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
                     focusable="false">
                     <path
                       d="M10 8.76077C9.7654 8.76118 9.53687 8.68634 9.34802 8.54726L0.444913 1.97752C0.329075 1.89197 0.231235 1.78445 0.15698 1.66111C0.0827245 1.53777 0.033508 1.40102 0.0121402 1.25868C-0.031014 0.971193 0.0418855 0.678356 0.214802 0.444584C0.387718 0.210811 0.646486 0.0552534 0.934181 0.0121312C1.22188 -0.0309911 1.51493 0.0418545 1.74888 0.214643L10 6.29712L18.2511 0.214643C18.367 0.129087 18.4985 0.0671675 18.6383 0.0324205C18.7781 -0.00232646 18.9234 -0.00922079 19.0658 0.0121312C19.2083 0.0334832 19.3451 0.0826633 19.4685 0.156864C19.592 0.231064 19.6996 0.328831 19.7852 0.444584C19.8708 0.560336 19.9328 0.691806 19.9676 0.831488C20.0023 0.97117 20.0092 1.11633 19.9879 1.25868C19.9665 1.40102 19.9173 1.53777 19.843 1.66111C19.7688 1.78445 19.6709 1.89197 19.5551 1.97752L10.652 8.54726C10.4631 8.68634 10.2346 8.76118 10 8.76077Z"
@@ -152,134 +104,85 @@
               </div>
             </div>
 
-            <!-- Assigned To Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="assignedTo"
-                >Assigned to</label
-              >
-              <select
-                id="assignedTo"
-                name="assignedTo"
-                class="form-group__select">
-                <option value="">Select contacts to assign</option>
-                <option value="John Doe">John Doe</option>
-                <option value="Jane Smith">Jane Smith</option>
-                <option value="Mike Johnson">Mike Johnson</option>
-                <option value="Sarah Williams">Sarah Williams</option>
-              </select>
-            </div>
-
-            <!-- Category Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="category">
-                Category <span class="form-group__required">*</span>
-              </label>
-              <select
-                id="category"
-                name="category"
-                class="form-group__select"
-                required>
-                <option value="">Select task category</option>
-                <option value="Development">Development</option>
-                <option value="Design">Design</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Sales">Sales</option>
-                <option value="Support">Support</option>
-              </select>
-              <span class="form-group__error" id="categoryError"></span>
-            </div>
-
-            <!-- Subtasks Field -->
-            <div class="form-group">
-              <label class="form-group__label" for="subtaskInput"
-                >Subtasks</label
-              >
-              <div class="subtask-input">
-                <input
-                  type="text"
-                  id="subtaskInput"
-                  class="subtask-input__field"
-                  placeholder="Add new subtask" />
-                <button
-                  type="button"
-                  class="subtask-input__button"
-                  id="addSubtaskBtn">
-                  <svg width="16" height="16" viewBox="0 0 16 16"></svg>
-                </button>
+          <div class="form-group">
+            <label class="form-group__label" for="assignedToInput">Assigned to</label>
+            <div class="assigned-to-wrapper">
+              <div class="assigned-to-selected" id="assignedToSelected" style="display: none;"></div>
+              <input type="text" id="assignedToInput" class="form-group__input assigned-to-input" placeholder="Select contacts to assign" autocomplete="off" />
+              <div class="assigned-to-dropdown" id="assignedToDropdown">
+                <ul id="assignedToList"></ul>
               </div>
-              <ul class="subtask-list" id="subtaskList"></ul>
-            </div>
-
-            <!-- Required Field Indicator -->
-            <div class="form-required-note">
-              <span class="form-group__required">*</span
-              ><span>This field is required</span>
             </div>
           </div>
-        </div>
 
-        <!-- Form Actions -->
-        <div class="form-actions">
-          <div class="button-action">
-            <button
-              type="button"
-              class="form-actions__button form-actions__button--clear"
-              id="clearBtn">
-              Clear
-              <svg
-                class="form-actions__icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16">
-                <path
-                  d="M4 4L12 12M12 4L4 12"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round" />
-              </svg>
-            </button>
-            <button
-              type="submit"
-              class="form-actions__button form-actions__button--submit"
-              id="submitBtn">
-              Create Task
-              <svg
-                class="form-actions__icon"
-                width="16"
-                height="16"
-                viewBox="0 0 16 16">
-                <path
-                  d="M3 8L7 12L13 4"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round" />
-              </svg>
-            </button>
+          <div class="form-group">
+            <label class="form-group__label" for="category">Category <span class="form-group__required">*</span></label>
+            <select id="category" name="category" class="form-group__select" required>
+              <option value="">Select task category</option>
+              <option value="Technical Tasks">Technical Tasks</option>
+              <option value="User Story">User Story</option>
+            </select>
+            <span class="form-group__error" id="categoryError"></span>
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__label" for="subtaskInput">Subtasks</label>
+            <div class="subtask-input">
+              <input type="text" id="subtaskInput" class="subtask-input__field" placeholder="Add new subtask" />
+              <button type="button" class="subtask-input__button" id="addSubtaskBtn">
+                <svg width="16" height="16" viewBox="0 0 16 16"></svg>
+              </button>
+            </div>
+            <ul class="subtask-list" id="subtaskList"></ul>
           </div>
         </div>
-      </form>
-
-      <!-- Success Message -->
-      <div class="success-message" id="successMessage">
-        <svg width="20" height="20" viewBox="0 0 20 20">
-          <circle cx="10" cy="10" r="9" fill="#4CAF50" />
-          <path
-            d="M5 10L8 13L15 6"
-            stroke="white"
-            stroke-width="2"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round" />
-        </svg>
-        Task created successfully!
       </div>
-    </main>
 
-    <script src="scripts/templates.js"></script>
-    <script type="module" src="scripts/firebase-init.js"></script>
-    <script src="scripts/add_task.js"></script>
-    <script src="scripts/headerUser.js"></script>
-  </body>
+      <div class="form-actions">
+        <div>
+          <span class="form-group__required">*</span>
+          <span>This field is required</span>
+        </div>
+        <div class="button-action">
+          <button type="button" class="form-actions__button form-actions__button--clear" id="clearBtn">Clear
+            <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+              <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </button>
+          <button type="submit" class="form-actions__button form-actions__button--submit" id="submitBtn">Create Task
+            <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+              <path d="M3 8L7 12L13 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </form>
+
+    <div class="success-message" id="successMessage" style="display:none;">
+      <svg width="20" height="20" viewBox="0 0 20 20">
+        <circle cx="10" cy="10" r="9" fill="#4CAF50" />
+        <path d="M5 10L8 13L15 6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      Task created successfully!
+    </div>
+
+  </main>
+
+  <!-- Optional: Board kept but hidden (if you want) -->
+  <script src="scripts/templates.js"></script>
+  <script src="scripts/tasks_API.js"></script>
+  <script src="scripts/task_tamplates.js"></script>
+  <script src="scripts/task_form.js"></script>
+  <script src="scripts/board.js"></script>
+  <script src="scripts/headerUser.js"></script>
+
+  <script>
+    // kleine Anpassungen: form inside full page statt modal
+    document.addEventListener('DOMContentLoaded', () => {
+      // Falls eure task_form.js erwartet, dass Elemente aus dem Modal existieren, sind IDs gleich gehalten.
+      // Wenn ihr wollt, kann ich das JS anpassen, damit es explizit mit dieser Seite arbeitet.
+    });
+  </script>
+</body>
+
 </html>

@@ -159,47 +159,46 @@ overlay-modal {
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease,
-    box-shadow 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
+/* keep SVG non-interactive */
 .priority-buttons__button svg {
   pointer-events: none;
 }
-.priority-buttons__button--urgent {
-  color: #ff3d00;
-}
 
-.priority-buttons__button--medium {
-  color: #2a3647;
-}
+/* Priority color hints when inactive */
+.priority-buttons__button--urgent { color: #ff3d00; }
+.priority-buttons__button--medium { color: #ffab2b; }
+.priority-buttons__button--low    { color: #7ae229; }
 
-.priority-buttons__button--low {
-  color: #7ae229;
-}
+/* ACTIVE state: only controlled by .is-active OR aria-pressed="true" */
 .priority-buttons__button.is-active,
-.priority-buttons__button--active {
+.priority-buttons__button[aria-pressed="true"] {
   color: #ffffff;
   box-shadow: 0 6px 18px rgba(18, 25, 36, 0.12);
 }
+
+/* Active backgrounds per priority */
 .priority-buttons__button--urgent.is-active,
-.priority-buttons__button--urgent.priority-buttons__button--active {
+.priority-buttons__button--urgent[aria-pressed="true"] {
   background-color: #ff3d00;
 }
-
 .priority-buttons__button--medium.is-active,
-.priority-buttons__button--medium.priority-buttons__button--active {
+.priority-buttons__button--medium[aria-pressed="true"] {
   background-color: #ffab2b;
 }
-
 .priority-buttons__button--low.is-active,
-.priority-buttons__button--low.priority-buttons__button--active {
+.priority-buttons__button--low[aria-pressed="true"] {
   background-color: #5be84a;
 }
+
+/* Focus outline for accessibility */
 .priority-buttons__button:focus {
   outline: 3px solid rgba(41, 171, 226, 0.25);
   outline-offset: 2px;
 }
+
 .subtask-input {
   display: flex;
   align-items: center;
@@ -288,4 +287,12 @@ overlay-modal {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+.task-form-container {
+  margin-left: 240px;         /* space for sidebar */
+  padding: 196px 84px 32px;  /* top for header, sides for breathing room */
+  min-height: 100vh;
+  background: var(--bg);
+  box-sizing: border-box;
 }
