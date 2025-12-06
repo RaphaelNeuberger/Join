@@ -569,7 +569,7 @@
   outline: none;
 }
 
-.assigned-to-dropdown {
+.assigned-to-dropdown, #assigned-to-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
