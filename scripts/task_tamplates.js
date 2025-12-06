@@ -110,7 +110,7 @@ function taskCardContentTemplate(task) {
         <div class="task-card-category">${escapeHtml(cat)}</div>
         <span class="task-card-close" onclick="closeTaskCard()">X</span>
       </div>
-      <h1>${escapeHtml(task.title || "")}</h1>
+      <h2>${escapeHtml(task.title || "")}</h2>
     </div>
 
     <div class="task-card-body">
@@ -178,17 +178,18 @@ function taskCardEditTemplate(task) {
           </div>
           <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
         </div>
-        <input
-          type="text"
-          name="title"
-          class="form-group__input"
-          placeholder="Enter a title"
-          value="${escapeHtml(task.title || "")}"
-          required
-        />
       </div>
+  
 
       <div class="task-card-body">
+        <div class="form-group">
+          <label class="form-group__label">Title</label>
+          <input type="text" name="title" class="form-group__input" placeholder="Enter a title" value="${escapeHtml(task.title || "")}"required/>
+        </div>
+
+
+
+
         <div class="form-group">
           <label class="form-group__label">Description</label>
           <textarea
@@ -336,78 +337,6 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
     console.error("onSubtaskToggle error:", err);
     alert("Subtask konnte nicht gespeichert werden.");
   }
-}
-
-
-function taskCardEditTemplate(task) {
-  const priority = (task.priority || "medium").toLowerCase();
-  const dueDate = task.dueDate || "/";
-
-  const urgentActive = priority === "urgent" ? " is-active" : "";
-  const mediumActive = priority === "medium" ? " is-active" : "";
-  const lowActive = priority === "low" ? " is-active" : "";
-
-  return `
-    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${task.id}')">
-
-  <!-- FIXED HEADER -->
-  <div class="task-edit-header">
-    <div class="task-card-header-category-close">
-      <div class="task-card-category">${escapeHtml(task.category || "Category")}</div>
-      <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
-    </div>
-    <input type="text" name="title" class="form-group__input"
-      placeholder="Enter a title" value="${escapeHtml(task.title || "")}" required />
-  </div>
-
-  <!-- SCROLLABLE CONTENT -->
-  <div class="task-edit-scroll">
-    <div class="form-group">
-      <label class="form-group__label">Description</label>
-      <textarea name="description" class="form-group__textarea" rows="4"
-      placeholder="Enter a description">${escapeHtml(task.description || "")}</textarea>
-    </div>
-
-    <div class="form-group">
-      <label class="form-group__label">Due date</label>
-      <input type="date" name="dueDate"
-             class="form-group__input form-group__input--date"
-             value="${escapeHtml(task.dueDate || "")}">
-    </div>
-
-    <div class="form-group">
-      <label class="form-group__label">Priority</label>
-      <div class="priority-buttons">
-        <button type="button" class="priority-buttons__button priority-buttons__button--urgent${urgentActive}"
-          data-priority="Urgent" onclick="onEditPriorityClick(event)">Urgent</button>
-        <button type="button" class="priority-buttons__button priority-buttons__button--medium${mediumActive}"
-          data-priority="Medium" onclick="onEditPriorityClick(event)">Medium</button>
-        <button type="button" class="priority-buttons__button priority-buttons__button--low${lowActive}"
-          data-priority="Low" onclick="onEditPriorityClick(event)">Low</button>
-        <input type="hidden" name="priority" value="${priority}" />
-      </div>
-    </div>
-
-    <div class="overlay-task-card-section">
-      <p class="overlay-task-card-label-big">Assigned To:</p>
-      <div class="assigned-list-detail">${renderAssigneesDetail(task.assignedTo || [])}</div>
-    </div>
-
-    <div class="overlay-task-card-section">
-      <p class="overlay-task-card-label-big">Subtasks</p>
-      <ul class="subtask-list-detail">${renderSubtasksDetail(task.subtasks || [], task.id)}</ul>
-    </div>
-  </div>
-
-  <!-- FIXED FOOTER -->
-  <div class="task-edit-footer">
-    <button type="button" class="overlay-task-card-delete" onclick="onTaskEditCancel('${task.id}')">Cancel</button>
-    <button type="submit" class="overlay-task-card-edit">Ok ✓</button>
-  </div>
-
-</form>
-
-  `;
 }
 
 function capitalize(str) {

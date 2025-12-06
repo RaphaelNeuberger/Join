@@ -266,15 +266,7 @@ body {
     flex-direction: column;
     gap: 2.5rem;
   }
-}
 
-/* Fine-tune for very small devices */
-@media (max-width: 380px) {
-  .board-container { padding-bottom: 85px; }
-}
-
-@media (max-width: 319px) {
-  .board-container { padding-bottom: 80px; }
 }
 
 .assigned-to-wrapper {

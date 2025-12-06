@@ -213,7 +213,9 @@ overlay-modal {
   align-items: center;
   gap: 8px;
 }
-
+.subtask-titel {
+  width: 50%;
+}
 .subtask-input__field {
   flex: 1;
   border-radius: 8px;
@@ -236,6 +238,7 @@ overlay-modal {
 }
 
 .subtask-list {
+  width: 100%;
   list-style: none;
   margin: 8px 0 0;
   padding: 0;
@@ -243,7 +246,13 @@ overlay-modal {
   flex-direction: column;
   gap: 6px;
 }
-
+.subtask-remove-btn {
+  background: none;
+  border: none;
+  width: 50%;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
 .form-actions {
   display: flex;
   gap: 18px;

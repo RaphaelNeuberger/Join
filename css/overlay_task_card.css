@@ -1,3 +1,20 @@
+/* Make the entire overlay content scrollable */
+#taskCardContent,
+.overlay-task-card,
+.overlay-task-card-content {
+  max-height: 100vh;
+  overflow: auto;
+}
+
+/* Ensure inner sections don't create separate scroll contexts */
+.task-card-header,
+.task-card-body,
+.task-card-footer,
+.task-edit-header,
+.task-edit-scroll,
+.task-edit-footer {
+  position: static;
+}
 /* Overlay Task Card Styles */
 .overlay-task-card {
   display: none;
@@ -7,19 +24,24 @@
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   background-color: rgba(0, 0, 0, 0.5);
   align-items: center;
   justify-content: center;
 }
 
+/* Visible state to center overlay */
+.overlay-task-card--open {
+  display: flex;
+}
+
 .task-card-content {
   width: 525px;
+  max-width: 600px;
   background-color: #fefefe;
-  margin: 40px auto;
+  margin: 0;
   padding: 24px 24px 16px;
   border: 1px solid #e5e7eb;
-  max-width: 600px;
   border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
@@ -149,6 +171,7 @@
   color: #4f46e5;
   cursor: pointer;
 }
+
 .subtask-list-detail {
   list-style: none;
   margin: 8px 0 0;
@@ -257,4 +280,29 @@
   background: white;
   border-top: 1px solid #e5e7eb;
   z-index: 10;
+}
+
+@media (max-width: 1023px) {
+  .overlay-task-card {
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
+    justify-content: center;
+
+  }
+  .task-card-body table {
+        width: 100%;
+  }
+  .task-card-content {
+        display: block;
+        width: 100%;
+        max-width: 90vw;
+        max-height: 85vh;
+        overflow: auto;
+        height: 90vh;
+        padding: 16px;
+        margin: 0;
+        border-radius: 12px;
+        box-sizing: border-box;
+  }
 }
