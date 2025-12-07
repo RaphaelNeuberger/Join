@@ -10,9 +10,7 @@ body {
 *::-webkit-scrollbar {
   display: none;
 }
-* {
-  scrollbar-width: none;
-}
+
 
 /* ===================== Board-Layout ===================== */
 
@@ -129,7 +127,6 @@ body {
 
 .card-task {
   margin-bottom: 1.2rem;
-  width: 90%;
   background-color: white;
   border-radius: 8px;
   padding: 15px;
@@ -623,7 +620,6 @@ body {
   }
   .task-cards{
     gap: 16px;
-    width: 252px;
     display: flex;
     flex-direction: row;
   }

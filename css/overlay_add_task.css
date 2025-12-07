@@ -341,21 +341,17 @@ overlay-modal {
 
   overlay-modal .modal-content,
   .overlay-modal .modal-content {
-display: block;
-        width: 95%;
-        max-width: 90vw;
-        max-height: 85vh;
-        overflow: auto;
-        height: 90vh;
-        padding: 16px;
-        margin: 0;
-        border-radius: 12px;
-        box-sizing: border-box;
-        background: #fff;
-        border-radius: 12px;
-        padding: 24px;
-        max-width: 100%;
-        /* width: 100%;
+    display: block;
+    width: 95%;
+    overflow: auto;
+    height: 90vh;
+    padding: 16px;
+    margin: 0;
+    border-radius: 12px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
   }
 }
 
