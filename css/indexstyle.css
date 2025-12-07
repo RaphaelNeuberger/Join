@@ -58,6 +58,10 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 1900px;
+  margin-left: auto;
+  margin-right: auto;
+
 }
 
 main {
@@ -67,7 +71,7 @@ main {
   justify-content: center;
   width: 480px;
   max-width: calc(100% - 40px);
-  margin: 120px auto 0;
+  margin: 90px auto 0;
   padding: 40px 31px;
   background-color: white;
   border-radius: 20px;
@@ -244,6 +248,10 @@ button:not(.dark-button):hover {
     display: none;
   }
 
+  body {
+    overflow: auto;
+  }
+
   #signup-bottom {
     display: flex;
     flex-direction: row;
@@ -282,6 +290,8 @@ button:not(.dark-button):hover {
     flex-direction: column;
     gap: 12px;
     font-size: 1rem;
+    padding-bottom: 20px;
+    padding-top: 10px;
   }
 
   .privacy-accept {
@@ -371,17 +381,15 @@ button:not(.dark-button):hover {
 }
 
 .input-group img.icon-mail {
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
-    contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 .input-group img.icon-lock {
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
-    contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 /* If you want a slight effect on hover or focus */
-.input-group input:focus + img {
+.input-group input:focus+img {
   opacity: 1;
   filter: none;
 }
@@ -398,12 +406,11 @@ button:not(.dark-button):hover {
   height: 22px;
   pointer-events: none;
   opacity: 0.7;
-  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%)
-    contrast(90%);
+  filter: invert(48%) sepia(5%) saturate(0%) hue-rotate(180deg) brightness(95%) contrast(90%);
 }
 
 /* Effect on focus */
-.input-group input:focus + img {
+.input-group input:focus+img {
   opacity: 1;
   filter: none;
 }
@@ -420,13 +427,15 @@ button:not(.dark-button):hover {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.8s ease, background-color 0.5s ease; /* smoother transition for BG */
+  transition: opacity 0.8s ease, background-color 0.5s ease;
+  /* smoother transition for BG */
 }
 
 #intro-screen img {
   width: 220px;
   height: auto;
-  transition: opacity 0.3s ease, filter 0.5s ease; /* for smoother logo transition */
+  transition: opacity 0.3s ease, filter 0.5s ease;
+  /* for smoother logo transition */
 }
 
 /* Logo flies diagonally to top left */
@@ -439,9 +448,11 @@ button:not(.dark-button):hover {
     transform: scale(0.35) translate(-120vw, -120vh);
   }
 }
+
 .join-logo {
   visibility: hidden;
 }
+
 body.loaded .join-logo {
   visibility: visible;
 }
@@ -472,8 +483,10 @@ header,
 /* On mobile: smaller start logo + initially dark BG */
 @media (max-width: 480px) {
   #intro-screen {
-    background-color: #2a3647; /* Initially dark to avoid white flash */
+    background-color: #2a3647;
+    /* Initially dark to avoid white flash */
   }
+
   #intro-screen img {
     width: 150px;
   }
@@ -502,11 +515,13 @@ header,
 }
 
 .notification.success {
-  background-color: #28a745; /* green */
+  background-color: #28a745;
+  /* green */
 }
 
 .notification.error {
-  background-color: #dc3545; /* rot */
+  background-color: #dc3545;
+  /* rot */
 }
 
 @keyframes fadeInOut {
@@ -514,11 +529,13 @@ header,
     opacity: 0;
     transform: translateY(-10px);
   }
+
   10%,
   80% {
     opacity: 1;
     transform: translateY(0);
   }
+
   100% {
     opacity: 0;
     transform: translateY(-10px);
