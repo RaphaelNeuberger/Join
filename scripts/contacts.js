@@ -286,6 +286,12 @@
     const isMobile = window.innerWidth <= 1023;
     if (!isMobile) return;
 
+    // Validate contact data
+    if (!contact || !contact.name || !contact.email) {
+      console.error("Invalid contact data:", contact);
+      return;
+    }
+
     // Update mobile view content
     const avatar = document.getElementById("mobileContactAvatar");
     const name = document.getElementById("mobileContactName");
@@ -304,11 +310,11 @@
 
       avatar.textContent = initials;
       avatar.style.backgroundColor = avatarColor;
-      name.textContent = contact.name;
-      email.textContent = contact.email;
-      email.href = `mailto:${contact.email}`;
-      phone.textContent = contact.phone;
-      phone.href = `tel:${contact.phone.replace(/\s/g, "")}`;
+      name.textContent = contact.name || "";
+      email.textContent = contact.email || "";
+      email.href = `mailto:${contact.email || ""}`;
+      phone.textContent = contact.phone || "N/A";
+      phone.href = `tel:${(contact.phone || "").replace(/\s/g, "")}`;
     }
 
     mobileDetail.classList.add("active");
