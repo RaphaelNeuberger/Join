@@ -1,4 +1,4 @@
-/* Scrollbar-Verhalten für Overlay */
+/* Scrollbar behavior for Overlay */
 #taskCardContent,
 .overlay-task-card,
 .overlay-task-card-content {
@@ -6,7 +6,7 @@
   overflow: auto;
 }
 
-/* Sicherstellen, dass innere Bereiche nicht eigene Scrollbars öffnen */
+/* Ensure inner areas don't open their own scrollbars */
 .task-card-header,
 .task-card-body,
 .task-card-footer,

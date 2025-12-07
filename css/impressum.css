@@ -59,22 +59,22 @@ footer {
 .Datenschutz a:hover {
   text-decoration: underline;
 }
-/* ===== NUR RESPONSIVE, Desktop bleibt unverändert ===== */
+/* ===== RESPONSIVE ONLY, Desktop remains unchanged ===== */
 @media (max-width: 1023px) {
   /* Sidebar ausblenden */
   .main-sidebar {
     display: none;
   }
 
-  /* Header-Text rückt nicht mehr für Sidebar ein */
+  /* Header text no longer indents for Sidebar */
   .marginsidebar {
     margin-left: 0;
   }
 
   /* Inhalt nutzt volle Breite unter dem fixen Header */
   .main-content {
-    margin-left: 0; /* kein Platz mehr für Sidebar */
-    margin-top: 120px; /* behält Abstand zum Header */
+    margin-left: 0; /* no more space for Sidebar */
+    margin-top: 120px; /* maintains spacing from Header */
     padding: 24px;
     max-width: 100%;
   }

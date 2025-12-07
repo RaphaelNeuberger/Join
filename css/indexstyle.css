@@ -29,7 +29,7 @@ header {
   font-family: "Inter", sans-serif;
 }
 
-/* — kompakter & höherer Header-Button — */
+/* — compact & taller Header Button — */
 .signup-btn {
   background-color: #2a3647;
   color: white;
@@ -143,7 +143,7 @@ h1 {
   height: 16px;
   cursor: pointer;
   accent-color: #29abe2;
-  /* moderner Farbton für Checkbox */
+  /* modern color for Checkbox */
 }
 
 .privacy-accept a {
@@ -343,7 +343,7 @@ button:not(.dark-button):hover {
 .input-group input {
   width: 100%;
   padding: 12px 40px 12px 12px;
-  /* rechts Platz für Icon */
+  /* space on the right for icon */
   font-size: 16px;
   border: 1px solid #d1d1d1;
   border-radius: 8px;
@@ -363,7 +363,7 @@ button:not(.dark-button):hover {
   top: 50%;
   transform: translateY(-50%);
   width: 22px;
-  /* Größe kannst du anpassen */
+  /* Size can be adjusted */
   height: 22px;
   pointer-events: none;
   /* verhindert, dass das Icon Klicks blockiert */
@@ -386,7 +386,7 @@ button:not(.dark-button):hover {
   filter: none;
 }
 
-/* === ICONS IM INPUT (ERGÄNZT MIT PERSON) === */
+/* === ICONS IN INPUT (COMPLEMENTED WITH PERSON) === */
 .input-group img.icon-person,
 .input-group img.icon-mail,
 .input-group img.icon-lock {
@@ -420,13 +420,13 @@ button:not(.dark-button):hover {
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.8s ease, background-color 0.5s ease; /* smoother Übergang für BG */
+  transition: opacity 0.8s ease, background-color 0.5s ease; /* smoother transition for BG */
 }
 
 #intro-screen img {
   width: 220px;
   height: auto;
-  transition: opacity 0.3s ease, filter 0.5s ease; /* für smoother Logo-Wechsel */
+  transition: opacity 0.3s ease, filter 0.5s ease; /* for smoother logo transition */
 }
 
 /* Logo fliegt diagonal nach oben links */
@@ -472,7 +472,7 @@ header,
 /* Auf Handy: kleineres Startlogo + initial dunkler BG */
 @media (max-width: 480px) {
   #intro-screen {
-    background-color: #2a3647; /* Initial dunkel, um Weiß-Blink zu vermeiden */
+    background-color: #2a3647; /* Initially dark to avoid white flash */
   }
   #intro-screen img {
     width: 150px;
@@ -502,7 +502,7 @@ header,
 }
 
 .notification.success {
-  background-color: #28a745; /* grün */
+  background-color: #28a745; /* green */
 }
 
 .notification.error {

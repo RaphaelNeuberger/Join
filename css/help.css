@@ -3,7 +3,7 @@
   color: #29abe2;
 }
 
-/* Step Container mit Einrückung */
+/* Step Container with indentation */
 .step-container {
   display: flex;
   gap: 16px;

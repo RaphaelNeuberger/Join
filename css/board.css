@@ -219,7 +219,7 @@ body {
   pointer-events: none;
 }
 
-/* ===================== Priorität ===================== */
+/* ===================== Priority ===================== */
 
 .priority-badge {
   display: inline-flex;
@@ -288,7 +288,7 @@ body {
   color: #6b7280;
 }
 
-/* Drag-Over-State für Spalte */
+/* Drag-Over state for column */
 
 .task-column.drag-over .task-cards {
   outline: 2px dashed #a3a3a3;
@@ -327,7 +327,7 @@ body {
   }
 }
 
-/* Globales Move-Menu (wird dynamisch an <body> gehängt) */
+/* Global Move-Menu (dynamically appended to <body>) */
 .card-move-menu {
   position: absolute;
   z-index: 2000;
@@ -569,7 +569,7 @@ body {
   gap: 8px;
 }
 
-/* Hover nur für inaktive Priority-Buttons */
+/* Hover only for inactive Priority-Buttons */
 .priority-buttons__button:not(.is-active):hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   transition: box-shadow 0.2s ease, background-color 0.2s ease;

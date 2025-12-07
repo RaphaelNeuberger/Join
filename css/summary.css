@@ -100,7 +100,7 @@ main.addtask-wrap {
 }
 
 .kpi-card:hover .kpi-icon img {
-  /* Icon-SVG dunkel beim Hover: weiße SVG in dunkel invertieren */
+  /* Dark icon SVG on hover: invert white SVG to dark */
   filter: invert(1) brightness(0.9);
   width: 29px;
   height: 29px;

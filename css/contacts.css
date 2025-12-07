@@ -5,7 +5,7 @@ body {
 }
 
 .main-contact {
-  margin-left: 240px; /* Platz für Sidebar */
+  margin-left: 240px; /* Space for Sidebar */
   padding-left: 84px;
   background: #f6f7fb;
   min-height: 100vh;
@@ -84,10 +84,10 @@ body {
 .contact-list {
   box-sizing: border-box;
   position: sticky;
-  top: 96px; /* oder 0, je nach gewünschtem Verhalten */
+  top: 96px; /* or 0, depending on desired behavior */
   padding: 0.6rem 0 0.6rem 1.5rem;
-  overflow: auto; /* Nur nötig, wenn der Bereich selbst scrollen soll */
-  max-height: calc(100vh - 96px); /* optional für eigenes Scrollen */
+  overflow: auto; /* Only needed if the area should scroll itself */
+  max-height: calc(100vh - 96px); /* optional for own scrolling */
   background-color: #ffffff;
 }
 .contact-item {

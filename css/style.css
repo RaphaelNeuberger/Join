@@ -11,7 +11,7 @@
 input::placeholder,
 textarea::placeholder {
   color: var(--placeholder-color);
-  opacity: 1; /* Firefox reduziert standardmäßig die Opazität */
+  opacity: 1; /* Firefox reduces opacity by default */
 }
 
 html {

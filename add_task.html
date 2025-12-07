@@ -26,7 +26,7 @@
     <nav header-html="./templates/header.html"></nav>
     <aside class="sidebar" sidebar-html="./templates/sidebar.html"></aside>
 
-    <!-- PAGE: Add Task (vollständige Seite, kein Modal) -->
+    <!-- PAGE: Add Task (full page, not a modal) -->
     <main class="task-form-container">
       <h1 class="task-form__title">Add Task</h1>
 
@@ -209,11 +209,18 @@
                   id="subtaskInput"
                   class="subtask-input__field"
                   placeholder="Add new subtask" />
-               <button type="button" class="subtask-input__button" id="addSubtaskBtn">
-                    <svg width="16" height="16" viewBox="0 0 16 16">
-                      <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
-                    </svg>
-                  </button>
+                <button
+                  type="button"
+                  class="subtask-input__button"
+                  id="addSubtaskBtn">
+                  <svg width="16" height="16" viewBox="0 0 16 16">
+                    <path
+                      d="M8 2v12M2 8h12"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"></path>
+                  </svg>
+                </button>
               </div>
               <ul class="subtask-list" id="subtaskList"></ul>
             </div>

@@ -203,7 +203,7 @@ body.logged-out .nav-guest {
 /* ===== MOBILE <= 500px — Labels bleiben sichtbar ===== */
 @media (max-width: 500px) {
   .sidebar {
-    height: 85px; /* höher, damit alles sichtbar bleibt */
+    height: 85px; /* taller so everything stays visible */
   }
 
   .sidebar-nav {
@@ -220,7 +220,7 @@ body.logged-out .nav-guest {
 
   .nav-item {
     flex: 0 0 auto;
-    height: 62px;     /* höher */
+    height: 62px; /* taller */
     gap: 10px;
     display: inline-flex;
     align-items: center;
@@ -229,12 +229,13 @@ body.logged-out .nav-guest {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+    transition: background-color 120ms ease, transform 120ms ease,
+      box-shadow 120ms ease;
   }
 
   .nav-item .nav-icon,
   .nav-item .material-icons {
-    height: 28px;    /* Icons größer */
+    height: 28px; /* Icons larger */
     width: auto;
     flex: 0 0 auto;
     font-size: 22px;
@@ -273,27 +274,28 @@ body.logged-out .nav-guest {
     background: #2a3647;
   }
 
-    .nav-item.active, .nav-item:hover {
-        padding: 6px 6px;
-    }
-  
+  .nav-item.active,
+  .nav-item:hover {
+    padding: 6px 6px;
+  }
+
   .sidebar-nav {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;               /* alles in einer Reihe */
-    justify-content: space-between;  /* gleichmäßiger Abstand */
+    flex-wrap: nowrap; /* alles in einer Reihe */
+    justify-content: space-between; /* even spacing */
     align-items: center;
     width: 100%;
-    overflow-x: hidden;              /* kein Scroll */
+    overflow-x: hidden; /* kein Scroll */
     padding: 0 4px;
     box-sizing: border-box;
   }
 
   .nav-item {
-    flex: 1 1 auto;      /* Buttons schrumpfen automatisch */
-    max-width: 86px;     /* kleiner, damit alles passt */
+    flex: 1 1 auto; /* Buttons schrumpfen automatisch */
+    max-width: 86px; /* kleiner, damit alles passt */
     height: 64px;
-    padding: 4px 4px;    /* kleineres Padding */
+    padding: 4px 4px; /* kleineres Padding */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -305,13 +307,14 @@ body.logged-out .nav-guest {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    gap: 2px;            /* Abstand Icon-Label minimal */
-    transition: background-color 120ms ease, transform 120ms ease, box-shadow 120ms ease;
+    gap: 2px; /* Abstand Icon-Label minimal */
+    transition: background-color 120ms ease, transform 120ms ease,
+      box-shadow 120ms ease;
   }
 
   .nav-item .nav-icon,
   .nav-item .material-icons {
-    height: 22px;        /* Icons proportional kleiner */
+    height: 22px; /* Icons proportional kleiner */
     font-size: 16px;
     margin-bottom: 2px;
   }
@@ -331,9 +334,7 @@ body.logged-out .nav-guest {
   }
 }
 
-
 @media (max-width: 319px) {
-
   .sidebar {
     height: 80px;
     padding: 6px;
@@ -344,7 +345,7 @@ body.logged-out .nav-guest {
     padding: 0 6px;
   }
 
-  /* Buttons: nur Icons, aber gleiche Größe */
+  /* Buttons: only icons, but same size */
   .nav-item {
     max-width: 60px;
     height: 60px;
@@ -371,7 +372,7 @@ body.logged-out .nav-guest {
   }
 }
 
-/* Icons bei aktivem Menüpunkt weiß */
+/* Icons white when menu item is active */
 .nav-item.active .nav-icon,
 .nav-item.active .material-icons {
   filter: brightness(0) invert(1);

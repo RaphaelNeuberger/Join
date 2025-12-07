@@ -165,7 +165,8 @@ overlay-modal {
   justify-content: center;
   gap: 8px;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    box-shadow 0.15s ease;
 }
 
 .priority-buttons__button svg {
@@ -321,8 +322,7 @@ overlay-modal {
     box-sizing: border-box;
   }
 
-
-  /* Default: verstecken (für custom element und class) */
+  /* Default: hide (for custom element and class) */
   overlay-modal,
   .overlay-modal {
     height: 100vh;
@@ -337,7 +337,6 @@ overlay-modal {
   .overlay-modal.open {
     display: flex;
   }
-
 
   overlay-modal .modal-content,
   .overlay-modal .modal-content {
@@ -354,4 +353,3 @@ overlay-modal {
     padding: 24px;
   }
 }
-

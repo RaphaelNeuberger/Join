@@ -16,14 +16,14 @@
   src: url("./fonts/Inter-Italic-VariableFont_opsz,wght.ttf") format("truetype");
 }
 
-/* Basis-Klasse für Inter */
+/* Base class for Inter */
 body,
 html {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
 }
 
-/* Hilfsklassen für verschiedene Gewichte */
+/* Utility classes for different weights */
 .inter-thin {
   font-weight: 100;
 }

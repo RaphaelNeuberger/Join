@@ -77,22 +77,19 @@
   color: #000;
 }
 
-
-@media (max-width: 1023px)
-{
+@media (max-width: 1023px) {
   .legal-content {
-     margin: 0;         /* linker Abstand weg, Inhalt nutzt volle Breite */
-    padding: 24px;     /* kleineres Padding für kleinere Bildschirme */
-    max-width: 100%;   /* Inhalt nicht größer als Bildschirm */
+    margin: 0; /* linker Abstand weg, Inhalt nutzt volle Breite */
+    padding: 24px; /* smaller padding for smaller screens */
+    max-width: 100%; /* Content not larger than screen */
     box-sizing: border-box;
     margin-top: 100px;
     margin-bottom: 60px;
   }
 }
 
-
 @media (max-width: 410px) {
   .legal-content {
-    padding: 12px;     /* sehr kleine Bildschirme */
+    padding: 12px; /* sehr kleine Bildschirme */
   }
 }
