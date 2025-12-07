@@ -1,7 +1,7 @@
 // scripts/add_task.js
 // Functional logic for Add Task page (no styles)
-// Erwartet: HTML wie in deiner add_task.html (select#assignedTo, input#dueDate + .date-icon, usw.)
-// Exponiert: window.initAddTaskPage()
+// Expected: HTML as in your add_task.html (select#assignedTo, input#dueDate + .date-icon, etc.)
+// Exposes: window.initAddTaskPage()
 
 (function () {
   const $ = (sel, ctx = document) => ctx.querySelector(sel);

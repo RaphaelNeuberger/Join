@@ -12,7 +12,7 @@ const BOARD_STATUS_LABELS = STATUS_LABELS;
 let currentMoveTaskId = null;
 
 /**
- * Einstiegspunkt: Initialisiert Layout und Board.
+ * Entry point: Initialize layout and board.
  */
 async function loadScripts() {
   initLayout();
@@ -23,7 +23,7 @@ async function loadScripts() {
 }
 
 /**
- * Header/Sidebar und Formular-UI initialisieren.
+ * Initialize Header/Sidebar and form UI.
  */
 function initLayout() {
   includeHeaderHTML();
@@ -33,7 +33,7 @@ function initLayout() {
 }
 
 /**
- * Suche oben im Board (Debounce).
+ * Search at top of board (Debounce).
  */
 function initBoardSearch() {
   const input = document.getElementById("boardSearch");
@@ -50,7 +50,7 @@ function initBoardSearch() {
 }
 
 /**
- * Tasks laden und Board rendern.
+ * Load tasks and render board.
  */
 async function initBoard() {
   await seedTasksIfEmpty();
@@ -59,7 +59,7 @@ async function initBoard() {
 }
 
 /**
- * Gesamtes Board rendern (alle Spalten).
+ * Render entire board (all columns).
  */
 function renderBoard() {
   renderColumn("todo", "to-do-tasks");
@@ -70,7 +70,7 @@ function renderBoard() {
 }
 
 /**
- * Board nach Suchstring gefiltert rendern.
+ * Render board filtered by search string.
  */
 function renderBoardFiltered(query) {
   if (!query) {
@@ -96,7 +96,7 @@ function renderBoardFiltered(query) {
 }
 
 /**
- * Tasks nach Status filtern.
+ * Filter tasks by status.
  */
 function getTasksByStatus(status) {
   if (!Array.isArray(tasks) || tasks.length === 0) {
@@ -106,7 +106,7 @@ function getTasksByStatus(status) {
 }
 
 /**
- * Karten in Spalte einfügen.
+ * Insert cards into column.
  */
 function fillColumn(container, tasksForStatus) {
   if (!tasksForStatus.length) return;
@@ -117,7 +117,7 @@ function fillColumn(container, tasksForStatus) {
 }
 
 /**
- * Spalte standardmäßig rendern (inkl. Platzhalter).
+ * Render column by default (incl. placeholder).
  */
 function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
@@ -129,7 +129,7 @@ function renderColumn(status, containerId) {
 }
 
 /**
- * Spalte mit bereits gefilterten Tasks rendern.
+ * Render column with already filtered tasks.
  */
 function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
@@ -144,7 +144,7 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
 }
 
 /**
- * Falls keine Tasks in einer Spalte sind → Platzhalter einfügen.
+ * If no tasks in a column → insert placeholder.
  */
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll(".task-cards");
@@ -166,7 +166,7 @@ function renderNoTasksIfEmpty() {
 /* ===================== Drag & Drop ===================== */
 
 /**
- * Click/Drag Events für Karten (Delegation).
+ * Click/Drag Events for cards (Delegation).
  */
 function initTaskCardEvents() {
   const columnsWrapper = document.querySelector(".tasks-columns");
@@ -182,7 +182,7 @@ function initTaskCardEvents() {
 }
 
 /**
- * Registriert drop/dragover/dragleave auf den Spalten.
+ * Register drop/dragover/dragleave on columns.
  */
 function initDragAndDrop() {
   const columns = document.querySelectorAll(".task-column");
@@ -213,7 +213,7 @@ function dragstartHandler(event) {
 }
 
 /**
- * Dragover: Standard verhindern + Drag-Over-Style setzen.
+ * Dragover: Prevent default + set drag-over style.
  */
 function dragoverHandler(event) {
   event.preventDefault();
@@ -230,7 +230,7 @@ function dragleaveHandler(event) {
 }
 
 /**
- * Drop: Status aktualisieren und Board neu rendern.
+ * Drop: Update status and re-render board.
  */
 async function dropHandler(event) {
   event.preventDefault();

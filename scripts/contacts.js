@@ -3,7 +3,7 @@
 (function () {
   let currentContact = null; // Stores the currently selected contact
 
-  // Avatar-Farben (gleiche wie in task_tamplates.js)
+  // Avatar colors (same as in task_tamplates.js)
   const AVATAR_COLORS = [
     "rgb(110, 82, 255)",
     "rgb(253, 112, 255)",
@@ -56,7 +56,7 @@
 
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
-      // firebase-init.js noch nicht geladen -> nochmal in 100ms versuchen
+      // firebase-init.js not yet loaded -> try again in 100ms
       setTimeout(init, 100);
       return;
     }
@@ -145,7 +145,7 @@
   let lastSelectedItem = null;
 
   function selectContact(contact, itemEl) {
-    currentContact = contact; // Speichere den aktuellen Kontakt
+    currentContact = contact; // Store the currently selected contact
 
     // Check if mobile view
     const isMobile = window.innerWidth <= 1023;
@@ -173,7 +173,7 @@
 
       if (logoEl) {
         logoEl.textContent = initials;
-        // Setze die Farbe basierend auf dem Namen
+        // Set the color based on the name
         logoEl.style.backgroundColor = getAvatarColor(contact.name || "");
       }
       if (nameEl) nameEl.textContent = contact.name || "";

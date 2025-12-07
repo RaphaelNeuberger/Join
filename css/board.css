@@ -204,7 +204,7 @@ body {
   margin-left: -12px;
 }
 
-/* Footer der Karte */
+/* Card footer */
 
 .card-footer {
   margin-top: 12px;
@@ -343,7 +343,7 @@ body {
 .card-move-menu__inner {
   background-color: #2a3647;
   color: #ffffff;
-  border-radius: 0 18px 18px 18px; /* oben links eckig, rest rund */
+  border-radius: 0 18px 18px 18px; /* top left square, rest rounded */
   padding: 10px 14px 12px;
   min-width: 130px;
   max-width: 160px;
@@ -559,7 +559,7 @@ body {
   box-sizing: border-box;
 }
 
-/* Success Message – Startzustand hidden */
+/* Success Message – initial state hidden */
 .success-message {
   display: none;
   margin-top: 12px;

@@ -1,6 +1,6 @@
 // scripts/tasks_API.js
 
-// Globale Task-Liste
+// Global task list
 let tasks = [];
 
 const FIREBASE_BASE_URL =
@@ -41,7 +41,7 @@ function normalizeTaskStatus(status = "") {
 }
 
 /**
- * Tasks aus Firebase holen, normalisieren und in globale Variable "tasks" schreiben.
+ * Fetch tasks from Firebase, normalize and write into global variable "tasks".
  */
 async function fetchTasks() {
   try {
@@ -64,7 +64,7 @@ async function fetchTasks() {
 }
 
 /**
- * Rohe Firebase-Struktur (Array oder Objekt) in konsistente Task-Objekte überführen.
+ * Convert raw Firebase structure (Array or Object) into consistent task objects.
  */
 function normalizeTasks(raw) {
   if (!raw) return [];
@@ -79,7 +79,7 @@ function normalizeTasks(raw) {
 }
 
 /**
- * Task mit Default-Werten, normalisiertem Status, ID und AssignedTo/Subtasks anreichern.
+ * Enrich task with default values, normalized status, ID and AssignedTo/Subtasks.
  */
 function enrichTask(task) {
   const idFromTask = task.id || task.firebaseId;
@@ -109,7 +109,7 @@ function enrichTask(task) {
 }
 
 /**
- * Neuen Task in Firebase anlegen und in lokale tasks-Liste pushen.
+ * Create new task in Firebase and push to local tasks list.
  */
 async function addTask(taskData) {
   const cleanTask = enrichTask({
@@ -143,7 +143,7 @@ async function addTask(taskData) {
 }
 
 /**
- * Status eines Tasks in Firebase und lokal aktualisieren.
+ * Update task status in Firebase and locally.
  */
 async function updateTaskStatus(taskId, newStatus) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
@@ -172,14 +172,14 @@ async function updateTaskStatus(taskId, newStatus) {
 }
 
 /**
- * Einfache ID-Generierung auf Basis von Timestamp + Random.
+ * Simple ID generation based on timestamp + random.
  */
 function generateId() {
   return String(Date.now() + Math.random());
 }
 
 /**
- * Task vollständig speichern (PUT) – inkl. Subtasks, Priority etc.
+ * Save task completely (PUT) – incl. Subtasks, Priority etc.
  */
 async function saveTask(task) {
   let firebaseId = task.firebaseId;
@@ -205,7 +205,7 @@ async function saveTask(task) {
 }
 
 /**
- * Task aus Firebase löschen.
+ * Delete task from Firebase.
  */
 async function deleteTaskById(taskId) {
   const task = tasks.find(

@@ -1,10 +1,10 @@
 // scripts/overlay_add_task.js
 
 /**
- * Initialisiert das Add-Task Overlay:
- * - registriert alle "Add Task" Trigger (Header, Mobile, Spalten-Plus)
- * - Close-Button im Overlay
- * - Klick auf den Hintergrund schließt das Overlay
+ * Initialize the Add-Task Overlay:
+ * - register all "Add Task" triggers (Header, Mobile, Column-Plus)
+ * - Close button in overlay
+ * - Click on background closes the overlay
  */
 function initAddTaskOverlay() {
   const overlay = document.querySelector("overlay-modal");
@@ -21,7 +21,7 @@ function initAddTaskOverlay() {
     });
   });
 
-  // Close-Button (X) im Overlay-Header (data-overlay-close)
+  // Close button (X) in overlay header (data-overlay-close)
   const closeBtn = overlay.querySelector("[data-overlay-close]");
   if (closeBtn) {
     closeBtn.addEventListener("click", closeAddTaskOverlay);
@@ -51,7 +51,7 @@ function openAddTaskOverlay(status) {
     form.reset();
   }
 
-  // Status in verstecktes Feld schreiben
+  // Write status to hidden field
   const statusInput = form.querySelector('input[name="status"]');
   if (statusInput) {
     statusInput.value = status;
@@ -62,7 +62,7 @@ function openAddTaskOverlay(status) {
 }
 
 /**
- * Schließt das Add-Task-Overlay.
+ * Closes the Add-Task Overlay.
  */
 function closeAddTaskOverlay() {
   const overlay = document.querySelector("overlay-modal");

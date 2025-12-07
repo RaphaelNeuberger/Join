@@ -46,7 +46,7 @@ function getAvatarColor(name = "", index = 0) {
 }
 
 /**
- * Kleine Avatare für Karten-Ansicht
+ * Small avatars for card view
  */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
@@ -71,8 +71,8 @@ function renderAssignees(assignees = []) {
 }
 
 /**
- * Karte im Board
- * - kein onclick / ondragstart (DOM-Event-Handling in board.js)
+ * Card in board
+ * - no onclick / ondragstart (DOM event handling in board.js)
  */
 function taskTemplate(task) {
   const { id, category, title, description, assignedTo, priority, subtasks } =
@@ -201,7 +201,7 @@ function priorityIconSVG(priority) {
       </svg>`;
   }
 
-  // MEDIUM: zwei Balken ‖
+  // MEDIUM: two bars ‖
   return `
     <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true">
       <rect x="2" y="3" width="16" height="2" rx="1" fill="currentColor"/>
@@ -220,7 +220,7 @@ function priorityBadge(priority, withText = true) {
 }
 
 /**
- * Subtask-Fortschritt Balken auf Karten
+ * Subtask progress bar on cards
  */
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];

@@ -1,9 +1,9 @@
 // scripts/board_overlay.js
 
 /**
- * Click-Handling auf Karten:
- * - Klick auf .card-move-btn -> Move-Menü (Up/Down) öffnen
- * - Klick auf .card-task (sonst) -> Detail-Overlay öffnen
+ * Click-Handling on cards:
+ * - Click on .card-move-btn -> open Move menu (Up/Down)
+ * - Click on .card-task (otherwise) -> open Detail Overlay
  */
 function onTaskCardClick(event) {
   const moveBtn = event.target.closest(".card-move-btn");
@@ -45,7 +45,7 @@ function getOverlayElements() {
 }
 
 /**
- * Task-Detail Overlay öffnen (View-Mode).
+ * Open Task-Detail Overlay (View Mode).
  */
 function openTaskCard(taskId) {
   const { overlay, content } = getOverlayElements();
@@ -64,7 +64,7 @@ function openTaskCard(taskId) {
 }
 
 /**
- * Task-Detail Overlay schließen.
+ * Close Task-Detail Overlay.
  */
 function closeTaskCard() {
   const { overlay, content } = getOverlayElements();
@@ -82,7 +82,7 @@ function closeTaskCard() {
 }
 
 /**
- * Hintergrund-Klick schließt das Overlay.
+ * Background click closes the overlay.
  */
 document.addEventListener("click", function (event) {
   const { overlay } = getOverlayElements();
@@ -94,7 +94,7 @@ document.addEventListener("click", function (event) {
 });
 
 /**
- * ESC schließt das Overlay + Move-Menü.
+ * ESC closes the overlay + Move menu.
  */
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape") {
@@ -104,7 +104,7 @@ document.addEventListener("keydown", function (event) {
 });
 
 /**
- * Edit-Button im Overlay (View-Mode).
+ * Edit button in overlay (View Mode).
  */
 function onTaskEditClick(taskId) {
   const { overlay, content } = getOverlayElements();
@@ -117,14 +117,14 @@ function onTaskEditClick(taskId) {
 }
 
 /**
- * Cancel im Edit-Mode -> zurück in View-Mode.
+ * Cancel in Edit Mode -> back to View Mode.
  */
 function onTaskEditCancel(taskId) {
   openTaskCard(taskId);
 }
 
 /**
- * Save im Edit-Mode.
+ * Save in Edit Mode.
  */
 async function onTaskEditSave(event, taskId) {
   event.preventDefault();
@@ -167,7 +167,7 @@ async function onTaskEditSave(event, taskId) {
 }
 
 /**
- * Priority-Buttons im Edit-Overlay.
+ * Priority buttons in Edit Overlay.
  */
 function onEditPriorityClick(event) {
   const button = event.currentTarget;
@@ -186,7 +186,7 @@ function onEditPriorityClick(event) {
 }
 
 /**
- * Delete-Button im View-Overlay.
+ * Delete button in View Overlay.
  */
 async function onOverlayDeleteClick(taskId) {
   const confirmDelete = window.confirm(
@@ -197,7 +197,7 @@ async function onOverlayDeleteClick(taskId) {
   try {
     await deleteTaskById(taskId);
 
-    // lokal aus tasks entfernen
+    // locally remove from tasks
     tasks = tasks.filter(
       (t) =>
         String(t.id) !== String(taskId) &&
@@ -213,7 +213,7 @@ async function onOverlayDeleteClick(taskId) {
 }
 
 /**
- * Checkbox-Änderung bei Subtasks im Overlay.
+ * Checkbox change for subtasks in overlay.
  */
 async function onSubtaskToggle(taskId, index, checked) {
   const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
@@ -246,19 +246,19 @@ async function onSubtaskToggle(taskId, index, checked) {
 }
 
 /* ============================================================
- *  Move-Menü (Up / Down innerhalb der Spalte)
+ *  Move menu (Up / Down within column)
  * ============================================================ */
 
 // IMPORTANT: currentMoveTaskId is already defined as global variable in board.js.
 // Do NOT define it again here with let/const, just use it.
 
 /**
- * Globales Element für das Move-Menü.
+ * Global element for the Move menu.
  */
 let moveMenuElement = null;
 
 /**
- * Sicherstellen, dass das globale Move-Menü-Element existiert.
+ * Ensure that the global Move menu element exists.
  */
 function ensureMoveMenuElement() {
   if (moveMenuElement) return moveMenuElement;
@@ -296,9 +296,9 @@ function createMoveMenuOption(container, arrow, label, disabled, onClick) {
 }
 
 /**
- * Move-Menü öffnen.
+ * Open Move menu.
  * @param {string} taskId
- * @param {HTMLElement} anchorEl - das Icon-Element (Button) auf der Karte
+ * @param {HTMLElement} anchorEl - the icon element (button) on the card
  */
 function openMoveMenu(taskId, anchorEl) {
   if (window.innerWidth >= 1024) return;
@@ -363,7 +363,7 @@ function openMoveMenu(taskId, anchorEl) {
 }
 
 /**
- * Move-Menü schließen.
+ * Close Move menu.
  */
 function closeMoveMenu() {
   if (!moveMenuElement) return;
@@ -396,8 +396,8 @@ async function moveTaskToAdjacentColumn(taskId, direction) {
 }
 
 /**
- * Klick irgendwo im Dokument schließt das Move-Menü,
- * wenn man nicht auf den Move-Button oder das Menü klickt.
+ * Click anywhere in document closes the Move menu,
+ * unless clicking on Move button or the menu itself.
  */
 document.addEventListener("click", function (event) {
   if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
@@ -411,7 +411,7 @@ document.addEventListener("click", function (event) {
 });
 
 /**
- * Bei Scroll/Resize Move-Menü schließen (damit es nicht „in der Luft hängt“).
+ * On scroll/resize close Move menu (so it doesn't "hang in the air").
  */
 window.addEventListener("scroll", closeMoveMenu);
 window.addEventListener("resize", closeMoveMenu);

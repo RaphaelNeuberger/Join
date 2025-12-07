@@ -299,7 +299,7 @@ button:not(.dark-button):hover {
   }
 }
 
-/* === SIGN-UP HEADER (mit Pfeil) === */
+/* === SIGN-UP HEADER (with arrow) === */
 .signup-header {
   display: flex;
   align-items: center;
@@ -333,7 +333,7 @@ button:not(.dark-button):hover {
   transform: translateY(-50%) scale(1.1);
 }
 
-/* === EIGENE ICONS IN INPUT FELDERN === */
+/* === CUSTOM ICONS IN INPUT FIELDS === */
 .input-group {
   position: relative;
   width: 100%;
@@ -355,8 +355,8 @@ button:not(.dark-button):hover {
   border-color: #29abe2;
 }
 
-/* Icons rechts im Feld positionieren */
-.input-group img.icon-mail,
+/* Position icons on the right side of the field */
+.input-group img.icon-email,
 .input-group img.icon-lock {
   position: absolute;
   right: 12px;
@@ -366,7 +366,7 @@ button:not(.dark-button):hover {
   /* Size can be adjusted */
   height: 22px;
   pointer-events: none;
-  /* verhindert, dass das Icon Klicks blockiert */
+  /* prevents the icon from blocking clicks */
   opacity: 0.7;
 }
 
@@ -402,7 +402,7 @@ button:not(.dark-button):hover {
     contrast(90%);
 }
 
-/* Effekt bei Fokus */
+/* Effect on focus */
 .input-group input:focus + img {
   opacity: 1;
   filter: none;
@@ -429,7 +429,7 @@ button:not(.dark-button):hover {
   transition: opacity 0.3s ease, filter 0.5s ease; /* for smoother logo transition */
 }
 
-/* Logo fliegt diagonal nach oben links */
+/* Logo flies diagonally to top left */
 @keyframes logo-move {
   0% {
     transform: scale(1) translate(0, 0);
@@ -446,7 +446,7 @@ body.loaded .join-logo {
   visibility: visible;
 }
 
-/* Body unsichtbar bis Animation endet */
+/* Body invisible until animation ends */
 body.loaded main,
 body.loaded header,
 body.loaded .footer-links,
