@@ -189,7 +189,9 @@ function onEditPriorityClick(event) {
  * Delete-Button im View-Overlay.
  */
 async function onOverlayDeleteClick(taskId) {
-  const confirmDelete = window.confirm("Do you really want to delete this task?");
+  const confirmDelete = window.confirm(
+    "Do you really want to delete this task?"
+  );
   if (!confirmDelete) return;
 
   try {
@@ -247,8 +249,8 @@ async function onSubtaskToggle(taskId, index, checked) {
  *  Move-Menü (Up / Down innerhalb der Spalte)
  * ============================================================ */
 
-// WICHTIG: currentMoveTaskId ist bereits in board.js als globale Variable definiert.
-// Hier NICHT noch einmal mit let/const definieren, einfach verwenden.
+// IMPORTANT: currentMoveTaskId is already defined as global variable in board.js.
+// Do NOT define it again here with let/const, just use it.
 
 /**
  * Globales Element für das Move-Menü.
@@ -313,12 +315,14 @@ function openMoveMenu(taskId, anchorEl) {
   const task = tasks[globalIndex];
   const status = normalizeTaskStatus(task.status);
   const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
-  const labels = typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
+  const labels =
+    typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
   const statusIndex = order.indexOf(status);
   if (statusIndex === -1) return;
 
   const previousStatus = statusIndex > 0 ? order[statusIndex - 1] : null;
-  const nextStatus = statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
+  const nextStatus =
+    statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
 
   optionsContainer.innerHTML = "";
 
@@ -329,13 +333,25 @@ function openMoveMenu(taskId, anchorEl) {
     ? "Move to " + (labels[nextStatus] || "next column")
     : "No next column";
 
-  createMoveMenuOption(optionsContainer, "←", prevLabel, !previousStatus, function () {
-    moveTaskToAdjacentColumn(taskId, "prev");
-  });
+  createMoveMenuOption(
+    optionsContainer,
+    "←",
+    prevLabel,
+    !previousStatus,
+    function () {
+      moveTaskToAdjacentColumn(taskId, "prev");
+    }
+  );
 
-  createMoveMenuOption(optionsContainer, "→", nextLabel, !nextStatus, function () {
-    moveTaskToAdjacentColumn(taskId, "next");
-  });
+  createMoveMenuOption(
+    optionsContainer,
+    "→",
+    nextLabel,
+    !nextStatus,
+    function () {
+      moveTaskToAdjacentColumn(taskId, "next");
+    }
+  );
 
   const rect = anchorEl.getBoundingClientRect();
   const top = rect.bottom + window.scrollY + 6;

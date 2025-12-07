@@ -209,11 +209,11 @@ body.logged-out .nav-guest {
   .sidebar-nav {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap; /* keine Zeilenumbruch */
+    flex-wrap: nowrap; /* no line break */
     gap: 10px;
     padding: 0 8px;
     align-items: center;
-    overflow-x: hidden; /* Scroll verhindern */
+    overflow-x: hidden; /* prevent scroll */
     width: 100%;
     box-sizing: border-box;
   }
@@ -292,10 +292,10 @@ body.logged-out .nav-guest {
   }
 
   .nav-item {
-    flex: 1 1 auto; /* Buttons schrumpfen automatisch */
-    max-width: 86px; /* kleiner, damit alles passt */
+    flex: 1 1 auto; /* Buttons shrink automatically */
+    max-width: 86px; /* smaller, so everything fits */
     height: 64px;
-    padding: 4px 4px; /* kleineres Padding */
+    padding: 4px 4px; /* smaller padding */
     display: flex;
     flex-direction: column;
     align-items: center;

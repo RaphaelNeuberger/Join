@@ -109,7 +109,7 @@ async function guestLogin() {
     });
     showNotification("👋 Logged in as guest", "success");
 
-    // Wichtig: lokal speichern wir name als leerer String => Summary zeigt nur "Good morning," ohne Namen
+    // Important: locally we store name as empty string => Summary shows only "Good morning," without name
     localStorage.setItem(
       "loggedInUser",
       JSON.stringify({

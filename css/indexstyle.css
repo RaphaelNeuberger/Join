@@ -101,7 +101,7 @@ h1 {
 .input-group input::placeholder {
   color: #d1d1d1;
   opacity: 1;
-  /* wichtig, damit Browser keine Transparenz drauflegen */
+  /* important, so browser doesn't apply transparency */
 }
 
 .input-group input {
