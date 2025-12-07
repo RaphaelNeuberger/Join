@@ -74,11 +74,20 @@ function showGreeting() {
     }
   }
 
-  // Nach Animation (4.5s) Splash entfernen und Scrollen erlauben
-  setTimeout(() => {
+  // Hide splash immediately on desktop, show on mobile
+  if (window.innerWidth <= 640) {
+    // Mobile: show splash animation
+    setTimeout(() => {
+      body.classList.remove("splash-active");
+      if (splashScreen) {
+        splashScreen.style.display = "none";
+      }
+    }, 4500);
+  } else {
+    // Desktop: hide splash immediately
     body.classList.remove("splash-active");
     if (splashScreen) {
       splashScreen.style.display = "none";
     }
-  }, 4500);
+  }
 }
