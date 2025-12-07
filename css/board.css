@@ -11,7 +11,6 @@ body {
   display: none;
 }
 
-
 /* ===================== Board-Layout ===================== */
 
 .board-container {
@@ -618,7 +617,7 @@ body {
     align-content: flex-start;
     align-items: flex-start;
   }
-  .task-cards{
+  .task-cards {
     gap: 16px;
     display: flex;
     flex-direction: row;
