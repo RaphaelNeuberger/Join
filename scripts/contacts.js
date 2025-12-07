@@ -1,7 +1,7 @@
 // scripts/contacts.js
-// Lädt Kontakte aus Firebase Realtime Database und rendert sie in .contact-list
+// Loads contacts from Firebase Realtime Database and renders them in .contact-list
 (function () {
-  let currentContact = null; // Speichert den aktuell ausgewählten Kontakt
+  let currentContact = null; // Stores the currently selected contact
 
   // Avatar-Farben (gleiche wie in task_tamplates.js)
   const AVATAR_COLORS = [
@@ -51,7 +51,7 @@
     }
   }
 
-  // Mache checkEmailExists global verfügbar
+  // Make checkEmailExists globally available
   window.checkEmailExists = checkEmailExists;
 
   async function init() {
@@ -96,6 +96,41 @@
             name: "Tatjana Wolf",
             email: "tatjana.wolf@example.com",
             phone: "+1 (555) 123-4567",
+          },
+          {
+            name: "David Eisenberg",
+            email: "david.eisenberg@example.com",
+            phone: "+1 (555) 333-3333",
+          },
+          {
+            name: "Emma Fischer",
+            email: "emma.fischer@example.com",
+            phone: "+1 (555) 444-4444",
+          },
+          {
+            name: "Marcel Bauer",
+            email: "marcel.bauer@example.com",
+            phone: "+1 (555) 555-5555",
+          },
+          {
+            name: "Sofia Müller",
+            email: "sofia.mueller@example.com",
+            phone: "+1 (555) 666-6666",
+          },
+          {
+            name: "Anton Mayer",
+            email: "anton.mayer@example.com",
+            phone: "+1 (555) 777-7777",
+          },
+          {
+            name: "Anja Schulz",
+            email: "anja.schulz@example.com",
+            phone: "+1 (555) 888-8888",
+          },
+          {
+            name: "Benedikt Ziegler",
+            email: "benedikt.ziegler@example.com",
+            phone: "+1 (555) 999-9999",
           },
         ];
         samples.forEach((c) =>
@@ -156,7 +191,7 @@
     }
   }
 
-  // Mache currentContact global verfügbar
+  // Make currentContact globally available
   window.getCurrentContact = function () {
     return currentContact;
   };
@@ -204,10 +239,10 @@
           <div class="user-email">${escapeHtml(c.email || "")}</div>
         </div>
       `;
-      // Klick-Handler: fülle das Info-Panel
+      // Click handler: fill the info panel
       item.addEventListener("click", () => selectContact(c, item));
       last.appendChild(item);
-      // Wenn erster Eintrag, automatisch auswählen
+      // If first entry, select automatically
       if (idx === 0) {
         selectContact(c, item);
       }
@@ -346,7 +381,7 @@ function closeAddContactDialog() {
   if (dialog) {
     dialog.classList.remove("active");
     document.body.style.overflow = "";
-    // Form zurücksetzen
+    // Reset form
     const form = document.getElementById("addContactForm");
     if (form) form.reset();
   }
@@ -368,21 +403,21 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Prüfe E-Mail-Format (muss @ und Domain enthalten)
+      // Check email format (must contain @ and domain)
       const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
       if (!emailPattern.test(email)) {
         alert("Please enter a valid email address (e.g. name@domain.com)");
         return;
       }
 
-      // Prüfe Telefonnummer-Format (mindestens 6 Ziffern)
+      // Check phone number format (at least 6 digits)
       const phoneDigits = phone.replace(/[^0-9]/g, "");
       if (phoneDigits.length < 6) {
         alert("Please enter a valid phone number with at least 6 digits");
         return;
       }
 
-      // Prüfe, ob E-Mail bereits existiert
+      // Check if email already exists
       const emailExists = await window.checkEmailExists(email);
       if (emailExists) {
         alert("Contact already established with this email address");
@@ -390,7 +425,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
 
       try {
-        // Neuen Kontakt zu Firebase hinzufügen
+        // Add new contact to Firebase
         const newContactRef = await window.push(
           window.ref(window.firebaseDb, "contacts"),
           {
@@ -400,7 +435,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         );
 
-        // Dialog schließen
+        // Close dialog
         closeAddContactDialog();
 
         // Zeige Toast-Nachricht
@@ -410,8 +445,6 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           selectNewlyAddedContact(newContactRef.key, name, email, phone);
         }, 500);
-
-        console.log("Contact successfully added!");
       } catch (error) {
         console.error("Error adding contact:", error);
         alert("Error adding contact. Please try again.");
@@ -440,7 +473,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Prüfe Telefonnummer-Format (mindestens 6 Ziffern)
+      // Check phone number format (at least 6 digits)
       const phoneDigits = phone.replace(/[^0-9]/g, "");
       if (phoneDigits.length < 6) {
         alert("Please enter a valid phone number with at least 6 digits");
@@ -466,9 +499,7 @@ document.addEventListener("DOMContentLoaded", function () {
           phone: phone,
         });
 
-        console.log("Contact successfully updated!");
-
-        // Dialog schließen
+        // Close dialog
         closeEditContactDialog();
       } catch (error) {
         console.error("Error updating contact:", error);
@@ -490,7 +521,7 @@ function openEditContactDialog() {
   const dialog = document.getElementById("editContactDialog");
   if (!dialog) return;
 
-  // Formularfelder mit aktuellen Daten füllen
+  // Fill form fields with current data
   document.getElementById("editContactName").value = contact.name || "";
   document.getElementById("editContactEmail").value = contact.email || "";
   document.getElementById("editContactPhone").value = contact.phone || "";
@@ -554,7 +585,6 @@ async function deleteCurrentContact() {
 
     const contactRef = window.ref(window.firebaseDb, `contacts/${contact.id}`);
     await window.remove(contactRef);
-    console.log("Contact successfully deleted!");
   } catch (error) {
     console.error("Error deleting contact:", error);
     console.error("Error details:", error.code, error.message);
@@ -562,7 +592,7 @@ async function deleteCurrentContact() {
   }
 }
 
-// Hilfsfunktionen für neuen Kontakt
+// Helper functions for new contact
 function selectNewlyAddedContact(id, name, email, phone) {
   const contact = { id, name, email, phone };
 
@@ -607,7 +637,7 @@ function showSuccessMessage(message) {
     </div>
   `;
 
-  // Nach 2 Sekunden: Stelle den ursprünglichen Inhalt wieder her
+  // After 2 seconds: restore the original content
   setTimeout(() => {
     infoArea.innerHTML = originalContent;
   }, 2000);

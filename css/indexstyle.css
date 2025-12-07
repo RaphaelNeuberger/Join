@@ -524,3 +524,8 @@ header,
     transform: translateY(-10px);
   }
 }
+
+.error-message {
+  color: red;
+  font-size: 14px;
+}

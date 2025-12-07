@@ -349,7 +349,7 @@ function resetTaskForm() {
     form.reset();
   }
 
-  // Priorität zurück auf Medium
+  // Reset priority to Medium
   resetPriorityButtons();
 
   // Delete errors
@@ -358,7 +358,7 @@ function resetTaskForm() {
   selectedAssignees = [];
   renderSelectedBadges();
 
-  // Subtasks zurücksetzen
+  // Reset subtasks
   subtaskDrafts = [];
   renderSubtaskDrafts();
 
@@ -485,7 +485,7 @@ function renderContactOptions(filteredContacts = contacts) {
     const isSelected = selectedAssignees.includes(contact.id);
 
     const li = document.createElement("li");
-    li.classList.toggle("selected", isSelected); // für blauen Hintergrund bei Auswahl
+    li.classList.toggle("selected", isSelected); // for blue background on selection
 
     li.innerHTML = `
       <div class="contact-info">
@@ -495,9 +495,9 @@ function renderContactOptions(filteredContacts = contacts) {
       <div class="checkmark-box ${isSelected ? "checked" : ""}"></div>
     `;
 
-    // Klick auf die gesamte Zeile toggelt die Auswahl
+    // Click on entire row toggles the selection
     li.addEventListener("click", (e) => {
-      // Verhindert doppeltes Triggern, falls man direkt auf das Kästchen klickt
+      // Prevent double triggering if clicking directly on the checkbox
       e.preventDefault();
       toggleAssignee(contact.id, li);
     });
@@ -539,11 +539,11 @@ function toggleAssignee(id, listItemElement = null) {
     box.classList.toggle("checked", !wasSelected);
   }
 
-  // Dropdown neu rendern (für Filter + korrekte Zustände überall)
+  // Re-render dropdown (for filter + correct states everywhere)
   filterContacts();
 }
 
-// Verhindert, dass das Dropdown beim Klick auf einen Kontakt schließt
+// Prevent dropdown from closing when clicking on a contact
 document
   .getElementById("assignedToDropdown")
   .addEventListener("click", function (e) {

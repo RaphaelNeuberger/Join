@@ -45,7 +45,10 @@
       <!-- Mobile Contact Detail View -->
       <div class="mobile-contact-detail" id="mobileContactDetail">
         <div class="mobile-contact-header">
-          <button class="mobile-back-btn" onclick="closeMobileContactDetail()">
+          <button
+            class="mobile-back-btn"
+            onclick="closeMobileContactDetail()"
+            aria-label="Go back to contacts list">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
               <path
                 d="M20 24L12 16L20 8"
@@ -97,7 +100,10 @@
             </div>
           </div>
         </div>
-        <button class="mobile-more-btn" onclick="toggleMobileContactMenu()">
+        <button
+          class="mobile-more-btn"
+          onclick="toggleMobileContactMenu()"
+          aria-label="Open contact options menu">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="6" r="2" fill="white" />
             <circle cx="12" cy="12" r="2" fill="white" />
@@ -105,11 +111,17 @@
           </svg>
         </button>
         <div class="mobile-contact-menu" id="mobileContactMenu">
-          <button class="mobile-menu-item" onclick="editMobileContact()">
+          <button
+            class="mobile-menu-item"
+            onclick="editMobileContact()"
+            aria-label="Edit contact">
             <img src="./img/icons/edit.svg" alt="edit" />
             Edit
           </button>
-          <button class="mobile-menu-item" onclick="deleteMobileContact()">
+          <button
+            class="mobile-menu-item"
+            onclick="deleteMobileContact()"
+            aria-label="Delete contact">
             <img src="./img/icons/delete.svg" alt="delete" />
             Delete
           </button>
@@ -156,7 +168,10 @@
     <div class="add-contact-dialog" id="addContactDialog">
       <div class="dialog-overlay" onclick="closeAddContactDialog()"></div>
       <div class="dialog-content">
-        <button class="dialog-close" onclick="closeAddContactDialog()">
+        <button
+          class="dialog-close"
+          onclick="closeAddContactDialog()"
+          aria-label="Close dialog">
           ✕
         </button>
         <div class="dialog-left">
@@ -218,7 +233,10 @@
     <div class="edit-contact-dialog" id="editContactDialog">
       <div class="dialog-overlay" onclick="closeEditContactDialog()"></div>
       <div class="dialog-content">
-        <button class="dialog-close" onclick="closeEditContactDialog()">
+        <button
+          class="dialog-close"
+          onclick="closeEditContactDialog()"
+          aria-label="Close dialog">
           ✕
         </button>
         <div class="dialog-left">
@@ -272,7 +290,7 @@
     </div>
 
     <!-- Old Edit Contact Dialog (can be removed) -->
-    <div class="edit-overay" style="display: none">
+    <div class="edit-overay hidden">
       <div class="left-section">
         <img src="./img/logo/join_logo_white.svg" alt="" />
         <p>Edit contact</p>
@@ -306,10 +324,7 @@
           <button class="cancel-edit-button">Cancel</button>
           <button class="save-edit-button">
             Save
-            <img
-              src="./img/icons/check.svg"
-              alt="check"
-              style="height: 1.5rem" />
+            <img src="./img/icons/check.svg" alt="check" class="check-icon" />
           </button>
         </div>
       </div>

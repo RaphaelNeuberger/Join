@@ -1161,3 +1161,11 @@ span.name-logo {
     transform: translateY(0);
   }
 }
+
+.hidden {
+  display: none;
+}
+
+.check-icon {
+  height: 1.5rem;
+}

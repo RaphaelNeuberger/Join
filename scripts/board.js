@@ -1,10 +1,10 @@
 // scripts/board.js
 
 const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
-const BOARD_STATUS_LABELS = {
-  todo: "To-do",
+const STATUS_LABELS = {
+  todo: "To do",
   inprogress: "In progress",
-  await_feedback: "Review", // im Move-Menü als "Review"
+  await_feedback: "Review", // in Move menu as "Review"
   done: "Done",
 };
 
@@ -171,7 +171,7 @@ function initTaskCardEvents() {
   const columnsWrapper = document.querySelector(".tasks-columns");
   if (!columnsWrapper) return;
 
-  // Klick: entweder "Move"-Button oder Karte öffnen
+  // Click: either "Move" button or open card
   columnsWrapper.addEventListener("click", onTaskCardClick);
 
   // Dragstart → Task-ID setzen
@@ -422,10 +422,10 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
 
     tasks[taskIndex] = updatedTask;
 
-    // Board (Karten + Progress) aktualisieren
+    // Board (cards + progress) update
     renderBoard();
 
-    // Overlay-Subtasks neu zeichnen (falls geöffnet)
+    // Redraw overlay subtasks (if open)
     const content = document.getElementById("taskCardContent");
     if (content) {
       const listEl = content.querySelector(".subtask-list-detail");
@@ -442,10 +442,10 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
   }
 }
 
-/* ===================== Move-to Menü (Mobile/Overlay) ===================== */
+/* ===================== Move-to Menu (Mobile/Overlay) ===================== */
 
 /**
- * Sorgt dafür, dass Klicks außerhalb das Menü schließen.
+ * Ensures clicks outside close the menu.
  */
 function initMoveMenuGlobalListener() {
   document.addEventListener("click", (event) => {
@@ -528,9 +528,9 @@ function openMoveMenu(buttonEl, taskId) {
     optionsContainer.appendChild(btn);
   });
 
-  // Positionieren – rechts unter dem Button, leicht nach unten versetzt
+  // Position – right below the button, slightly offset downward
   const rect = buttonEl.getBoundingClientRect();
-  const menuWidth = 170; // ungefährer Wert, passt zu CSS
+  const menuWidth = 170; // approximate value, matches CSS
   const offsetY = 8;
 
   menu.style.display = "block";

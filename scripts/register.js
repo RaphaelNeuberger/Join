@@ -101,7 +101,7 @@ async function login() {
 async function guestLogin() {
   try {
     const { user } = await signInAnonymously(firebaseAuth);
-    // In der Datenbank kann der Gast weiterhin "Guest" heißen — fürs UI speichern wir aber keinen Namen.
+    // In the database, guest can still be named "Guest" — but for UI we save no name.
     await set(ref(firebaseDb, "users/" + user.uid), {
       name: "Guest",
       email: "guest@joinapp.local",

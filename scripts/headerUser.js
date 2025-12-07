@@ -32,13 +32,13 @@ function showInitials() {
       }
     }
   } catch (e) {
-    console.log("localStorage error, showing G");
+    // localStorage error, showing default
   }
 
   span.textContent = initials;
 }
 
-// 3-mal versuchen (für den Fall, dass Header per JS nachgeladen wird)
+// Try 3 times (in case header is loaded via JS)
 showInitials();
 setTimeout(showInitials, 200);
 setTimeout(showInitials, 500);

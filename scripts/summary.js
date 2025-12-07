@@ -1,9 +1,13 @@
-// summary.js - Begrüßungs-Handling (ersetze vorhandene Datei / Funktion)
+// summary.js - Greeting handling (replace existing file / function)
 
 function getCurrentUser() {
   // Versuche zuerst zentrale Funktion (falls vorhanden)
   if (typeof window.getCurrentUser === "function") {
-    try { return window.getCurrentUser(); } catch (e) { /* fallback */ }
+    try {
+      return window.getCurrentUser();
+    } catch (e) {
+      /* fallback */
+    }
   }
 
   // Fallback: aus localStorage lesen
@@ -18,17 +22,19 @@ function getCurrentUser() {
   }
 }
 
-// Funktion für Begrüßung (Splash + rechte Seite)
+// Function for greeting (Splash + right side)
 function showGreeting() {
   const body = document.body;
   const splashScreen = document.getElementById("greeting-splash");
   const greetNameSplash = document.getElementById("greet-name-splash");
-  const greetTextSplash = document.querySelector(".greeting-splash .greet-text");
+  const greetTextSplash = document.querySelector(
+    ".greeting-splash .greet-text"
+  );
 
   const greetNameMain = document.getElementById("greet-name");
   const greetTextMain = document.querySelector(".kpi-right .greet-text");
 
-  // Body-Klasse hinzufügen um Scrollen zu verhindern (für Splash)
+  // Add body class to prevent scrolling (for splash)
   body.classList.add("splash-active");
 
   // Namen dynamisch setzen
@@ -44,20 +50,20 @@ function showGreeting() {
     return true;
   };
 
-  // --- Splash-Gruß ---
+  // --- Splash greeting ---
   if (greetNameSplash && greetTextSplash) {
     if (shouldShowName(user)) {
       greetNameSplash.textContent = user.name;
       greetNameSplash.style.display = "block";
       greetTextSplash.textContent = "Good morning,";
     } else {
-      // Kein Name (Gast oder nicht eingeloggt) -> nur "Good morning," ohne Namen
+      // No name (guest or not logged in) -> only "Good morning," without name
       greetNameSplash.style.display = "none";
       greetTextSplash.textContent = "Good morning!";
     }
   }
 
-  // --- Hauptseite rechts oben Gruß (z.B. Desktop Anzeige) ---
+  // --- Main page top right greeting (e.g. desktop display) ---
   if (greetTextMain && greetNameMain) {
     if (shouldShowName(user)) {
       greetNameMain.textContent = user.name;

@@ -1,10 +1,10 @@
 function includeSidebarHTML() {
   let includeElements = document.querySelectorAll("[sidebar-html]");
-  includeElements.forEach(el => {
+  includeElements.forEach((el) => {
     let file = el.getAttribute("sidebar-html");
     fetch(file)
-      .then(resp => resp.text())
-      .then(html => {
+      .then((resp) => resp.text())
+      .then((html) => {
         el.innerHTML = html;
 
         // ⬇️ GANZ WICHTIG: kommt direkt nach dem innerHTML!
@@ -17,8 +17,6 @@ function includeSidebarHTML() {
       });
   });
 }
-
-
 
 function includeHeaderHTML() {
   const placeholder = document.querySelector("[header-html]");
@@ -33,7 +31,7 @@ function includeHeaderHTML() {
 
       initHeaderUserMenu();
     })
-    .catch(() => { });
+    .catch(() => {});
 }
 
 function setupHeaderMenu() {
@@ -70,12 +68,11 @@ function setupHeaderMenu() {
   });
 }
 
-
 function highlightActiveSidebarLink() {
   const current = window.location.pathname.split("/").pop();
   const items = document.querySelectorAll(".nav-item");
 
-  items.forEach(item => {
+  items.forEach((item) => {
     const link = item.getAttribute("href");
     if (link === current) {
       item.classList.add("active");
@@ -96,10 +93,9 @@ function updateSidebarForLoginState() {
   }
 
   const loggedInUser = localStorage.getItem("loggedInUser");
-  console.log("loggedInUser in Sidebar:", loggedInUser); // zum Debuggen
 
   if (loggedInUser) {
-    // Eingeloggt → App-Menü zeigen
+    // Logged in → show app menu
     navAuth.style.display = "flex";
     navGuest.style.display = "none";
   } else {
@@ -108,7 +104,6 @@ function updateSidebarForLoginState() {
     navGuest.style.display = "flex";
   }
 }
-
 
 function logout() {
   // LocalStorage leeren
@@ -141,7 +136,7 @@ function initHeaderUserMenu() {
     btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  // Klick außerhalb schließt das Menü
+  // Click outside closes the menu
   document.addEventListener("click", (event) => {
     if (!menu.contains(event.target) && !btn.contains(event.target)) {
       if (menu.classList.contains("open")) {

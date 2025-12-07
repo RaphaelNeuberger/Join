@@ -1,5 +1,5 @@
 // scripts/summary-kpi.js
-// Lädt Tasks aus Firebase und aktualisiert die KPI-Werte
+// Loads tasks from Firebase and updates KPI values
 (function () {
   async function init() {
     // Warte bis firebase-init.js geladen ist
@@ -17,7 +17,7 @@
   }
 
   function updateKPIs(tasks) {
-    // Zähle Tasks nach Status
+    // Count tasks by status
     const todo = tasks.filter(
       (t) => t.status === "todo" || t.status === "To do"
     ).length;
@@ -50,7 +50,7 @@
     updateElement("kpi-feedback", feedback);
     updateElement("kpi-board", total);
 
-    // Aktualisiere das Deadline-Datum für urgente Tasks
+    // Update deadline date for urgent tasks
     updateUrgentDeadline(urgentTasks);
   }
 
@@ -68,7 +68,7 @@
       return;
     }
 
-    // Filtere Tasks mit gültigem dueDate
+    // Filter tasks with valid dueDate
     const tasksWithDate = urgentTasks.filter((t) => t.dueDate);
 
     if (tasksWithDate.length === 0) {
@@ -76,7 +76,7 @@
       return;
     }
 
-    // Finde das früheste Datum
+    // Find the earliest date
     const earliestTask = tasksWithDate.reduce((earliest, current) => {
       const currentDate = new Date(current.dueDate);
       const earliestDate = new Date(earliest.dueDate);

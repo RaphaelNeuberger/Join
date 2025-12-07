@@ -2,7 +2,7 @@
 
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 16px;
 }
 
@@ -317,7 +317,7 @@ body {
 
 .card-move-btn img {
   width: 24px;
-  height: 24px; 
+  height: 24px;
   display: block;
 }
 
@@ -337,12 +337,12 @@ body {
 .card-move-menu__inner {
   background-color: #2a3647;
   color: #ffffff;
-  border-radius: 0 18px 18px 18px;  /* oben links eckig, rest rund */
+  border-radius: 0 18px 18px 18px; /* oben links eckig, rest rund */
   padding: 10px 14px 12px;
   min-width: 130px;
   max-width: 160px;
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.45);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .card-move-menu__title {
@@ -513,7 +513,7 @@ body {
 }
 
 /* Native Checkbox unsichtbar */
-.assigned-to-dropdown input[type='checkbox'] {
+.assigned-to-dropdown input[type="checkbox"] {
   position: absolute;
   opacity: 0;
   width: 0;
@@ -521,11 +521,21 @@ body {
 }
 
 /* Beispiel-Farben */
-.avatar-sm { background: #00bfff; }
-.avatar-am { background: #ff8c00; }
-.avatar-as { background: #9932cc; }
-.avatar-bz { background: #4169e1; }
-.avatar-de { background: #ff69b4; }
+.avatar-sm {
+  background: #00bfff;
+}
+.avatar-am {
+  background: #ff8c00;
+}
+.avatar-as {
+  background: #9932cc;
+}
+.avatar-bz {
+  background: #4169e1;
+}
+.avatar-de {
+  background: #ff69b4;
+}
 
 /* ===================== Formular / Add-Task ===================== */
 
@@ -707,4 +717,8 @@ body {
     padding-left: 20px;
     padding-right: 20px;
   }
+}
+
+.hidden {
+  display: none;
 }

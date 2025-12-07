@@ -545,8 +545,6 @@
   }
 }
 
-
-
 .assigned-to-wrapper {
   position: relative;
   border: 1px solid #d1d5db;
@@ -564,12 +562,14 @@
   padding: 14px 16px;
   font-size: 16px;
   cursor: pointer;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E") no-repeat right 16px center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
   background-size: 12px;
   outline: none;
 }
 
-.assigned-to-dropdown, #assigned-to-dropdown {
+.assigned-to-dropdown,
+#assigned-to-dropdown {
   position: absolute;
   top: 100%;
   left: 0;
@@ -581,7 +581,7 @@
   max-height: 280px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .assigned-to-dropdown ul {
@@ -597,8 +597,8 @@
   padding: 8px 20px;
   cursor: pointer;
   transition: all 0.2s;
-  margin: 3px 0;                    /* ← das macht den 3px weißen Abstand! */
-  border-radius: 8px;               /* damit der Hintergrund schön abgerundet ist */
+  margin: 3px 0; /* ← das macht den 3px weißen Abstand! */
+  border-radius: 8px; /* damit der Hintergrund schön abgerundet ist */
   margin-left: 8px;
   margin-right: 8px;
 }
@@ -609,9 +609,9 @@
 }
 
 .assigned-to-dropdown li.selected {
-  background: #2a3647 !important;   /* Original Join-Dunkelblau */
+  background: #2a3647 !important; /* Original Join-Dunkelblau */
   border-radius: 8px;
-  color: white !important;          /* ← weiße Schrift */
+  color: white !important; /* ← weiße Schrift */
 }
 
 /* Avatar + Name linksbündig, aber insgesamt zentriert wirkend */
@@ -656,7 +656,7 @@
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  justify-content: center;     /* ← das macht’s! */
+  justify-content: center; /* ← das macht’s! */
 }
 
 .checkmark-box.checked {
@@ -669,7 +669,7 @@
   color: white;
   font-size: 14px;
   font-weight: bold;
-  line-height: 1;              /* ← wichtig für perfekte Zentrierung */
+  line-height: 1; /* ← wichtig für perfekte Zentrierung */
 }
 
 /* Native Checkbox unsichtbar */
@@ -680,12 +680,21 @@
   height: 0;
 }
 /* Color examples from screenshots */
-.avatar-sm { background: #00bfff; } /* Sofia Müller - cyan */
-.avatar-am { background: #ff8c00; } /* Anton Mayer - orange */
-.avatar-as { background: #9932cc; } /* Anja Schulz - purple */
-.avatar-bz { background: #4169e1; } /* Benedikt Ziegler - blue */
-.avatar-de { background: #ff69b4; } /* David Eisenberg - pink */
-
+.avatar-sm {
+  background: #00bfff;
+} /* Sofia Müller - cyan */
+.avatar-am {
+  background: #ff8c00;
+} /* Anton Mayer - orange */
+.avatar-as {
+  background: #9932cc;
+} /* Anja Schulz - purple */
+.avatar-bz {
+  background: #4169e1;
+} /* Benedikt Ziegler - blue */
+.avatar-de {
+  background: #ff69b4;
+} /* David Eisenberg - pink */
 
 /* -----------------------------
   Responsive Ergänzungen für Add Task
@@ -700,7 +709,9 @@
     gap: 16px;
   }
 
-  .vertical-divider { display: none; }
+  .vertical-divider {
+    display: none;
+  }
 
   /* Reduce heavy paddings so content fits */
   .task-form-container {
@@ -710,8 +721,8 @@
 
 @media (max-width: 1023px) {
   .task-form-container {
-    margin-left: 0;               /* sidebar collapsed/hidden on small widths */
-    padding: 96px 20px 20px;      /* header space + breathing room */
+    margin-left: 0; /* sidebar collapsed/hidden on small widths */
+    padding: 96px 20px 20px; /* header space + breathing room */
     margin-bottom: 90px;
   }
 
@@ -793,9 +804,13 @@
     font-size: 16px;
   }
 
-  .form-label { font-size: 16px; }
+  .form-label {
+    font-size: 16px;
+  }
 
-  .text-hint { font-size: 14px; }
+  .text-hint {
+    font-size: 14px;
+  }
 
   /* Priority buttons stack on very small screens */
   .priority-buttons {
@@ -841,9 +856,15 @@
 
 /* extra small phones */
 @media (max-width: 420px) {
-  .task-form-container { padding: 88px 10px 14px; }
-  .task-form__title { font-size: 1.6rem; }
-  .priority-buttons { grid-template-columns: 1fr; }
+  .task-form-container {
+    padding: 88px 10px 14px;
+  }
+  .task-form__title {
+    font-size: 1.6rem;
+  }
+  .priority-buttons {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ---- Accessibility / touch targets ----- */
@@ -889,8 +910,12 @@
 
 /* small screens: subtasks smaller */
 @media (max-width: 480px) {
-  .subtask-list { max-height: 180px; }
-  .subtask-item .subtask-text { font-size: 14px; }
+  .subtask-list {
+    max-height: 180px;
+  }
+  .subtask-item .subtask-text {
+    font-size: 14px;
+  }
 }
 
 /* ---- minor utility: center success message on mobile ---- */
@@ -909,4 +934,8 @@
     height: 22px;
     right: 10px;
   }
+}
+
+.hidden {
+  display: none;
 }

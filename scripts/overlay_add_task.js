@@ -7,28 +7,28 @@
  * - Klick auf den Hintergrund schließt das Overlay
  */
 function initAddTaskOverlay() {
-  const overlay = document.querySelector('overlay-modal');
-  const form = document.getElementById('taskForm');
+  const overlay = document.querySelector("overlay-modal");
+  const form = document.getElementById("taskForm");
 
   if (!overlay || !form) return;
 
   // Alle Trigger-Elemente: Header-Button, Mobile-Button, Spalten-Plus
-  const triggers = document.querySelectorAll('.js-add-task-trigger');
+  const triggers = document.querySelectorAll(".js-add-task-trigger");
   triggers.forEach((trigger) => {
-    trigger.addEventListener('click', () => {
-      const status = trigger.dataset.status || 'todo';
+    trigger.addEventListener("click", () => {
+      const status = trigger.dataset.status || "todo";
       openAddTaskOverlay(status);
     });
   });
 
   // Close-Button (X) im Overlay-Header (data-overlay-close)
-  const closeBtn = overlay.querySelector('[data-overlay-close]');
+  const closeBtn = overlay.querySelector("[data-overlay-close]");
   if (closeBtn) {
-    closeBtn.addEventListener('click', closeAddTaskOverlay);
+    closeBtn.addEventListener("click", closeAddTaskOverlay);
   }
 
-  // Klick auf den abgedunkelten Hintergrund schließt das Overlay
-  overlay.addEventListener('click', (event) => {
+  // Click on darkened background closes the overlay
+  overlay.addEventListener("click", (event) => {
     if (event.target === overlay) {
       closeAddTaskOverlay();
     }
@@ -40,12 +40,12 @@ function initAddTaskOverlay() {
  * @param {string} status - 'todo' | 'inprogress' | 'await_feedback' | 'done'
  */
 function openAddTaskOverlay(status) {
-  const overlay = document.querySelector('overlay-modal');
-  const form = document.getElementById('taskForm');
+  const overlay = document.querySelector("overlay-modal");
+  const form = document.getElementById("taskForm");
   if (!overlay || !form) return;
 
-  // Formular zurücksetzen (eigene Reset-Funktion, falls vorhanden)
-  if (typeof resetTaskForm === 'function') {
+  // Reset form (custom reset function, if available)
+  if (typeof resetTaskForm === "function") {
     resetTaskForm();
   } else {
     form.reset();
@@ -57,19 +57,19 @@ function openAddTaskOverlay(status) {
     statusInput.value = status;
   }
 
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  overlay.style.display = "flex";
+  document.body.style.overflow = "hidden";
 }
 
 /**
  * Schließt das Add-Task-Overlay.
  */
 function closeAddTaskOverlay() {
-  const overlay = document.querySelector('overlay-modal');
+  const overlay = document.querySelector("overlay-modal");
   if (!overlay) return;
 
-  overlay.style.display = 'none';
-  document.body.style.overflow = '';
+  overlay.style.display = "none";
+  document.body.style.overflow = "";
 }
 
 /**
@@ -78,7 +78,7 @@ function closeAddTaskOverlay() {
  * leiten wir auf die neuen Funktionen um.
  */
 function addTaskBtn(status) {
-  openAddTaskOverlay(status || 'todo');
+  openAddTaskOverlay(status || "todo");
 }
 
 function closeAddTaskBtn() {
@@ -86,4 +86,4 @@ function closeAddTaskBtn() {
 }
 
 // Beim Laden des DOM initialisieren
-document.addEventListener('DOMContentLoaded', initAddTaskOverlay);
+document.addEventListener("DOMContentLoaded", initAddTaskOverlay);
