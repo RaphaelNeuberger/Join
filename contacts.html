@@ -220,7 +220,10 @@
                 onclick="closeAddContactDialog()">
                 Cancel ✕
               </button>
-              <button type="submit" class="btn-create">
+              <button
+                type="submit"
+                class="btn-create"
+                aria-label="Create new contact">
                 Create contact <span class="check-icon">✓</span>
               </button>
             </div>
@@ -321,8 +324,12 @@
             class="contact-edit-phone" />
         </form>
         <div class="contact-edit-save-cancel">
-          <button class="cancel-edit-button">Cancel</button>
-          <button class="save-edit-button">
+          <button
+            class="cancel-edit-button"
+            aria-label="Cancel editing contact">
+            Cancel
+          </button>
+          <button class="save-edit-button" aria-label="Save contact changes">
             Save
             <img src="./img/icons/check.svg" alt="check" class="check-icon" />
           </button>

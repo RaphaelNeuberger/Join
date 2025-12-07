@@ -30,3 +30,11 @@ out/
 .firebase/
 firebase-debug.log
 .firebaserc
+
+# Firebase config (if using environment-specific configs)
+scripts/config.prod.js
+scripts/config.local.js
+
+# Backup files
+*_old_backup.js
+*_backup.js

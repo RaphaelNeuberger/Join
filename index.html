@@ -56,8 +56,18 @@
         </div>
 
         <div class="button-group">
-          <button class="dark-button" type="submit">Log in</button>
-          <button type="button" onclick="guestLogin()">Guest Log in</button>
+          <button
+            class="dark-button"
+            type="submit"
+            aria-label="Log in to your account">
+            Log in
+          </button>
+          <button
+            type="button"
+            onclick="guestLogin()"
+            aria-label="Continue as guest without account">
+            Guest Log in
+          </button>
         </div>
       </form>
     </main>
@@ -109,13 +119,18 @@
         <span id="password-error" class="error-message"></span>
 
         <label class="privacy-accept">
-          <input type="checkbox" required />
+          <input type="checkbox" required aria-label="Accept privacy policy" />
           I accept the
           <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
         </label>
 
         <div class="button-group">
-          <button type="submit" class="dark-button">Sign up</button>
+          <button
+            type="submit"
+            class="dark-button"
+            aria-label="Create new account">
+            Sign up
+          </button>
         </div>
       </form>
     </main>
@@ -269,18 +284,7 @@
         ref,
         set,
       } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-
-      const firebaseConfig = {
-        apiKey: "AIzaSyBI4JD0XBE-srOGHaLT81iUZ6meuOjgV8M",
-        authDomain: "join-60a91.firebaseapp.com",
-        databaseURL:
-          "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app",
-        projectId: "join-60a91",
-        storageBucket: "join-60a91.firebasestorage.app",
-        messagingSenderId: "1027472895369",
-        appId: "1:1027472895369:web:254e2439fa85bc74d08558",
-        measurementId: "G-K7ZPGG17YR",
-      };
+      import { firebaseConfig } from "./scripts/config.js";
 
       const app = initializeApp(firebaseConfig);
       const auth = getAuth(app);

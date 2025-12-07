@@ -90,7 +90,8 @@
                 <button
                   type="button"
                   class="priority-buttons__button priority-buttons__button--urgent"
-                  data-priority="Urgent">
+                  data-priority="Urgent"
+                  aria-label="Set priority to urgent">
                   Urgent
                   <svg
                     width="20"
@@ -111,7 +112,8 @@
                 <button
                   type="button"
                   class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
-                  data-priority="Medium">
+                  data-priority="Medium"
+                  aria-label="Set priority to medium">
                   Medium
                   <svg
                     width="20"
@@ -140,7 +142,8 @@
                 <button
                   type="button"
                   class="priority-buttons__button priority-buttons__button--low"
-                  data-priority="Low">
+                  data-priority="Low"
+                  aria-label="Set priority to low">
                   Low
                   <svg
                     width="20"
@@ -209,7 +212,8 @@
                 <button
                   type="button"
                   class="subtask-input__button"
-                  id="addSubtaskBtn">
+                  id="addSubtaskBtn"
+                  aria-label="Add subtask">
                   <svg width="16" height="16" viewBox="0 0 16 16"></svg>
                 </button>
               </div>
@@ -227,7 +231,8 @@
             <button
               type="button"
               class="form-actions__button form-actions__button--clear"
-              id="clearBtn">
+              id="clearBtn"
+              aria-label="Clear all form fields">
               Clear
               <svg
                 class="form-actions__icon"
@@ -244,7 +249,8 @@
             <button
               type="submit"
               class="form-actions__button form-actions__button--submit"
-              id="submitBtn">
+              id="submitBtn"
+              aria-label="Create new task">
               Create Task
               <svg
                 class="form-actions__icon"
@@ -283,6 +289,10 @@
     <script src="scripts/templates.js"></script>
     <script src="scripts/tasks_API.js"></script>
     <script src="scripts/task_tamplates.js"></script>
+    <script src="scripts/task_validation.js"></script>
+    <script src="scripts/task_priority.js"></script>
+    <script src="scripts/task_subtasks.js"></script>
+    <script src="scripts/task_assignees.js"></script>
     <script src="scripts/task_form.js"></script>
     <script src="scripts/board.js"></script>
     <script src="scripts/headerUser.js"></script>
