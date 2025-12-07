@@ -79,7 +79,7 @@
 
 @media (max-width: 1023px) {
   .legal-content {
-    margin: 0; /* linker Abstand weg, Inhalt nutzt volle Breite */
+    margin: 0; /* left spacing removed, content uses full width */
     padding: 24px; /* smaller padding for smaller screens */
     max-width: 100%; /* Content not larger than screen */
     box-sizing: border-box;
@@ -90,6 +90,6 @@
 
 @media (max-width: 410px) {
   .legal-content {
-    padding: 12px; /* sehr kleine Bildschirme */
+    padding: 12px; /* very small screens */
   }
 }

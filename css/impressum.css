@@ -61,7 +61,7 @@ footer {
 }
 /* ===== RESPONSIVE ONLY, Desktop remains unchanged ===== */
 @media (max-width: 1023px) {
-  /* Sidebar ausblenden */
+  /* Hide Sidebar */
   .main-sidebar {
     display: none;
   }
@@ -71,7 +71,7 @@ footer {
     margin-left: 0;
   }
 
-  /* Inhalt nutzt volle Breite unter dem fixen Header */
+  /* Content uses full width below fixed Header */
   .main-content {
     margin-left: 0; /* no more space for Sidebar */
     margin-top: 120px; /* maintains spacing from Header */
@@ -79,7 +79,7 @@ footer {
     max-width: 100%;
   }
 
-  /* Footer ohne Sidebar-Abstand */
+  /* Footer without Sidebar spacing */
   footer {
     margin-left: 0;
     padding: 24px;

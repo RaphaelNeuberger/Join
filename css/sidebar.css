@@ -60,13 +60,13 @@
 
 .nav-item.active:hover {
   background: #091931 !important;
-  /* bleibt dunkel */
+  /* stays dark */
   color: #ffffff !important;
 }
 
 .nav-item:not(.active):hover {
   background: #2a3d59;
-  /* dein normaler Hover */
+  /* your normal Hover */
   color: #cdcdcd;
   cursor: pointer;
 }
@@ -354,12 +354,12 @@ body.logged-out .nav-guest {
     gap: 4px;
   }
 
-  /* Label ausblenden */
+  /* Hide label */
   .nav-item span {
     display: none !important;
   }
 
-  /* Icons zentral */
+  /* Icons centered */
   .nav-item .nav-icon,
   .nav-item .material-icons {
     font-size: 24px;

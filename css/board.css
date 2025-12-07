@@ -6,7 +6,7 @@ body {
   font-size: 16px;
 }
 
-/* Scrollbars ausblenden */
+/* Hide scrollbars */
 *::-webkit-scrollbar {
   display: none;
 }
@@ -74,7 +74,7 @@ body {
   display: none;
 }
 
-/* ===================== Spalten ===================== */
+/* ===================== Columns ===================== */
 
 .tasks-columns {
   flex: 1;
@@ -105,7 +105,7 @@ body {
   font-weight: 700;
 }
 
-/* ===================== Karten ===================== */
+/* ===================== Cards ===================== */
 
 .task-cards {
   width: 100%;
@@ -136,7 +136,7 @@ body {
   cursor: grabbing;
 }
 
-/* Header-Reihe in der Karte (Category + Move-Button) */
+/* Header row in card (Category + Move-Button) */
 .card-header-row {
   display: flex;
   align-items: center;
@@ -160,7 +160,7 @@ body {
   text-align: center;
 }
 
-/* Titel & Beschreibung */
+/* Title & Description */
 
 .card-title {
   font-size: 16px;
@@ -261,7 +261,7 @@ body {
   height: 12px;
 }
 
-/* ===================== Subtasks-Fortschritt ===================== */
+/* ===================== Subtasks Progress ===================== */
 
 .subtask-progress {
   margin-top: 10px;
@@ -299,7 +299,7 @@ body {
 
 /* ===================== Move-Button & Move-Menu ===================== */
 
-/* Button oben rechts in der Karte */
+/* Button top right in card */
 .card-move-btn {
   border: none;
   background: transparent;
@@ -524,7 +524,7 @@ body {
   line-height: 1;
 }
 
-/* Native Checkbox unsichtbar */
+/* Native Checkbox invisible */
 .assigned-to-dropdown input[type="checkbox"] {
   position: absolute;
   opacity: 0;
@@ -532,7 +532,7 @@ body {
   height: 0;
 }
 
-/* Beispiel-Farben */
+/* Example Colors */
 .avatar-sm {
   background: #00bfff;
 }
