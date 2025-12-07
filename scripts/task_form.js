@@ -1,13 +1,13 @@
 // task_form.js
 
-let selectedPriority = 'Medium';
+let selectedPriority = "Medium";
 let subtaskDrafts = [];
 
 /**
  * Initialisiert die Priority-Buttons (Add-Task-Form).
  */
 function initPriorityButtons() {
-  const buttons = document.querySelectorAll('.priority-buttons__button');
+  const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) {
     return;
   }
@@ -21,13 +21,13 @@ function initPriorityButtons() {
  */
 function setPriorityActive(buttons, activeButton) {
   buttons.forEach((button) => {
-    button.classList.remove('is-active');
-    button.setAttribute('aria-pressed', 'false');
+    button.classList.remove("is-active");
+    button.setAttribute("aria-pressed", "false");
   });
 
-  activeButton.classList.add('is-active');
-  activeButton.setAttribute('aria-pressed', 'true');
-  selectedPriority = activeButton.dataset.priority || 'Medium';
+  activeButton.classList.add("is-active");
+  activeButton.setAttribute("aria-pressed", "true");
+  selectedPriority = activeButton.dataset.priority || "Medium";
 }
 
 /**
@@ -35,17 +35,17 @@ function setPriorityActive(buttons, activeButton) {
  */
 function setupPriorityButtonInteractions(buttons) {
   buttons.forEach((btn) => {
-    btn.setAttribute('role', 'button');
-    btn.setAttribute('tabindex', '0');
+    btn.setAttribute("role", "button");
+    btn.setAttribute("tabindex", "0");
 
     const activate = function () {
       setPriorityActive(buttons, btn);
     };
 
-    btn.addEventListener('click', activate);
+    btn.addEventListener("click", activate);
 
-    btn.addEventListener('keydown', (event) => {
-      if (event.key === ' ' || event.key === 'Enter') {
+    btn.addEventListener("keydown", (event) => {
+      if (event.key === " " || event.key === "Enter") {
         event.preventDefault();
         activate();
       }
@@ -58,13 +58,13 @@ function setupPriorityButtonInteractions(buttons) {
  */
 function setInitialPriority(buttons) {
   let defaultButton = document.querySelector(
-    '.priority-buttons__button.priority-buttons__button--active'
+    ".priority-buttons__button.priority-buttons__button--active"
   );
 
   if (!defaultButton) {
     defaultButton =
       document.querySelector(
-        '.priority-buttons__button.priority-buttons__button--medium'
+        ".priority-buttons__button.priority-buttons__button--medium"
       ) || buttons[0];
   }
 
@@ -77,10 +77,10 @@ function setInitialPriority(buttons) {
  * Priority-Buttons auf Default zurücksetzen.
  */
 function resetPriorityButtons() {
-  const buttons = document.querySelectorAll('.priority-buttons__button');
+  const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
 
-  selectedPriority = 'Medium';
+  selectedPriority = "Medium";
   setInitialPriority(buttons);
 }
 
@@ -88,20 +88,20 @@ function resetPriorityButtons() {
  * Overlay "Add Task" öffnen.
  */
 function addTaskBtn() {
-  const overlay = document.querySelector('.overlay-modal');
+  const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
 
-  overlay.style.display = 'flex';
+  overlay.style.display = "flex";
 }
 
 /**
  * Overlay "Add Task" schließen.
  */
 function closeAddTaskBtn() {
-  const overlay = document.querySelector('.overlay-modal');
+  const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
 
-  overlay.style.display = 'none';
+  overlay.style.display = "none";
 }
 
 /**
@@ -111,16 +111,16 @@ function closeAddTaskBtn() {
  * - Subtask-Steuerung
  */
 function initAddTaskForm() {
-  const form = document.getElementById('taskForm');
+  const form = document.getElementById("taskForm");
   if (!form) {
     return;
   }
 
-  form.addEventListener('submit', handleCreateTask);
+  form.addEventListener("submit", handleCreateTask);
 
-  const clearBtn = document.getElementById('clearBtn');
+  const clearBtn = document.getElementById("clearBtn");
   if (clearBtn) {
-    clearBtn.addEventListener('click', handleClearTaskForm);
+    clearBtn.addEventListener("click", handleClearTaskForm);
   }
 
   initSubtaskControls();
@@ -130,18 +130,18 @@ function initAddTaskForm() {
  * Subtask-Buttons + Input initialisieren.
  */
 function initSubtaskControls() {
-  const input = document.getElementById('subtaskInput');
-  const addBtn = document.getElementById('addSubtaskBtn');
-  const list = document.getElementById('subtaskList');
+  const input = document.getElementById("subtaskInput");
+  const addBtn = document.getElementById("addSubtaskBtn");
+  const list = document.getElementById("subtaskList");
 
   if (!input || !addBtn || !list) return;
 
-  addBtn.addEventListener('click', function () {
+  addBtn.addEventListener("click", function () {
     addSubtaskFromInput();
   });
 
-  input.addEventListener('keydown', function (event) {
-    if (event.key === 'Enter') {
+  input.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
       event.preventDefault();
       addSubtaskFromInput();
     }
@@ -154,7 +154,7 @@ function initSubtaskControls() {
  * Liest den Wert aus dem Subtask-Input und fügt ihn hinzu.
  */
 function addSubtaskFromInput() {
-  const input = document.getElementById('subtaskInput');
+  const input = document.getElementById("subtaskInput");
   if (!input) return;
 
   const value = input.value.trim();
@@ -162,10 +162,10 @@ function addSubtaskFromInput() {
 
   subtaskDrafts.push({
     title: value,
-    done: false
+    done: false,
   });
 
-  input.value = '';
+  input.value = "";
   renderSubtaskDrafts();
 }
 
@@ -182,18 +182,18 @@ function removeSubtaskDraft(index) {
  * Rendert die aktuellen Subtask-Entwürfe in die Liste.
  */
 function renderSubtaskDrafts() {
-  const list = document.getElementById('subtaskList');
+  const list = document.getElementById("subtaskList");
   if (!list) return;
 
-  list.innerHTML = '';
+  list.innerHTML = "";
 
   if (!subtaskDrafts.length) {
     return;
   }
 
   subtaskDrafts.forEach((subtask, index) => {
-    const li = document.createElement('li');
-    li.className = 'subtask-item';
+    const li = document.createElement("li");
+    li.className = "subtask-item";
     li.innerHTML = `
       <span class="subtask-title">${escapeHtml(subtask.title)}</span>
       <button type="button" class="subtask-remove-btn" aria-label="Remove subtask">
@@ -201,8 +201,8 @@ function renderSubtaskDrafts() {
       </button>
     `;
 
-    const removeBtn = li.querySelector('.subtask-remove-btn');
-    removeBtn.addEventListener('click', function () {
+    const removeBtn = li.querySelector(".subtask-remove-btn");
+    removeBtn.addEventListener("click", function () {
       removeSubtaskDraft(index);
     });
 
@@ -230,21 +230,21 @@ async function handleCreateTask(event) {
     resetTaskForm();
     closeAddTaskBtn();
   } catch (err) {
-    console.error('handleCreateTask:', err);
-    alert('Task konnte nicht erstellt werden (siehe Konsole).');
+    console.error("handleCreateTask:", err);
+    alert("Task could not be created (see console).");
   }
 }
 
 /**
- * Liest die Formularwerte aus, validiert und baut das Task-Objekt.
+ * Reads form values, validates, and builds the task object.
  */
 function readTaskForm() {
   clearFormErrors();
 
-  const title = getInputValue('title');
-  const description = getInputValue('description');
-  const dueDate = getInputValue('dueDate');
-  const category = getInputValue('category');
+  const title = getInputValue("title");
+  const description = getInputValue("description");
+  const dueDate = getInputValue("dueDate");
+  const category = getInputValue("category");
   const assignedTo = getAssignedTo();
 
   if (!validateTaskForm(title, dueDate, category)) {
@@ -259,7 +259,7 @@ function readTaskForm() {
  */
 function getInputValue(id) {
   const element = document.getElementById(id);
-  return element ? element.value.trim() : '';
+  return element ? element.value.trim() : "";
 }
 
 /**
@@ -267,28 +267,28 @@ function getInputValue(id) {
  */
 function getAssignedTo() {
   // Return array of selected names (or IDs if preferred)
-  return selectedAssignees.map(id => {
-    const contact = contacts.find(c => c.id === id);
-    return contact ? contact.name : '';
+  return selectedAssignees.map((id) => {
+    const contact = contacts.find((c) => c.id === id);
+    return contact ? contact.name : "";
   });
 }
 
 /**
- * Validiert Pflichtfelder.
+ * Validates required fields.
  */
 function validateTaskForm(title, dueDate, category) {
   let valid = true;
 
   if (!title) {
-    showError('titleError', 'Title is required');
+    showError("titleError", "Title is required");
     valid = false;
   }
   if (!dueDate) {
-    showError('dueDateError', 'Due date is required');
+    showError("dueDateError", "Due date is required");
     valid = false;
   }
   if (!category) {
-    showError('categoryError', 'Category is required');
+    showError("categoryError", "Category is required");
     valid = false;
   }
   return valid;
@@ -301,7 +301,7 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
   // Subtasks: aktuelle Drafts kopieren
   const subtasks = subtaskDrafts.map((s) => ({
     title: s.title,
-    done: !!s.done
+    done: !!s.done,
   }));
 
   return {
@@ -310,14 +310,14 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
     dueDate,
     category,
     assignedTo,
-    priority: selectedPriority || 'Medium',
+    priority: selectedPriority || "Medium",
     subtasks,
-    status: 'todo'
+    status: "todo",
   };
 }
 
 /**
- * Error-Text in Fehler-Span schreiben.
+ * Write error text to error span.
  */
 function showError(id, message) {
   const element = document.getElementById(id);
@@ -327,15 +327,15 @@ function showError(id, message) {
 }
 
 /**
- * Alle Formular-Fehler zurücksetzen.
+ * Reset all form errors.
  */
 function clearFormErrors() {
-  const errorIds = ['titleError', 'dueDateError', 'categoryError'];
+  const errorIds = ["titleError", "dueDateError", "categoryError"];
 
   errorIds.forEach((id) => {
     const element = document.getElementById(id);
     if (element) {
-      element.textContent = '';
+      element.textContent = "";
     }
   });
 }
@@ -344,7 +344,7 @@ function clearFormErrors() {
  * Formular auf Default zurücksetzen.
  */
 function resetTaskForm() {
-  const form = document.getElementById('taskForm');
+  const form = document.getElementById("taskForm");
   if (form) {
     form.reset();
   }
@@ -352,7 +352,7 @@ function resetTaskForm() {
   // Priorität zurück auf Medium
   resetPriorityButtons();
 
-  // Fehler löschen
+  // Delete errors
   clearFormErrors();
 
   selectedAssignees = [];
@@ -363,9 +363,9 @@ function resetTaskForm() {
   renderSubtaskDrafts();
 
   // Erfolgsmeldung ausblenden (falls noch sichtbar)
-  const messageElement = document.getElementById('successMessage');
+  const messageElement = document.getElementById("successMessage");
   if (messageElement) {
-    messageElement.style.display = 'none';
+    messageElement.style.display = "none";
   }
 }
 
@@ -383,15 +383,15 @@ function handleClearTaskForm(event) {
  * Kurzfristige Erfolgsmeldung anzeigen.
  */
 function showSuccessMessage() {
-  const messageElement = document.getElementById('successMessage');
+  const messageElement = document.getElementById("successMessage");
   if (!messageElement) {
     return;
   }
 
-  messageElement.style.display = 'flex';
+  messageElement.style.display = "flex";
 
   setTimeout(() => {
-    messageElement.style.display = 'none';
+    messageElement.style.display = "none";
   }, 2000);
 }
 
@@ -400,19 +400,29 @@ function showSuccessMessage() {
  */
 function escapeHtml(str) {
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 // Hardcoded contacts (replace with API fetch if needed)
 const contacts = [
-  { id: 'sm', name: 'Sofia Müller', avatarClass: 'avatar-sm', initials: 'SM' },
-  { id: 'am', name: 'Anton Mayer', avatarClass: 'avatar-am', initials: 'AM' },
-  { id: 'as', name: 'Anja Schulz', avatarClass: 'avatar-as', initials: 'AS' },
-  { id: 'bz', name: 'Benedikt Ziegler', avatarClass: 'avatar-bz', initials: 'BZ' },
-  { id: 'de', name: 'David Eisenberg', avatarClass: 'avatar-de', initials: 'DE' }
+  { id: "sm", name: "Sofia Müller", avatarClass: "avatar-sm", initials: "SM" },
+  { id: "am", name: "Anton Mayer", avatarClass: "avatar-am", initials: "AM" },
+  { id: "as", name: "Anja Schulz", avatarClass: "avatar-as", initials: "AS" },
+  {
+    id: "bz",
+    name: "Benedikt Ziegler",
+    avatarClass: "avatar-bz",
+    initials: "BZ",
+  },
+  {
+    id: "de",
+    name: "David Eisenberg",
+    avatarClass: "avatar-de",
+    initials: "DE",
+  },
 ];
 
 let selectedAssignees = []; // Array to store selected contact IDs
@@ -421,10 +431,10 @@ let selectedAssignees = []; // Array to store selected contact IDs
  * Initializes the Assigned To multi-select.
  */
 function initAssignedTo() {
-  const input = document.getElementById('assignedToInput');
-  const dropdown = document.getElementById('assignedToDropdown');
-  const list = document.getElementById('assignedToList');
-  const selectedContainer = document.getElementById('assignedToSelected');
+  const input = document.getElementById("assignedToInput");
+  const dropdown = document.getElementById("assignedToDropdown");
+  const list = document.getElementById("assignedToList");
+  const selectedContainer = document.getElementById("assignedToSelected");
 
   if (!input || !dropdown || !list || !selectedContainer) return;
 
@@ -432,14 +442,14 @@ function initAssignedTo() {
   renderContactOptions();
 
   // Open dropdown on click/focus
-  input.addEventListener('focus', showDropdown);
-  input.addEventListener('click', showDropdown);
+  input.addEventListener("focus", showDropdown);
+  input.addEventListener("click", showDropdown);
 
   // Filter on input
-  input.addEventListener('input', filterContacts);
+  input.addEventListener("input", filterContacts);
 
   // Close dropdown on outside click
-  document.addEventListener('click', (event) => {
+  document.addEventListener("click", (event) => {
     if (!input.contains(event.target) && !dropdown.contains(event.target)) {
       hideDropdown();
     }
@@ -450,8 +460,8 @@ function initAssignedTo() {
  * Shows the dropdown.
  */
 function showDropdown() {
-  const dropdown = document.getElementById('assignedToDropdown');
-  dropdown.style.display = 'block';
+  const dropdown = document.getElementById("assignedToDropdown");
+  dropdown.style.display = "block";
   filterContacts(); // Refresh based on current input
 }
 
@@ -459,8 +469,8 @@ function showDropdown() {
  * Hides the dropdown.
  */
 function hideDropdown() {
-  const dropdown = document.getElementById('assignedToDropdown');
-  dropdown.style.display = 'none';
+  const dropdown = document.getElementById("assignedToDropdown");
+  dropdown.style.display = "none";
 }
 
 /**
@@ -468,25 +478,25 @@ function hideDropdown() {
  * @param {Array} filteredContacts - Optional filtered list.
  */
 function renderContactOptions(filteredContacts = contacts) {
-  const list = document.getElementById('assignedToList');
-  list.innerHTML = '';
+  const list = document.getElementById("assignedToList");
+  list.innerHTML = "";
 
-  filteredContacts.forEach(contact => {
+  filteredContacts.forEach((contact) => {
     const isSelected = selectedAssignees.includes(contact.id);
 
-    const li = document.createElement('li');
-    li.classList.toggle('selected', isSelected); // für blauen Hintergrund bei Auswahl
+    const li = document.createElement("li");
+    li.classList.toggle("selected", isSelected); // für blauen Hintergrund bei Auswahl
 
     li.innerHTML = `
       <div class="contact-info">
         <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
         <span class="contact-name">${escapeHtml(contact.name)}</span>
       </div>
-      <div class="checkmark-box ${isSelected ? 'checked' : ''}"></div>
+      <div class="checkmark-box ${isSelected ? "checked" : ""}"></div>
     `;
 
     // Klick auf die gesamte Zeile toggelt die Auswahl
-    li.addEventListener('click', (e) => {
+    li.addEventListener("click", (e) => {
       // Verhindert doppeltes Triggern, falls man direkt auf das Kästchen klickt
       e.preventDefault();
       toggleAssignee(contact.id, li);
@@ -500,9 +510,11 @@ function renderContactOptions(filteredContacts = contacts) {
  * Filters contacts based on input value.
  */
 function filterContacts() {
-  const input = document.getElementById('assignedToInput');
+  const input = document.getElementById("assignedToInput");
   const query = input.value.trim().toLowerCase();
-  const filtered = contacts.filter(contact => contact.name.toLowerCase().includes(query));
+  const filtered = contacts.filter((contact) =>
+    contact.name.toLowerCase().includes(query)
+  );
   renderContactOptions(filtered);
 }
 
@@ -515,16 +527,16 @@ function toggleAssignee(id, listItemElement = null) {
   const wasSelected = index !== -1;
 
   if (wasSelected) {
-    selectedAssignees = selectedAssignees.filter(x => x !== id);
+    selectedAssignees = selectedAssignees.filter((x) => x !== id);
   } else {
     selectedAssignees.push(id);
   }
 
   // Wenn wir das aktuelle <li> haben → UI sofort aktualisieren
   if (listItemElement) {
-    listItemElement.classList.toggle('selected', !wasSelected);
-    const box = listItemElement.querySelector('.checkmark-box');
-    box.classList.toggle('checked', !wasSelected);
+    listItemElement.classList.toggle("selected", !wasSelected);
+    const box = listItemElement.querySelector(".checkmark-box");
+    box.classList.toggle("checked", !wasSelected);
   }
 
   // Dropdown neu rendern (für Filter + korrekte Zustände überall)
@@ -532,21 +544,23 @@ function toggleAssignee(id, listItemElement = null) {
 }
 
 // Verhindert, dass das Dropdown beim Klick auf einen Kontakt schließt
-document.getElementById('assignedToDropdown').addEventListener('click', function(e) {
-  e.stopPropagation();
-});
+document
+  .getElementById("assignedToDropdown")
+  .addEventListener("click", function (e) {
+    e.stopPropagation();
+  });
 
 /**
  * Renders selected assignees as badges.
  */
 function renderSelectedBadges() {
-  const selectedContainer = document.getElementById('assignedToSelected');
-  selectedContainer.innerHTML = '';
-  selectedAssignees.forEach(id => {
-    const contact = contacts.find(c => c.id === id);
+  const selectedContainer = document.getElementById("assignedToSelected");
+  selectedContainer.innerHTML = "";
+  selectedAssignees.forEach((id) => {
+    const contact = contacts.find((c) => c.id === id);
     if (!contact) return;
-    const badge = document.createElement('div');
-    badge.className = 'assigned-to-badge';
+    const badge = document.createElement("div");
+    badge.className = "assigned-to-badge";
     badge.innerHTML = `
       <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
       <span>${escapeHtml(contact.name)}</span>

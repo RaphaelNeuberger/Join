@@ -15,7 +15,12 @@ function showInitials() {
     if (data) {
       const user = JSON.parse(data);
 
-      if (user.isGuest || user.name === null || user.name === "" || user.name.trim() === "") {
+      if (
+        user.isGuest ||
+        user.name === null ||
+        user.name === "" ||
+        user.name.trim() === ""
+      ) {
         initials = "G";
       } else {
         const parts = user.name.trim().split(/\s+/);
@@ -27,7 +32,7 @@ function showInitials() {
       }
     }
   } catch (e) {
-    console.log("localStorage Fehler, zeige G");
+    console.log("localStorage error, showing G");
   }
 
   span.textContent = initials;

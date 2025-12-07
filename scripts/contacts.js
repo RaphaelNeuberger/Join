@@ -46,7 +46,7 @@
       }
       return false;
     } catch (error) {
-      console.error("Fehler beim Überprüfen der E-Mail:", error);
+      console.error("Error checking email:", error);
       return false;
     }
   }
@@ -411,9 +411,9 @@ document.addEventListener("DOMContentLoaded", function () {
           selectNewlyAddedContact(newContactRef.key, name, email, phone);
         }, 500);
 
-        console.log("Kontakt erfolgreich hinzugefügt!");
+        console.log("Contact successfully added!");
       } catch (error) {
-        console.error("Fehler beim Hinzufügen des Kontakts:", error);
+        console.error("Error adding contact:", error);
         alert("Error adding contact. Please try again.");
       }
     });
@@ -466,12 +466,12 @@ document.addEventListener("DOMContentLoaded", function () {
           phone: phone,
         });
 
-        console.log("Kontakt erfolgreich aktualisiert!");
+        console.log("Contact successfully updated!");
 
         // Dialog schließen
         closeEditContactDialog();
       } catch (error) {
-        console.error("Fehler beim Aktualisieren des Kontakts:", error);
+        console.error("Error updating contact:", error);
         console.error("Error details:", error.code, error.message);
         alert("Error updating contact: " + (error.message || "Unknown error"));
       }
@@ -554,9 +554,9 @@ async function deleteCurrentContact() {
 
     const contactRef = window.ref(window.firebaseDb, `contacts/${contact.id}`);
     await window.remove(contactRef);
-    console.log("Kontakt erfolgreich gelöscht!");
+    console.log("Contact successfully deleted!");
   } catch (error) {
-    console.error("Fehler beim Löschen des Kontakts:", error);
+    console.error("Error deleting contact:", error);
     console.error("Error details:", error.code, error.message);
     alert("Error deleting contact: " + (error.message || "Unknown error"));
   }

@@ -1,11 +1,11 @@
 // scripts/board.js
 
-const BOARD_STATUS_ORDER = ['todo', 'inprogress', 'await_feedback', 'done'];
+const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
 const BOARD_STATUS_LABELS = {
-  todo: 'To-do',
-  inprogress: 'In progress',
-  await_feedback: 'Review', // im Move-Menü als "Review"
-  done: 'Done'
+  todo: "To-do",
+  inprogress: "In progress",
+  await_feedback: "Review", // im Move-Menü als "Review"
+  done: "Done",
 };
 
 let currentMoveTaskId = null;
@@ -36,11 +36,11 @@ function initLayout() {
  * Suche oben im Board (Debounce).
  */
 function initBoardSearch() {
-  const input = document.getElementById('boardSearch');
+  const input = document.getElementById("boardSearch");
   if (!input) return;
 
   let t;
-  input.addEventListener('input', function () {
+  input.addEventListener("input", function () {
     clearTimeout(t);
     const q = this.value.trim().toLowerCase();
     t = setTimeout(function () {
@@ -61,10 +61,10 @@ async function initBoard() {
  * Gesamtes Board rendern (alle Spalten).
  */
 function renderBoard() {
-  renderColumn('todo', 'to-do-tasks');
-  renderColumn('inprogress', 'in-progress-tasks');
-  renderColumn('await_feedback', 'await-feedback-tasks');
-  renderColumn('done', 'done-tasks');
+  renderColumn("todo", "to-do-tasks");
+  renderColumn("inprogress", "in-progress-tasks");
+  renderColumn("await_feedback", "await-feedback-tasks");
+  renderColumn("done", "done-tasks");
   renderNoTasksIfEmpty();
 }
 
@@ -78,8 +78,8 @@ function renderBoardFiltered(query) {
   }
 
   const match = function (t) {
-    const a = String(t.title || '').toLowerCase();
-    const b = String(t.description || '').toLowerCase();
+    const a = String(t.title || "").toLowerCase();
+    const b = String(t.description || "").toLowerCase();
     return a.includes(query) || b.includes(query);
   };
 
@@ -87,10 +87,10 @@ function renderBoardFiltered(query) {
     return getTasksByStatus(s).filter(match);
   };
 
-  renderColumnWithTasks(by('todo'), 'to-do-tasks', true);
-  renderColumnWithTasks(by('inprogress'), 'in-progress-tasks', true);
-  renderColumnWithTasks(by('await_feedback'), 'await-feedback-tasks', true);
-  renderColumnWithTasks(by('done'), 'done-tasks', true);
+  renderColumnWithTasks(by("todo"), "to-do-tasks", true);
+  renderColumnWithTasks(by("inprogress"), "in-progress-tasks", true);
+  renderColumnWithTasks(by("await_feedback"), "await-feedback-tasks", true);
+  renderColumnWithTasks(by("done"), "done-tasks", true);
   renderNoTasksIfEmpty();
 }
 
@@ -122,7 +122,7 @@ function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = '';
+  container.innerHTML = "";
   const tasksForStatus = getTasksByStatus(status);
   fillColumn(container, tasksForStatus);
 }
@@ -134,7 +134,7 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  container.innerHTML = '';
+  container.innerHTML = "";
   if (!tasksForStatus || !tasksForStatus.length) {
     container.innerHTML = isSearch ? noResultsTemplate() : noTaskTemplate();
     return;
@@ -146,11 +146,11 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
  * Falls keine Tasks in einer Spalte sind → Platzhalter einfügen.
  */
 function renderNoTasksIfEmpty() {
-  const taskBoards = document.querySelectorAll('.task-cards');
+  const taskBoards = document.querySelectorAll(".task-cards");
 
   taskBoards.forEach((board) => {
-    const hasTask = board.querySelector('.card-task');
-    const placeholder = board.querySelector('.card-no-task');
+    const hasTask = board.querySelector(".card-task");
+    const placeholder = board.querySelector(".card-no-task");
 
     if (hasTask && placeholder) {
       placeholder.remove();
@@ -168,14 +168,14 @@ function renderNoTasksIfEmpty() {
  * Click/Drag Events für Karten (Delegation).
  */
 function initTaskCardEvents() {
-  const columnsWrapper = document.querySelector('.tasks-columns');
+  const columnsWrapper = document.querySelector(".tasks-columns");
   if (!columnsWrapper) return;
 
   // Klick: entweder "Move"-Button oder Karte öffnen
-  columnsWrapper.addEventListener('click', onTaskCardClick);
+  columnsWrapper.addEventListener("click", onTaskCardClick);
 
   // Dragstart → Task-ID setzen
-  columnsWrapper.addEventListener('dragstart', function (event) {
+  columnsWrapper.addEventListener("dragstart", function (event) {
     dragstartHandler(event);
   });
 }
@@ -184,15 +184,15 @@ function initTaskCardEvents() {
  * Registriert drop/dragover/dragleave auf den Spalten.
  */
 function initDragAndDrop() {
-  const columns = document.querySelectorAll('.task-column');
+  const columns = document.querySelectorAll(".task-column");
   columns.forEach((col) => {
-    col.addEventListener('dragover', function (event) {
+    col.addEventListener("dragover", function (event) {
       dragoverHandler(event);
     });
-    col.addEventListener('dragleave', function (event) {
+    col.addEventListener("dragleave", function (event) {
       dragleaveHandler(event);
     });
-    col.addEventListener('drop', function (event) {
+    col.addEventListener("drop", function (event) {
       dropHandler(event);
     });
   });
@@ -202,13 +202,13 @@ function initDragAndDrop() {
  * Dragstart: ID setzen.
  */
 function dragstartHandler(event) {
-  const taskElement = event.target.closest('.card-task');
+  const taskElement = event.target.closest(".card-task");
   if (!taskElement || !event.dataTransfer) return;
 
   const taskId = taskElement.dataset.taskId;
   if (!taskId) return;
 
-  event.dataTransfer.setData('text/plain', taskId);
+  event.dataTransfer.setData("text/plain", taskId);
 }
 
 /**
@@ -217,7 +217,7 @@ function dragstartHandler(event) {
 function dragoverHandler(event) {
   event.preventDefault();
   const col = event.currentTarget;
-  if (col && col.classList) col.classList.add('drag-over');
+  if (col && col.classList) col.classList.add("drag-over");
 }
 
 /**
@@ -225,7 +225,7 @@ function dragoverHandler(event) {
  */
 function dragleaveHandler(event) {
   const col = event.currentTarget;
-  if (col && col.classList) col.classList.remove('drag-over');
+  if (col && col.classList) col.classList.remove("drag-over");
 }
 
 /**
@@ -234,11 +234,11 @@ function dragleaveHandler(event) {
 async function dropHandler(event) {
   event.preventDefault();
   const col = event.currentTarget;
-  if (col && col.classList) col.classList.remove('drag-over');
+  if (col && col.classList) col.classList.remove("drag-over");
 
   if (!event.dataTransfer) return;
-  const taskId = event.dataTransfer.getData('text/plain');
-  const rawStatus = col && col.dataset ? col.dataset.status : '';
+  const taskId = event.dataTransfer.getData("text/plain");
+  const rawStatus = col && col.dataset ? col.dataset.status : "";
   const newStatus = normalizeTaskStatus(rawStatus);
   if (!taskId || !newStatus) return;
 
@@ -250,19 +250,19 @@ async function dropHandler(event) {
 
 function onTaskCardClick(event) {
   // 1) Wurde der Move-Button geklickt?
-  const moveBtn = event.target.closest('.card-move-btn');
+  const moveBtn = event.target.closest(".card-move-btn");
   if (moveBtn) {
     event.stopPropagation();
-    const taskId = moveBtn.getAttribute('data-task-id');
+    const taskId = moveBtn.getAttribute("data-task-id");
     openMoveMenu(moveBtn, taskId);
     return;
   }
 
   // 2) Sonst normale Karte → Detail-Overlay
-  const card = event.target.closest('.card-task');
+  const card = event.target.closest(".card-task");
   if (!card) return;
 
-  const taskId = card.getAttribute('data-task-id');
+  const taskId = card.getAttribute("data-task-id");
   openTaskCardById(taskId);
 }
 
@@ -270,24 +270,24 @@ function onTaskCardClick(event) {
  * Detail-Overlay öffnen.
  */
 function openTaskCardById(taskId) {
-  const overlay = document.querySelector('.overlay-task-card');
-  const content = document.getElementById('taskCardContent');
+  const overlay = document.querySelector(".overlay-task-card");
+  const content = document.getElementById("taskCardContent");
   if (!overlay || !content) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
   if (!task) return;
 
   content.innerHTML = taskCardContentTemplate(task);
-  overlay.style.display = 'flex';
+  overlay.style.display = "flex";
 }
 
 /**
  * Detail-Overlay schließen.
  */
 function closeTaskCard() {
-  const overlay = document.querySelector('.overlay-task-card');
+  const overlay = document.querySelector(".overlay-task-card");
   if (!overlay) return;
-  overlay.style.display = 'none';
+  overlay.style.display = "none";
 }
 
 /**
@@ -301,7 +301,7 @@ function onOverlayEditClick(taskId) {
  * Edit-Ansicht im Overlay anzeigen.
  */
 function onTaskEditClick(taskId) {
-  const content = document.getElementById('taskCardContent');
+  const content = document.getElementById("taskCardContent");
   if (!content) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
@@ -317,19 +317,20 @@ function onEditPriorityClick(event) {
   event.preventDefault();
 
   const button = event.currentTarget;
-  const wrapper = button.closest('.priority-buttons');
+  const wrapper = button.closest(".priority-buttons");
   if (!wrapper) return;
 
-  const allButtons = wrapper.querySelectorAll('.priority-buttons__button');
-  allButtons.forEach((btn) => btn.classList.remove('is-active'));
+  const allButtons = wrapper.querySelectorAll(".priority-buttons__button");
+  allButtons.forEach((btn) => btn.classList.remove("is-active"));
 
-  button.classList.add('is-active');
+  button.classList.add("is-active");
 
   const hiddenInput = wrapper.querySelector('input[name="priority"]');
   if (!hiddenInput) return;
 
-  hiddenInput.value =
-    (button.getAttribute('data-priority') || 'Medium').toLowerCase();
+  hiddenInput.value = (
+    button.getAttribute("data-priority") || "Medium"
+  ).toLowerCase();
 }
 
 /**
@@ -345,7 +346,7 @@ function onTaskEditCancel(taskId) {
 async function onTaskEditSave(event, taskId) {
   event.preventDefault();
 
-  const form = event.target.closest('form');
+  const form = event.target.closest("form");
   if (!form) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
@@ -356,7 +357,7 @@ async function onTaskEditSave(event, taskId) {
     title: form.elements.title.value.trim(),
     description: form.elements.description.value.trim(),
     dueDate: form.elements.dueDate.value,
-    priority: (form.elements.priority.value || 'medium').toLowerCase()
+    priority: (form.elements.priority.value || "medium").toLowerCase(),
   };
 
   try {
@@ -370,7 +371,7 @@ async function onTaskEditSave(event, taskId) {
     renderBoard();
     openTaskCardById(taskId);
   } catch (error) {
-    alert('Could not save changes.');
+    alert("Could not save changes.");
   }
 }
 
@@ -378,7 +379,7 @@ async function onTaskEditSave(event, taskId) {
  * Task aus Overlay löschen.
  */
 async function onOverlayDeleteClick(taskId) {
-  if (!confirm('Do you really want to delete this task?')) return;
+  if (!confirm("Do you really want to delete this task?")) return;
 
   try {
     await deleteTaskById(taskId);
@@ -388,7 +389,7 @@ async function onOverlayDeleteClick(taskId) {
     renderBoard();
     closeTaskCard();
   } catch (err) {
-    alert('Task could not be deleted.');
+    alert("Task could not be deleted.");
   }
 }
 
@@ -408,12 +409,12 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
 
   subtasks[subIndex] = {
     ...subtasks[subIndex],
-    done: !!isChecked
+    done: !!isChecked,
   };
 
   const updatedTask = {
     ...task,
-    subtasks
+    subtasks,
   };
 
   try {
@@ -425,9 +426,9 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
     renderBoard();
 
     // Overlay-Subtasks neu zeichnen (falls geöffnet)
-    const content = document.getElementById('taskCardContent');
+    const content = document.getElementById("taskCardContent");
     if (content) {
-      const listEl = content.querySelector('.subtask-list-detail');
+      const listEl = content.querySelector(".subtask-list-detail");
       if (listEl) {
         listEl.innerHTML = renderSubtasksDetail(
           updatedTask.subtasks || [],
@@ -436,8 +437,8 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
       }
     }
   } catch (err) {
-    console.error('onSubtaskToggle error:', err);
-    alert('Subtask konnte nicht gespeichert werden.');
+    console.error("onSubtaskToggle error:", err);
+    alert("Subtask konnte nicht gespeichert werden.");
   }
 }
 
@@ -447,12 +448,12 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
  * Sorgt dafür, dass Klicks außerhalb das Menü schließen.
  */
 function initMoveMenuGlobalListener() {
-  document.addEventListener('click', (event) => {
-    const menu = document.getElementById('cardMoveMenu');
-    if (!menu || menu.style.display !== 'block') return;
+  document.addEventListener("click", (event) => {
+    const menu = document.getElementById("cardMoveMenu");
+    if (!menu || menu.style.display !== "block") return;
 
-    const clickedInsideMenu = event.target.closest('#cardMoveMenu');
-    const clickedMoveBtn = event.target.closest('.card-move-btn');
+    const clickedInsideMenu = event.target.closest("#cardMoveMenu");
+    const clickedMoveBtn = event.target.closest(".card-move-btn");
 
     if (!clickedInsideMenu && !clickedMoveBtn) {
       closeMoveMenu();
@@ -464,12 +465,12 @@ function initMoveMenuGlobalListener() {
  * Menü-Element (ein einziges globales) erstellen oder holen.
  */
 function getMoveMenuElement() {
-  let menu = document.getElementById('cardMoveMenu');
+  let menu = document.getElementById("cardMoveMenu");
   if (menu) return menu;
 
-  menu = document.createElement('div');
-  menu.id = 'cardMoveMenu';
-  menu.className = 'card-move-menu';
+  menu = document.createElement("div");
+  menu.id = "cardMoveMenu";
+  menu.className = "card-move-menu";
   menu.innerHTML = `
     <div class="card-move-menu__inner">
       <div class="card-move-menu__title">Move to</div>
@@ -486,13 +487,13 @@ function getMoveMenuElement() {
  */
 function openMoveMenu(buttonEl, taskId) {
   const menu = getMoveMenuElement();
-  const optionsContainer = menu.querySelector('.card-move-menu__options');
+  const optionsContainer = menu.querySelector(".card-move-menu__options");
   if (!optionsContainer) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
   if (!task) return;
 
-  const currentStatus = normalizeTaskStatus(task.status || 'todo');
+  const currentStatus = normalizeTaskStatus(task.status || "todo");
   currentMoveTaskId = taskId;
 
   const currentIdx = BOARD_STATUS_ORDER.indexOf(currentStatus);
@@ -507,20 +508,20 @@ function openMoveMenu(buttonEl, taskId) {
     candidates.push(BOARD_STATUS_ORDER[currentIdx + 1]);
   }
 
-  optionsContainer.innerHTML = '';
+  optionsContainer.innerHTML = "";
 
   candidates.forEach((statusKey) => {
     const label = BOARD_STATUS_LABELS[statusKey] || statusKey;
     const targetIdx = BOARD_STATUS_ORDER.indexOf(statusKey);
-    const arrow = targetIdx < currentIdx ? '↑' : '↓';
+    const arrow = targetIdx < currentIdx ? "↑" : "↓";
 
-    const btn = document.createElement('button');
-    btn.type = 'button';
-    btn.className = 'card-move-menu__option';
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "card-move-menu__option";
     btn.dataset.status = statusKey;
     btn.innerHTML = `<span class="card-move-menu__arrow">${arrow}</span><span>${label}</span>`;
 
-    btn.addEventListener('click', async () => {
+    btn.addEventListener("click", async () => {
       await handleMoveMenuSelection(statusKey);
     });
 
@@ -532,7 +533,7 @@ function openMoveMenu(buttonEl, taskId) {
   const menuWidth = 170; // ungefährer Wert, passt zu CSS
   const offsetY = 8;
 
-  menu.style.display = 'block';
+  menu.style.display = "block";
   menu.style.top = `${rect.bottom + window.scrollY + offsetY}px`;
   menu.style.left = `${rect.right + window.scrollX - menuWidth}px`;
 }
@@ -541,9 +542,9 @@ function openMoveMenu(buttonEl, taskId) {
  * Menü schließen.
  */
 function closeMoveMenu() {
-  const menu = document.getElementById('cardMoveMenu');
+  const menu = document.getElementById("cardMoveMenu");
   if (!menu) return;
-  menu.style.display = 'none';
+  menu.style.display = "none";
   currentMoveTaskId = null;
 }
 
@@ -557,8 +558,8 @@ async function handleMoveMenuSelection(targetStatus) {
     await updateTaskStatus(currentMoveTaskId, targetStatus);
     renderBoard();
   } catch (e) {
-    console.error('move menu status update failed', e);
-    alert('Status konnte nicht geändert werden.');
+    console.error("move menu status update failed", e);
+    alert("Status could not be changed.");
   } finally {
     closeMoveMenu();
   }
@@ -566,4 +567,4 @@ async function handleMoveMenuSelection(targetStatus) {
 
 /* ===================== Startpunkt ===================== */
 
-document.addEventListener('DOMContentLoaded', loadScripts);
+document.addEventListener("DOMContentLoaded", loadScripts);
