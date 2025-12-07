@@ -325,17 +325,11 @@ overlay-modal {
   /* Default: verstecken (für custom element und class) */
   overlay-modal,
   .overlay-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    height: 100vh;
+    width: 100vw;
+    align-items: center;
     justify-content: center;
-    align-items: flex-start;
-    /* nicht mittig, damit Inhalt nach unten scrollt */
-    overflow-y: auto;
-    padding: 60px 0 120px;
-    /* <-- entferne die 40085px; sinnvoller Footer-Padding */
-    display: none;
-    /* weiter verstecken */
+    margin-right: 12px;
   }
 
   /* sichtbar nur wenn .open gesetzt ist */
@@ -347,11 +341,21 @@ overlay-modal {
 
   overlay-modal .modal-content,
   .overlay-modal .modal-content {
-    background: #fff;
-    border-radius: 12px;
-    padding: 24px;
-    max-width: 960px;
-    width: 100%;
+display: block;
+        width: 95%;
+        max-width: 90vw;
+        max-height: 85vh;
+        overflow: auto;
+        height: 90vh;
+        padding: 16px;
+        margin: 0;
+        border-radius: 12px;
+        box-sizing: border-box;
+        background: #fff;
+        border-radius: 12px;
+        padding: 24px;
+        max-width: 100%;
+        /* width: 100%;
   }
 }
 

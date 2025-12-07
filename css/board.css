@@ -322,6 +322,10 @@ body {
 }
 
 @media (min-width: 1024px) {
+  .card-move-btn {
+    display: none;
+  }
+
   .card-move-btn:hover {
     background: rgba(148, 163, 184, 0.18);
   }
@@ -332,6 +336,12 @@ body {
   position: absolute;
   z-index: 2000;
   display: none;
+}
+
+@media (min-width: 1024px) {
+  .card-move-menu {
+    display: none !important;
+  }
 }
 
 .card-move-menu__inner {
@@ -380,6 +390,11 @@ body {
 
 .card-move-menu__option:hover {
   background-color: rgba(148, 163, 184, 0.35);
+}
+
+.card-move-menu__option:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 /* ===================== Assigned-To Dropdown ===================== */
@@ -572,10 +587,7 @@ body {
     margin-top: 95px;
     margin-left: 0;
   }
-  .task-cards {
-    gap: 12px;
-    display: flex;
-  }
+
   .board-header input {
     width: 90vw;
     padding: 12px;
@@ -602,8 +614,18 @@ body {
   }
 
   .task-column {
+    display: flex;
     width: 100%;
     padding: 0;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;
+  }
+  .task-cards{
+    gap: 16px;
+    width: 252px;
+    display: flex;
+    flex-direction: row;
   }
 
   #done-tasks {

@@ -265,7 +265,7 @@ function ensureMoveMenuElement() {
   el.className = "card-move-menu";
   el.innerHTML = `
     <div class="card-move-menu__inner">
-      <p class="card-move-menu__title">Reorder:</p>
+      <p class="card-move-menu__title">Move task:</p>
       <div class="card-move-menu__options"></div>
     </div>
   `;
@@ -275,12 +275,32 @@ function ensureMoveMenuElement() {
   return moveMenuElement;
 }
 
+function createMoveMenuOption(container, arrow, label, disabled, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "card-move-menu__option";
+  button.disabled = disabled;
+  button.innerHTML =
+    '<span class="card-move-menu__arrow">' +
+    arrow +
+    "</span>" +
+    "<span>" +
+    label +
+    "</span>";
+  if (!disabled) {
+    button.addEventListener("click", onClick);
+  }
+  container.appendChild(button);
+}
+
 /**
  * Move-Menü öffnen.
  * @param {string} taskId
  * @param {HTMLElement} anchorEl - das Icon-Element (Button) auf der Karte
  */
 function openMoveMenu(taskId, anchorEl) {
+  if (window.innerWidth >= 1024) return;
+
   currentMoveTaskId = taskId;
 
   const menu = ensureMoveMenuElement();
@@ -292,48 +312,30 @@ function openMoveMenu(taskId, anchorEl) {
 
   const task = tasks[globalIndex];
   const status = normalizeTaskStatus(task.status);
+  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
+  const labels = typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
+  const statusIndex = order.indexOf(status);
+  if (statusIndex === -1) return;
 
-  // alle globalen Indizes der Tasks mit gleichem Status
-  const indicesInStatus = tasks.reduce((acc, t, idx) => {
-    if (normalizeTaskStatus(t.status) === status) {
-      acc.push(idx);
-    }
-    return acc;
-  }, []);
-
-  const pos = indicesInStatus.indexOf(globalIndex);
-  if (pos === -1) return;
-
-  const isFirst = pos === 0;
-  const isLast = pos === indicesInStatus.length - 1;
+  const previousStatus = statusIndex > 0 ? order[statusIndex - 1] : null;
+  const nextStatus = statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
 
   optionsContainer.innerHTML = "";
 
-  // Move up
-  const upBtn = document.createElement("button");
-  upBtn.type = "button";
-  upBtn.className = "card-move-menu__option";
-  upBtn.disabled = isFirst;
-  upBtn.innerHTML =
-    '<span class="card-move-menu__arrow">↑</span>' +
-    "<span>Move up</span>";
-  upBtn.addEventListener("click", function () {
-    moveTaskInColumn(taskId, "up");
-  });
-  optionsContainer.appendChild(upBtn);
+  const prevLabel = previousStatus
+    ? "Move to " + (labels[previousStatus] || "previous column")
+    : "No previous column";
+  const nextLabel = nextStatus
+    ? "Move to " + (labels[nextStatus] || "next column")
+    : "No next column";
 
-  // Move down
-  const downBtn = document.createElement("button");
-  downBtn.type = "button";
-  downBtn.className = "card-move-menu__option";
-  downBtn.disabled = isLast;
-  downBtn.innerHTML =
-    '<span class="card-move-menu__arrow">↓</span>' +
-    "<span>Move down</span>";
-  downBtn.addEventListener("click", function () {
-    moveTaskInColumn(taskId, "down");
+  createMoveMenuOption(optionsContainer, "←", prevLabel, !previousStatus, function () {
+    moveTaskToAdjacentColumn(taskId, "prev");
   });
-  optionsContainer.appendChild(downBtn);
+
+  createMoveMenuOption(optionsContainer, "→", nextLabel, !nextStatus, function () {
+    moveTaskToAdjacentColumn(taskId, "next");
+  });
 
   const rect = anchorEl.getBoundingClientRect();
   const top = rect.bottom + window.scrollY + 6;
@@ -353,48 +355,28 @@ function closeMoveMenu() {
 }
 
 /**
- * Task innerhalb seiner Spalte (Status) einen Schritt hoch/runter verschieben.
- * Es wird nur die Reihenfolge im globalen "tasks"-Array geändert.
+ * Move task one column left or right using the global status order.
  */
-function moveTaskInColumn(taskId, direction) {
-  const currentIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (currentIndex === -1) return;
+async function moveTaskToAdjacentColumn(taskId, direction) {
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return;
 
-  const task = tasks[currentIndex];
-  const status = normalizeTaskStatus(task.status);
+  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
+  const status = normalizeTaskStatus(tasks[index].status);
+  const currentPosition = order.indexOf(status);
+  if (currentPosition === -1) return;
 
-  // globale Indizes aller Tasks mit demselben Status
-  const indicesInStatus = tasks.reduce((acc, t, idx) => {
-    if (normalizeTaskStatus(t.status) === status) {
-      acc.push(idx);
-    }
-    return acc;
-  }, []);
+  const offset = direction === "prev" ? -1 : 1;
+  const targetStatus = order[currentPosition + offset];
+  if (!targetStatus) return;
 
-  const pos = indicesInStatus.indexOf(currentIndex);
-  if (pos === -1) return;
-
-  let targetGlobalIndex = currentIndex;
-
-  if (direction === "up") {
-    if (pos === 0) return; // schon ganz oben
-    targetGlobalIndex = indicesInStatus[pos - 1];
-  } else if (direction === "down") {
-    if (pos === indicesInStatus.length - 1) return; // schon ganz unten
-    targetGlobalIndex = indicesInStatus[pos + 1];
-  } else {
-    return;
+  try {
+    await updateTaskStatus(taskId, targetStatus);
+    closeMoveMenu();
+    renderBoard();
+  } catch (error) {
+    console.error("moveTaskToAdjacentColumn: failed", error);
   }
-
-  if (targetGlobalIndex === currentIndex) return;
-
-  // Im globalen Array tasks vertauschen
-  const temp = tasks[targetGlobalIndex];
-  tasks[targetGlobalIndex] = tasks[currentIndex];
-  tasks[currentIndex] = temp;
-
-  closeMoveMenu();
-  renderBoard();
 }
 
 /**
