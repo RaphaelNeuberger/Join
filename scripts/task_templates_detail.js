@@ -177,7 +177,7 @@ function taskCardEditTemplate(task) {
         <button
           type="submit"
           class="overlay-task-card-edit">
-          Ok ✓
+          Ok
         </button>
       </div>
     </form>

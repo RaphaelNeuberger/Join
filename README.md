@@ -4,7 +4,7 @@ A modern, responsive task management application built with vanilla JavaScript, 
 
 ![Join Logo](img/logo/join-logo.svg)
 
-## 🚀 Features
+## Features
 
 ### Task Management
 - **Kanban Board** - Drag & drop tasks between columns (To Do, In Progress, Await Feedback, Done)
@@ -116,7 +116,7 @@ A modern, responsive task management application built with vanilla JavaScript, 
    - Create a new account with email and password
    - Use the seeded demo data (7 tasks, 10 contacts automatically loaded)
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 Join/
@@ -150,7 +150,7 @@ Join/
 └── README.md
 ```
 
-## 🎨 Key Features Details
+## Key Features Details
 
 ### Drag & Drop
 Tasks can be dragged between columns on desktop. On mobile, use the 3-dot menu to move tasks.
@@ -168,7 +168,7 @@ The app automatically seeds demo data on first load:
 - **Tablet**: 641px - 1024px
 - **Desktop**: ≥1025px (horizontal Kanban, drag & drop)
 
-## 🔒 Security & Privacy
+## Security & Privacy
 
 - Firebase Authentication handles user credentials securely
 - No sensitive data stored in localStorage
@@ -197,7 +197,7 @@ This project was developed by:
 - **Raphael Neuberger** - Developer
 - [Add team members here]
 
-## 📄 License
+## License
 
 This project is part of the Developer Akademie Frontend Module coursework.
 

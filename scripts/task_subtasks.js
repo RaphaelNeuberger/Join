@@ -68,7 +68,7 @@ function renderSubtaskDrafts() {
     li.innerHTML = `
       <span class="subtask-title">${escapeHtml(subtask.title)}</span>
       <button type="button" class="subtask-remove-btn" aria-label="Remove subtask">
-        ✕
+        X
       </button>
     `;
 

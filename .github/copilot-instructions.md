@@ -22,7 +22,7 @@ Kein Build-Framework (z. B. React, Vue, Angular) wird genutzt.
 
 ---
 
-## 💻 Code-Stil & Formatierung
+## Code-Stil & Formatierung
 
 ### HTML
 

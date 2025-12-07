@@ -93,7 +93,7 @@
           <input type="checkbox" class="subtask-checkbox" />
           <span class="subtask-text">${escapeHtml(text)}</span>
         </label>
-        <button type="button" class="subtask-remove" aria-label="Remove subtask" title="Remove">✕</button>
+        <button type="button" class="subtask-remove" aria-label="Remove subtask" title="Remove">X</button>
       `;
       li.querySelector(".subtask-remove").addEventListener("click", () =>
         li.remove()

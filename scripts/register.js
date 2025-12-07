@@ -34,7 +34,7 @@ async function addUser() {
   if (!name || !email || !pw || !cpw)
     return showNotification("Please fill out all fields.", "error");
   if (pw !== cpw)
-    return showNotification("⚠️ Passwords do not match!", "error");
+    return showNotification("Passwords do not match!", "error");
   try {
     const { user } = await createUserWithEmailAndPassword(
       firebaseAuth,
@@ -47,13 +47,13 @@ async function addUser() {
       email,
       createdAt: new Date().toISOString(),
     });
-    showNotification("✅ You have successfully registered!", "success");
+    showNotification("You have successfully registered!", "success");
     setTimeout(
       () => (window.location.href = "index.html?msg=Successfully registered"),
       2000
     );
   } catch (e) {
-    let m = "❌ Registration error: " + e.message;
+    let m = "Registration error: " + e.message;
     if (e.code === "auth/email-already-in-use")
       m = "This email is already registered!";
     else if (e.code === "auth/weak-password")
@@ -78,7 +78,7 @@ async function login() {
       email,
       password
     );
-    showNotification("✅ Successfully logged in!", "success");
+    showNotification("Successfully logged in!", "success");
     localStorage.setItem(
       "loggedInUser",
       JSON.stringify({
@@ -89,7 +89,7 @@ async function login() {
     );
     setTimeout(() => (window.location.href = "summary.html"), 1500);
   } catch (e) {
-    let msg = "❌ Incorrect email or password.";
+    let msg = "Incorrect email or password.";
     if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password")
       msg = "Incorrect credentials.";
     else if (e.code === "auth/invalid-email") msg = "Invalid email.";
@@ -123,7 +123,7 @@ async function guestLogin() {
 
     setTimeout(() => (window.location.href = "summary.html"), 1500);
   } catch (e) {
-    showNotification("❌ Guest login error.", "error");
+    showNotification("Guest login error.", "error");
     console.error("Guest Login Error:", e);
   }
 }
@@ -146,7 +146,7 @@ async function phoneSignup() {
     showNotification("SMS with code sent! Enter the code.", "success");
   } catch (error) {
     console.error("Phone Signup Error:", error);
-    showNotification("❌ Error sending code.", "error");
+    showNotification("Error sending code.", "error");
     if (recaptchaVerifier && recaptchaVerifier.render)
       recaptchaVerifier.render().then((id) => grecaptcha.reset(id));
   }
@@ -165,7 +165,7 @@ async function confirmPhoneCode() {
       createdAt: new Date().toISOString(),
     });
     showNotification(
-      "✅ Successfully registered/logged in with phone!",
+      "Successfully registered/logged in with phone!",
       "success"
     );
     localStorage.setItem(
@@ -178,7 +178,7 @@ async function confirmPhoneCode() {
     );
     setTimeout(() => (window.location.href = "board.html"), 1500);
   } catch (e) {
-    showNotification("❌ Incorrect code or error.", "error");
+    showNotification("Incorrect code or error.", "error");
     console.error("Phone Confirm Error:", e);
   }
 }

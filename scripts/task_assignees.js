@@ -140,7 +140,7 @@ function renderSelectedBadges() {
     badge.innerHTML = `
       <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
       <span>${escapeHtml(contact.name)}</span>
-      <span class="remove" onclick="toggleAssignee('${id}')">✕</span>
+      <span class="remove" onclick="toggleAssignee('${id}')">X</span>
     `;
     selectedContainer.appendChild(badge);
   });
