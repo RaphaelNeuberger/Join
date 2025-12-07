@@ -572,7 +572,10 @@ body {
     margin-top: 95px;
     margin-left: 0;
   }
-
+  .task-cards {
+    gap: 12px;
+    display: flex;
+  }
   .board-header input {
     width: 90vw;
     padding: 12px;

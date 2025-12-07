@@ -1,63 +1,114 @@
 // scripts/board_overlay.js
-// Task card overlay (view/edit/delete) and mobile move menu
 
-/* ===================== Task-Overlay (View/Edit/Delete) ===================== */
-
+/**
+ * Click-Handling auf Karten:
+ * - Klick auf .card-move-btn -> Move-Menü (Up/Down) öffnen
+ * - Klick auf .card-task (sonst) -> Detail-Overlay öffnen
+ */
 function onTaskCardClick(event) {
-  // 1) Wurde der Move-Button geklickt?
   const moveBtn = event.target.closest(".card-move-btn");
   if (moveBtn) {
-    event.stopPropagation();
-    const taskId = moveBtn.getAttribute("data-task-id");
-    openMoveMenu(moveBtn, taskId);
+    // Prevent the click from bubbling to the document-level handler
+    // which may immediately close the menu. Also prevent default
+    // to avoid any native button behavior.
+    try {
+      event.stopPropagation();
+      event.preventDefault();
+    } catch (e) {
+      // ignore if event is not cancelable
+    }
+    const card = moveBtn.closest(".card-task");
+    if (!card) return;
+    const taskId = card.dataset.taskId;
+    if (!taskId) return;
+    openMoveMenu(taskId, moveBtn);
     return;
   }
 
-  // 2) Sonst normale Karte → Detail-Overlay
   const card = event.target.closest(".card-task");
   if (!card) return;
 
-  const taskId = card.getAttribute("data-task-id");
-  openTaskCardById(taskId);
+  const taskId = card.dataset.taskId;
+  if (!taskId) return;
+
+  openTaskCard(taskId);
+}
+
+/* ============================================================
+ *  Overlay: Task-Detail (View / Edit)
+ * ============================================================ */
+
+function getOverlayElements() {
+  const overlay = document.querySelector(".overlay-task-card");
+  const content = document.getElementById("taskCardContent");
+  return { overlay, content };
 }
 
 /**
- * Detail-Overlay öffnen.
+ * Task-Detail Overlay öffnen (View-Mode).
  */
-function openTaskCardById(taskId) {
-  const overlay = document.querySelector(".overlay-task-card");
-  const content = document.getElementById("taskCardContent");
+function openTaskCard(taskId) {
+  const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
   if (!task) return;
 
   content.innerHTML = taskCardContentTemplate(task);
+
   overlay.style.display = "flex";
+  overlay.classList.add("overlay-task-card--open");
+  document.body.style.overflow = "hidden";
+
+  closeMoveMenu();
 }
 
 /**
- * Detail-Overlay schließen.
+ * Task-Detail Overlay schließen.
  */
 function closeTaskCard() {
-  const overlay = document.querySelector(".overlay-task-card");
+  const { overlay, content } = getOverlayElements();
   if (!overlay) return;
+
   overlay.style.display = "none";
+  overlay.classList.remove("overlay-task-card--open");
+  document.body.style.overflow = "";
+
+  if (content) {
+    content.innerHTML = "";
+  }
+
+  closeMoveMenu();
 }
 
 /**
- * aus Template aufgerufen (Edit-Button im View-Overlay)
+ * Hintergrund-Klick schließt das Overlay.
  */
-function onOverlayEditClick(taskId) {
-  onTaskEditClick(taskId);
-}
+document.addEventListener("click", function (event) {
+  const { overlay } = getOverlayElements();
+  if (!overlay) return;
+
+  if (event.target === overlay) {
+    closeTaskCard();
+  }
+});
 
 /**
- * Edit-Ansicht im Overlay anzeigen.
+ * ESC schließt das Overlay + Move-Menü.
+ */
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeTaskCard();
+    closeMoveMenu();
+  }
+});
+
+/**
+ * Edit-Button im Overlay (View-Mode).
  */
 function onTaskEditClick(taskId) {
-  const content = document.getElementById("taskCardContent");
-  if (!content) return;
+  const { overlay, content } = getOverlayElements();
+  if (!overlay || !content) return;
 
   const task = tasks.find((t) => String(t.id) === String(taskId));
   if (!task) return;
@@ -66,106 +117,117 @@ function onTaskEditClick(taskId) {
 }
 
 /**
- * Priority im Edit-Overlay umschalten.
- */
-function onEditPriorityClick(event) {
-  event.preventDefault();
-
-  const button = event.currentTarget;
-  const wrapper = button.closest(".priority-buttons");
-  if (!wrapper) return;
-
-  const allButtons = wrapper.querySelectorAll(".priority-buttons__button");
-  allButtons.forEach((btn) => btn.classList.remove("is-active"));
-
-  button.classList.add("is-active");
-
-  const hiddenInput = wrapper.querySelector('input[name="priority"]');
-  if (!hiddenInput) return;
-
-  hiddenInput.value = (
-    button.getAttribute("data-priority") || "Medium"
-  ).toLowerCase();
-}
-
-/**
- * Edit-Ansicht abbrechen → zurück zur View-Ansicht.
+ * Cancel im Edit-Mode -> zurück in View-Mode.
  */
 function onTaskEditCancel(taskId) {
-  openTaskCardById(taskId);
+  openTaskCard(taskId);
 }
 
 /**
- * Änderungen im Edit-Overlay speichern.
+ * Save im Edit-Mode.
  */
 async function onTaskEditSave(event, taskId) {
   event.preventDefault();
-
-  const form = event.target.closest("form");
+  const form = event.target;
   if (!form) return;
 
-  const task = tasks.find((t) => String(t.id) === String(taskId));
-  if (!task) return;
+  const formData = new FormData(form);
+  const title = String(formData.get("title") || "").trim();
+  const description = String(formData.get("description") || "").trim();
+  const dueDate = String(formData.get("dueDate") || "").trim();
+  const priorityRaw = String(formData.get("priority") || "Medium").trim();
+
+  if (!title) {
+    alert("Title is required.");
+    return;
+  }
+
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return;
+
+  const oldTask = tasks[index];
 
   const updatedTask = {
-    ...task,
-    title: form.elements.title.value.trim(),
-    description: form.elements.description.value.trim(),
-    dueDate: form.elements.dueDate.value,
-    priority: (form.elements.priority.value || "medium").toLowerCase(),
+    ...oldTask,
+    title,
+    description,
+    dueDate,
+    priority: normalizePriority(priorityRaw),
   };
 
   try {
     await saveTask(updatedTask);
-
-    const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-    if (index !== -1) {
-      tasks[index] = updatedTask;
-    }
-
+    tasks[index] = updatedTask;
     renderBoard();
-    openTaskCardById(taskId);
+    openTaskCard(taskId);
   } catch (error) {
-    alert("Could not save changes.");
+    console.error("onTaskEditSave: error saving task", error);
+    alert("Error while saving the task.");
   }
 }
 
 /**
- * Task aus Overlay löschen.
+ * Priority-Buttons im Edit-Overlay.
+ */
+function onEditPriorityClick(event) {
+  const button = event.currentTarget;
+  const wrapper = button.closest(".priority-buttons");
+  if (!wrapper) return;
+
+  const buttons = wrapper.querySelectorAll(".priority-buttons__button");
+  buttons.forEach((btn) => btn.classList.remove("is-active"));
+
+  button.classList.add("is-active");
+
+  const hidden = wrapper.querySelector('input[name="priority"]');
+  if (hidden) {
+    hidden.value = button.dataset.priority || "Medium";
+  }
+}
+
+/**
+ * Delete-Button im View-Overlay.
  */
 async function onOverlayDeleteClick(taskId) {
-  if (!confirm("Do you really want to delete this task?")) return;
+  const confirmDelete = window.confirm("Do you really want to delete this task?");
+  if (!confirmDelete) return;
 
   try {
     await deleteTaskById(taskId);
 
-    tasks = tasks.filter((t) => String(t.id) !== String(taskId));
+    // lokal aus tasks entfernen
+    tasks = tasks.filter(
+      (t) =>
+        String(t.id) !== String(taskId) &&
+        String(t.firebaseId) !== String(taskId)
+    );
 
-    renderBoard();
     closeTaskCard();
-  } catch (err) {
-    alert("Task could not be deleted.");
+    renderBoard();
+  } catch (error) {
+    console.error("onOverlayDeleteClick: error deleting task", error);
+    alert("Error while deleting the task.");
   }
 }
 
-/* ===================== Subtasks (Toggle) ===================== */
-
 /**
- * Wird von renderSubtasksDetail() in task_tamplates.js aufgerufen.
+ * Checkbox-Änderung bei Subtasks im Overlay.
  */
-async function onSubtaskToggle(taskId, subIndex, isChecked) {
+async function onSubtaskToggle(taskId, index, checked) {
   const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (taskIndex === -1) return;
 
   const task = tasks[taskIndex];
   const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
 
-  if (!subtasks[subIndex]) return;
+  if (!subtasks[index]) return;
 
-  subtasks[subIndex] = {
-    ...subtasks[subIndex],
-    done: !!isChecked,
+  const updatedSubtask = {
+    ...subtasks[index],
+    done: !!checked,
+    checked: !!checked,
   };
+  subtasks[index] = updatedSubtask;
 
   const updatedTask = {
     ...task,
@@ -174,152 +236,184 @@ async function onSubtaskToggle(taskId, subIndex, isChecked) {
 
   try {
     await saveTask(updatedTask);
-
     tasks[taskIndex] = updatedTask;
-
-    // Board (cards + progress) update
     renderBoard();
-
-    // Redraw overlay subtasks (if open)
-    const content = document.getElementById("taskCardContent");
-    if (content) {
-      const listEl = content.querySelector(".subtask-list-detail");
-      if (listEl) {
-        listEl.innerHTML = renderSubtasksDetail(
-          updatedTask.subtasks || [],
-          updatedTask.id
-        );
-      }
-    }
-  } catch (err) {
-    console.error("onSubtaskToggle error:", err);
-    alert("Subtask konnte nicht gespeichert werden.");
+  } catch (error) {
+    console.error("onSubtaskToggle: error saving subtask state", error);
   }
 }
 
-/* ===================== Move-to Menu (Mobile/Overlay) ===================== */
+/* ============================================================
+ *  Move-Menü (Up / Down innerhalb der Spalte)
+ * ============================================================ */
+
+// WICHTIG: currentMoveTaskId ist bereits in board.js als globale Variable definiert.
+// Hier NICHT noch einmal mit let/const definieren, einfach verwenden.
 
 /**
- * Ensures clicks outside close the menu.
+ * Globales Element für das Move-Menü.
  */
-function initMoveMenuGlobalListener() {
-  document.addEventListener("click", (event) => {
-    const menu = document.getElementById("cardMoveMenu");
-    if (!menu || menu.style.display !== "block") return;
-
-    const clickedInsideMenu = event.target.closest("#cardMoveMenu");
-    const clickedMoveBtn = event.target.closest(".card-move-btn");
-
-    if (!clickedInsideMenu && !clickedMoveBtn) {
-      closeMoveMenu();
-    }
-  });
-}
+let moveMenuElement = null;
 
 /**
- * Menü-Element (ein einziges globales) erstellen oder holen.
+ * Sicherstellen, dass das globale Move-Menü-Element existiert.
  */
-function getMoveMenuElement() {
-  let menu = document.getElementById("cardMoveMenu");
-  if (menu) return menu;
+function ensureMoveMenuElement() {
+  if (moveMenuElement) return moveMenuElement;
 
-  menu = document.createElement("div");
-  menu.id = "cardMoveMenu";
-  menu.className = "card-move-menu";
-  menu.innerHTML = `
+  const el = document.createElement("div");
+  el.className = "card-move-menu";
+  el.innerHTML = `
     <div class="card-move-menu__inner">
-      <div class="card-move-menu__title">Move to</div>
+      <p class="card-move-menu__title">Reorder:</p>
       <div class="card-move-menu__options"></div>
     </div>
   `;
-  document.body.appendChild(menu);
-  return menu;
+  document.body.appendChild(el);
+  moveMenuElement = el;
+
+  return moveMenuElement;
 }
 
 /**
- * Öffnet das "Move to"-Menü neben dem Button.
- * Nur direkte Nachbarn werden angezeigt (eine Position oben / unten).
+ * Move-Menü öffnen.
+ * @param {string} taskId
+ * @param {HTMLElement} anchorEl - das Icon-Element (Button) auf der Karte
  */
-function openMoveMenu(buttonEl, taskId) {
-  const menu = getMoveMenuElement();
+function openMoveMenu(taskId, anchorEl) {
+  currentMoveTaskId = taskId;
+
+  const menu = ensureMoveMenuElement();
   const optionsContainer = menu.querySelector(".card-move-menu__options");
   if (!optionsContainer) return;
 
-  const task = tasks.find((t) => String(t.id) === String(taskId));
-  if (!task) return;
+  const globalIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (globalIndex === -1) return;
 
-  const currentStatus = normalizeTaskStatus(task.status || "todo");
-  currentMoveTaskId = taskId;
+  const task = tasks[globalIndex];
+  const status = normalizeTaskStatus(task.status);
 
-  const currentIdx = BOARD_STATUS_ORDER.indexOf(currentStatus);
-  if (currentIdx === -1) return;
+  // alle globalen Indizes der Tasks mit gleichem Status
+  const indicesInStatus = tasks.reduce((acc, t, idx) => {
+    if (normalizeTaskStatus(t.status) === status) {
+      acc.push(idx);
+    }
+    return acc;
+  }, []);
 
-  // Kandidaten: direkt oberhalb & direkt unterhalb
-  const candidates = [];
-  if (currentIdx > 0) {
-    candidates.push(BOARD_STATUS_ORDER[currentIdx - 1]);
-  }
-  if (currentIdx < BOARD_STATUS_ORDER.length - 1) {
-    candidates.push(BOARD_STATUS_ORDER[currentIdx + 1]);
-  }
+  const pos = indicesInStatus.indexOf(globalIndex);
+  if (pos === -1) return;
+
+  const isFirst = pos === 0;
+  const isLast = pos === indicesInStatus.length - 1;
 
   optionsContainer.innerHTML = "";
 
-  candidates.forEach((statusKey) => {
-    const label = BOARD_STATUS_LABELS[statusKey] || statusKey;
-    const targetIdx = BOARD_STATUS_ORDER.indexOf(statusKey);
-    const arrow = targetIdx < currentIdx ? "↑" : "↓";
-
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "card-move-menu__option";
-    btn.dataset.status = statusKey;
-    btn.innerHTML = `<span class="card-move-menu__arrow">${arrow}</span><span>${label}</span>`;
-
-    btn.addEventListener("click", async () => {
-      await handleMoveMenuSelection(statusKey);
-    });
-
-    optionsContainer.appendChild(btn);
+  // Move up
+  const upBtn = document.createElement("button");
+  upBtn.type = "button";
+  upBtn.className = "card-move-menu__option";
+  upBtn.disabled = isFirst;
+  upBtn.innerHTML =
+    '<span class="card-move-menu__arrow">↑</span>' +
+    "<span>Move up</span>";
+  upBtn.addEventListener("click", function () {
+    moveTaskInColumn(taskId, "up");
   });
+  optionsContainer.appendChild(upBtn);
 
-  // Position – right below the button, slightly offset downward
-  const rect = buttonEl.getBoundingClientRect();
-  const menuWidth = 170; // approximate value, matches CSS
-  const offsetY = 8;
+  // Move down
+  const downBtn = document.createElement("button");
+  downBtn.type = "button";
+  downBtn.className = "card-move-menu__option";
+  downBtn.disabled = isLast;
+  downBtn.innerHTML =
+    '<span class="card-move-menu__arrow">↓</span>' +
+    "<span>Move down</span>";
+  downBtn.addEventListener("click", function () {
+    moveTaskInColumn(taskId, "down");
+  });
+  optionsContainer.appendChild(downBtn);
 
+  const rect = anchorEl.getBoundingClientRect();
+  const top = rect.bottom + window.scrollY + 6;
+  const left = rect.left + window.scrollX;
+
+  menu.style.top = top + "px";
+  menu.style.left = left + "px";
   menu.style.display = "block";
-  menu.style.top = `${rect.bottom + window.scrollY + offsetY}px`;
-  menu.style.left = `${rect.right + window.scrollX - menuWidth}px`;
 }
 
 /**
- * Menü schließen.
+ * Move-Menü schließen.
  */
 function closeMoveMenu() {
-  const menu = document.getElementById("cardMoveMenu");
-  if (!menu) return;
-  menu.style.display = "none";
-  currentMoveTaskId = null;
+  if (!moveMenuElement) return;
+  moveMenuElement.style.display = "none";
 }
 
 /**
- * Auswahl im Menü → Status wechseln.
+ * Task innerhalb seiner Spalte (Status) einen Schritt hoch/runter verschieben.
+ * Es wird nur die Reihenfolge im globalen "tasks"-Array geändert.
  */
-async function handleMoveMenuSelection(targetStatus) {
-  if (!currentMoveTaskId) return;
+function moveTaskInColumn(taskId, direction) {
+  const currentIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (currentIndex === -1) return;
 
-  try {
-    await updateTaskStatus(currentMoveTaskId, targetStatus);
-    renderBoard();
-  } catch (e) {
-    console.error("move menu status update failed", e);
-    alert("Status could not be changed.");
-  } finally {
-    closeMoveMenu();
+  const task = tasks[currentIndex];
+  const status = normalizeTaskStatus(task.status);
+
+  // globale Indizes aller Tasks mit demselben Status
+  const indicesInStatus = tasks.reduce((acc, t, idx) => {
+    if (normalizeTaskStatus(t.status) === status) {
+      acc.push(idx);
+    }
+    return acc;
+  }, []);
+
+  const pos = indicesInStatus.indexOf(currentIndex);
+  if (pos === -1) return;
+
+  let targetGlobalIndex = currentIndex;
+
+  if (direction === "up") {
+    if (pos === 0) return; // schon ganz oben
+    targetGlobalIndex = indicesInStatus[pos - 1];
+  } else if (direction === "down") {
+    if (pos === indicesInStatus.length - 1) return; // schon ganz unten
+    targetGlobalIndex = indicesInStatus[pos + 1];
+  } else {
+    return;
   }
+
+  if (targetGlobalIndex === currentIndex) return;
+
+  // Im globalen Array tasks vertauschen
+  const temp = tasks[targetGlobalIndex];
+  tasks[targetGlobalIndex] = tasks[currentIndex];
+  tasks[currentIndex] = temp;
+
+  closeMoveMenu();
+  renderBoard();
 }
 
-/* ===================== Auto-Init ===================== */
-// Initialize move menu listener when this script loads
-initMoveMenuGlobalListener();
+/**
+ * Klick irgendwo im Dokument schließt das Move-Menü,
+ * wenn man nicht auf den Move-Button oder das Menü klickt.
+ */
+document.addEventListener("click", function (event) {
+  if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
+
+  const clickInsideMenu = moveMenuElement.contains(event.target);
+  const clickOnMoveBtn = event.target.closest(".card-move-btn");
+
+  if (!clickInsideMenu && !clickOnMoveBtn) {
+    closeMoveMenu();
+  }
+});
+
+/**
+ * Bei Scroll/Resize Move-Menü schließen (damit es nicht „in der Luft hängt“).
+ */
+window.addEventListener("scroll", closeMoveMenu);
+window.addEventListener("resize", closeMoveMenu);

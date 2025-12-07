@@ -8,6 +8,7 @@ const STATUS_LABELS = {
   done: "Done",
 };
 
+const BOARD_STATUS_LABELS = STATUS_LABELS;
 let currentMoveTaskId = null;
 
 /**
