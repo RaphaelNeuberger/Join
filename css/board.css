@@ -518,7 +518,7 @@ body {
 }
 
 .checkmark-box.checked::after {
-  content: "✓";
+  content: "✔";
   color: white;
   font-size: 14px;
   font-weight: bold;

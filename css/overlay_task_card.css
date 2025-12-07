@@ -200,7 +200,7 @@
 }
 
 .subtask-checkbox input:checked + .subtask-custom-box::after {
-  content: "✓";
+  content: "✔";
   color: #111827;
   font-size: 1rem;
   font-weight: 700;
