@@ -33,8 +33,7 @@ async function addUser() {
     cpw = n("confirm-password");
   if (!name || !email || !pw || !cpw)
     return showNotification("Please fill out all fields.", "error");
-  if (pw !== cpw)
-    return showNotification("Passwords do not match!", "error");
+  if (pw !== cpw) return showNotification("Passwords do not match!", "error");
   try {
     const { user } = await createUserWithEmailAndPassword(
       firebaseAuth,
