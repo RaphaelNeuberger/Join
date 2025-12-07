@@ -383,60 +383,82 @@
   }
 
   /* ---------- Form collect / validate / submit ---------- */
-  function collectFormData() {
-    clearErrors();
-    const title = ($("#title") && $("#title").value.trim()) || "";
-    const description =
-      ($("#description") && $("#description").value.trim()) || "";
-    const dueDate = ($("#dueDate") && $("#dueDate").value) || "";
-    const category = ($("#category") && $("#category").value) || "";
-    // assignedToHidden contains comma separated values
-    const assignedToHidden =
-      ($("#assignedToHidden") && $("#assignedToHidden").value) || "";
-    const assignedTo = assignedToHidden
-      ? assignedToHidden.split(",").filter(Boolean)
-      : [];
-    const priorityBtn = $$(".priority-buttons__button").find
-      ? $$(".priority-buttons__button").find((b) =>
-          b.classList.contains("is-active")
-        )
-      : $$(".priority-buttons__button").filter((b) =>
-          b.classList.contains("is-active")
-        )[0];
-    const priority = (priorityBtn && priorityBtn.dataset.priority) || "Medium";
+  /**
+   * Read basic form field values.
+   */
+  function readFormFields() {
+    return {
+      title: ($("#title") && $("#title").value.trim()) || "",
+      description: ($("#description") && $("#description").value.trim()) || "",
+      dueDate: ($("#dueDate") && $("#dueDate").value) || "",
+      category: ($("#category") && $("#category").value) || "",
+    };
+  }
 
-    // subtasks
-    const subtasks = $$("#subtaskList .subtask-item").map((li) => {
+  /**
+   * Read assigned contacts from hidden field.
+   */
+  function readAssignedContacts() {
+    const hidden = $("#assignedToHidden");
+    const value = (hidden && hidden.value) || "";
+    return value ? value.split(",").filter(Boolean) : [];
+  }
+
+  /**
+   * Read selected priority from buttons.
+   */
+  function readPriority() {
+    const buttons = $$(".priority-buttons__button");
+    const activeBtn = buttons.find
+      ? buttons.find((b) => b.classList.contains("is-active"))
+      : buttons.filter((b) => b.classList.contains("is-active"))[0];
+    return (activeBtn && activeBtn.dataset.priority) || "Medium";
+  }
+
+  /**
+   * Read subtasks from list.
+   */
+  function readSubtasks() {
+    return $$("#subtaskList .subtask-item").map((li) => {
       const textEl = li.querySelector(".subtask-text");
       const cb = li.querySelector(".subtask-checkbox");
-      const text = textEl ? textEl.textContent.trim() : "";
-      const done = !!(cb && cb.checked);
-      return { title: text, done };
+      return {
+        title: textEl ? textEl.textContent.trim() : "",
+        done: !!(cb && cb.checked),
+      };
     });
+  }
 
+  /**
+   * Validate required form fields.
+   */
+  function validateFormData(fields) {
     let valid = true;
-    if (!title) {
+    if (!fields.title) {
       showError($("#titleError"), "Title is required");
       valid = false;
     }
-    if (!dueDate) {
+    if (!fields.dueDate) {
       showError($("#dueDateError"), "Due date is required");
       valid = false;
     }
-    if (!category) {
+    if (!fields.category) {
       showError($("#categoryError"), "Category is required");
       valid = false;
     }
-    if (!valid) return null;
+    return valid;
+  }
+
+  function collectFormData() {
+    clearErrors();
+    const fields = readFormFields();
+    if (!validateFormData(fields)) return null;
 
     return {
-      title,
-      description,
-      dueDate,
-      category,
-      assignedTo,
-      priority,
-      subtasks,
+      ...fields,
+      assignedTo: readAssignedContacts(),
+      priority: readPriority(),
+      subtasks: readSubtasks(),
       createdAt: new Date().toISOString(),
     };
   }
@@ -478,24 +500,26 @@
     }
   }
 
+  /**
+   * Create or update success note text.
+   */
+  function updateSuccessNote(success, customText) {
+    let note = success.querySelector(".note-text");
+    if (!note) {
+      note = document.createElement("div");
+      note.className = "note-text";
+      note.style.fontSize = "13px";
+      note.style.marginTop = "6px";
+      success.appendChild(note);
+    }
+    note.textContent = customText;
+  }
+
   function showSuccess(customText) {
     const success = $("#successMessage");
     if (!success) return;
-    // optionally set text (the element has children, keep simple)
-    if (customText) {
-      // append small note
-      let note = success.querySelector(".note-text");
-      if (!note) {
-        note = document.createElement("div");
-        note.className = "note-text";
-        note.style.fontSize = "13px";
-        note.style.marginTop = "6px";
-        success.appendChild(note);
-      }
-      note.textContent = customText;
-    }
+    if (customText) updateSuccessNote(success, customText);
     success.style.display = "flex";
-    // clear after short delay
     setTimeout(() => {
       clearForm();
       success.style.display = "none";

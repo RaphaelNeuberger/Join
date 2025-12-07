@@ -8,6 +8,10 @@
       return;
     }
 
+    if (typeof seedTasksIfEmpty === "function") {
+      await seedTasksIfEmpty();
+    }
+
     const tasksRef = window.ref(window.firebaseDb, "tasks");
     window.onValue(tasksRef, (snapshot) => {
       const val = snapshot.val() || {};
@@ -16,47 +20,77 @@
     });
   }
 
-  function updateKPIs(tasks) {
-    // Count tasks by status
-    const todo = tasks.filter(
-      (t) => t.status === "todo" || t.status === "To do"
-    ).length;
-    const done = tasks.filter(
-      (t) => t.status === "done" || t.status === "Done"
-    ).length;
-    const urgentTasks = tasks.filter(
-      (t) => t.priority === "urgent" || t.priority === "Urgent"
+  /**
+   * Count tasks by status type.
+   */
+  function countByStatus(tasks, ...statusValues) {
+    return tasks.filter((t) => statusValues.some((s) => t.status === s)).length;
+  }
+
+  /**
+   * Filter tasks by priority.
+   */
+  function filterByPriority(tasks, priority) {
+    const lowerPriority = priority.toLowerCase();
+    return tasks.filter(
+      (t) => t.priority && t.priority.toLowerCase() === lowerPriority
     );
-    const urgent = urgentTasks.length;
-    const progress = tasks.filter(
-      (t) =>
-        t.status === "inprogress" ||
-        t.status === "inProgress" ||
-        t.status === "in-progress"
-    ).length;
-    const feedback = tasks.filter(
-      (t) =>
-        t.status === "await_feedback" ||
-        t.status === "awaitFeedback" ||
-        t.status === "await-feedback"
-    ).length;
-    const total = tasks.length;
+  }
 
-    // Aktualisiere die DOM-Elemente
-    updateElement("kpi-todo", todo);
-    updateElement("kpi-done", done);
-    updateElement("kpi-urgent", urgent);
-    updateElement("kpi-progress", progress);
-    updateElement("kpi-feedback", feedback);
-    updateElement("kpi-board", total);
+  /**
+   * Update all KPI values in DOM.
+   */
+  function updateAllKPIElements(counts) {
+    updateElement("kpi-todo", counts.todo);
+    updateElement("kpi-done", counts.done);
+    updateElement("kpi-urgent", counts.urgent);
+    updateElement("kpi-progress", counts.progress);
+    updateElement("kpi-feedback", counts.feedback);
+    updateElement("kpi-board", counts.total);
+  }
 
-    // Update deadline date for urgent tasks
-    updateUrgentDeadline(urgentTasks);
+  function updateKPIs(tasks) {
+    const counts = {
+      todo: countByStatus(tasks, "todo", "To do"),
+      done: countByStatus(tasks, "done", "Done"),
+      progress: countByStatus(tasks, "inprogress", "inProgress", "in-progress"),
+      feedback: countByStatus(
+        tasks,
+        "await_feedback",
+        "awaitFeedback",
+        "await-feedback"
+      ),
+      urgent: filterByPriority(tasks, "urgent").length,
+      total: tasks.length,
+    };
+
+    updateAllKPIElements(counts);
+    updateUrgentDeadline(filterByPriority(tasks, "urgent"));
   }
 
   function updateElement(id, value) {
     const el = document.getElementById(id);
     if (el) el.textContent = value;
+  }
+
+  /**
+   * Find earliest due date from task list.
+   */
+  function findEarliestTask(tasks) {
+    return tasks.reduce((earliest, current) => {
+      const currentDate = new Date(current.dueDate);
+      const earliestDate = new Date(earliest.dueDate);
+      return currentDate < earliestDate ? current : earliest;
+    });
+  }
+
+  /**
+   * Format date as "Month Day, Year".
+   */
+  function formatDeadlineDate(dateStr) {
+    const date = new Date(dateStr);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString("en-US", options);
   }
 
   function updateUrgentDeadline(urgentTasks) {
@@ -68,27 +102,14 @@
       return;
     }
 
-    // Filter tasks with valid dueDate
     const tasksWithDate = urgentTasks.filter((t) => t.dueDate);
-
     if (tasksWithDate.length === 0) {
       deadlineEl.textContent = "No deadline set";
       return;
     }
 
-    // Find the earliest date
-    const earliestTask = tasksWithDate.reduce((earliest, current) => {
-      const currentDate = new Date(current.dueDate);
-      const earliestDate = new Date(earliest.dueDate);
-      return currentDate < earliestDate ? current : earliest;
-    });
-
-    // Formatiere das Datum
-    const date = new Date(earliestTask.dueDate);
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    const formattedDate = date.toLocaleDateString("en-US", options);
-
-    deadlineEl.textContent = formattedDate;
+    const earliestTask = findEarliestTask(tasksWithDate);
+    deadlineEl.textContent = formatDeadlineDate(earliestTask.dueDate);
   }
 
   document.addEventListener("DOMContentLoaded", init);

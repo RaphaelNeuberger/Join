@@ -543,21 +543,24 @@ function openEditContactDialog() {
   document.body.style.overflow = "hidden";
 }
 
+/**
+ * Restore mobile contact view after dialog close.
+ */
+function restoreMobileContactView() {
+  const isMobile = window.innerWidth <= 1023;
+  if (isMobile) {
+    const contact = window.getCurrentContact();
+    if (contact) showMobileContactDetail(contact);
+  }
+}
+
 function closeEditContactDialog() {
   const dialog = document.getElementById("editContactDialog");
   if (dialog) {
     dialog.classList.remove("active");
     document.body.style.overflow = "";
   }
-
-  // Wenn mobile Ansicht, zeige den Kontakt wieder an
-  const isMobile = window.innerWidth <= 1023;
-  if (isMobile) {
-    const contact = window.getCurrentContact();
-    if (contact) {
-      showMobileContactDetail(contact);
-    }
-  }
+  restoreMobileContactView();
 }
 
 function deleteContactFromDialog() {

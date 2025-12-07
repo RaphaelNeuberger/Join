@@ -105,18 +105,20 @@ function updateSidebarForLoginState() {
   }
 }
 
-function logout() {
-  // LocalStorage leeren
-  localStorage.removeItem("loggedInUser");
-
-  // Falls Firebase Auth genutzt wird:
+/**
+ * Sign out from Firebase if available.
+ */
+function signOutFirebase() {
   if (window.firebaseAuth && window.firebaseAuth.signOut) {
     firebaseAuth.signOut().catch((err) => {
       console.error("Firebase Logout Error:", err);
     });
   }
+}
 
-  // Weiterleiten zur Login-Seite
+function logout() {
+  localStorage.removeItem("loggedInUser");
+  signOutFirebase();
   window.location.href = "index.html";
 }
 

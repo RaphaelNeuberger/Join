@@ -53,6 +53,7 @@ function initBoardSearch() {
  * Tasks laden und Board rendern.
  */
 async function initBoard() {
+  await seedTasksIfEmpty();
   await fetchTasks();
   renderBoard();
 }
