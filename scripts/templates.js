@@ -88,7 +88,6 @@ function updateSidebarForLoginState() {
   const navGuest = document.querySelector(".nav-guest");
 
   if (!navAuth || !navGuest) {
-    console.warn("Sidebar nav elements not found.");
     return;
   }
 

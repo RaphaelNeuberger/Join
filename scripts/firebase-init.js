@@ -31,5 +31,3 @@ window.get = get;
 window.child = child;
 window.update = update;
 window.remove = remove;
-
-console.info("Firebase initialized (firebase-init.js)");

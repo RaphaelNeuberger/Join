@@ -3,46 +3,42 @@
 // Placeholder-Templates
 function noTaskTemplate() {
   return (
-    '<div class="card-no-task">' +
-    '<span>No tasks To do</span>' +
-    '</div>'
+    '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
   );
 }
 
 function noResultsTemplate() {
   return (
-    '<div class="card-no-task">' +
-    '<span>No results found</span>' +
-    '</div>'
+    '<div class="card-no-task">' + "<span>No results found</span>" + "</div>"
   );
 }
 
 // Avatar-Farben
 const AVATAR_COLORS = [
-  'rgb(110, 82, 255)',
-  'rgb(253, 112, 255)',
-  'rgb(70, 47, 138)',
-  'rgb(255, 188, 43)',
-  'rgb(30, 214, 193)',
-  'rgb(255, 123, 0)'
+  "rgb(110, 82, 255)",
+  "rgb(253, 112, 255)",
+  "rgb(70, 47, 138)",
+  "rgb(255, 188, 43)",
+  "rgb(30, 214, 193)",
+  "rgb(255, 123, 0)",
 ];
 
-function getInitials(name = '') {
+function getInitials(name = "") {
   return name
     .trim()
     .split(/\s+/)
-    .map((part) => (part[0] || '').toUpperCase())
-    .join('');
+    .map((part) => (part[0] || "").toUpperCase())
+    .join("");
 }
 
-function getAvatarColor(name = '', index = 0) {
+function getAvatarColor(name = "", index = 0) {
   if (!AVATAR_COLORS.length) {
-    return '#ff7a00';
+    return "#ff7a00";
   }
 
-  const nameStr = String(name || '');
+  const nameStr = String(name || "");
   const hash = nameStr
-    .split('')
+    .split("")
     .reduce((acc, char) => acc + char.charCodeAt(0), 0);
 
   const colorIndex = (hash + index) % AVATAR_COLORS.length;
@@ -59,7 +55,7 @@ function renderAssignees(assignees = []) {
 
   return assignees
     .map((item, index) => {
-      const name = typeof item === 'string' ? item : item?.name || '';
+      const name = typeof item === "string" ? item : item?.name || "";
       const color = getAvatarColor(name, index);
       const initials = getInitials(name);
 
@@ -68,10 +64,10 @@ function renderAssignees(assignees = []) {
         color +
         ';">' +
         initials +
-        '</span>'
+        "</span>"
       );
     })
-    .join('');
+    .join("");
 }
 
 /**
@@ -88,7 +84,7 @@ function taskTemplate(task) {
          data-task-id="${escapeHtml(id)}">
 
       <div class="card-header-row">
-        <p class="card-type">${escapeHtml(category || '')}</p>
+        <p class="card-type">${escapeHtml(category || "")}</p>
         <button
           type="button"
           class="card-move-btn"
@@ -98,8 +94,8 @@ function taskTemplate(task) {
         </button>
       </div>
 
-      <span class="card-title">${escapeHtml(title || '')}</span>
-      <p class="story">${escapeHtml(description || '')}</p>
+      <span class="card-title">${escapeHtml(title || "")}</span>
+      <p class="story">${escapeHtml(description || "")}</p>
 
       ${subtaskProgressHTML(subtasks)}
 
@@ -114,275 +110,36 @@ function taskTemplate(task) {
  * Datum für Anzeige im Overlay von YYYY-MM-DD zu DD/MM/YY
  */
 function formatDateToDDMMYY(dateStr) {
-  if (!dateStr) return '-';
-  const parts = String(dateStr).split('-');
+  if (!dateStr) return "-";
+  const parts = String(dateStr).split("-");
   if (parts.length !== 3) return dateStr;
   const [y, m, d] = parts;
   const yy = y.slice(2);
   return `${d}/${m}/${yy}`;
 }
 
-/**
- * Overlay "Task-Details"
- */
-function taskCardContentTemplate(task) {
-  const dueDate = task.dueDate || '-';
-  const cat = task.category || 'Category';
-
-  return `
-    <div class="task-card-header">
-      <div class="task-card-header-category-close">
-        <div class="task-card-category">${escapeHtml(cat)}</div>
-        <span class="task-card-close" onclick="closeTaskCard()">X</span>
-      </div>
-      <h2>${escapeHtml(task.title || '')}</h2>
-    </div>
-
-    <div class="task-card-body">
-      <p class="task-card-story">${escapeHtml(task.description || '')}</p>
-
-      <table>
-        <tr>
-          <td><strong>Due date:</strong></td>
-          <td>${formatDateToDDMMYY(dueDate)}</td>
-        </tr>
-        <tr>
-          <td><strong>Priority:</strong></td>
-          <td class="prio-cell">
-            <span class="prio-text">${normalizePriority(task.priority)}</span>
-            ${priorityIcon(task.priority)}
-          </td>
-        </tr>
-      </table>
-
-      <label class="overlay-task-card-label-big">Assigned To</label>
-      <div class="assigned-list-detail">
-        ${renderAssigneesDetail(task.assignedTo || [])}
-      </div>
-
-      <p class="overlay-task-card-label-big">Subtasks</p>
-      <ul class="subtask-list-detail">
-        ${renderSubtasksDetail(task.subtasks || [], task.id)}
-      </ul>
-
-      <div class="task-card-footer">
-        <button onclick="onTaskEditClick('${task.id}')">
-          <img
-            src="./img/icons/edit.svg"
-            alt="Edit"
-            class="task-card-footer-icon" />
-          Edit
-        </button>
-        <button onclick="onOverlayDeleteClick('${task.id}')">
-          <img
-            src="./img/icons/delete.svg"
-            alt="Delete"
-            class="task-card-footer-icon" />
-          Delete
-        </button>
-      </div>
-    </div>`;
-}
-
-/**
- * Overlay "Task-Edit"
- */
-function taskCardEditTemplate(task) {
-  const priority = (task.priority || 'medium').toLowerCase();
-  const dueDate = task.dueDate || '';
-
-  const urgentActive = priority === 'urgent' ? ' is-active' : '';
-  const mediumActive = priority === 'medium' ? ' is-active' : '';
-  const lowActive = priority === 'low' ? ' is-active' : '';
-
-  return `
-    <form class="task-card-edit-form" onsubmit="onTaskEditSave(event, '${task.id}')">
-      <div class="task-card-header">
-        <div class="task-card-header-category-close">
-          <div class="task-card-category">
-            ${escapeHtml(task.category || 'Category')}
-          </div>
-          <span class="task-card-close" onclick="onTaskEditCancel('${task.id}')">X</span>
-        </div>
-      </div>
-
-      <div class="task-card-body">
-        <div class="form-group">
-          <label class="form-group__label">Title</label>
-          <input
-            type="text"
-            name="title"
-            class="form-group__input"
-            placeholder="Enter a title"
-            value="${escapeHtml(task.title || '')}"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-group__label">Description</label>
-          <textarea
-            name="description"
-            class="form-group__textarea"
-            rows="4"
-            placeholder="Enter a description"
-          >${escapeHtml(task.description || '')}</textarea>
-        </div>
-
-        <div class="form-group">
-          <label class="form-group__label">Due date</label>
-          <input
-            type="date"
-            name="dueDate"
-            class="form-group__input form-group__input--date"
-            value="${escapeHtml(dueDate)}"
-          />
-        </div>
-
-        <div class="form-group">
-          <label class="form-group__label">Priority</label>
-          <div class="priority-buttons">
-            <button
-              type="button"
-              class="priority-buttons__button priority-buttons__button--urgent${urgentActive}"
-              data-priority="Urgent"
-              onclick="onEditPriorityClick(event)"
-            >
-              Urgent
-            </button>
-            <button
-              type="button"
-              class="priority-buttons__button priority-buttons__button--medium${mediumActive}"
-              data-priority="Medium"
-              onclick="onEditPriorityClick(event)"
-            >
-              Medium
-            </button>
-            <button
-              type="button"
-              class="priority-buttons__button priority-buttons__button--low${lowActive}"
-              data-priority="Low"
-              onclick="onEditPriorityClick(event)"
-            >
-              Low
-            </button>
-            <input type="hidden" name="priority" value="${priority}" />
-          </div>
-        </div>
-
-        <div class="overlay-task-card-section">
-          <p class="overlay-task-card-label-big">Assigned To:</p>
-          <div class="assigned-list-detail">
-            ${renderAssigneesDetail(task.assignedTo || [])}
-          </div>
-        </div>
-
-        <div class="overlay-task-card-section">
-          <p class="overlay-task-card-label-big">Subtasks</p>
-          <ul class="subtask-list-detail">
-            ${renderSubtasksDetail(task.subtasks || [], task.id)}
-          </ul>
-        </div>
-      </div>
-
-      <div class="task-card-footer">
-        <button
-          type="button"
-          class="overlay-task-card-delete"
-          onclick="onTaskEditCancel('${task.id}')">
-          Cancel
-        </button>
-        <button
-          type="submit"
-          class="overlay-task-card-edit">
-          Ok ✓
-        </button>
-      </div>
-    </form>
-  `;
-}
-
-/**
- * Detail-Ansicht für Assignees im Overlay
- */
-function renderAssigneesDetail(list) {
-  if (!list || !list.length) {
-    return '<span class="assigned-name">No assignees</span>';
-  }
-
-  return list
-    .map(function (item, index) {
-      const name = typeof item === 'string' ? item : item?.name || '';
-      const color = getAvatarColor(name, index);
-      const initials = getInitials(name);
-
-      return (
-        '<div class="assigned-item">' +
-        '<div class="assigned-avatar-detail" style="background-color:' +
-        color +
-        '">' +
-        initials +
-        '</div>' +
-        '<span class="assigned-name">' +
-        escapeHtml(name) +
-        '</span>' +
-        '</div>'
-      );
-    })
-    .join('');
-}
-
-/**
- * Subtask-Liste im Overlay
- */
-function renderSubtasksDetail(list, taskId) {
-  if (!list || !list.length) {
-    return '<li class="subtask-item"><span class="subtask-title">No subtasks</span></li>';
-  }
-
-  return list
-    .map(function (s, index) {
-      const checked =
-        s.done === true || s.checked === true ? 'checked' : '';
-      return (
-        '<li class="subtask-item">' +
-        '<label class="subtask-checkbox">' +
-        '<input type="checkbox" ' +
-        checked +
-        ' onchange="onSubtaskToggle(\'' +
-        taskId +
-        '\',' +
-        index +
-        ', this.checked)" />' +
-        '<span class="subtask-custom-box"></span>' +
-        '<span class="subtask-title">' +
-        escapeHtml(s.title || '') +
-        '</span>' +
-        '</label>' +
-        '</li>'
-      );
-    })
-    .join('');
-}
+// Overlay templates (taskCardContentTemplate, taskCardEditTemplate, renderAssigneesDetail, renderSubtasksDetail)
+// moved to task_templates_detail.js
 
 /* Utility-Funktionen */
 
 function capitalize(str) {
-  if (!str) return '';
+  if (!str) return "";
   str = String(str);
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function escapeHtml(str) {
   return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
 
 function getInitialsFromName(name) {
-  var parts = String(name).trim().split(' ');
-  if (!parts.length) return '';
+  var parts = String(name).trim().split(" ");
+  if (!parts.length) return "";
   if (parts.length === 1) return parts[0].charAt(0).toUpperCase();
   return (
     parts[0].charAt(0).toUpperCase() +
@@ -394,17 +151,17 @@ function getInitialsFromName(name) {
  * Priority Normalisierung
  */
 function normalizePriority(p) {
-  const v = String(p || 'Medium').toLowerCase();
-  if (v.startsWith('u')) return 'Urgent';
-  if (v.startsWith('l')) return 'Low';
-  return 'Medium';
+  const v = String(p || "Medium").toLowerCase();
+  if (v.startsWith("u")) return "Urgent";
+  if (v.startsWith("l")) return "Low";
+  return "Medium";
 }
 
 function priorityColor(priority) {
   const p = normalizePriority(priority);
-  if (p === 'Urgent') return '#ff3d00';
-  if (p === 'Low') return '#5be84a';
-  return '#ffab2b';
+  if (p === "Urgent") return "#ff3d00";
+  if (p === "Low") return "#5be84a";
+  return "#ffab2b";
 }
 
 function priorityIcon(priority) {
@@ -419,7 +176,7 @@ function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
   // URGENT: Doppel-Chevron ↑↑
-  if (p === 'Urgent') {
+  if (p === "Urgent") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
         <polyline points="3,12 10,5 17,12"
@@ -432,7 +189,7 @@ function priorityIconSVG(priority) {
   }
 
   // LOW: Doppel-Chevron ↓↓
-  if (p === 'Low') {
+  if (p === "Low") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
         <polyline points="3,4 10,11 17,4"
@@ -454,11 +211,9 @@ function priorityIconSVG(priority) {
 
 function priorityBadge(priority, withText = true) {
   const p = normalizePriority(priority);
-  const cls = p === 'Urgent' ? 'urgent' : p === 'Low' ? 'low' : 'medium';
+  const cls = p === "Urgent" ? "urgent" : p === "Low" ? "low" : "medium";
   const color = priorityColor(p);
-  const txt = withText
-    ? `<span class="priority-badge__text">${p}</span>`
-    : '';
+  const txt = withText ? `<span class="priority-badge__text">${p}</span>` : "";
   return `<span class="priority-badge priority-badge--${cls}" title="${p}" style="color: ${color}; display:inline-flex; align-items:center; gap:6px;">${priorityIconSVG(
     p
   )}${txt}</span>`;
@@ -469,7 +224,7 @@ function priorityBadge(priority, withText = true) {
  */
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
-  if (!list.length) return '';
+  if (!list.length) return "";
   const done = list.filter(
     (s) => s && (s.done === true || s.checked === true)
   ).length;

@@ -17,7 +17,6 @@ function getCurrentUser() {
     const parsed = JSON.parse(raw);
     return parsed;
   } catch (e) {
-    console.warn("Could not read loggedInUser from localStorage", e);
     return null;
   }
 }
