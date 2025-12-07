@@ -224,7 +224,7 @@ body.logged-out .nav-guest {
     gap: 10px;
     display: inline-flex;
     align-items: center;
-    justify-content: center; /* mittig */
+    justify-content: center; /* centered */
     border-radius: 12px;
     white-space: nowrap;
     overflow: hidden;
@@ -282,11 +282,11 @@ body.logged-out .nav-guest {
   .sidebar-nav {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap; /* alles in einer Reihe */
+    flex-wrap: nowrap; /* everything in one row */
     justify-content: space-between; /* even spacing */
     align-items: center;
     width: 100%;
-    overflow-x: hidden; /* kein Scroll */
+    overflow-x: hidden; /* no scroll */
     padding: 0 4px;
     box-sizing: border-box;
   }

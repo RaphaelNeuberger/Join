@@ -2,7 +2,7 @@
 // Loads tasks from Firebase and updates KPI values
 (function () {
   async function init() {
-    // Warte bis firebase-init.js geladen ist
+    // Wait until firebase-init.js is loaded
     if (!window.firebaseDb || !window.ref || !window.onValue) {
       setTimeout(init, 100);
       return;

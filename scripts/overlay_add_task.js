@@ -12,7 +12,7 @@ function initAddTaskOverlay() {
 
   if (!overlay || !form) return;
 
-  // Alle Trigger-Elemente: Header-Button, Mobile-Button, Spalten-Plus
+  // All trigger elements: Header-Button, Mobile-Button, Column-Plus
   const triggers = document.querySelectorAll(".js-add-task-trigger");
   triggers.forEach((trigger) => {
     trigger.addEventListener("click", () => {
@@ -85,5 +85,5 @@ function closeAddTaskBtn() {
   closeAddTaskOverlay();
 }
 
-// Beim Laden des DOM initialisieren
+// Initialize on DOM load
 document.addEventListener("DOMContentLoaded", initAddTaskOverlay);

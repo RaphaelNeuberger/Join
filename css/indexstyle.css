@@ -380,7 +380,7 @@ button:not(.dark-button):hover {
     contrast(90%);
 }
 
-/* Wenn du bei Hover oder Focus leichten Effekt willst */
+/* If you want a slight effect on hover or focus */
 .input-group input:focus + img {
   opacity: 1;
   filter: none;
@@ -469,7 +469,7 @@ header,
   transition: width 0.3s ease;
 }
 
-/* Auf Handy: kleineres Startlogo + initial dunkler BG */
+/* On mobile: smaller start logo + initially dark BG */
 @media (max-width: 480px) {
   #intro-screen {
     background-color: #2a3647; /* Initially dark to avoid white flash */

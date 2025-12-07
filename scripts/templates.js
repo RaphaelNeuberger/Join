@@ -7,10 +7,10 @@ function includeSidebarHTML() {
       .then((html) => {
         el.innerHTML = html;
 
-        // ⬇️ GANZ WICHTIG: kommt direkt nach dem innerHTML!
+        // ⬇️ VERY IMPORTANT: comes directly after innerHTML!
         updateSidebarForLoginState();
 
-        // und dann z.B. dein Active-Highlight (falls vorhanden)
+        // and then e.g. your Active-Highlight (if present)
         if (typeof highlightActiveSidebarLink === "function") {
           highlightActiveSidebarLink();
         }
@@ -98,7 +98,7 @@ function updateSidebarForLoginState() {
     navAuth.style.display = "flex";
     navGuest.style.display = "none";
   } else {
-    // Nicht eingeloggt → nur Login zeigen
+    // Not logged in → show only Login
     navAuth.style.display = "none";
     navGuest.style.display = "flex";
   }
@@ -126,10 +126,10 @@ function initHeaderUserMenu() {
   const menu = document.getElementById("userMenu");
 
   if (!btn || !menu) {
-    return; // auf Seiten ohne Header einfach nix tun
+    return; // on pages without header simply do nothing
   }
 
-  // Toggle beim Klick auf den Button
+  // Toggle on button click
   btn.addEventListener("click", (event) => {
     event.stopPropagation();
     const isOpen = menu.classList.toggle("open");
