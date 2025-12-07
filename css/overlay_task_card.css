@@ -1,4 +1,4 @@
-/* Make the entire overlay content scrollable */
+/* Scrollbar-Verhalten für Overlay */
 #taskCardContent,
 .overlay-task-card,
 .overlay-task-card-content {
@@ -6,7 +6,7 @@
   overflow: auto;
 }
 
-/* Ensure inner sections don't create separate scroll contexts */
+/* Sicherstellen, dass innere Bereiche nicht eigene Scrollbars öffnen */
 .task-card-header,
 .task-card-body,
 .task-card-footer,
@@ -15,6 +15,7 @@
 .task-edit-footer {
   position: static;
 }
+
 /* Overlay Task Card Styles */
 .overlay-task-card {
   display: none;
@@ -30,7 +31,7 @@
   justify-content: center;
 }
 
-/* Visible state to center overlay */
+/* Optional: Klasse, falls du statt style.display Klassen nutzen willst */
 .overlay-task-card--open {
   display: flex;
 }
@@ -45,6 +46,7 @@
   border-radius: 12px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
 }
+
 .task-card-header {
   width: 100%;
   display: flex;
@@ -82,11 +84,13 @@
   background-color: #f3f4f6;
 }
 
-.task-card-header p {
+.task-card-header p,
+.task-card-header h2 {
   font-size: 24px;
   font-weight: 700;
   margin: 0 0 16px;
 }
+
 .task-card-body {
   display: grid;
   grid-gap: 24px;
@@ -115,12 +119,19 @@
   font-size: 20px;
 }
 
+.task-card-body table td:first-child {
+  width: 120px;
+  color: #6b7280;
+}
+
 .overlay-task-card-label-big {
   font-size: 20px;
   font-weight: 400;
   margin: 0 0 12px;
   font-family: "Inter", sans-serif;
 }
+
+/* Assigned Detail */
 .assigned-list-detail {
   margin-left: 16px;
   display: flex;
@@ -146,32 +157,13 @@
   color: #ffffff;
 }
 
-.assigned-avatar--mint {
-  background: #34d399;
-}
-
-.assigned-avatar--purple {
-  background: #4f46e5;
-}
-
-.assigned-avatar--blue {
-  background: #2563eb;
-}
-
 .assigned-name {
   font-size: 19px;
   font-weight: 400;
   font-family: "Open Sans", sans-serif;
 }
 
-.assigned-name--link {
-  text-decoration: underline;
-  text-decoration-thickness: 2px;
-  text-underline-offset: 3px;
-  color: #4f46e5;
-  cursor: pointer;
-}
-
+/* Subtasks Detail */
 .subtask-list-detail {
   list-style: none;
   margin: 8px 0 0;
@@ -218,6 +210,8 @@
   font-size: 1rem;
   color: #111827;
 }
+
+/* Footer-Buttons */
 .task-card-footer {
   display: flex;
   justify-content: flex-end;
@@ -240,21 +234,14 @@
   gap: 6px;
 }
 
-.task-card-body table td:first-child {
-  width: 120px;
-  color: #6b7280;
-}
-.task-card-body .priority-badge {
-  transform: translateY(2px);
-}
+/* Edit-Form: scrollbarer Body, fester Footer */
 .task-card-edit-form {
   display: flex;
   flex-direction: column;
-  height: 90vh;         /* ganze Höhe */
+  height: 90vh;
   max-height: 90vh;
 }
 
-/* Fixierte Kopfzeile */
 .task-edit-header {
   flex: 0 0 auto;
   padding-bottom: 16px;
@@ -262,7 +249,6 @@
   z-index: 10;
 }
 
-/* Scrollbarer Inhalt */
 .task-edit-scroll {
   flex: 1;
   overflow-y: auto;
@@ -270,7 +256,6 @@
   margin-bottom: 16px;
 }
 
-/* Fixierter Footer */
 .task-edit-footer {
   flex: 0 0 auto;
   display: flex;
@@ -282,27 +267,29 @@
   z-index: 10;
 }
 
+/* Mobile */
 @media (max-width: 1023px) {
   .overlay-task-card {
     height: 100vh;
     width: 100vw;
     align-items: center;
     justify-content: center;
+  }
 
-  }
   .task-card-body table {
-        width: 100%;
+    width: 100%;
   }
+
   .task-card-content {
-        display: block;
-        width: 100%;
-        max-width: 90vw;
-        max-height: 85vh;
-        overflow: auto;
-        height: 90vh;
-        padding: 16px;
-        margin: 0;
-        border-radius: 12px;
-        box-sizing: border-box;
+    display: block;
+    width: 100%;
+    max-width: 90vw;
+    max-height: 85vh;
+    overflow: auto;
+    height: 90vh;
+    padding: 16px;
+    margin: 0;
+    border-radius: 12px;
+    box-sizing: border-box;
   }
 }

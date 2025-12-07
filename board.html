@@ -7,7 +7,6 @@
   <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
   <title>Board • Join</title>
 
-
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/header.css" />
   <link rel="stylesheet" href="css/sidebar.css" />
@@ -17,7 +16,7 @@
   <link rel="stylesheet" href="css/overlay_task_card.css" />
 </head>
 
-<body onload="loadScripts();">
+<body>
   <nav header-html="./templates/header.html"></nav>
   <aside sidebar-html="./templates/sidebar.html"></aside>
 
@@ -25,48 +24,65 @@
     <div class="board-header">
       <h1>Board</h1>
 
-      <img onclick="addTaskBtn()" class="add-btn-mobile" src="./img/buttons/plus add task mobile.svg" alt="Add Task" />
+      <!-- Mobile Add Task Button -->
+      <img
+        class="add-btn-mobile js-add-task-trigger"
+        data-status="todo"
+        src="./img/buttons/plus add task mobile.svg"
+        alt="Add Task" />
 
       <div class="serch-add-task-button">
         <input id="boardSearch" type="text" placeholder="Find Task" />
-        <button class="add-btn-desk" onclick="addTaskBtn()">Add task +</button>
+        <button
+          class="add-btn-desk js-add-task-trigger"
+          data-status="todo">
+          Add task +
+        </button>
       </div>
     </div>
 
     <div class="tasks-columns">
-
-      <div class="task-column" id="columnToDo" data-status="todo" ondrop="dropHandler(event)"
-        ondragleave="dragleaveHandler(event)" ondragover="dragoverHandler(event)">
+      <!-- To Do -->
+      <div class="task-column" id="columnToDo" data-status="todo">
         <div class="task-header">
           <span>To Do</span>
-          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="Add Task" />
+          <img
+            class="js-add-task-trigger"
+            data-status="todo"
+            src="./img/icons/plus button.svg"
+            alt="Add Task" />
         </div>
         <div class="task-cards" id="to-do-tasks"></div>
       </div>
 
-
-      <div class="task-column" id="columnInProgress" data-status="inprogress" ondrop="dropHandler(event)"
-        ondragleave="dragleaveHandler(event)" ondragover="dragoverHandler(event)">
+      <!-- In Progress -->
+      <div class="task-column" id="columnInProgress" data-status="inprogress">
         <div class="task-header">
           <span>In progress</span>
-          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="Add Task" />
+          <img
+            class="js-add-task-trigger"
+            data-status="inprogress"
+            src="./img/icons/plus button.svg"
+            alt="Add Task" />
         </div>
         <div class="task-cards" id="in-progress-tasks"></div>
       </div>
 
-
-      <div class="task-column" id="columnAwaitFeedback" data-status="await_feedback" ondrop="dropHandler(event)"
-        ondragleave="dragleaveHandler(event)" ondragover="dragoverHandler(event)">
+      <!-- Await Feedback -->
+      <div class="task-column" id="columnAwaitFeedback" data-status="await_feedback">
         <div class="task-header">
           <span>Await feedback</span>
-          <img onclick="addTaskBtn()" src="./img/icons/plus button.svg" alt="Add Task" />
+          <img
+            class="js-add-task-trigger"
+            data-status="await_feedback"
+            src="./img/icons/plus button.svg"
+            alt="Add Task" />
         </div>
         <div class="task-cards" id="await-feedback-tasks"></div>
       </div>
 
-
-      <div class="task-column" id="columnDone" data-status="done" ondrop="dropHandler(event)"
-        ondragleave="dragleaveHandler(event)" ondragover="dragoverHandler(event)">
+      <!-- Done -->
+      <div class="task-column" id="columnDone" data-status="done">
         <div class="task-header">
           <span>Done</span>
         </div>
@@ -75,15 +91,19 @@
     </div>
   </main>
 
-
+  <!-- Add Task Overlay -->
   <overlay-modal class="overlay-modal">
     <div class="modal-content">
       <div class="overlay-header">
         <h1>Add Task</h1>
-        <span onclick="closeAddTaskBtn()">X</span>
+        <!-- Close via data-Attribut (kein onclick mehr) -->
+        <span data-overlay-close>X</span>
       </div>
 
       <form class="task-form" id="taskForm" novalidate>
+        <!-- Verstecktes Feld für Status (Spalte) -->
+        <input type="hidden" name="status" id="taskStatus" value="todo" />
+
         <div class="task-form__layout">
           <!-- Left column -->
           <div class="task-form__column-left">
@@ -92,8 +112,12 @@
               <label class="form-group__label" for="title">
                 Title <span class="form-group__required">*</span>
               </label>
-              <input type="text" id="title" name="title" class="form-group__input" placeholder="Enter a title"
-                required />
+              <input
+                type="text"
+                id="title"
+                name="title"
+                class="form-group__input"
+                placeholder="Enter a title" />
               <span class="form-group__error" id="titleError"></span>
             </div>
 
@@ -102,8 +126,12 @@
               <label class="form-group__label" for="description">
                 Description
               </label>
-              <textarea id="description" name="description" class="form-group__textarea"
-                placeholder="Enter a Description" rows="4"></textarea>
+              <textarea
+                id="description"
+                name="description"
+                class="form-group__textarea"
+                placeholder="Enter a Description"
+                rows="4"></textarea>
             </div>
 
             <!-- Due Date Field -->
@@ -112,7 +140,11 @@
                 Due date <span class="form-group__required">*</span>
               </label>
               <div class="form-group__date-wrapper">
-                <input type="date" id="dueDate" name="dueDate" class="form-group__input form-group__input--date"
+                <input
+                  type="date"
+                  id="dueDate"
+                  name="dueDate"
+                  class="form-group__input form-group__input--date"
                   placeholder="dd/mm/yyyy" />
                 <img src="./img/icons/event.svg" alt="date" class="date-icon" />
               </div>
@@ -129,7 +161,9 @@
             <div class="form-group">
               <label class="form-group__label">Priority</label>
               <div class="priority-buttons">
-                <button type="button" class="priority-buttons__button priority-buttons__button--urgent"
+                <button
+                  type="button"
+                  class="priority-buttons__button priority-buttons__button--urgent"
                   data-priority="Urgent">
                   Urgent
                   <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
@@ -143,7 +177,8 @@
                   </svg>
                 </button>
 
-                <button type="button"
+                <button
+                  type="button"
                   class="priority-buttons__button priority-buttons__button--medium priority-buttons__button--active"
                   data-priority="Medium">
                   Medium
@@ -154,7 +189,9 @@
                   </svg>
                 </button>
 
-                <button type="button" class="priority-buttons__button priority-buttons__button--low"
+                <button
+                  type="button"
+                  class="priority-buttons__button priority-buttons__button--low"
                   data-priority="Low">
                   Low
                   <svg width="20" height="15" viewBox="0 0 20 15" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
@@ -170,21 +207,21 @@
               </div>
             </div>
 
+            <!-- Assigned To -->
             <div class="form-group">
               <label class="form-group__label" for="assignedToInput">
                 Assigned to
               </label>
               <div class="assigned-to-wrapper">
-                <!-- Wir entfernen die Badges komplett oder machen sie optional -->
-                <div class="assigned-to-selected" id="assignedToSelected" style="display: none;">
-                  <!-- Hier waren früher die Badges -->
-                </div>
-                <input type="text" id="assignedToInput" class="form-group__input assigned-to-input"
-                  placeholder="Select contacts to assign" autocomplete="off" />
+                <div class="assigned-to-selected" id="assignedToSelected" style="display: none;"></div>
+                <input
+                  type="text"
+                  id="assignedToInput"
+                  class="form-group__input assigned-to-input"
+                  placeholder="Select contacts to assign"
+                  autocomplete="off" />
                 <div class="assigned-to-dropdown" id="assignedToDropdown">
-                  <ul id="assignedToList">
-                    <!-- Checkbox-Liste wird hier reingerendert -->
-                  </ul>
+                  <ul id="assignedToList"></ul>
                 </div>
               </div>
             </div>
@@ -194,7 +231,7 @@
               <label class="form-group__label" for="category">
                 Category <span class="form-group__required">*</span>
               </label>
-              <select id="category" name="category" class="form-group__select" required>
+              <select id="category" name="category" class="form-group__select">
                 <option value="">Select task category</option>
                 <option value="Technical Tasks">Technical Tasks</option>
                 <option value="User Story">User Story</option>
@@ -208,9 +245,18 @@
                 Subtasks
               </label>
               <div class="subtask-input">
-                <input type="text" id="subtaskInput" class="subtask-input__field" placeholder="Add new subtask" />
-                <button type="button" class="subtask-input__button" id="addSubtaskBtn">
-                  <svg width="16" height="16" viewBox="0 0 16 16"></svg>
+                <input
+                  type="text"
+                  id="subtaskInput"
+                  class="subtask-input__field"
+                  placeholder="Add new subtask" />
+                <button
+                  type="button"
+                  class="subtask-input__button"
+                  id="addSubtaskBtn">
+                  <svg width="16" height="16" viewBox="0 0 16 16">
+                    <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                  </svg>
                 </button>
               </div>
               <ul class="subtask-list" id="subtaskList"></ul>
@@ -225,16 +271,39 @@
             <span>This field is required</span>
           </div>
           <div class="button-action">
-            <button type="button" class="form-actions__button form-actions__button--clear" id="clearBtn">
+            <button
+              type="button"
+              class="form-actions__button form-actions__button--clear"
+              id="clearBtn">
               Clear
-              <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
-                <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              <svg
+                class="form-actions__icon"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16">
+                <path
+                  d="M4 4L12 12M12 4L4 12"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round" />
               </svg>
             </button>
-            <button type="submit" class="form-actions__button form-actions__button--submit" id="submitBtn">
+            <button
+              type="submit"
+              class="form-actions__button form-actions__button--submit"
+              id="submitBtn">
               Create Task
-              <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
-                <path d="M3 8L7 12L13 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"
+              <svg
+                class="form-actions__icon"
+                width="16"
+                height="16"
+                viewBox="0 0 16 16">
+                <path
+                  d="M3 8L7 12L13 4"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  fill="none"
+                  stroke-linecap="round"
                   stroke-linejoin="round" />
               </svg>
             </button>
@@ -245,7 +314,12 @@
       <div class="success-message" id="successMessage">
         <svg width="20" height="20" viewBox="0 0 20 20">
           <circle cx="10" cy="10" r="9" fill="#4CAF50" />
-          <path d="M5 10L8 13L15 6" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"
+          <path
+            d="M5 10L8 13L15 6"
+            stroke="white"
+            stroke-width="2"
+            fill="none"
+            stroke-linecap="round"
             stroke-linejoin="round" />
         </svg>
         Task created successfully!
@@ -253,16 +327,16 @@
     </div>
   </overlay-modal>
 
-
+  <!-- Task Detail Overlay -->
   <overlay-task-card class="overlay-task-card">
     <div class="task-card-content" id="taskCardContent"></div>
   </overlay-task-card>
-
 
   <script src="scripts/templates.js"></script>
   <script src="scripts/tasks_API.js"></script>
   <script src="scripts/task_tamplates.js"></script>
   <script src="scripts/task_form.js"></script>
+  <script src="scripts/overlay_add_task.js"></script>
   <script src="scripts/board.js"></script>
   <script src="scripts/headerUser.js"></script>
 </body>

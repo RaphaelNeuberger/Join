@@ -1,4 +1,4 @@
-
+/* ===================== Basis ===================== */
 
 body {
   margin: 0;
@@ -14,7 +14,8 @@ body {
   scrollbar-width: none;
 }
 
-/* Board Container */
+/* ===================== Board-Layout ===================== */
+
 .board-container {
   margin-left: 240px;
   padding: 196px 84px 32px;
@@ -24,6 +25,7 @@ body {
 }
 
 /* Header */
+
 .board-header {
   top: 100px;
   height: auto;
@@ -75,7 +77,8 @@ body {
   display: none;
 }
 
-/* Columns */
+/* ===================== Spalten ===================== */
+
 .tasks-columns {
   flex: 1;
   overflow-y: auto;
@@ -105,7 +108,8 @@ body {
   font-weight: 700;
 }
 
-/* Cards */
+/* ===================== Karten ===================== */
+
 .task-cards {
   width: 100%;
 }
@@ -131,15 +135,20 @@ body {
   padding: 15px;
   cursor: grab;
 }
-.task-card-footer-icon {
-  width: 16px;
-  height: 18px;
-  pointer-events: none;
-}
+
 .card-task:active {
   cursor: grabbing;
 }
 
+/* Header-Reihe in der Karte (Category + Move-Button) */
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* Category-Badge */
 .card-type {
   padding: 4px 8px;
   font-size: 16px;
@@ -155,6 +164,8 @@ body {
   text-align: center;
 }
 
+/* Titel & Beschreibung */
+
 .card-title {
   font-size: 16px;
   font-weight: 700;
@@ -162,10 +173,17 @@ body {
 }
 
 .story {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
   font-size: 14px;
   font-weight: 400;
   color: rgb(168, 168, 168);
 }
+
+/* Assigned Avatare */
 
 .assigned-list {
   display: flex;
@@ -190,12 +208,22 @@ body {
   margin-left: -12px;
 }
 
+/* Footer der Karte */
+
 .card-footer {
   margin-top: 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
+
+.task-card-footer-icon {
+  width: 16px;
+  height: 18px;
+  pointer-events: none;
+}
+
+/* ===================== Priorität ===================== */
 
 .priority-badge {
   display: inline-flex;
@@ -204,15 +232,67 @@ body {
   font-weight: 600;
   line-height: 1;
 }
-.priority-badge svg { display: inline-block; vertical-align: middle; }
-.priority-badge--urgent { color: #ff3d00; }
-.priority-badge--medium { color: #ffab2b; }
-.priority-badge--low { color: #5be84a; }
-.card-footer .priority { display: flex; align-items: center; justify-content: flex-end; }
-.subtask-progress { margin-top: 10px; display: flex; align-items: center; gap: 8px; }
-.subtask-progress__bar { flex: 1; height: 6px; background: #e5e7eb; border-radius: 999px; overflow: hidden; }
-.subtask-progress__bar > div { height: 100%; background: #2a3647; }
-.subtask-progress__text { font-size: 12px; color: #6b7280; }
+
+.priority-badge svg {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.priority-badge--urgent {
+  color: #ff3d00;
+}
+.priority-badge--medium {
+  color: #ffab2b;
+}
+.priority-badge--low {
+  color: #5be84a;
+}
+
+.card-footer .priority {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.prio-icon {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+.prio-icon svg {
+  display: block;
+  width: 16px;
+  height: 12px;
+}
+
+/* ===================== Subtasks-Fortschritt ===================== */
+
+.subtask-progress {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtask-progress__bar {
+  flex: 1;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.subtask-progress__bar > div {
+  height: 100%;
+  background: #2a3647;
+}
+
+.subtask-progress__text {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+/* Drag-Over-State für Spalte */
 
 .task-column.drag-over .task-cards {
   outline: 2px dashed #a3a3a3;
@@ -220,54 +300,89 @@ body {
   border-radius: 8px;
   background: #fafafa;
 }
-.prio-icon { display:inline-flex; align-items:center; line-height:1; }
-.prio-icon svg { display:block; width:16px; height:12px; }
 
+/* ===================== Move-Button & Move-Menu ===================== */
 
-@media (max-width: 1023px) {
-  .board-container {
-    padding: 16px;
-    margin-top: 95px;
-    margin-left: 0;
-  }
-  .board-header input {
-    width: 90vw;
-    padding: 12px;
-  }
-  .task-card-content {
-    padding: 0px;
-    margin: 0px; 
-  }
-  .add-btn-desk {
-    display: none;
-  }
-
-  .add-btn-mobile {
-    display: flex;
-  }
-
-  .tasks-columns {
-    flex: 1;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .task-column {
-    width: 100%;
-    padding: 0px;
-  }
-  #done-tasks{
-    margin-bottom: 100px;
-  }
-
-  .task-form__layout {
-    display: flex;
-    flex-direction: column;
-    gap: 2.5rem;
-  }
-
+/* Button oben rechts in der Karte */
+.card-move-btn {
+  border: none;
+  background: transparent;
+  padding: 4px;
+  border-radius: 999px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
+.card-move-btn img {
+  width: 24px;
+  height: 24px; 
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .card-move-btn:hover {
+    background: rgba(148, 163, 184, 0.18);
+  }
+}
+
+/* Globales Move-Menu (wird dynamisch an <body> gehängt) */
+.card-move-menu {
+  position: absolute;
+  z-index: 2000;
+  display: none;
+}
+
+.card-move-menu__inner {
+  background-color: #2a3647;
+  color: #ffffff;
+  border-radius: 0 18px 18px 18px;  /* oben links eckig, rest rund */
+  padding: 10px 14px 12px;
+  min-width: 130px;
+  max-width: 160px;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.45);
+  font-family: 'Inter', sans-serif;
+}
+
+.card-move-menu__title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+}
+
+.card-move-menu__options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-move-menu__option {
+  width: 100%;
+  border: none;
+  background: transparent;
+  color: #ffffff;
+  padding: 4px 2px;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.card-move-menu__arrow {
+  width: 14px;
+  text-align: center;
+  font-size: 12px;
+}
+
+.card-move-menu__option:hover {
+  background-color: rgba(148, 163, 184, 0.35);
+}
+
+/* ===================== Assigned-To Dropdown ===================== */
 
 .assigned-to-wrapper {
   position: relative;
@@ -277,7 +392,7 @@ body {
 }
 
 .assigned-to-selected {
-  display: none !important; /* Badges weg */
+  display: none !important;
 }
 
 .assigned-to-input {
@@ -286,7 +401,8 @@ body {
   padding: 14px 16px;
   font-size: 16px;
   cursor: pointer;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E") no-repeat right 16px center;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E")
+    no-repeat right 16px center;
   background-size: 12px;
   outline: none;
 }
@@ -303,7 +419,7 @@ body {
   max-height: 280px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .assigned-to-dropdown ul {
@@ -319,8 +435,8 @@ body {
   padding: 8px 20px;
   cursor: pointer;
   transition: all 0.2s;
-  margin: 3px 0;                    /* ← das macht den 3px weißen Abstand! */
-  border-radius: 8px;               /* damit der Hintergrund schön abgerundet ist */
+  margin: 3px 0;
+  border-radius: 8px;
   margin-left: 8px;
   margin-right: 8px;
 }
@@ -331,12 +447,13 @@ body {
 }
 
 .assigned-to-dropdown li.selected {
-  background: #2a3647 !important;   /* Original Join-Dunkelblau */
+  background: #2a3647 !important;
   border-radius: 8px;
-  color: white !important;          /* ← weiße Schrift */
+  color: white !important;
 }
 
-/* Avatar + Name linksbündig, aber insgesamt zentriert wirkend */
+/* Avatar + Name */
+
 .assigned-to-dropdown .contact-info {
   display: flex;
   align-items: center;
@@ -368,7 +485,8 @@ body {
   color: #2a3647;
 }
 
-/* Das reine Kästchen rechts – genau wie bei Join */
+/* Checkmark Box */
+
 .checkmark-box {
   width: 20px;
   height: 20px;
@@ -378,7 +496,7 @@ body {
   transition: all 0.2s;
   display: flex;
   align-items: center;
-  justify-content: center;     /* ← das macht’s! */
+  justify-content: center;
 }
 
 .checkmark-box.checked {
@@ -391,19 +509,202 @@ body {
   color: white;
   font-size: 14px;
   font-weight: bold;
-  line-height: 1;              /* ← wichtig für perfekte Zentrierung */
+  line-height: 1;
 }
 
 /* Native Checkbox unsichtbar */
-.assigned-to-dropdown input[type="checkbox"] {
+.assigned-to-dropdown input[type='checkbox'] {
   position: absolute;
   opacity: 0;
   width: 0;
   height: 0;
 }
-/* Color examples from screenshots */
-.avatar-sm { background: #00bfff; } /* Sofia Müller - cyan */
-.avatar-am { background: #ff8c00; } /* Anton Mayer - orange */
-.avatar-as { background: #9932cc; } /* Anja Schulz - purple */
-.avatar-bz { background: #4169e1; } /* Benedikt Ziegler - blue */
-.avatar-de { background: #ff69b4; } /* David Eisenberg - pink */
+
+/* Beispiel-Farben */
+.avatar-sm { background: #00bfff; }
+.avatar-am { background: #ff8c00; }
+.avatar-as { background: #9932cc; }
+.avatar-bz { background: #4169e1; }
+.avatar-de { background: #ff69b4; }
+
+/* ===================== Formular / Add-Task ===================== */
+
+.task-form-container {
+  margin-left: 240px;
+  padding: 196px 84px 32px;
+  min-height: 100vh;
+  background: var(--bg);
+  box-sizing: border-box;
+}
+
+/* Success Message – Startzustand hidden */
+.success-message {
+  display: none;
+  margin-top: 12px;
+  font-size: 1rem;
+  color: #16a34a;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Hover nur für inaktive Priority-Buttons */
+.priority-buttons__button:not(.is-active):hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+/* ===================== Responsive (max-width: 1023px) ===================== */
+
+@media (max-width: 1023px) {
+  .board-container {
+    padding: 16px;
+    margin-top: 95px;
+    margin-left: 0;
+  }
+
+  .board-header input {
+    width: 90vw;
+    padding: 12px;
+  }
+
+  .task-card-content {
+    padding: 0;
+    margin: 0;
+  }
+
+  .add-btn-desk {
+    display: none;
+  }
+
+  .add-btn-mobile {
+    display: flex;
+  }
+
+  .tasks-columns {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .task-column {
+    width: 100%;
+    padding: 0;
+  }
+
+  #done-tasks {
+    margin-bottom: 100px;
+  }
+
+  /* Add-Task-Form Layout */
+
+  .task-form-container {
+    margin-top: 120px;
+    margin-left: 0;
+    padding: 32px 16px 16px;
+  }
+
+  .task-form__layout {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    column-gap: 0 !important;
+    row-gap: 24px;
+    align-items: start;
+  }
+
+  .vertical-divider {
+    display: none !important;
+  }
+
+  .task-form__column-left,
+  .task-form__column-right {
+    max-width: none !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .task-form {
+    padding: 16px 0 100px !important;
+    border-radius: 8px;
+    box-shadow: none;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px;
+    align-items: stretch;
+  }
+
+  .button-action {
+    width: 100% !important;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .form-actions__button--clear,
+  .form-actions__button--submit {
+    flex: 1 1 0%;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .priority-buttons {
+    display: flex !important;
+    gap: 10px;
+    width: 100%;
+    align-items: stretch;
+    height: auto;
+    padding: 6px;
+  }
+
+  .priority-buttons__button {
+    flex: 1 1 0%;
+    min-width: 0;
+    height: 48px;
+  }
+
+  .assigned-to-wrapper,
+  .assigned-to-input,
+  .assigned-to-dropdown {
+    width: 100% !important;
+    left: 0 !important;
+    right: 0 !important;
+  }
+
+  .subtask-input,
+  .subtask-list {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .form-group__date-wrapper .date-icon {
+    right: 10px !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+  }
+
+  .form-group__input,
+  .form-group__select,
+  .form-group__textarea {
+    font-size: 16px !important;
+  }
+
+  #successMessage {
+    justify-content: center;
+  }
+
+  body.with-sidebar-hidden .task-form-container {
+    margin-left: 0;
+  }
+
+  .task-form-container[style] {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}

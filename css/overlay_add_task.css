@@ -139,6 +139,7 @@ overlay-modal {
   display: block;
 }
 
+/* Priority Buttons */
 .priority-buttons {
   display: flex;
   justify-content: space-between;
@@ -167,32 +168,27 @@ overlay-modal {
   transition: background-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* keep SVG non-interactive */
 .priority-buttons__button svg {
   pointer-events: none;
 }
 
-/* Priority color hints when inactive */
 .priority-buttons__button--urgent {
   color: #ff3d00;
 }
-
 .priority-buttons__button--medium {
   color: #ffab2b;
 }
-
 .priority-buttons__button--low {
   color: #7ae229;
 }
 
-/* ACTIVE state: only controlled by .is-active OR aria-pressed="true" */
+/* Active state */
 .priority-buttons__button.is-active,
 .priority-buttons__button[aria-pressed="true"] {
   color: #ffffff;
   box-shadow: 0 6px 18px rgba(18, 25, 36, 0.12);
 }
 
-/* Active backgrounds per priority */
 .priority-buttons__button--urgent.is-active,
 .priority-buttons__button--urgent[aria-pressed="true"] {
   background-color: #ff3d00;
@@ -208,14 +204,13 @@ overlay-modal {
   background-color: #5be84a;
 }
 
+/* Subtasks */
 .subtask-input {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.subtask-titel {
-  width: 50%;
-}
+
 .subtask-input__field {
   flex: 1;
   border-radius: 8px;
@@ -246,6 +241,7 @@ overlay-modal {
   flex-direction: column;
   gap: 6px;
 }
+
 .subtask-remove-btn {
   background: none;
   border: none;
@@ -253,6 +249,8 @@ overlay-modal {
   font-size: 1.2rem;
   cursor: pointer;
 }
+
+/* Form Actions */
 .form-actions {
   display: flex;
   gap: 18px;
@@ -299,42 +297,6 @@ overlay-modal {
   border-radius: 8px;
 }
 
-.success-message {
-  display: none;
-  margin-top: 12px;
-  font-size: 1rem;
-  color: #16a34a;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.task-form-container {
-  margin-left: 240px;
-  /* space for sidebar */
-  padding: 196px 84px 32px;
-  /* top for header, sides for breathing room */
-  min-height: 100vh;
-  background: var(--bg);
-  box-sizing: border-box;
-}
-
-/* Hover-Effekt nur für inaktive Buttons */
-.priority-buttons__button:not(.is-active):hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  transition: box-shadow 0.2s ease, background-color 0.2s ease;
-}
-
-
-@media (max-width: 1023px) {
-  .task-form-container {
-    margin-left: 0;
-    padding: 32px 16px 16px;
-    margin-top: 120px;
-  }
-}
-
-/* --- Responsive: ab und unter 1023px alles untereinander (Überschrift bleibt unverändert) --- */
 @media (max-width: 1023px) {
   .task-form__layout {
     display: grid !important;
@@ -355,94 +317,5 @@ overlay-modal {
     padding-right: 0 !important;
     width: 100%;
     box-sizing: border-box;
-  }
-
-  .task-form-container {
-    margin-top: 120px;
-    margin-left: 0;
-    padding: 32px 16px 16px;
-  }
-
-  .task-form {
-    padding: 16px 0px 100px !important;
-    border-radius: 8px;
-    box-shadow: none;
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .form-actions {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 12px;
-    align-items: stretch;
-  }
-
-  .button-action {
-    width: 100% !important;
-    display: flex;
-    gap: 12px;
-    justify-content: space-between;
-  }
-
-  .form-actions__button--clear,
-  .form-actions__button--submit {
-    flex: 1 1 0%;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .priority-buttons {
-    display: flex !important;
-    gap: 10px;
-    width: 100%;
-    align-items: stretch;
-    height: auto;
-    padding: 6px;
-  }
-
-  .priority-buttons__button {
-    flex: 1 1 0%;
-    min-width: 0;
-    height: 48px;
-  }
-
-  .assigned-to-wrapper,
-  .assigned-to-input,
-  .assigned-to-dropdown {
-    width: 100% !important;
-    left: 0 !important;
-    right: 0 !important;
-  }
-
-  .subtask-input,
-  .subtask-list {
-    width: 100%;
-    box-sizing: border-box;
-  }
-
-  .form-group__date-wrapper .date-icon {
-    right: 10px !important;
-    top: 50% !important;
-    transform: translateY(-50%) !important;
-  }
-
-  .form-group__input,
-  .form-group__select,
-  .form-group__textarea {
-    font-size: 16px !important;
-  }
-
-  #successMessage {
-    justify-content: center;
-  }
-
-  body.with-sidebar-hidden .task-form-container {
-    margin-left: 0;
-  }
-
-  .task-form-container[style] {
-    padding-left: 20px;
-    padding-right: 20px;
   }
 }

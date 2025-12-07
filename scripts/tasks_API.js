@@ -1,8 +1,15 @@
-// API
+// scripts/tasks_API.js
+
+// Globale Task-Liste
 let tasks = [];
+
 const FIREBASE_BASE_URL =
   'https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app';
 const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
+
+/**
+ * Normalisiert Status-Werte auf: 'todo' | 'inprogress' | 'await_feedback' | 'done'
+ */
 function normalizeTaskStatus(status = '') {
   const value = String(status).trim().toLowerCase();
 
@@ -17,13 +24,14 @@ function normalizeTaskStatus(status = '') {
   }
 
   if (value === 'done') return 'done';
-
   if (value === 'todo') return 'todo';
 
   return value;
 }
 
-
+/**
+ * Tasks aus Firebase holen, normalisieren und in globale Variable "tasks" schreiben.
+ */
 async function fetchTasks() {
   try {
     const response = await fetch(`${TASKS_BASE_URL}.json`, {
@@ -43,6 +51,10 @@ async function fetchTasks() {
     return tasks;
   }
 }
+
+/**
+ * Rohe Firebase-Struktur (Array oder Objekt) in konsistente Task-Objekte überführen.
+ */
 function normalizeTasks(raw) {
   if (!raw) return [];
 
@@ -54,6 +66,10 @@ function normalizeTasks(raw) {
     enrichTask({ ...value, firebaseId })
   );
 }
+
+/**
+ * Task mit Default-Werten, normalisiertem Status, ID und AssignedTo/Subtasks anreichern.
+ */
 function enrichTask(task) {
   const idFromTask = task.id || task.firebaseId;
   const id = idFromTask || generateId();
@@ -80,6 +96,10 @@ function enrichTask(task) {
     status
   };
 }
+
+/**
+ * Neuen Task in Firebase anlegen und in lokale tasks-Liste pushen.
+ */
 async function addTask(taskData) {
   const cleanTask = enrichTask({
     ...taskData,
@@ -110,6 +130,10 @@ async function addTask(taskData) {
   tasks.push(newTask);
   return newTask;
 }
+
+/**
+ * Status eines Tasks in Firebase und lokal aktualisieren.
+ */
 async function updateTaskStatus(taskId, newStatus) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (index === -1) return;
@@ -135,9 +159,17 @@ async function updateTaskStatus(taskId, newStatus) {
 
   tasks[index] = { ...task, status: normalizedStatus };
 }
+
+/**
+ * Einfache ID-Generierung auf Basis von Timestamp + Random.
+ */
 function generateId() {
   return String(Date.now() + Math.random());
 }
+
+/**
+ * Task vollständig speichern (PUT) – inkl. Subtasks, Priority etc.
+ */
 async function saveTask(task) {
   let firebaseId = task.firebaseId;
 
@@ -160,6 +192,10 @@ async function saveTask(task) {
     throw new Error('saveTask: HTTP ' + response.status);
   }
 }
+
+/**
+ * Task aus Firebase löschen.
+ */
 async function deleteTaskById(taskId) {
   const task = tasks.find(
     (t) =>
