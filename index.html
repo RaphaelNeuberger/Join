@@ -147,6 +147,7 @@
       <a href="legal-notice.html">Legal Notice</a>
     </div>
 
+    <script src="scripts/config.js"></script>
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
       import {
@@ -163,9 +164,8 @@
         ref,
         set,
       } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-      import { firebaseConfig } from "./scripts/config.js";
 
-      const app = initializeApp(firebaseConfig);
+      const app = initializeApp(window.firebaseConfig);
       const auth = getAuth(app);
       const db = getDatabase(app);
 

@@ -19,7 +19,6 @@ async function loadScripts() {
   initTaskCardEvents();
   initBoardSearch();
   initDragAndDrop();
-  initMoveMenuGlobalListener();
 }
 
 /**

@@ -319,3 +319,7 @@ async function handleMoveMenuSelection(targetStatus) {
     closeMoveMenu();
   }
 }
+
+/* ===================== Auto-Init ===================== */
+// Initialize move menu listener when this script loads
+initMoveMenuGlobalListener();

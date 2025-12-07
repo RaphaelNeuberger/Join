@@ -12,9 +12,8 @@ import {
   update,
   remove,
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-database.js";
-import { firebaseConfig } from "./config.js";
 
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
