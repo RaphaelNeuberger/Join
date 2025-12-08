@@ -16,6 +16,7 @@ body {
 }
 
 .board-container {
+  max-width: 1680px;
   margin-left: 240px;
   padding: 196px 84px 32px;
   min-height: 100vh;
@@ -581,6 +582,7 @@ body {
 /* ===================== Formular / Add-Task ===================== */
 
 .task-form-container {
+  max-width: 1680px;
   margin-left: 240px;
   padding: 196px 84px 32px;
   min-height: 100vh;

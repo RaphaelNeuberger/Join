@@ -48,28 +48,24 @@ overlay-modal {
 .task-form__layout {
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
-  column-gap: 2.5rem;
   row-gap: 32px;
   margin-bottom: 32px;
 }
 
 .task-form__column-left {
   padding-right: 24px;
-  max-width: 440px;
+  
 }
 
 .task-form__column-right {
   padding-left: 24px;
-  max-width: 440px;
+
 }
 
 .vertical-divider {
   width: 100%;
   background: #e5e7eb;
   margin: 2rem 0;
-  justify-self: center;
-  align-self: stretch;
-  pointer-events: none;
 }
 
 .form-group {
