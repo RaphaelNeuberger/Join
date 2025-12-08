@@ -56,6 +56,10 @@ async function handleCreateTask(event) {
     showSuccessMessage();
     resetTaskForm();
     closeAddTaskBtn();
+    // Redirect to board.html after successful task creation
+    setTimeout(() => {
+      window.location.href = "board.html";
+    }, 1000);
   } catch (err) {
     console.error("handleCreateTask:", err);
     alert("Task could not be created (see console).");

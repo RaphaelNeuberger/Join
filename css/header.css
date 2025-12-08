@@ -1,5 +1,12 @@
 header {
   background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
 }
 
 .header-content {
@@ -13,9 +20,6 @@ header {
   padding-right: 40px;
   padding-left: 96px;
   max-width: 1680px;
-  position: fixed;
-  left: 0;
-  right: 0;
 }
 
 .header-title {
