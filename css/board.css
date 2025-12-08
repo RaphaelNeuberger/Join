@@ -284,7 +284,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .card-move-btn img {
@@ -613,8 +613,6 @@ body {
     flex-direction: row;
   }
 
-  /* Make each task card a fixed width and enable horizontal scrolling
-     when multiple cards are next to each other on mobile (<=1023px) */
   .task-cards {
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
@@ -624,7 +622,7 @@ body {
   }
 
   .task-cards::-webkit-scrollbar {
-    display: none; /* keep global hidden scrollbar behaviour */
+    display: none;
   }
 
   .card-task {
@@ -637,8 +635,6 @@ body {
   #done-tasks {
     margin-bottom: 100px;
   }
-
-  /* Add-Task-Form Layout */
 
   .task-form-container {
     margin-top: 95px;
