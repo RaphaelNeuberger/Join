@@ -310,52 +310,29 @@
                 </div>
                 <ul class="subtask-list" id="subtaskList"></ul>
               </div>
-            </div>
-          </div>
 
-          <!-- Form Actions -->
-          <div class="form-actions">
-            <div>
-              <span class="form-group__required">*</span>
-              <span>This field is required</span>
-            </div>
-            <div class="button-action">
-              <button
-                type="button"
-                class="form-actions__button form-actions__button--clear"
-                id="clearBtn">
-                Clear
-                <svg
-                  class="form-actions__icon"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M4 4L12 12M12 4L4 12"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round" />
-                </svg>
-              </button>
-              <button
-                type="submit"
-                class="form-actions__button form-actions__button--submit"
-                id="submitBtn">
-                Create Task
-                <svg
-                  class="form-actions__icon"
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16">
-                  <path
-                    d="M3 8L7 12L13 4"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    fill="none"
-                    stroke-linecap="round"
-                    stroke-linejoin="round" />
-                </svg>
-              </button>
+              <!-- BUTTONS: ganz unten in der rechten Spalte -->
+              <div class="task-form__column-right-actions">
+                <button
+                  type="button"
+                  class="form-actions__button form-actions__button--clear"
+                  id="clearBtn">
+                  Clear
+                  <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+                    <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  </svg>
+                </button>
+
+                <button
+                  type="submit"
+                  class="form-actions__button form-actions__button--submit"
+                  id="submitBtn">
+                  Create Task
+                  <svg class="form-actions__icon" width="16" height="16" viewBox="0 0 16 16">
+                    <path d="M3 8L7 12L13 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </form>

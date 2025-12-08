@@ -496,7 +496,7 @@ body {
 
 .checkmark-box.checked {
   background-color: #2a3647;
-  border-color: #2a3647;
+  border-color: #ffffff;
 }
 
 .checkmark-box.checked::after {

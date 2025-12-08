@@ -255,13 +255,11 @@ overlay-modal {
 
 /* Form Actions */
 .form-actions {
-  display: flex;
-  gap: 18px;
-  justify-content: space-between;
-  margin-top: 20px;
-  align-items: center;
-  font-size: 1rem;
-  color: #6b7280;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr;
+    column-gap: 2.5rem;
+    row-gap: 32px;
+    margin-bottom: 32px;
 }
 
 .button-action {
@@ -269,8 +267,10 @@ overlay-modal {
   display: flex;
   justify-content: space-between;
   flex-direction: row;
-  width: 40%;
+  width: 44%;
+  max-width: 440px;
 }
+
 
 .form-actions__button {
   padding: 8px 16px;
@@ -300,6 +300,15 @@ overlay-modal {
   border-radius: 8px;
 }
 
+/* Buttons in einer Reihe, unten angeklebt */
+.task-form__column-right-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end; /* rechtsbündig; benutze center oder space-between falls gewünscht */
+  margin-top: auto; /* schiebt die Buttons an das Ende der Spalte */
+  padding-top: 18px;
+}
+
 @media (max-width: 1023px) {
   .task-form__layout {
     display: grid !important;
@@ -308,6 +317,7 @@ overlay-modal {
     row-gap: 24px;
     align-items: start;
   }
+
 
   .vertical-divider {
     display: none !important;
