@@ -2,58 +2,138 @@
 
 Diese Datei beschreibt, **wie GitHub Copilot Code-Vorschläge für dieses Projekt erzeugen soll.**
 
----
-
 ## 🌐 Projektkontext
 
 Dieses Projekt verwendet **reines HTML, CSS und JavaScript (ES6)**.  
 Ziel ist es, eine **strukturierte, responsive und wartbare** Website zu entwickeln, die gute Performance und Lesbarkeit bietet.  
 Kein Build-Framework (z. B. React, Vue, Angular) wird genutzt.
 
----
-
 ## 🧱 Code-Struktur
-
-- **HTML-Dateien** befinden sich im ``.
-- **CSS-Dateien** liegen in `styles/`.
-- **JavaScript-Dateien** liegen in `scripts/` und alle anderen die Main Script in `scripts.js`
-- Verwende **relativ kurze Dateien** und **modulare JS-Funktionen**.
-- Kein Inline-JavaScript oder Inline-CSS in HTML (Trennung von Struktur, Stil und Logik).
-
----
 
 ## Code-Stil & Formatierung
 
 ### HTML
 
-- Verwende **semantische HTML-Tags** (`<header>`, `<main>`, `<section>`, `<footer>` usw.).
-- Einrückung: **2 Leerzeichen**.
-- Schließe alle Tags korrekt.
-- Verwende **aussagekräftige `alt`-Attribute** bei Bildern.
-- Keine Inline-Styles.
-- schua das das HTML
-
 ### CSS
 
-- Verwende **BEM-Namenskonvention** (`.block__element--modifier`).
-- Verwende **CSS-Variablen** (`--color-primary`) für Farben, Abstände und Fonts.
-- Keine IDs zum Stylen, nur Klassen.
-- keine Deutsche erklärung nur english
-- Mobile-First min-width: 320px mit Media Queries:
-  ```css
-  @media (min-width: 768px) {
-    /* Desktop styles */
-  }
-  ```
+```css
+@media (min-width: 768px) {
+  /* Desktop styles */
+}
+```
 
 ### JavaScript
 
-- init () per onload funktion im HTML im body
-- keine Deutsche erklärung nur english
-- jede Funktion darf nicht länger als 14 zeilen haben
-- Jede JS Datei darf nicht länger als 400 zeichen haben
-
 # GitHub Copilot Instructions for Join
+
+# 🤖 Copilot Instructions for Join
+
+This file guides AI coding agents for the Join Kanban Task Management project. Follow these actionable rules for architecture, workflows, and conventions. **Focus on THIS codebase's patterns.**
+
+---
+
+## 🌐 Project Context
+
+- Pure HTML, CSS, JavaScript (ES6+), no frameworks. Modular, maintainable, responsive MPA (Multi-Page Application).
+- No build tools, no inline JS/CSS, no external UI libraries.
+- Main pages: `index.html`, `add_task.html`, `board.html`, `contacts.html`, `login.html`, `register.html`, `legal-notice.html`, `privacypolicy.html`.
+
+---
+
+## 🧱 Architecture & Structure
+
+- **HTML:** Semantic, static templates in `/`, includes via JS for header/sidebar. Accessibility: labels, aria, alt attributes.
+- **CSS:** `/css/` folder, BEM naming, CSS variables for colors/spacings, mobile-first, no IDs for styling. Figma design tokens for spacing/colors/shadows.
+- **JavaScript:** `/scripts/` folder, one file per page, shared logic in helpers/storage/templates. Max 400 LOC/file, max 14 lines/function, camelCase, 2 blank lines between functions, JSDoc for public functions.
+- **Firebase:** Used for authentication and realtime DB (see `firebase-init.js`, `firebase-login.js`).
+
+---
+
+## 🛠️ Developer Workflows
+
+- No build step; static hosting possible. All changes are visible after reload.
+- Frequent, meaningful git commits. Never commit secrets. Use `.gitignore`.
+- Manual testing in Chrome/Firefox/Safari/Edge. No console errors/warnings allowed.
+- Seed at least 5 tasks and 10 contacts before submission.
+
+---
+
+## 📋 Key Conventions & Patterns
+
+- **Task Management:** Kanban board (drag & drop, status columns), add/edit/delete tasks, subtasks (add on Enter, edit/delete on hover), priority levels, real-time search/filter.
+- **Contacts:** Alphabetical groups, CRUD, assign to tasks, own account editable, validation for forms.
+- **User Management:** Firebase login/register, guest login, redirect unauthenticated users from protected pages.
+- **Forms:** Custom validation (no native HTML5), disable submit while loading, instant feedback, created items render immediately.
+- **Responsiveness:** 1920px–320px, mobile portrait default, vertical Kanban columns on mobile, max-width containers, no horizontal scroll.
+- **Design:** Figma spacing/colors/shadows, inputs/buttons without default borders, transitions 75–125ms, cursor pointer on interactive elements.
+- **Error Handling:** No uncaught errors, graceful user feedback, never leave disabled buttons stuck.
+
+---
+
+## 🔑 Example File References
+
+- `scripts/board.js`: Kanban logic, drag & drop, search/filter, status updates.
+- `scripts/add_task.js`: Task form, validation, subtask handling.
+- `scripts/contacts.js`: Contact CRUD, assignment, validation.
+- `scripts/storage.js`: Storage API for tasks/contacts/users/categories.
+- `css/board.css`, `css/style.css`: Responsive layouts, BEM, design tokens.
+- `firebase-init.js`, `firebase-login.js`: Firebase integration.
+
+---
+
+## ✅ Definition of Done
+
+- All acceptance criteria for user stories (Accounts/Admin, Kanban, Contacts, Legal pages) met.
+- No console issues, all pages responsive, manual tests passed.
+- Public GitHub repo link provided.
+
+---
+
+**For unclear or missing conventions, ask for feedback and iterate.**
+
+---
+
+## 📑 Join Checkliste – Ergänzende Anforderungen
+
+### Aufgaben & Akzeptanzkriterien (Auszug)
+
+- **Tasks & Kanban:**
+
+  - Mindestens 5 realistische Aufgaben sind vorab angelegt.
+  - Aufgaben können erstellt, bearbeitet, gelöscht und zwischen Status verschoben werden (Drag & Drop).
+  - Subtasks sind pro Aufgabe möglich, können hinzugefügt, bearbeitet und gelöscht werden.
+  - Aufgaben zeigen Kategorie, Titel, Beschreibung, Priorität, Assignees und Subtask-Fortschritt.
+  - Aufgaben werden nach Status gruppiert und sind filter-/suchbar.
+
+- **Contacts:**
+
+  - Mindestens 10 Kontakte sind vorab angelegt.
+  - Kontakte können erstellt, bearbeitet und gelöscht werden.
+  - Kontakte sind alphabetisch gruppiert und können Aufgaben zugewiesen werden.
+  - Eigener Account ist als Kontakt editierbar.
+
+- **User Management:**
+
+  - Login/Registrierung mit Firebase, inkl. Gastzugang.
+  - Validierung für E-Mail und Passwort, Policy-Checkbox bei Registrierung.
+  - Unauthentifizierte Nutzer werden auf Login weitergeleitet.
+
+- **Legal & Privacy:**
+
+  - Impressum und Datenschutz sind als eigene Seiten vorhanden und verlinkt.
+  - Header/Footer werden per Include eingebunden.
+
+- **Design & Usability:**
+
+  - Responsive für Desktop und Mobile (Portrait), keine horizontale Scrollbar.
+  - Figma-Design wird eingehalten (Farben, Abstände, Schatten, max-width).
+  - Interaktive Elemente haben `cursor: pointer`, Buttons/Inputs keine Standard-Border.
+  - Animationen/Transitions 75–125ms, Feedback bei Aktionen (z.B. Toasts).
+
+- **Testing & Qualität:**
+  - Manuelle Tests auf Chrome, Firefox, Safari, Edge ohne Console-Fehler.
+  - Alle User Stories und Akzeptanzkriterien sind erfüllt.
+  - Die Anwendung ist öffentlich auf GitHub verfügbar.
 
 This file encodes the full Join checklist into actionable guidance for GitHub Copilot. It is organized by page and by programming language (HTML, CSS, JavaScript). Copilot should follow these constraints when proposing code and reviews.
 

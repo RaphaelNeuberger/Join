@@ -5,7 +5,7 @@ body {
 }
 
 .main-contact {
-  margin-left: 240px; /* Space for Sidebar */
+  margin-left: 200px; /* Space for Sidebar */
   padding-left: 84px;
   background: #f6f7fb;
   min-height: 100vh;
@@ -72,15 +72,13 @@ body {
   width: 100%;
 }
 .contact-list {
-  flex: 0 0 320px;
+  flex: 0 0 360px;
   text-align: center;
   min-width: 280px;
   max-width: 500px;
   background-color: var(--panel, #ffffff);
-  border-right: 1px solid #d3d3d3;
-  padding-right: 1rem;
+  margin-right: 2rem;
   padding-top: 96px;
-  padding-left: 1rem;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
@@ -96,6 +94,7 @@ body {
   flex: 1;
   box-sizing: border-box;
   padding: 0.6rem 0;
+  padding-right: 2rem;
 }
 
 /* Scrollbar Styling */
@@ -260,12 +259,21 @@ span.name-logo {
   margin-top: 1rem;
   display: flex;
   gap: 2rem;
+  align-items: center;
 }
 .edit-area span {
   cursor: pointer;
 }
 .edit-area .edit-button {
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  transition: color 0.2s ease;
+}
+.edit-area .edit-button:hover {
+  color: #29abe2;
 }
 .edit-elements span {
   width: 16px;
@@ -274,9 +282,9 @@ span.name-logo {
   text-align: center;
 }
 .edit-area img {
-  margin-right: 0.6rem;
-  height: 18px;
-  width: 18px;
+  height: 16px;
+  width: 16px;
+  flex-shrink: 0;
 }
 
 .para-1 {
@@ -299,6 +307,18 @@ span.name-logo {
   font-weight: 400;
   font-style: regular;
   margin-bottom: 20px;
+  text-decoration: none;
+  display: block;
+}
+
+.para-4 {
+  color: var(--email);
+  font-size: 16px;
+  font-weight: 400;
+  font-style: regular;
+  margin-bottom: 20px;
+  text-decoration: none;
+  display: block;
 }
 
 .edit-overay {
@@ -462,12 +482,16 @@ span.name-logo {
 .dialog-left {
   background-color: #2a3647;
   width: 40%;
+  max-width: 485px;
+  min-width: 0;
+  box-sizing: border-box;
   padding: 80px 46px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   color: white;
+  position: relative;
 }
 
 .dialog-left img {
@@ -502,6 +526,7 @@ span.name-logo {
 .dialog-right {
   flex: 1;
   padding: 60px 60px;
+  padding-top: 90px;
   display: flex;
   align-items: center;
   gap: 60px;
@@ -540,8 +565,14 @@ span.name-logo {
   margin-bottom: 5px;
 }
 
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
 .input-group input {
   flex: 1;
+  width: 100%;
   border: 1px solid #d1d1d1;
   border-radius: 10px;
   padding: 12px 45px 12px 20px;
@@ -549,6 +580,7 @@ span.name-logo {
   font-family: "Inter", sans-serif;
   outline: none;
   transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
 .input-group input:focus {
@@ -568,7 +600,8 @@ span.name-logo {
 .input-group .input-icon {
   position: absolute;
   right: 15px;
-  top: 12px;
+  top: 50%;
+  transform: translateY(-50%);
   width: 20px;
   height: 20px;
   pointer-events: none;
@@ -576,8 +609,8 @@ span.name-logo {
 
 .error-message {
   display: none;
-  color: #ff3d00;
-  font-size: 14px;
+  color: #ff3838;
+  font-size: 16px;
   margin-top: 4px;
   margin-left: 5px;
   text-align: left;
@@ -653,8 +686,46 @@ span.name-logo {
 }
 
 .edit-contact-dialog .dialog-avatar {
+}
+.add-contact-dialog .dialog-avatar {
   width: 120px;
   height: 120px;
+  border-radius: 50%;
+  background-color: #d1d1d1;
+  color: white;
+  font-size: 47px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: -60px;
+  left: 46px;
+  z-index: 10;
+  border: 4px solid white;
+  margin-left: 0;
+  margin-right: 0;
+}
+.add-contact-dialog .dialog-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #d1d1d1;
+  color: white;
+  font-size: 47px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: absolute;
+  bottom: -60px;
+  left: 46px;
+  z-index: 10;
+  border: 4px solid white;
+  width: 100px;
+  height: 100px;
   border-radius: 50%;
   background-color: #ff7a00;
   color: white;
@@ -664,6 +735,12 @@ span.name-logo {
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  border: 4px solid white;
 }
 
 .btn-delete,
@@ -782,7 +859,7 @@ span.name-logo {
     width: calc(100% - 20px);
     max-width: min(350px, calc(100vw - 40px));
     height: auto;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: auto;
     overflow-x: hidden;
     border-radius: 20px;
@@ -800,13 +877,14 @@ span.name-logo {
     width: calc(100% - 20px);
     max-width: min(350px, calc(100vw - 40px));
     height: auto;
-    max-height: 90vh;
+    max-height: 95vh;
     overflow-y: auto;
     overflow-x: hidden;
     border-radius: 20px;
     transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
     box-sizing: border-box;
+    position: relative;
   }
 
   .edit-contact-dialog.active .dialog-content {
@@ -839,6 +917,7 @@ span.name-logo {
     height: 25vh;
     padding: 30px 20px 20px;
     border-radius: 20px 20px 0 0;
+    position: relative;
   }
 
   .dialog-left img {
@@ -863,6 +942,7 @@ span.name-logo {
   .dialog-right {
     flex-direction: column;
     padding: 20px 20px 30px;
+    padding-top: 60px;
     box-sizing: border-box;
     overflow-x: hidden;
     gap: 20px;
@@ -881,6 +961,11 @@ span.name-logo {
     width: 100px;
     height: 100px;
     font-size: 36px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -50px;
+    z-index: 10;
   }
 
   .dialog-avatar img {

@@ -240,6 +240,17 @@ document.addEventListener("DOMContentLoaded", function () {
           "Please enter a name"
         );
         hasError = true;
+      } else {
+        // Check if name contains only letters, spaces, hyphens, and apostrophes
+        const namePattern = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s'\-\.]+$/;
+        if (!namePattern.test(name)) {
+          showValidationError(
+            "newContactName",
+            "errorContactName",
+            "Name can only contain letters, spaces, hyphens, and apostrophes"
+          );
+          hasError = true;
+        }
       }
 
       if (!email) {
@@ -270,14 +281,25 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        const phoneDigits = phone.replace(/[^0-9]/g, "");
-        if (phoneDigits.length < 6) {
+        // Check if phone contains only allowed characters (digits, +, -, (, ), space)
+        const phonePattern = /^[0-9+\-\(\)\s]+$/;
+        if (!phonePattern.test(phone)) {
           showValidationError(
             "newContactPhone",
             "errorContactPhone",
-            "Phone number must have at least 6 digits"
+            "Phone number can only contain digits and +, -, (, ), space"
           );
           hasError = true;
+        } else {
+          const phoneDigits = phone.replace(/[^0-9]/g, "");
+          if (phoneDigits.length < 6) {
+            showValidationError(
+              "newContactPhone",
+              "errorContactPhone",
+              "Phone number must have at least 6 digits"
+            );
+            hasError = true;
+          }
         }
       }
 
@@ -336,6 +358,17 @@ document.addEventListener("DOMContentLoaded", function () {
           "Please enter a name"
         );
         hasError = true;
+      } else {
+        // Check if name contains only letters, spaces, hyphens, and apostrophes
+        const namePattern = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s'\-\.]+$/;
+        if (!namePattern.test(name)) {
+          showValidationError(
+            "editContactName",
+            "errorEditName",
+            "Name can only contain letters, spaces, hyphens, and apostrophes"
+          );
+          hasError = true;
+        }
       }
 
       if (!email) {
@@ -366,14 +399,25 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        const phoneDigits = phone.replace(/[^0-9]/g, "");
-        if (phoneDigits.length < 6) {
+        // Check if phone contains only allowed characters (digits, +, -, (, ), space)
+        const phonePattern = /^[0-9+\-\(\)\s]+$/;
+        if (!phonePattern.test(phone)) {
           showValidationError(
             "editContactPhone",
             "errorEditPhone",
-            "Phone number must have at least 6 digits"
+            "Phone number can only contain digits and +, -, (, ), space"
           );
           hasError = true;
+        } else {
+          const phoneDigits = phone.replace(/[^0-9]/g, "");
+          if (phoneDigits.length < 6) {
+            showValidationError(
+              "editContactPhone",
+              "errorEditPhone",
+              "Phone number must have at least 6 digits"
+            );
+            hasError = true;
+          }
         }
       }
 

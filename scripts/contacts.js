@@ -177,8 +177,14 @@
         logoEl.style.backgroundColor = getAvatarColor(contact.name || "");
       }
       if (nameEl) nameEl.textContent = contact.name || "";
-      if (emailLabel) emailLabel.textContent = contact.email || "";
+      if (emailLabel) {
+        emailLabel.textContent = contact.email || "";
+        emailLabel.href = `mailto:${contact.email || ""}`;
+      }
       if (phoneLabel) {
+        console.log(
+          `Contact: ${contact.name}, Phone from DB: "${contact.phone}"`
+        );
         phoneLabel.textContent = contact.phone || "";
         phoneLabel.href = `tel:${(contact.phone || "").replace(/\\s/g, "")}`;
       }

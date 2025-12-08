@@ -157,9 +157,9 @@
 
         <div class="contact-information">
           <p class="para-2">Email:</p>
-          <p class="para-3">tatjana.wolf@example.com</p>
+          <a class="para-3" href="mailto:"></a>
           <p class="para-2">Phone:</p>
-          <a class="para-3" href="tel:+15551234567">+1 (555) 123-4567</a>
+          <a class="para-4" href="tel:"></a>
         </div>
       </div>
     </div>
@@ -177,27 +177,39 @@
         <div class="dialog-left">
           <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
           <h2>Add contact</h2>
-          <p class="dialog-subtitle">Tasks are better with a team!</p>
           <div class="dialog-underline"></div>
+          <div class="dialog-avatar" id="addContactAvatar">AC</div>
         </div>
         <div class="dialog-right">
-          <div class="dialog-avatar">
-            <img src="./img/icons/person.svg" alt="Person Icon" />
-          </div>
           <form class="dialog-form" id="addContactForm" novalidate>
             <div class="input-group">
-              <input type="text" id="newContactName" placeholder="Name" />
-              <img src="./img/icons/person.svg" alt="Name" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="text" id="newContactName" placeholder="Name" />
+                <img
+                  src="./img/icons/person.svg"
+                  alt="Name"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorContactName"></span>
             </div>
             <div class="input-group">
-              <input type="email" id="newContactEmail" placeholder="Email" />
-              <img src="./img/icons/mail.svg" alt="Email" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="email" id="newContactEmail" placeholder="Email" />
+                <img
+                  src="./img/icons/mail.svg"
+                  alt="Email"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorContactEmail"></span>
             </div>
             <div class="input-group">
-              <input type="tel" id="newContactPhone" placeholder="Phone" />
-              <img src="./img/icons/call.svg" alt="Phone" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="tel" id="newContactPhone" placeholder="Phone" />
+                <img
+                  src="./img/icons/call.svg"
+                  alt="Phone"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorContactPhone"></span>
             </div>
             <div class="dialog-buttons">
@@ -233,23 +245,38 @@
           <img src="./img/logo/join_logo_white.svg" alt="Join Logo" />
           <h2>Edit contact</h2>
           <div class="dialog-underline"></div>
+          <div class="dialog-avatar" id="editContactAvatar">AM</div>
         </div>
         <div class="dialog-right">
-          <div class="dialog-avatar" id="editContactAvatar">AM</div>
           <form class="dialog-form" id="editContactForm" novalidate>
             <div class="input-group">
-              <input type="text" id="editContactName" placeholder="Name" />
-              <img src="./img/icons/person.svg" alt="Name" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="text" id="editContactName" placeholder="Name" />
+                <img
+                  src="./img/icons/person.svg"
+                  alt="Name"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorEditName"></span>
             </div>
             <div class="input-group">
-              <input type="email" id="editContactEmail" placeholder="Email" />
-              <img src="./img/icons/mail.svg" alt="Email" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="email" id="editContactEmail" placeholder="Email" />
+                <img
+                  src="./img/icons/mail.svg"
+                  alt="Email"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorEditEmail"></span>
             </div>
             <div class="input-group">
-              <input type="tel" id="editContactPhone" placeholder="Phone" />
-              <img src="./img/icons/call.svg" alt="Phone" class="input-icon" />
+              <div class="input-wrapper">
+                <input type="tel" id="editContactPhone" placeholder="Phone" />
+                <img
+                  src="./img/icons/call.svg"
+                  alt="Phone"
+                  class="input-icon" />
+              </div>
               <span class="error-message" id="errorEditPhone"></span>
             </div>
             <div class="dialog-buttons">
