@@ -1,27 +1,25 @@
-/* ===================== Basis ===================== */
+html,
+body {
+  height: 100%;
+}
 
 body {
   margin: 0;
   font-family: "Inter", sans-serif;
   font-size: 16px;
+  /* allow page scrolling by default; individual containers keep their own scroll if needed */
+  overflow: auto;
 }
 
-/* Hide scrollbars */
 *::-webkit-scrollbar {
   display: none;
 }
 
-/* ===================== Board-Layout ===================== */
-
 .board-container {
   margin-left: 240px;
   padding: 196px 84px 32px;
-  background: #f6f7fb;
   min-height: 100vh;
-  box-sizing: border-box;
 }
-
-/* Header */
 
 .board-header {
   top: 100px;
@@ -74,8 +72,6 @@ body {
   display: none;
 }
 
-/* ===================== Columns ===================== */
-
 .tasks-columns {
   flex: 1;
   overflow-y: auto;
@@ -105,10 +101,8 @@ body {
   font-weight: 700;
 }
 
-/* ===================== Cards ===================== */
-
 .task-cards {
-  width: 100%;
+  width: 90%;
 }
 
 .card-no-task {
@@ -136,15 +130,15 @@ body {
   cursor: grabbing;
 }
 
-/* Header row in card (Category + Move-Button) */
 .card-header-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 8px;
+  align-items: flex-start;
+  align-content: flex-start;
+
 }
 
-/* Category-Badge */
 .card-type {
   padding: 4px 8px;
   font-size: 16px;
@@ -159,8 +153,6 @@ body {
   justify-content: center;
   text-align: center;
 }
-
-/* Title & Description */
 
 .card-title {
   font-size: 16px;
@@ -178,8 +170,6 @@ body {
   font-weight: 400;
   color: rgb(168, 168, 168);
 }
-
-/* Assigned Avatare */
 
 .assigned-list {
   display: flex;
@@ -204,8 +194,6 @@ body {
   margin-left: -12px;
 }
 
-/* Card footer */
-
 .card-footer {
   margin-top: 12px;
   display: flex;
@@ -218,8 +206,6 @@ body {
   height: 18px;
   pointer-events: none;
 }
-
-/* ===================== Priority ===================== */
 
 .priority-badge {
   display: inline-flex;
@@ -261,8 +247,6 @@ body {
   height: 12px;
 }
 
-/* ===================== Subtasks Progress ===================== */
-
 .subtask-progress {
   margin-top: 10px;
   display: flex;
@@ -288,8 +272,6 @@ body {
   color: #6b7280;
 }
 
-/* Drag-Over state for column */
-
 .task-column.drag-over .task-cards {
   outline: 2px dashed #a3a3a3;
   outline-offset: -6px;
@@ -297,9 +279,6 @@ body {
   background: #fafafa;
 }
 
-/* ===================== Move-Button & Move-Menu ===================== */
-
-/* Button top right in card */
 .card-move-btn {
   border: none;
   background: transparent;
@@ -308,7 +287,7 @@ body {
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 .card-move-btn img {
@@ -327,7 +306,6 @@ body {
   }
 }
 
-/* Global Move-Menu (dynamically appended to <body>) */
 .card-move-menu {
   position: absolute;
   z-index: 2000;
@@ -343,7 +321,7 @@ body {
 .card-move-menu__inner {
   background-color: #2a3647;
   color: #ffffff;
-  border-radius: 0 18px 18px 18px; /* top left square, rest rounded */
+  border-radius: 0 18px 18px 18px;
   padding: 10px 14px 12px;
   min-width: 130px;
   max-width: 160px;
@@ -393,7 +371,12 @@ body {
   cursor: not-allowed;
 }
 
-/* ===================== Assigned-To Dropdown ===================== */
+.assigned-to-wrapper {
+  position: relative;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+  background: white;
+}
 
 .assigned-to-wrapper {
   position: relative;
@@ -579,11 +562,22 @@ body {
 
 @media (max-width: 1023px) {
   .board-container {
-    padding: 16px;
-    margin-top: 95px;
+    width: 95vw;
+    margin-top: 100px; /* header height in mobile */
     margin-left: 0;
+    
+    padding: 15px;
+    padding-right: 0px;
+    overflow: auto;
   }
 
+    .task-cards {
+    gap: 12px;
+    display: flex;
+  }
+  .board-header {
+    width: 90vw;
+  }
   .board-header input {
     width: 90vw;
     padding: 12px;
@@ -611,23 +605,40 @@ body {
 
   .task-column {
     display: flex;
-    width: 100%;
     padding: 0;
     flex-direction: column;
     align-content: flex-start;
     align-items: flex-start;
   }
-  .task-cards {
+  .task-cards{
     gap: 16px;
     display: flex;
     flex-direction: row;
   }
 
-  #done-tasks {
-    margin-bottom: 100px;
+  .task-cards {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    padding-bottom: 8px;
+    width: 100%;
   }
 
-  /* Add-Task-Form Layout */
+  .task-cards::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-task {
+    flex: 0 0 252px;
+    width: 252px;
+    margin-bottom: 0;
+    box-sizing: border-box;
+  }
+
+  #done-tasks {
+    padding-bottom: 120px;
+    margin-bottom: 80px;
+  }
 
   .task-form-container {
     margin-top: 95px;
