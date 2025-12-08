@@ -152,13 +152,18 @@ function renderSelectedBadges() {
 }
 
 /**
- * Get assigned-to as array of names.
+ * Get assigned-to as array of objects with name, id, and avatarClass.
  */
 function getAssignedTo() {
   return selectedAssignees.map((id) => {
     const contact = contacts.find((c) => c.id === id);
-    return contact ? contact.name : "";
-  });
+    return contact ? { 
+      name: contact.name, 
+      id: contact.id, 
+      avatarClass: contact.avatarClass,
+      initials: contact.initials
+    } : null;
+  }).filter(Boolean);
 }
 
 /**

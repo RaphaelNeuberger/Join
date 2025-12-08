@@ -195,16 +195,22 @@ function renderAssigneesDetail(list) {
   return list
     .map(function (item, index) {
       const name = typeof item === "string" ? item : item?.name || "";
-      const color = getAvatarColor(name, index);
-      const initials = getInitials(name);
+      const avatarClass = item?.avatarClass || "";
+      const initials = item?.initials || getInitials(name);
+      
+      // If avatarClass is available, use it; otherwise use dynamic color
+      let avatarHtml;
+      if (avatarClass) {
+        avatarHtml = '<div class="assigned-avatar-detail ' + avatarClass + '">' + initials + "</div>";
+      } else {
+        // Fallback for old data without avatarClass
+        const color = getAvatarColor(name, index);
+        avatarHtml = '<div class="assigned-avatar-detail" style="background-color:' + color + '">' + initials + "</div>";
+      }
 
       return (
         '<div class="assigned-item">' +
-        '<div class="assigned-avatar-detail" style="background-color:' +
-        color +
-        '">' +
-        initials +
-        "</div>" +
+        avatarHtml +
         '<span class="assigned-name">' +
         escapeHtml(name) +
         "</span>" +

@@ -56,9 +56,22 @@ function renderAssignees(assignees = []) {
   return assignees
     .map((item, index) => {
       const name = typeof item === "string" ? item : item?.name || "";
+      const avatarClass = item?.avatarClass || "";
+      const initials = item?.initials || getInitials(name);
+      
+      // If avatarClass is available, use it; otherwise use dynamic color
+      if (avatarClass) {
+        return (
+          '<span class="assigned-avatar ' +
+          avatarClass +
+          '">' +
+          initials +
+          "</span>"
+        );
+      }
+      
+      // Fallback for old data without avatarClass
       const color = getAvatarColor(name, index);
-      const initials = getInitials(name);
-
       return (
         '<span class="assigned-avatar" style="background-color: ' +
         color +
