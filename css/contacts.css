@@ -13,25 +13,15 @@ body {
   box-sizing: border-box;
   display: flex;
   background-color: var(--panel, #ffffff);
+  overflow-x: hidden;
 }
 
-.all-contacts {
-  flex: 0 0 320px;
-  text-align: center;
-  min-width: 280px;
-  max-width: 500px;
-  background-color: var(--panel, #ffffff);
-  border-right: 1px solid #d3d3d3;
-  padding-right: 1rem;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 120px;
-}
+/* Removed - merged with .contact-list */
 
 .add-contact-button {
   margin-top: 1rem;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
   background-color: #2a3647;
   color: white;
   border: none;
@@ -82,13 +72,48 @@ body {
   width: 100%;
 }
 .contact-list {
+  flex: 0 0 320px;
+  text-align: center;
+  min-width: 280px;
+  max-width: 500px;
+  background-color: var(--panel, #ffffff);
+  border-right: 1px solid #d3d3d3;
+  padding-right: 1rem;
+  padding-top: 96px;
+  padding-left: 1rem;
   box-sizing: border-box;
-  position: sticky;
-  top: 96px; /* or 0, depending on desired behavior */
-  padding: 0.6rem 0 0.6rem 1.5rem;
-  overflow: auto; /* Only needed if the area should scroll itself */
-  max-height: calc(100vh - 96px); /* optional for own scrolling */
-  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible;
+  height: 100vh;
+}
+
+.contacts-scrollable {
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  flex: 1;
+  box-sizing: border-box;
+  padding: 0.6rem 0;
+}
+
+/* Scrollbar Styling */
+.contacts-scrollable::-webkit-scrollbar {
+  width: 6px;
+}
+
+.contacts-scrollable::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.contacts-scrollable::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.contacts-scrollable::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 0, 0, 0.3);
 }
 .contact-item {
   display: flex;
@@ -97,6 +122,10 @@ body {
   border-radius: 8px;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  box-sizing: border-box;
+  max-width: 100%;
+  overflow: hidden;
+  width: 100%;
 }
 .name-logo {
   width: 42px;
@@ -135,18 +164,28 @@ span.name-logo {
   flex-direction: column;
   gap: 0;
   line-height: 1.2;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
 }
 
 .user-name {
   font-size: 20px;
   font-weight: 400;
   margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 .user-email {
   font-size: 16px;
   color: var(--email);
   font-weight: 400;
-  word-break: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }
 
 .info-contact-area {
@@ -207,11 +246,15 @@ span.name-logo {
   margin-left: 2rem;
   display: flex;
   flex-direction: column;
+  max-width: calc(100% - 140px);
+  overflow-wrap: break-word;
 }
 .name-large {
   font-size: 47px;
   font-weight: 500;
   font-style: medium;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 .edit-area {
   margin-top: 1rem;
@@ -492,6 +535,9 @@ span.name-logo {
   position: relative;
   display: flex;
   align-items: center;
+  flex-direction: column;
+  align-items: stretch;
+  margin-bottom: 5px;
 }
 
 .input-group input {
@@ -509,12 +555,32 @@ span.name-logo {
   border-color: #29abe2;
 }
 
+.input-group input.input-error {
+  border-color: #ff3d00;
+  background-color: #fff5f5;
+}
+
+.input-group input.input-success {
+  border-color: #00c853;
+  background-color: #f1f8f4;
+}
+
 .input-group .input-icon {
   position: absolute;
   right: 15px;
+  top: 12px;
   width: 20px;
   height: 20px;
   pointer-events: none;
+}
+
+.error-message {
+  display: none;
+  color: #ff3d00;
+  font-size: 14px;
+  margin-top: 4px;
+  margin-left: 5px;
+  text-align: left;
 }
 
 .dialog-buttons {
@@ -665,24 +731,19 @@ span.name-logo {
   .add-contact-button {
     display: none;
   }
-  .all-contacts {
+  /* Removed .all-contacts - merged with .contact-list */
+  .contact-list {
     flex: none;
     width: 100%;
     max-width: none;
     border-right: none;
     padding-bottom: 1rem;
     padding-left: 1rem;
+    padding-right: 1rem;
     padding-top: 1rem;
     position: relative;
     z-index: 1;
-  }
-  .contact-list {
-    width: 100%;
-    position: relative;
-    top: 0;
     overflow: visible;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
     max-height: none;
   }
   .contact-item {
@@ -718,14 +779,16 @@ span.name-logo {
   /* Add Contact Dialog Mobile */
   .dialog-content {
     flex-direction: column;
-    width: 95%;
-    max-width: 350px;
+    width: calc(100% - 20px);
+    max-width: min(350px, calc(100vw - 40px));
     height: auto;
-    max-height: none;
-    overflow-y: visible;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 20px;
     transform: translateY(100%);
-    transition: transform 3s linear;
+    transition: transform 0.3s ease-in-out;
+    box-sizing: border-box;
   }
 
   .add-contact-dialog.active .dialog-content {
@@ -734,14 +797,16 @@ span.name-logo {
 
   .edit-contact-dialog .dialog-content {
     flex-direction: column;
-    width: 95%;
-    max-width: 350px;
+    width: calc(100% - 20px);
+    max-width: min(350px, calc(100vw - 40px));
     height: auto;
-    max-height: none;
-    overflow-y: visible;
+    max-height: 90vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     border-radius: 20px;
     transform: translateY(100%);
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.3s ease-in-out;
+    box-sizing: border-box;
   }
 
   .edit-contact-dialog.active .dialog-content {
@@ -798,6 +863,8 @@ span.name-logo {
   .dialog-right {
     flex-direction: column;
     padding: 20px 20px 30px;
+    box-sizing: border-box;
+    overflow-x: hidden;
     gap: 20px;
   }
 
@@ -1047,6 +1114,9 @@ span.name-logo {
   font-weight: 500;
   margin: 0;
   color: #000;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 .mobile-contact-info-title {

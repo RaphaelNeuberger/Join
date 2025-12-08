@@ -22,6 +22,7 @@ function closeAddContactDialog() {
     document.body.style.overflow = "";
     const form = document.getElementById("addContactForm");
     if (form) form.reset();
+    clearValidationErrors("add");
   }
 }
 
@@ -77,6 +78,7 @@ function closeEditContactDialog() {
   if (dialog) {
     dialog.classList.remove("active");
     document.body.style.overflow = "";
+    clearValidationErrors("edit");
   }
   restoreMobileContactView();
 }
@@ -166,37 +168,128 @@ function showSuccessMessage(message) {
   }, 2000);
 }
 
+/**
+ * Show validation error for input field
+ */
+function showValidationError(inputId, errorId, message) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+
+  if (input) {
+    input.classList.add("input-error");
+    input.classList.remove("input-success");
+  }
+
+  if (error) {
+    error.textContent = message;
+    error.style.display = "block";
+  }
+}
+
+/**
+ * Clear all validation errors
+ */
+function clearValidationErrors(formType) {
+  if (formType === "add") {
+    clearFieldError("newContactName", "errorContactName");
+    clearFieldError("newContactEmail", "errorContactEmail");
+    clearFieldError("newContactPhone", "errorContactPhone");
+  } else if (formType === "edit") {
+    clearFieldError("editContactName", "errorEditName");
+    clearFieldError("editContactEmail", "errorEditEmail");
+    clearFieldError("editContactPhone", "errorEditPhone");
+  }
+}
+
+/**
+ * Clear error for single field
+ */
+function clearFieldError(inputId, errorId) {
+  const input = document.getElementById(inputId);
+  const error = document.getElementById(errorId);
+
+  if (input) {
+    input.classList.remove("input-error");
+    input.classList.remove("input-success");
+  }
+
+  if (error) {
+    error.textContent = "";
+    error.style.display = "none";
+  }
+}
+
 // Form submit handlers
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("addContactForm");
   if (form) {
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
+      clearValidationErrors("add");
 
       const name = document.getElementById("newContactName").value.trim();
       const email = document.getElementById("newContactEmail").value.trim();
       const phone = document.getElementById("newContactPhone").value.trim();
 
-      if (!name || !email || !phone) {
-        alert("Please fill in all fields!");
-        return;
+      let hasError = false;
+
+      if (!name) {
+        showValidationError(
+          "newContactName",
+          "errorContactName",
+          "Please enter a name"
+        );
+        hasError = true;
       }
 
-      const emailPattern = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
-      if (!emailPattern.test(email)) {
-        alert("Please enter a valid email address (e.g. name@domain.com)");
-        return;
+      if (!email) {
+        showValidationError(
+          "newContactEmail",
+          "errorContactEmail",
+          "Please enter an email address"
+        );
+        hasError = true;
+      } else {
+        const emailPattern =
+          /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          showValidationError(
+            "newContactEmail",
+            "errorContactEmail",
+            "Please enter a valid email (e.g. name@domain.com)"
+          );
+          hasError = true;
+        }
       }
 
-      const phoneDigits = phone.replace(/[^0-9]/g, "");
-      if (phoneDigits.length < 6) {
-        alert("Please enter a valid phone number with at least 6 digits");
-        return;
+      if (!phone) {
+        showValidationError(
+          "newContactPhone",
+          "errorContactPhone",
+          "Please enter a phone number"
+        );
+        hasError = true;
+      } else {
+        const phoneDigits = phone.replace(/[^0-9]/g, "");
+        if (phoneDigits.length < 6) {
+          showValidationError(
+            "newContactPhone",
+            "errorContactPhone",
+            "Phone number must have at least 6 digits"
+          );
+          hasError = true;
+        }
       }
+
+      if (hasError) return;
 
       const emailExists = await window.checkEmailExists(email);
       if (emailExists) {
-        alert("Contact already established with this email address");
+        showValidationError(
+          "newContactEmail",
+          "errorContactEmail",
+          "This email address is already registered"
+        );
         return;
       }
 
@@ -223,10 +316,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (editForm) {
     editForm.addEventListener("submit", async function (e) {
       e.preventDefault();
+      clearValidationErrors("edit");
 
       const contact = window.getCurrentContact();
       if (!contact || !contact.id) {
-        alert("No contact selected!");
         return;
       }
 
@@ -234,16 +327,57 @@ document.addEventListener("DOMContentLoaded", function () {
       const email = document.getElementById("editContactEmail").value.trim();
       const phone = document.getElementById("editContactPhone").value.trim();
 
-      if (!name || !email || !phone) {
-        alert("Please fill in all fields!");
-        return;
+      let hasError = false;
+
+      if (!name) {
+        showValidationError(
+          "editContactName",
+          "errorEditName",
+          "Please enter a name"
+        );
+        hasError = true;
       }
 
-      const phoneDigits = phone.replace(/[^0-9]/g, "");
-      if (phoneDigits.length < 6) {
-        alert("Please enter a valid phone number with at least 6 digits");
-        return;
+      if (!email) {
+        showValidationError(
+          "editContactEmail",
+          "errorEditEmail",
+          "Please enter an email address"
+        );
+        hasError = true;
+      } else {
+        const emailPattern =
+          /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+        if (!emailPattern.test(email)) {
+          showValidationError(
+            "editContactEmail",
+            "errorEditEmail",
+            "Please enter a valid email (e.g. name@domain.com)"
+          );
+          hasError = true;
+        }
       }
+
+      if (!phone) {
+        showValidationError(
+          "editContactPhone",
+          "errorEditPhone",
+          "Please enter a phone number"
+        );
+        hasError = true;
+      } else {
+        const phoneDigits = phone.replace(/[^0-9]/g, "");
+        if (phoneDigits.length < 6) {
+          showValidationError(
+            "editContactPhone",
+            "errorEditPhone",
+            "Phone number must have at least 6 digits"
+          );
+          hasError = true;
+        }
+      }
+
+      if (hasError) return;
 
       try {
         if (!window.set || !window.ref || !window.firebaseDb) {
