@@ -53,6 +53,23 @@ function removeSubtaskDraft(index) {
 }
 
 /**
+ * Edit a subtask.
+ */
+function editSubtaskDraft(index) {
+  if (index < 0 || index >= subtaskDrafts.length) return;
+  
+  const subtask = subtaskDrafts[index];
+  const input = document.getElementById("subtaskInput");
+  
+  if (!input) return;
+  
+  input.value = subtask.title;
+  input.focus();
+  
+  removeSubtaskDraft(index);
+}
+
+/**
  * Render current subtask drafts to the list.
  */
 function renderSubtaskDrafts() {
@@ -67,13 +84,34 @@ function renderSubtaskDrafts() {
     li.className = "subtask-item";
     li.innerHTML = `
       <span class="subtask-title">${escapeHtml(subtask.title)}</span>
-      <button type="button" class="subtask-remove-btn" aria-label="Remove subtask">
-        X
-      </button>
+      <div class="subtask-actions">
+        <button type="button" class="subtask-edit-btn" aria-label="Edit subtask" title="Edit subtask">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M2 14h12M10 2l4 4M3 13l7-7 4 4-7 7H3v-4z" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        <button type="button" class="subtask-delete-btn" aria-label="Delete subtask" title="Delete subtask">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M2 4h12M6.5 7v6M9.5 7v6M3 4l0.5 9c0 0.5 0.5 1 1 1h7c0.5 0 1-0.5 1-1l0.5-9M6 4V2.5c0-0.5 0.5-1 1-1h2c0.5 0 1 0.5 1 1V4" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
     `;
 
-    const removeBtn = li.querySelector(".subtask-remove-btn");
-    removeBtn.addEventListener("click", () => removeSubtaskDraft(index));
+    const editBtn = li.querySelector(".subtask-edit-btn");
+    const deleteBtn = li.querySelector(".subtask-delete-btn");
+    
+    editBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      editSubtaskDraft(index);
+    });
+    
+    deleteBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      removeSubtaskDraft(index);
+    });
 
     list.appendChild(li);
   });

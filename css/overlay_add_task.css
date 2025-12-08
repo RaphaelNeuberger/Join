@@ -233,6 +233,95 @@ overlay-modal {
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.subtask-input__button:hover {
+  background-color: #1a2635;
+}
+
+.subtask-list {
+  width: 100%;
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.subtask-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  gap: 12px;
+}
+
+.subtask-title {
+  flex: 1;
+  font-size: 0.875rem;
+  color: #374151;
+  word-break: break-word;
+}
+
+.subtask-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.subtask-edit-btn,
+.subtask-delete-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.subtask-edit-btn:hover {
+  color: #2a3647;
+}
+
+.subtask-delete-btn:hover {
+  color: #ef4444;
+}
+
+/* Subtasks */
+.subtask-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.subtask-input__field {
+  flex: 1;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  padding: 8px 10px;
+  font-size: 1rem;
+}
+
+.subtask-input__button {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: none;
+  background: #2a3647;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .subtask-list {
