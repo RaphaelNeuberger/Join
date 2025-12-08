@@ -1,5 +1,5 @@
-// scripts/register.js (updated)
-// zentralisierte, obere Formular-Meldungen für alle Validierungs- und Backend-Fehler
+// scripts/register.js (updated - English notifications/messages)
+// centralized top-form messages for all validation and backend errors
 function showNotification(message, type = "success") {
   const container = document.getElementById("notification-container");
   const notif = document.createElement("div");
@@ -45,14 +45,14 @@ function validateFormAndShow(formEl, formKey) {
     if (firstInvalid) {
       let message = "";
       if (firstInvalid.type === "email") {
-        if (!firstInvalid.value) message = "Bitte geben Sie Ihre E-Mail Adresse ein.";
-        else message = "Bitte geben Sie eine gültige E-Mail Adresse ein.";
+        if (!firstInvalid.value) message = "Please enter your email address.";
+        else message = "Please enter a valid email address.";
       } else if (firstInvalid.type === "checkbox") {
-        message = "Bitte akzeptieren Sie die Datenschutzerklärung.";
+        message = "Please accept the privacy policy.";
       } else if (firstInvalid.type === "password") {
-        message = "Bitte füllen Sie dieses Passwortfeld aus.";
+        message = "Please fill out this password field.";
       } else {
-        message = "Bitte füllen Sie dieses Feld aus.";
+        message = "Please fill out this field.";
       }
       showFormMessage(formKey, message, "error", firstInvalid);
       return false;
@@ -63,11 +63,11 @@ function validateFormAndShow(formEl, formKey) {
     const pw = document.getElementById("signup-password").value.trim();
     const cpw = document.getElementById("confirm-password").value.trim();
     if (pw !== cpw) {
-      showFormMessage(formKey, "Passwörter stimmen nicht überein.", "error", document.getElementById("confirm-password"));
+      showFormMessage(formKey, "Passwords do not match.", "error", document.getElementById("confirm-password"));
       return false;
     }
     if (pw.length < 6) {
-      showFormMessage(formKey, "Passwort zu schwach (mind. 6 Zeichen).", "error", document.getElementById("signup-password"));
+      showFormMessage(formKey, "Password too weak (min. 6 characters).", "error", document.getElementById("signup-password"));
       return false;
     }
   }
@@ -109,15 +109,15 @@ async function addUser() {
       email,
       createdAt: new Date().toISOString(),
     });
-    showNotification("Erfolgreich registriert!", "success");
+    showNotification("Successfully registered!", "success");
 
     setTimeout(() => (window.location.href = "index.html?msg=Successfully registered"), 1200);
   } catch (e) {
-    let m = "Registrierungsfehler: " + (e.message || "Unbekannter Fehler");
-    if (e.code === "auth/email-already-in-use") m = "Diese E-Mail ist bereits registriert!";
-    else if (e.code === "auth/weak-password") m = "Passwort zu schwach (mind. 6 Zeichen).";
-    else if (e.code === "auth/invalid-email") m = "Ungültige E-Mail Adresse.";
-    else if (e.code === "auth/network-request-failed") m = "Netzwerkfehler – überprüfe Verbindung.";
+    let m = "Registration error: " + (e.message || "Unknown error");
+    if (e.code === "auth/email-already-in-use") m = "This email is already registered!";
+    else if (e.code === "auth/weak-password") m = "Password too weak (min. 6 characters).";
+    else if (e.code === "auth/invalid-email") m = "Invalid email address.";
+    else if (e.code === "auth/network-request-failed") m = "Network error – check your connection.";
 
     showNotification(m, "error");
   }
@@ -134,7 +134,7 @@ async function login() {
 
   try {
     const { user } = await signInWithEmailAndPassword(firebaseAuth, email, password);
-    showNotification("Erfolgreich eingeloggt!", "success");
+    showNotification("Successfully logged in!", "success");
 
     localStorage.setItem(
       "loggedInUser",
@@ -143,11 +143,11 @@ async function login() {
 
     setTimeout(() => (window.location.href = "summary.html"), 900);
   } catch (e) {
-    let msg = "Falsche E-Mail oder Passwort.";
-    if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password") msg = "Ungültige Zugangsdaten.";
-    else if (e.code === "auth/invalid-email") msg = "Ungültige E-Mail Adresse.";
+    let msg = "Incorrect email or password.";
+    if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password") msg = "Invalid credentials.";
+    else if (e.code === "auth/invalid-email") msg = "Invalid email address.";
 
-    // ⬇️ wieder über Notification
+    // ⬇️ use Notification
     showNotification(msg, "error");
 
     console.error("Login Error:", e);
@@ -168,8 +168,8 @@ async function guestLogin() {
       createdAt: new Date().toISOString(),
     });
 
-    // ⬇️ wieder Notification
-    showNotification("Als Gast eingeloggt.", "success");
+    // ⬇️ Notification
+    showNotification("Logged in as guest.", "success");
 
     localStorage.setItem(
       "loggedInUser",
@@ -178,7 +178,7 @@ async function guestLogin() {
 
     setTimeout(() => (window.location.href = "summary.html"), 900);
   } catch (e) {
-    showNotification("Gast-Login fehlgeschlagen.", "error");
+    showNotification("Guest login failed.", "error");
     console.error("Guest Login Error:", e);
   }
 }
@@ -190,16 +190,16 @@ async function phoneSignup() {
   const phoneEl = document.getElementById("phone");
   const phone = phoneEl ? phoneEl.value.trim() : "";
   if (!phone) {
-    showFormMessage("signup", "Bitte geben Sie eine Telefonnummer ein.", "error", phoneEl);
+    showFormMessage("signup", "Please enter a phone number.", "error", phoneEl);
     return;
   }
   try {
     const confirmationResult = await signInWithPhoneNumber(firebaseAuth, phone, recaptchaVerifier);
     window.confirmationResult = confirmationResult;
-    showFormMessage("signup", "SMS mit Code gesendet! Bitte Code eingeben.", "success");
+    showFormMessage("signup", "SMS with code sent! Please enter the code.", "success");
   } catch (error) {
     console.error("Phone Signup Error:", error);
-    showFormMessage("signup", "Fehler beim Senden des Codes.", "error");
+    showFormMessage("signup", "Error sending verification code.", "error");
     if (recaptchaVerifier && recaptchaVerifier.render) recaptchaVerifier.render().then((id) => grecaptcha.reset(id));
   }
 }
@@ -208,7 +208,7 @@ async function confirmPhoneCode() {
   clearFormMessage("signup");
   const codeEl = document.getElementById("phone-code");
   const code = codeEl ? codeEl.value.trim() : "";
-  if (!code) return showFormMessage("signup", "Bitte geben Sie den Code ein.", "error", codeEl);
+  if (!code) return showFormMessage("signup", "Please enter the code.", "error", codeEl);
   try {
     const { user } = await window.confirmationResult.confirm(code);
     await updateProfile(user, { displayName: document.getElementById("name").value.trim() || "Phone User" });
@@ -217,11 +217,11 @@ async function confirmPhoneCode() {
       phone: user.phoneNumber,
       createdAt: new Date().toISOString(),
     });
-    showFormMessage("signup", "Erfolgreich per Telefon angemeldet!", "success");
+    showFormMessage("signup", "Successfully signed up with phone!", "success");
     localStorage.setItem("loggedInUser", JSON.stringify({ uid: user.uid, phone: user.phoneNumber, name: user.displayName }));
     setTimeout(() => (window.location.href = "board.html"), 900);
   } catch (e) {
-    showFormMessage("signup", "Falscher Code oder Fehler.", "error");
+    showFormMessage("signup", "Incorrect code or error.", "error");
     console.error("Phone Confirm Error:", e);
   }
 }
@@ -243,11 +243,11 @@ function attachLiveHandlers() {
       let message = "";
       const input = e.target;
       if (input.type === "email") {
-        message = input.value ? "Bitte geben Sie eine gültige E-Mail Adresse ein." : "Bitte geben Sie Ihre E-Mail Adresse ein.";
+        message = input.value ? "Please enter a valid email address." : "Please enter your email address.";
       } else if (input.type === "checkbox") {
-        message = "Bitte akzeptieren Sie die Datenschutzerklärung.";
+        message = "Please accept the privacy policy.";
       } else {
-        message = "Bitte füllen Sie dieses Feld aus.";
+        message = "Please fill out this field.";
       }
       showFormMessage(formKey, message, "error", input);
     }, true);
@@ -295,3 +295,4 @@ document.addEventListener("DOMContentLoaded", () => {
   // safety: if inputs are dynamically created later, reattach
   setTimeout(() => attachLiveHandlers(), 500);
 });
+s
