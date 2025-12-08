@@ -131,9 +131,11 @@ body {
 
 .card-header-row {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 8px;
+  align-items: flex-start;
+  align-content: flex-start;
+
 }
 
 .card-type {
@@ -633,7 +635,8 @@ body {
   }
 
   #done-tasks {
-    margin-bottom: 100px;
+    padding-bottom: 120px;
+    margin-bottom: 80px;
   }
 
   .task-form-container {

@@ -303,11 +303,17 @@ function createMoveMenuOption(container, arrow, label, disabled, onClick) {
 function openMoveMenu(taskId, anchorEl) {
   if (window.innerWidth >= 1024) return;
 
-  currentMoveTaskId = taskId;
-
   const menu = ensureMoveMenuElement();
   const optionsContainer = menu.querySelector(".card-move-menu__options");
   if (!optionsContainer) return;
+
+  // Toggle: if the menu is already open for this task, close it
+  if (menu.style.display === "block" && String(currentMoveTaskId) === String(taskId)) {
+    closeMoveMenu();
+    return;
+  }
+
+  currentMoveTaskId = taskId;
 
   const globalIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (globalIndex === -1) return;
