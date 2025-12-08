@@ -51,7 +51,9 @@ function initAssignedTo() {
  */
 function showDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
+  const selectedContainer = document.getElementById("assignedToSelected");
   dropdown.style.display = "block";
+  if (selectedContainer) selectedContainer.style.display = "none";
   filterContacts();
 }
 
@@ -60,7 +62,9 @@ function showDropdown() {
  */
 function hideDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
+  const selectedContainer = document.getElementById("assignedToSelected");
   dropdown.style.display = "none";
+  if (selectedContainer) selectedContainer.style.display = "flex";
 }
 
 /**
@@ -122,6 +126,7 @@ function toggleAssignee(id, listItemElement = null) {
   }
 
   filterContacts();
+  renderSelectedBadges();
 }
 
 /**

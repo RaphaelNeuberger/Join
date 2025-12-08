@@ -376,17 +376,21 @@ body {
   border: 1px solid #d1d5db;
   border-radius: 10px;
   background: white;
-}
-
-.assigned-to-wrapper {
-  position: relative;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  background: white;
+  display: flex;
+  flex-direction: column;
 }
 
 .assigned-to-selected {
-  display: none !important;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 12px 16px;
+  border-top: 1px solid #e5e7eb;
+  background-color: #f9fafb;
+  border-radius: 0 0 10px 10px;
+  align-items: center;
+  order: 3;
 }
 
 .assigned-to-input {
@@ -399,22 +403,25 @@ body {
     no-repeat right 16px center;
   background-size: 12px;
   outline: none;
+  border-radius: 10px 10px 0 0;
+  order: 1;
 }
-
 .assigned-to-dropdown {
-  position: absolute;
-  top: 100%;
+  position: relative;
+  top: 0;
   left: 0;
   right: 0;
   display: none;
   background: white;
-  border: 1px solid #d1d5db;
-  border-top: none;
-  border-radius: 0 0 10px 10px;
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  border-radius: 0;
   max-height: 280px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: none;
+  order: 2;
+} box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
 
 .assigned-to-dropdown ul {
@@ -530,6 +537,45 @@ body {
 }
 .avatar-de {
   background: #ff69b4;
+}
+
+/* Selected Badges (Assigned Avatars Display) */
+.assigned-to-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.assigned-to-badge .avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.assigned-to-badge .remove {
+  margin-left: 4px;
+  cursor: pointer;
+  color: #6b7280;
+  font-weight: bold;
+  transition: color 0.2s ease;
+  padding: 2px 4px;
+}
+
+.assigned-to-badge .remove:hover {
+  color: #ef4444;
 }
 
 /* ===================== Formular / Add-Task ===================== */
