@@ -271,7 +271,7 @@ button:not(.dark-button):hover {
   }
 
   .join-logo {
-    width: 90px;
+    width: 60px;
   }
 
   h1 {
@@ -342,6 +342,21 @@ button:not(.dark-button):hover {
   color: #29abe2;
   transform: translateY(-50%) scale(1.1);
 }
+
+.dark-button.inactive {
+  opacity: 0.65;
+  cursor: pointer; 
+  transform: none;
+  box-shadow: none;
+}
+
+.dark-button.inactive:after {
+  content: "";
+  display: block;
+  height: 0;
+  width: 0;
+}
+
 
 /* === CUSTOM ICONS IN INPUT FIELDS === */
 .input-group {

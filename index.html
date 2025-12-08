@@ -1,209 +1,154 @@
 <!-- index.html (updated) -->
 <!DOCTYPE html>
 <html lang="de">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Join</title>
-    <link
-      href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet" />
-    <link
-      rel="icon"
-      href="img/logo/Logo for Favicon construction.svg"
-      type="image/svg+xml" />
-    <link rel="stylesheet" href="css/fonts.css" />
-    <link rel="stylesheet" href="css/indexstyle.css" />
-    <style>
-      /* Inline overrides for form message styling */
-      .form-message {
-        width: 100%;
-        box-sizing: border-box;
-        padding: 12px 14px;
-        border-radius: 10px;
-        margin-bottom: 16px;
-        font-weight: 600;
-        font-family: "Inter", sans-serif;
-        font-size: 15px;
-        display: none;
-      }
-      .form-message.error {
-        background-color: #ffecec;
-        color: #b00020;
-        border: 1px solid rgba(176, 0, 32, 0.12);
-      }
-      .form-message.success {
-        background-color: #e9f9ee;
-        color: #1f7a3a;
-        border: 1px solid rgba(31, 122, 58, 0.12);
-      }
-      .input-error {
-        border-color: #b00020 !important;
-        box-shadow: 0 0 0 4px rgba(176, 0, 32, 0.04);
-      }
-    </style>
-  </head>
 
-  <body>
-    <div id="intro-screen">
-      <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" />
-    </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Join</title>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="icon" href="img/logo/Logo for Favicon construction.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/fonts.css" />
+  <link rel="stylesheet" href="css/indexstyle.css" />
+  <style>
+    /* Inline overrides for form message styling */
+    .form-message {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      border-radius: 10px;
+      margin-bottom: 16px;
+      font-weight: 600;
+      font-family: "Inter", sans-serif;
+      font-size: 15px;
+      display: none;
+    }
 
-    <header>
-      <img
-        src="img/logo/Logo for Favicon construction.svg"
-        alt="Join Logo"
-        class="join-logo" />
-      <div class="signup-box" id="signup-top">
-        <span class="signup-text">Not a Join user?</span>
-        <button class="signup-btn dark-button" id="toggle-form">Sign up</button>
-      </div>
-    </header>
+    .form-message.error {
+      background-color: #ffecec;
+      color: #b00020;
+      border: 1px solid rgba(176, 0, 32, 0.12);
+    }
 
-    <main id="login-form" class="active">
-      <h1>Log in</h1>
-      <div class="blueline"></div>
+    .form-message.success {
+      background-color: #e9f9ee;
+      color: #1f7a3a;
+      border: 1px solid rgba(31, 122, 58, 0.12);
+    }
 
-      <div id="login-message" class="form-message" role="status" aria-live="polite"></div>
+    .input-error {
+      border-color: #b00020 !important;
+      box-shadow: 0 0 0 4px rgba(176, 0, 32, 0.04);
+    }
+  </style>
+</head>
 
-      <form id="form-login" novalidate>
-        <div class="input-group">
-          <input
-            type="email"
-            placeholder="E-Mail"
-            id="login-email"
-            required
-            autocomplete="username"
-          />
-          <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
-        </div>
+<body>
+  <div id="intro-screen">
+    <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" />
+  </div>
 
-        <div class="input-group">
-          <input
-            type="password"
-            placeholder="Password"
-            id="login-password"
-            required
-            autocomplete="current-password"
-          />
-          <img
-            src="img/icons/lock.svg"
-            alt="Lock Icon"
-            class="icon-lock"
-            id="toggle-password" />
-        </div>
-
-        <div class="button-group">
-          <button
-            class="dark-button"
-            type="submit"
-            aria-label="Log in to your account">
-            Log in
-          </button>
-          <button
-            type="button"
-            id="guest-login-btn"
-            aria-label="Continue as guest without account">
-            Guest Log in
-          </button>
-        </div>
-      </form>
-    </main>
-
-    <main id="signup-form" class="hidden">
-      <div class="signup-header">
-        <span class="material-icons back-arrow" id="back-to-login"
-          >arrow_back</span
-        >
-        <h1>Sign up</h1>
-      </div>
-      <div class="blueline"></div>
-
-      <div id="signup-message" class="form-message" role="status" aria-live="polite"></div>
-
-      <form id="form-signup" novalidate>
-        <div class="input-group">
-          <input
-            type="text"
-            id="name"
-            placeholder="Name"
-            required
-            autocomplete="name"
-          />
-          <img
-            src="img/icons/person.svg"
-            alt="Person Icon"
-            class="icon-person" />
-        </div>
-
-        <div class="input-group">
-          <input
-            type="email"
-            id="email"
-            placeholder="E-Mail"
-            required
-            autocomplete="email"
-          />
-          <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
-        </div>
-
-        <div class="input-group">
-          <input
-            type="password"
-            id="signup-password"
-            placeholder="Password"
-            required
-            autocomplete="new-password"
-          />
-          <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" />
-        </div>
-
-        <div class="input-group">
-          <input
-            type="password"
-            id="confirm-password"
-            placeholder="Confirm Password"
-            required
-            autocomplete="new-password"
-          />
-          <img
-            src="img/icons/lock.svg"
-            alt="Confirm Lock Icon"
-            class="icon-lock" />
-        </div>
-
-        <label class="privacy-accept">
-          <input type="checkbox" id="privacy" required aria-label="Accept privacy policy" />
-          I accept the
-          <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
-        </label>
-
-        <div class="button-group">
-          <button
-            type="submit"
-            class="dark-button"
-            aria-label="Create new account">
-            Sign up
-          </button>
-        </div>
-      </form>
-    </main>
-
-    <div class="signup-box" id="signup-bottom">
+  <header>
+    <img src="img/logo/Logo for Favicon construction.svg" alt="Join Logo" class="join-logo" />
+    <div class="signup-box" id="signup-top">
       <span class="signup-text">Not a Join user?</span>
-      <button class="signup-btn dark-button" id="toggle-form-2">Sign up</button>
+      <button class="signup-btn dark-button" id="toggle-form">Sign up</button>
     </div>
+  </header>
 
-    <div class="footer-links">
-      <a href="privacypolicy.html">Privacy Policy</a>
-      <a href="legal-notice.html">Legal Notice</a>
+  <main id="login-form" class="active">
+    <h1>Log in</h1>
+    <div class="blueline"></div>
+
+    <div id="login-message" class="form-message" role="status" aria-live="polite"></div>
+
+    <form id="form-login" novalidate>
+      <div class="input-group">
+        <input type="email" placeholder="E-Mail" id="login-email" required autocomplete="username" />
+        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
+      </div>
+
+      <div class="input-group">
+        <input type="password" placeholder="Password" id="login-password" required autocomplete="current-password" />
+        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" id="toggle-password" />
+      </div>
+
+      <div class="button-group">
+        <button class="dark-button" type="submit" aria-label="Log in to your account">
+          Log in
+        </button>
+        <button type="button" id="guest-login-btn" aria-label="Continue as guest without account">
+          Guest Log in
+        </button>
+      </div>
+    </form>
+  </main>
+
+  <main id="signup-form" class="hidden">
+    <div class="signup-header">
+      <span class="material-icons back-arrow" id="back-to-login">arrow_back</span>
+      <h1>Sign up</h1>
     </div>
+    <div class="blueline"></div>
 
-    <script src="scripts/config.js"></script>
-    <script type="module" src="scripts/firebase-login.js"></script>
-    <script src="scripts/index_ui.js"></script>
-    <script src="scripts/register.js"></script>
+    <div id="signup-message" class="form-message" role="status" aria-live="polite"></div>
 
-    <div id="notification-container"></div>
-  </body>
+    <form id="form-signup" novalidate>
+      <div class="input-group">
+        <input type="text" id="name" placeholder="Name" required autocomplete="name" />
+        <img src="img/icons/person.svg" alt="Person Icon" class="icon-person" />
+      </div>
+
+      <div class="input-group">
+        <input type="email" id="email" placeholder="E-Mail" required autocomplete="email" />
+        <img src="img/icons/mail.svg" alt="Mail Icon" class="icon-mail" />
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="signup-password" placeholder="Password" required autocomplete="new-password" />
+        <img src="img/icons/lock.svg" alt="Lock Icon" class="icon-lock" />
+      </div>
+
+      <div class="input-group">
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required
+          autocomplete="new-password" />
+        <img src="img/icons/lock.svg" alt="Confirm Lock Icon" class="icon-lock" />
+      </div>
+
+      <label class="privacy-accept">
+        <input type="checkbox" id="privacy" required aria-label="Accept privacy policy" />
+        I accept the
+        <a href="privacypolicy.html" target="_blank">Privacy Policy</a>
+      </label>
+
+      <button type="submit" class="dark-button inactive" <!-- class "inactive" initial für Optik --
+        id="signup-submit-btn"
+        aria-label="Create new account"
+        >
+        Sign up
+      </button>
+
+
+      </div>
+    </form>
+  </main>
+
+  <div class="signup-box" id="signup-bottom">
+    <span class="signup-text">Not a Join user?</span>
+    <button class="signup-btn dark-button" id="toggle-form-2">Sign up</button>
+  </div>
+
+  <div class="footer-links">
+    <a href="privacypolicy.html">Privacy Policy</a>
+    <a href="legal-notice.html">Legal Notice</a>
+  </div>
+
+  <script src="scripts/config.js"></script>
+  <script type="module" src="scripts/firebase-login.js"></script>
+  <script src="scripts/index_ui.js"></script>
+  <script src="scripts/register.js"></script>
+
+  <div id="notification-container"></div>
+</body>
+
 </html>

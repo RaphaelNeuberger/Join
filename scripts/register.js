@@ -1,5 +1,4 @@
-// scripts/register.js (updated - English notifications/messages)
-// centralized top-form messages for all validation and backend errors
+
 function showNotification(message, type = "success") {
   const container = document.getElementById("notification-container");
   const notif = document.createElement("div");
@@ -95,6 +94,7 @@ function initRecaptcha() {
 async function addUser() {
   clearFormMessage("signup");
   const form = document.getElementById("form-signup");
+  // defensive check: addUser only proceeds if valid
   if (!validateFormAndShow(form, "signup")) return;
 
   const name = document.getElementById("name").value.trim();
@@ -147,7 +147,6 @@ async function login() {
     if (e.code === "auth/user-not-found" || e.code === "auth/wrong-password") msg = "Invalid credentials.";
     else if (e.code === "auth/invalid-email") msg = "Invalid email address.";
 
-    // ⬇️ use Notification
     showNotification(msg, "error");
 
     console.error("Login Error:", e);
@@ -168,7 +167,6 @@ async function guestLogin() {
       createdAt: new Date().toISOString(),
     });
 
-    // ⬇️ Notification
     showNotification("Logged in as guest.", "success");
 
     localStorage.setItem(
@@ -226,7 +224,6 @@ async function confirmPhoneCode() {
   }
 }
 
-/* Live input handlers: clear top message when user types and mark inputs */
 function attachLiveHandlers() {
   ["form-login", "form-signup"].forEach((fid) => {
     const form = document.getElementById(fid);
@@ -235,8 +232,9 @@ function attachLiveHandlers() {
       const formKey = fid === "form-login" ? "login" : "signup";
       clearFormMessage(formKey);
       if (e.target && e.target.matches("input")) e.target.classList.remove("input-error");
+
+      if (fid === "form-signup") updateSignupButtonState();
     });
-    // Show messages for invalid events (so browser required triggers appear at top)
     form.addEventListener("invalid", (e) => {
       e.preventDefault();
       const formKey = fid === "form-login" ? "login" : "signup";
@@ -251,10 +249,39 @@ function attachLiveHandlers() {
       }
       showFormMessage(formKey, message, "error", input);
     }, true);
+
+    if (fid === "form-signup") updateSignupButtonState();
   });
 }
 
-/* UI toggles (Form switching) */
+function updateSignupButtonState() {
+  const nameEl = document.getElementById("name");
+  const emailEl = document.getElementById("email");
+  const pwEl = document.getElementById("signup-password");
+  const cpwEl = document.getElementById("confirm-password");
+  const privacyEl = document.getElementById("privacy");
+  const btn = document.getElementById("signup-submit-btn");
+
+  const name = nameEl ? nameEl.value.trim() : "";
+  const email = emailEl ? emailEl.value.trim() : "";
+  const pw = pwEl ? pwEl.value.trim() : "";
+  const cpw = cpwEl ? cpwEl.value.trim() : "";
+  const privacy = privacyEl ? privacyEl.checked : false;
+
+  const allValid =
+    name.length > 0 &&
+    email.length > 0 &&
+    pw.length >= 6 &&
+    cpw.length >= 6 &&
+    pw === cpw &&
+    privacy;
+
+  if (btn) {
+    if (allValid) btn.classList.remove("inactive");
+    else btn.classList.add("inactive");
+  }
+}
+
 document.addEventListener("click", (e) => {
   if (e.target && e.target.id === "toggle-form") {
     document.getElementById("login-form").classList.add("hidden");
@@ -273,7 +300,6 @@ document.addEventListener("click", (e) => {
   }
 });
 
-/* Form submit wiring */
 document.addEventListener("DOMContentLoaded", () => {
   attachLiveHandlers();
   const loginForm = document.getElementById("form-login");
@@ -285,14 +311,30 @@ document.addEventListener("DOMContentLoaded", () => {
       login();
     });
   }
+
   if (signupForm) {
     signupForm.addEventListener("submit", (ev) => {
       ev.preventDefault();
-      addUser();
+      if (validateFormAndShow(signupForm, "signup")) {
+        addUser();
+      }
     });
+
+    const signupBtn = document.getElementById("signup-submit-btn");
+    if (signupBtn) {
+      signupBtn.addEventListener("click", (ev) => {
+        validateFormAndShow(signupForm, "signup");
+      });
+    }
   }
 
-  // safety: if inputs are dynamically created later, reattach
+  const privacyEl = document.getElementById("privacy");
+  if (privacyEl) privacyEl.addEventListener("change", updateSignupButtonState);
+
+  ["name","email","signup-password","confirm-password"].forEach(id=>{
+    const el = document.getElementById(id);
+    if (el) el.addEventListener("input", updateSignupButtonState);
+  });
+
   setTimeout(() => attachLiveHandlers(), 500);
 });
-s
