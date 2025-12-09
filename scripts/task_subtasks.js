@@ -134,3 +134,42 @@ function resetSubtasks() {
   subtaskDrafts = [];
   renderSubtaskDrafts();
 }
+
+/**
+ * Add a subtask from the edit overlay input and persist it to the task.
+ * @param {string} taskId
+ */
+async function onAddSubtaskFromOverlay(taskId) {
+  const input = document.getElementById("overlaySubtaskInput");
+  if (!input) return;
+
+  const value = String(input.value || "").trim();
+  if (!value) return;
+
+  // Find task in global tasks array
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return;
+
+  const task = tasks[index];
+  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+
+  subtasks.push({ title: value, done: false });
+
+  const updatedTask = { ...task, subtasks };
+
+  try {
+    await saveTask(updatedTask);
+    tasks[index] = updatedTask;
+
+    // Clear input and re-open edit overlay to reflect changes
+    input.value = "";
+    if (typeof onTaskEditClick === "function") {
+      onTaskEditClick(taskId);
+    }
+    // Also update board view
+    if (typeof renderBoard === "function") renderBoard();
+  } catch (err) {
+    console.error("onAddSubtaskFromOverlay: error saving subtask", err);
+    alert("Error while adding subtask.");
+  }
+}
