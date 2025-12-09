@@ -177,6 +177,18 @@ function taskCardEditTemplate(task) {
 
         <div class="overlay-task-card-section">
           <p class="overlay-task-card-label-big">Subtasks</p>
+
+          <div class="subtask-add-row">
+            <input
+              id="overlaySubtaskInput"
+              type="text"
+              class="form-group__input"
+              placeholder="Add new subtask (press Enter or click +)"
+              onkeydown="if(event.key==='Enter'){event.preventDefault(); onAddSubtaskFromOverlay('${task.id}')}"
+            />
+            <button type="button" class="subtask-add-btn" onclick="onAddSubtaskFromOverlay('${task.id}')">+</button>
+          </div>
+
           <ul class="subtask-list-detail">
             ${renderSubtasksDetail(task.subtasks || [], task.id)}
           </ul>

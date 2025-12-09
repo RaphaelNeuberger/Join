@@ -238,6 +238,30 @@
   color: #111827;
 }
 
+/* Add-row inside edit overlay for new subtask input */
+.subtask-add-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.subtask-add-row .form-group__input {
+  flex: 1 1 auto;
+  padding: 8px 12px;
+}
+
+.subtask-add-btn {
+  flex: 0 0 auto;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  background-color: #2a3647;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
 /* Footer-Buttons */
 .task-card-footer {
   display: flex;
