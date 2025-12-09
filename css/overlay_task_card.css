@@ -216,6 +216,7 @@
   display: flex;
   justify-content: flex-end;
   margin-top: 24px;
+  padding-bottom: 20px;
   gap: 12px;
 }
 
@@ -234,12 +235,30 @@
   gap: 6px;
 }
 
+.edit-save-button{
+  border: none;
+  margin: 12px;
+  margin-bottom: 2rem;
+  width: 15%;
+  cursor: pointer;
+  padding: 12px 34px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 999px;
+  align-items: center;
+  background-color: #2a3647;
+  color: white;
+}
+.task-card-footer-edit{
+  display: flex;
+  justify-content: flex-end;
+}
 /* Edit-Form: scrollbarer Body, fester Footer */
 .task-card-edit-form {
   display: flex;
   flex-direction: column;
-  height: 90vh;
   max-height: 90vh;
+  margin-bottom: 20px;
 }
 
 .task-edit-header {

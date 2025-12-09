@@ -167,16 +167,10 @@ function taskCardEditTemplate(task) {
         </div>
       </div>
 
-      <div class="task-card-footer">
-        <button
-          type="button"
-          class="overlay-task-card-delete"
-          onclick="onTaskEditCancel('${task.id}')">
-          Cancel
-        </button>
+      <div class="task-card-footer-edit">
         <button
           type="submit"
-          class="overlay-task-card-edit">
+          class="edit-save-button">
           Ok
         </button>
       </div>
