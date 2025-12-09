@@ -154,6 +154,7 @@ function taskCardEditTemplate(task) {
 
         <div class="form-group">
           <label class="form-group__label">Assigned to</label>
+
           <div class="assigned-to-wrapper">
             <input
               id="assignedToInput"
@@ -162,6 +163,7 @@ function taskCardEditTemplate(task) {
               placeholder="Select contacts to assign"
               autocomplete="off"
             />
+            <span class="assigned-to-toggle" aria-hidden="true"></span>
 
             <div id="assignedToDropdown" class="assigned-to-dropdown">
               <ul id="assignedToList"></ul>

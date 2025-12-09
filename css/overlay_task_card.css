@@ -65,6 +65,15 @@
   gap: 8px;
 }
 
+/* ensure wrapper is positioned relative in overlays so toggle sits inside field */
+.task-card-body .assigned-to-wrapper {
+  position: relative;
+}
+
+.task-card-body .assigned-to-toggle {
+  right: 14px;
+}
+
 .task-card-header {
   width: 100%;
   display: flex;

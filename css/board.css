@@ -399,13 +399,16 @@ body {
   border: none;
   padding: 14px 16px;
   font-size: 16px;
-  cursor: pointer;
-  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath fill='%236b7280' d='M0 0l6 6 6-6z'/%3E%3C/svg%3E")
-    no-repeat right 16px center;
-  background-size: 12px;
+  cursor: text;
+  background: none;
   outline: none;
   border-radius: 10px 10px 0 0;
   order: 1;
+}
+
+/* space for left toggle triangle */
+.assigned-to-wrapper .assigned-to-input {
+  padding-right: 48px;
 }
 .assigned-to-dropdown {
   position: relative;
@@ -424,6 +427,37 @@ body {
   order: 2;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 } 
+
+/* toggle triangle on left inside wrapper */
+.assigned-to-toggle {
+  position: absolute;
+  right: 14px;
+  top: 25%;
+  transform: translateY(-25%);
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  pointer-events: auto;
+  cursor: pointer;
+  z-index: 5;
+}
+
+/* draw triangle using pseudo-element so it sits crisply inside the field */
+.assigned-to-toggle::before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  margin: 0 auto;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid #6b7280;
+  transition: transform 0.18s ease, border-top-color 0.18s ease;
+}
+
+.assigned-to-wrapper.is-open .assigned-to-toggle::before {
+  transform: rotate(180deg);
+}
 
 .assigned-to-dropdown ul {
   margin: 0;
