@@ -114,6 +114,44 @@ function onTaskEditClick(taskId) {
   if (!task) return;
 
   content.innerHTML = taskCardEditTemplate(task);
+  // Initialize Assigned-To controls after injecting the HTML
+  // Use a short timeout so DOM is updated before initialization
+  setTimeout(() => {
+    try {
+      // Map assignedTo entries (string or object) to contact ids
+      if (Array.isArray(task.assignedTo) && typeof selectedAssignees !== "undefined") {
+        const ids = (task.assignedTo || [])
+          .map((a) => {
+            if (!a) return null;
+            if (typeof a === "string") {
+              const c = contacts.find((x) => x.name === a || x.id === a);
+              return c ? c.id : null;
+            }
+            if (typeof a === "object") {
+              if (a.id) return a.id;
+              const c = contacts.find((x) => x.name === a.name);
+              return c ? c.id : null;
+            }
+            return null;
+          })
+          .filter(Boolean);
+
+        selectedAssignees = ids;
+      }
+
+      // Use scoped init so we don't clash with other elements on the page
+      if (typeof initAssignedToScoped === "function") {
+        initAssignedToScoped(content);
+      } else if (typeof initAssignedTo === "function") {
+        initAssignedTo();
+      }
+      // ensure dropdown hidden initially inside overlay
+      const dd = content.querySelector('.assigned-to-dropdown');
+      if (dd) dd.style.display = 'none';
+    } catch (err) {
+      console.error("onTaskEditClick: initAssignedTo failed", err);
+    }
+  }, 0);
 }
 
 /**
@@ -153,6 +191,8 @@ async function onTaskEditSave(event, taskId) {
     description,
     dueDate,
     priority: normalizePriority(priorityRaw),
+    // preserve or update assignedTo if task_assignees provides selection
+    assignedTo: typeof getAssignedTo === "function" ? getAssignedTo() : oldTask.assignedTo,
   };
 
   try {

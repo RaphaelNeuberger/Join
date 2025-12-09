@@ -46,6 +46,119 @@ function initAssignedTo() {
   dropdown.addEventListener("click", (e) => e.stopPropagation());
 }
 
+
+/**
+ * Initialize Assigned-To controls scoped to a specific container element (e.g. overlay content).
+ * Uses the same global `selectedAssignees` array but renders/attaches listeners inside `root`.
+ * @param {HTMLElement} root
+ */
+function initAssignedToScoped(root) {
+  if (!root || !(root instanceof HTMLElement)) return;
+
+  const input = root.querySelector('.assigned-to-input') || root.querySelector('#assignedToInput');
+  const dropdown = root.querySelector('.assigned-to-dropdown') || root.querySelector('#assignedToDropdown');
+  const list = root.querySelector('#assignedToList') || root.querySelector('.assigned-to-dropdown ul');
+  const selectedContainer = root.querySelector('.assigned-to-selected') || root.querySelector('#assignedToSelected');
+
+  if (!input || !dropdown || !list || !selectedContainer) return;
+
+  function renderContactOptionsScoped(filteredContacts = contacts) {
+    list.innerHTML = "";
+
+    filteredContacts.forEach((contact) => {
+      const isSelected = selectedAssignees.includes(contact.id);
+      const li = document.createElement("li");
+      li.classList.toggle("selected", isSelected);
+
+      li.innerHTML = `
+        <div class="contact-info">
+          <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
+          <span class="contact-name">${escapeHtml(contact.name)}</span>
+        </div>
+        <div class="checkmark-box ${isSelected ? "checked" : ""}"></div>
+      `;
+
+      li.addEventListener("click", (e) => {
+        e.preventDefault();
+        toggleAssigneeScoped(contact.id, li);
+      });
+
+      list.appendChild(li);
+    });
+  }
+
+  function filterContactsScoped() {
+    const query = input.value.trim().toLowerCase();
+    const filtered = contacts.filter((c) => c.name.toLowerCase().includes(query));
+    renderContactOptionsScoped(filtered);
+  }
+
+  function toggleAssigneeScoped(id, listItemElement = null) {
+    const index = selectedAssignees.indexOf(id);
+    const wasSelected = index !== -1;
+
+    if (wasSelected) {
+      selectedAssignees = selectedAssignees.filter((x) => x !== id);
+    } else {
+      selectedAssignees.push(id);
+    }
+
+    if (listItemElement) {
+      listItemElement.classList.toggle("selected", !wasSelected);
+      const box = listItemElement.querySelector(".checkmark-box");
+      if (box) box.classList.toggle("checked", !wasSelected);
+    }
+
+    filterContactsScoped();
+    renderSelectedBadgesScoped();
+  }
+
+  function renderSelectedBadgesScoped() {
+    selectedContainer.innerHTML = "";
+
+    selectedAssignees.forEach((id) => {
+      const contact = contacts.find((c) => c.id === id);
+      if (!contact) return;
+
+      const badge = document.createElement("div");
+      badge.className = "assigned-to-badge avatar-only";
+      badge.innerHTML = `
+        <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
+      `;
+
+      const removeEl = badge.querySelector('.remove');
+      if (removeEl) {
+        removeEl.addEventListener('click', (e) => {
+          e.preventDefault();
+          toggleAssigneeScoped(id);
+        });
+      }
+
+      selectedContainer.appendChild(badge);
+    });
+  }
+
+  input.addEventListener("focus", () => {
+    dropdown.style.display = "block";
+    selectedContainer.style.display = "none";
+    filterContactsScoped();
+  });
+  input.addEventListener("click", (e) => { e.stopPropagation(); dropdown.style.display = 'block'; selectedContainer.style.display = 'none'; filterContactsScoped(); });
+  input.addEventListener("input", filterContactsScoped);
+
+  document.addEventListener("click", (event) => {
+    if (!input.contains(event.target) && !dropdown.contains(event.target)) {
+      dropdown.style.display = "none";
+      selectedContainer.style.display = "flex";
+    }
+  });
+
+  dropdown.addEventListener("click", (e) => e.stopPropagation());
+
+  renderContactOptionsScoped();
+  renderSelectedBadgesScoped();
+}
+
 /**
  * Show the dropdown.
  */
@@ -141,11 +254,9 @@ function renderSelectedBadges() {
     if (!contact) return;
 
     const badge = document.createElement("div");
-    badge.className = "assigned-to-badge";
+    badge.className = "assigned-to-badge avatar-only";
     badge.innerHTML = `
       <div class="avatar ${contact.avatarClass}">${contact.initials}</div>
-      <span>${escapeHtml(contact.name)}</span>
-      <span class="remove" onclick="toggleAssignee('${id}')">X</span>
     `;
     selectedContainer.appendChild(badge);
   });

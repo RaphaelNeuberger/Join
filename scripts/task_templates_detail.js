@@ -152,10 +152,24 @@ function taskCardEditTemplate(task) {
           </div>
         </div>
 
-        <div class="overlay-task-card-section">
-          <p class="overlay-task-card-label-big">Assigned To:</p>
-          <div class="assigned-list-detail">
-            ${renderAssigneesDetail(task.assignedTo || [])}
+        <div class="form-group">
+          <label class="form-group__label">Assigned to</label>
+          <div class="assigned-to-wrapper">
+            <input
+              id="assignedToInput"
+              type="text"
+              class="form-group__input assigned-to-input"
+              placeholder="Select contacts to assign"
+              autocomplete="off"
+            />
+
+            <div id="assignedToDropdown" class="assigned-to-dropdown">
+              <ul id="assignedToList"></ul>
+            </div>
+
+            <div id="assignedToSelected" class="assigned-to-selected"></div>
+
+            <input type="hidden" name="assignedTo" id="assignedToHidden" value="" />
           </div>
         </div>
 
@@ -171,7 +185,7 @@ function taskCardEditTemplate(task) {
         <button
           type="submit"
           class="edit-save-button">
-          Ok
+          Ok<img src="./img/icons/check_white.svg" alt="">
         </button>
       </div>
     </form>

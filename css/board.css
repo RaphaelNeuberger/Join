@@ -566,6 +566,21 @@ body {
   flex-shrink: 0;
 }
 
+/* Avatar-only variant for selected assignees (no name shown) */
+.assigned-to-badge.avatar-only {
+  padding: 0;
+  background: transparent;
+  border: none;
+  gap: 8px;
+}
+
+.assigned-to-badge.avatar-only .avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  font-size: 14px;
+}
+
 .assigned-to-badge .remove {
   margin-left: 4px;
   cursor: pointer;
