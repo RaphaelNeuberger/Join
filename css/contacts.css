@@ -492,6 +492,8 @@ span.name-logo {
   align-items: flex-start;
   color: white;
   position: relative;
+  padding: 60px 60px;
+  padding-top: 20px;
 }
 
 .dialog-left img {
@@ -530,6 +532,7 @@ span.name-logo {
   display: flex;
   align-items: center;
   gap: 60px;
+  margin-left: 150px;
 }
 
 .dialog-avatar {
@@ -686,44 +689,6 @@ span.name-logo {
 }
 
 .edit-contact-dialog .dialog-avatar {
-}
-.add-contact-dialog .dialog-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #d1d1d1;
-  color: white;
-  font-size: 47px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: absolute;
-  bottom: -60px;
-  left: 46px;
-  z-index: 10;
-  border: 4px solid white;
-  margin-left: 0;
-  margin-right: 0;
-}
-.add-contact-dialog .dialog-avatar {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background-color: #d1d1d1;
-  color: white;
-  font-size: 47px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  position: absolute;
-  bottom: -60px;
-  left: 46px;
-  z-index: 10;
-  border: 4px solid white;
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -736,216 +701,234 @@ span.name-logo {
   justify-content: center;
   flex-shrink: 0;
   position: absolute;
-  bottom: -60px;
-  left: 50%;
+  left: 120%;
   transform: translateX(-50%);
   z-index: 10;
   border: 4px solid white;
 }
 
-.btn-delete,
-.btn-save {
-  padding: 18px 10px;
-  border-radius: 10px;
-  font-size: 21px;
-  font-weight: 700;
-  cursor: pointer;
-  border: none;
+.add-contact-dialog .dialog-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-color: #ff7a00;
+  color: white;
+  font-size: 47px;
+  font-weight: 500;
   display: flex;
   align-items: center;
-  gap: 10px;
-  transition: all 0.2s;
-  font-family: "Inter", sans-serif;
-}
-
-.btn-delete {
-  background: white;
-  color: #2a3647;
-  border: 1px solid #2a3647;
-  min-width: 110px;
   justify-content: center;
-}
+  flex-shrink: 0;
+  position: absolute;
+  left: 120%;
+  transform: translateX(-50%);
+  z-index: 10;
+  border: 4px solid white;
 
-.btn-delete:hover {
-  color: #29abe2;
-  border-color: #29abe2;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
-.btn-save {
-  background-color: #2a3647;
-  color: white;
-  min-width: 140px;
-  justify-content: center;
-}
-
-.btn-save:hover {
-  background-color: #29abe2;
-  box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
-}
-
-@media (max-width: 1023px) {
-  body {
-    overflow: hidden;
-  }
-  .info-contact-header {
-    display: none;
-  }
-  .info-contact-area {
-    display: none;
-  }
-  .main-contact {
-    padding: 0px;
-    margin-left: 0;
-    margin-top: 80px;
-    margin-bottom: 80px;
-    height: calc(100vh - 160px);
-    overflow-y: auto;
-    overflow-x: hidden;
-    position: relative;
-    z-index: 1;
-  }
-  .add-contact-button {
-    display: none;
-  }
-  /* Removed .all-contacts - merged with .contact-list */
-  .contact-list {
-    flex: none;
-    width: 100%;
-    max-width: none;
-    border-right: none;
-    padding-bottom: 1rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 1rem;
-    position: relative;
-    z-index: 1;
-    overflow: visible;
-    max-height: none;
-  }
-  .contact-item {
-    align-items: center;
+  .btn-delete,
+  .btn-save {
+    padding: 18px 10px;
+    border-radius: 10px;
+    font-size: 21px;
+    font-weight: 700;
     cursor: pointer;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    padding: 0.5rem 0.25rem;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.2s;
+    font-family: "Inter", sans-serif;
   }
 
-  .add-person-mobile {
-    display: flex;
-    position: fixed;
-    bottom: 100px;
-    right: 20px;
-    width: 56px;
-    height: 56px;
-    background-color: #2a3647;
-    border-radius: 50%;
-    box-shadow: 0 4px 8px rgba(42, 54, 71, 0.4);
-    align-items: center;
+  .btn-delete {
+    background: white;
+    color: #2a3647;
+    border: 1px solid #2a3647;
+    min-width: 110px;
     justify-content: center;
-    cursor: pointer;
-    z-index: 100;
   }
 
-  .add-person-mobile img {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
+  .btn-delete:hover {
+    color: #29abe2;
+    border-color: #29abe2;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   }
 
-  /* Add Contact Dialog Mobile */
-  .dialog-content {
-    flex-direction: column;
-    width: calc(100% - 20px);
-    max-width: min(350px, calc(100vw - 40px));
-    height: auto;
-    max-height: 95vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-radius: 20px;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
-    box-sizing: border-box;
+  .btn-save {
+    background-color: #2a3647;
+    color: white;
+    min-width: 140px;
+    justify-content: center;
   }
 
-  .add-contact-dialog.active .dialog-content {
-    transform: translateY(0);
+  .btn-save:hover {
+    background-color: #29abe2;
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.25);
   }
 
-  .edit-contact-dialog .dialog-content {
-    flex-direction: column;
-    width: calc(100% - 20px);
-    max-width: min(350px, calc(100vw - 40px));
-    height: auto;
-    max-height: 95vh;
-    overflow-y: auto;
-    overflow-x: hidden;
-    border-radius: 20px;
-    transform: translateY(100%);
-    transition: transform 0.3s ease-in-out;
-    box-sizing: border-box;
-    position: relative;
-  }
+  @media (max-width: 1023px) {
+    body {
+      overflow: hidden;
+    }
+    .info-contact-header {
+      display: none;
+    }
+    .info-contact-area {
+      display: none;
+    }
+    .main-contact {
+      padding: 0px;
+      margin-left: 0;
+      margin-top: 80px;
+      margin-bottom: 80px;
+      height: calc(100vh - 160px);
+      overflow-y: auto;
+      overflow-x: hidden;
+      position: relative;
+      z-index: 1;
+    }
+    .add-contact-button {
+      display: none;
+    }
+    /* Removed .all-contacts - merged with .contact-list */
+    .contact-list {
+      flex: none;
+      width: 100%;
+      max-width: none;
+      border-right: none;
+      padding-bottom: 1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 1rem;
+      position: relative;
+      z-index: 1;
+      overflow: visible;
+      max-height: none;
+    }
+    .contact-item {
+      align-items: center;
+      cursor: pointer;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      padding: 0.5rem 0.25rem;
+    }
 
-  .edit-contact-dialog.active .dialog-content {
-    transform: translateY(0);
-  }
+    .add-person-mobile {
+      display: flex;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      width: 56px;
+      height: 56px;
+      background-color: #2a3647;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(42, 54, 71, 0.4);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 100;
+    }
 
-  .edit-overay {
-    position: fixed;
-    top: auto;
-    bottom: -100%;
-    left: 0;
-    right: 0;
-    transform: none;
-    width: 100%;
-    height: auto;
-    max-height: calc(100vh - 80px);
-    border-radius: 30px 30px 0 0;
-    z-index: 95;
-    transition: bottom 0.5s ease-in-out;
-    overflow-y: auto;
-    display: flex;
-  }
+    .add-person-mobile img {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0) invert(1);
+    }
 
-  .edit-overay.active {
-    bottom: 0;
-  }
+    /* Add Contact Dialog Mobile */
+    .dialog-content {
+      flex-direction: column;
+      width: calc(100% - 20px);
+      max-width: min(350px, calc(100vw - 40px));
+      height: auto;
+      max-height: 95vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 20px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+      box-sizing: border-box;
+    }
 
-  .dialog-left {
-    width: 100%;
-    height: 25vh;
-    padding: 30px 20px 20px;
-    border-radius: 20px 20px 0 0;
-    position: relative;
-  }
+    .add-contact-dialog.active .dialog-content {
+      transform: translateY(0);
+    }
 
-  .dialog-left img {
-    display: none;
-  }
+    .edit-contact-dialog .dialog-content {
+      flex-direction: column;
+      width: calc(100% - 20px);
+      max-width: min(350px, calc(100vw - 40px));
+      height: auto;
+      max-height: 95vh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-radius: 20px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+      box-sizing: border-box;
+      position: relative;
+    }
 
-  .dialog-left h2 {
-    font-size: 32px;
-    margin-bottom: 5px;
-  }
+    .edit-contact-dialog.active .dialog-content {
+      transform: translateY(0);
+    }
 
-  .dialog-subtitle {
-    font-size: 16px;
-    margin-bottom: 10px;
-  }
+    .edit-overay {
+      position: fixed;
+      top: auto;
+      bottom: -100%;
+      left: 0;
+      right: 0;
+      transform: none;
+      width: 100%;
+      height: auto;
+      max-height: calc(100vh - 80px);
+      border-radius: 30px 30px 0 0;
+      z-index: 95;
+      transition: bottom 0.5s ease-in-out;
+      overflow-y: auto;
+      display: flex;
+    }
 
-  .dialog-underline {
-    width: 60px;
-    height: 3px;
-  }
+    .edit-overay.active {
+      bottom: 0;
+    }
 
-  .dialog-right {
-    flex-direction: column;
-    padding: 20px 20px 30px;
-    padding-top: 60px;
-    box-sizing: border-box;
-    overflow-x: hidden;
-    gap: 20px;
+    .dialog-left {
+      width: 100%;
+      height: 25vh;
+      padding: 30px 20px 20px;
+      border-radius: 20px 20px 0 0;
+      position: relative;
+    }
+
+    .dialog-left img {
+      display: none;
+    }
+
+    .dialog-left h2 {
+      font-size: 32px;
+      margin-bottom: 5px;
+    }
+
+    .dialog-subtitle {
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    .dialog-underline {
+      width: 60px;
+      height: 3px;
+    }
+
+    .dialog-right {
+      flex-direction: column;
+      padding: 20px 20px 30px;
+      padding-top: 60px;
+      box-sizing: border-box;
+      overflow-x: hidden;
+      gap: 20px;
+    }
   }
 
   .dialog-avatar {
