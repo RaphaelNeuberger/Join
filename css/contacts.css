@@ -832,7 +832,7 @@ position: relative;
   }
 
   .dialog-left {
-    width: 100%;
+    width: 88%;
     height: 25vh;
     padding: 30px 20px 20px;
     border-radius: 20px 20px 0 0;
@@ -859,9 +859,8 @@ position: relative;
 
   .dialog-right {
     flex-direction: column;
-    padding: 20px 20px 30px;
+    padding: 30px 20px 20px;
     box-sizing: border-box;
-    overflow-x: hidden;
     gap: 20px;
   }
 
@@ -888,7 +887,7 @@ position: relative;
   .dialog-form {
     margin-top: 50px;
     width: 100%;
-    gap: 15px;
+    gap: 25px;
   }
 
   .input-group input {
