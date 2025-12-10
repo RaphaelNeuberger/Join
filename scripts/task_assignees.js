@@ -255,7 +255,16 @@ function hideDropdown() {
   const selectedContainer = document.getElementById("assignedToSelected");
   if (!dropdown) return;
   dropdown.style.display = "none";
-  if (selectedContainer) selectedContainer.style.display = "flex";
+  
+  // Only show selected container if there are assignees
+  if (selectedContainer) {
+    if (selectedAssignees.length > 0) {
+      selectedContainer.style.display = "flex";
+    } else {
+      selectedContainer.style.display = "none";
+    }
+  }
+  
   const input = document.getElementById('assignedToInput');
   if (input) {
     const wrapper = input.closest('.assigned-to-wrapper');
@@ -331,6 +340,15 @@ function toggleAssignee(id, listItemElement = null) {
 function renderSelectedBadges() {
   const selectedContainer = document.getElementById("assignedToSelected");
   selectedContainer.innerHTML = "";
+
+  if (selectedAssignees.length === 0) {
+    // Hide the container if no assignees are selected
+    selectedContainer.style.display = "none";
+    return;
+  }
+
+  // Show the container if there are assignees
+  selectedContainer.style.display = "flex";
 
   selectedAssignees.forEach((id) => {
     const contact = contacts.find((c) => c.id === id);
