@@ -348,6 +348,7 @@ button:not(.dark-button):hover {
   cursor: pointer; 
   transform: none;
   box-shadow: none;
+  width: 100%;
 }
 
 .dark-button.inactive:after {
