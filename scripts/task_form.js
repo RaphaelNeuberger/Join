@@ -38,6 +38,7 @@ function initAddTaskForm() {
 
   initSubtaskControls();
   initAssignedTo();
+  setMinDate();
 }
 
 
@@ -145,4 +146,31 @@ function showSuccessMessage() {
   setTimeout(() => {
     messageElement.style.display = "none";
   }, 2000);
+}
+
+
+/**
+ * Set minimum date to today to prevent past date selection.
+ */
+function setMinDate() {
+  const dueDate = document.getElementById("dueDate");
+  if (!dueDate) return;
+
+  const today = new Date();
+  const year = today.getFullYear();
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const day = String(today.getDate()).padStart(2, "0");
+  const minDate = `${year}-${month}-${day}`;
+
+  dueDate.min = minDate;
+}
+
+
+/**
+ * Remove minimum date restriction (for editing existing tasks).
+ */
+function removeMinDate() {
+  const dueDate = document.getElementById("dueDate");
+  if (!dueDate) return;
+  dueDate.removeAttribute("min");
 }

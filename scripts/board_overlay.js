@@ -114,6 +114,10 @@ function onTaskEditClick(taskId) {
   if (!task) return;
 
   content.innerHTML = taskCardEditTemplate(task);
+  
+  // Remove min date restriction for editing existing tasks
+  removeMinDate();
+  
   // Initialize Assigned-To controls after injecting the HTML
   // Use a short timeout so DOM is updated before initialization
   setTimeout(() => {
