@@ -9,6 +9,7 @@ const STATUS_LABELS = {
 
 const BOARD_STATUS_LABELS = STATUS_LABELS;
 let currentMoveTaskId = null;
+let moveMenuElement = null;
 
 async function loadScripts() {
   initLayout();
@@ -60,8 +61,8 @@ function matchesQuery(task, query) {
 }
 
 function filterTasksByStatusAndQuery(status, query) {
-  const tasksForStatus = getTasksByStatus(status);
-  return tasksForStatus.filter((task) => matchesQuery(task, query));
+  const list = getTasksByStatus(status);
+  return list.filter((task) => matchesQuery(task, query));
 }
 
 function renderFilteredStatusColumn(status, containerId, query) {
@@ -86,7 +87,9 @@ function getTasksByStatus(status) {
   if (!Array.isArray(tasks) || tasks.length === 0) {
     return [];
   }
-  return tasks.filter((task) => normalizeTaskStatus(task.status) === status);
+  return tasks.filter(
+    (task) => normalizeTaskStatus(task.status) === status
+  );
 }
 
 function fillColumn(container, tasksForStatus) {
@@ -119,6 +122,7 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
 
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll(".task-cards");
+
   taskBoards.forEach((board) => {
     const hasTask = board.querySelector(".card-task");
     const placeholder = board.querySelector(".card-no-task");
@@ -194,5 +198,177 @@ async function dropHandler(event) {
   await updateTaskStatus(taskId, newStatus);
   renderBoard();
 }
+
+function ensureMoveMenuElement() {
+  if (moveMenuElement) return moveMenuElement;
+
+  const el = document.createElement("div");
+  el.className = "card-move-menu";
+  el.innerHTML = `
+    <div class="card-move-menu__inner">
+      <p class="card-move-menu__title">Move task:</p>
+      <div class="card-move-menu__options"></div>
+    </div>
+  `;
+  document.body.appendChild(el);
+  moveMenuElement = el;
+
+  return moveMenuElement;
+}
+
+function createMoveMenuOption(container, arrow, label, disabled, onClick) {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "card-move-menu__option";
+  button.disabled = disabled;
+  button.innerHTML =
+    '<span class="card-move-menu__arrow">' +
+    arrow +
+    "</span>" +
+    "<span>" +
+    label +
+    "</span>";
+  if (!disabled) {
+    button.addEventListener("click", onClick);
+  }
+  container.appendChild(button);
+}
+
+function isSameMoveMenuOpen(taskId, menu) {
+  const visible = menu.style.display === "block";
+  const sameTask = String(currentMoveTaskId) === String(taskId);
+  return visible && sameTask;
+}
+
+function getMoveMenuState(taskId) {
+  currentMoveTaskId = taskId;
+
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return null;
+
+  const task = tasks[index];
+  const status = normalizeTaskStatus(task.status);
+  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
+  const statusIndex = order.indexOf(status);
+  if (statusIndex === -1) return null;
+
+  const previousStatus = statusIndex > 0 ? order[statusIndex - 1] : null;
+  const nextStatus =
+    statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
+
+  const labels =
+    typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
+
+  return { previousStatus, nextStatus, labels };
+}
+
+function getMoveLabel(labels, status, kind) {
+  if (!status) {
+    return kind === "prev" ? "No previous column" : "No next column";
+  }
+  const fallback = kind === "prev" ? "previous column" : "next column";
+  return "Move to " + (labels[status] || fallback);
+}
+
+function renderMoveOptions(container, state) {
+  const prevLabel = getMoveLabel(state.labels, state.previousStatus, "prev");
+  const nextLabel = getMoveLabel(state.labels, state.nextStatus, "next");
+
+  container.innerHTML = "";
+
+  createMoveMenuOption(
+    container,
+    "←",
+    prevLabel,
+    !state.previousStatus,
+    () => moveTaskToAdjacentColumn(currentMoveTaskId, "prev")
+  );
+
+  createMoveMenuOption(
+    container,
+    "→",
+    nextLabel,
+    !state.nextStatus,
+    () => moveTaskToAdjacentColumn(currentMoveTaskId, "next")
+  );
+}
+
+function positionMoveMenu(menu, anchorEl) {
+  const rect = anchorEl.getBoundingClientRect();
+  const top = rect.bottom + window.scrollY + 6;
+  const left = rect.left + window.scrollX;
+
+  menu.style.top = top + "px";
+  menu.style.left = left + "px";
+  menu.style.display = "block";
+}
+
+function openMoveMenu(taskId, anchorEl) {
+  if (window.innerWidth >= 1024) return;
+
+  const menu = ensureMoveMenuElement();
+  const optionsContainer = menu.querySelector(".card-move-menu__options");
+  if (!optionsContainer) return;
+
+  if (isSameMoveMenuOpen(taskId, menu)) {
+    closeMoveMenu();
+    return;
+  }
+
+  const state = getMoveMenuState(taskId);
+  if (!state) return;
+
+  renderMoveOptions(optionsContainer, state);
+  positionMoveMenu(menu, anchorEl);
+}
+
+function closeMoveMenu() {
+  if (!moveMenuElement) return;
+  moveMenuElement.style.display = "none";
+}
+
+function getAdjacentStatus(order, status, direction) {
+  const index = order.indexOf(status);
+  if (index === -1) return null;
+
+  const offset = direction === "prev" ? -1 : 1;
+  return order[index + offset] || null;
+}
+
+async function moveTaskToStatus(taskId, targetStatus) {
+  try {
+    await updateTaskStatus(taskId, targetStatus);
+    closeMoveMenu();
+    renderBoard();
+  } catch (error) {
+    console.error("moveTaskToAdjacentColumn: failed", error);
+  }
+}
+
+async function moveTaskToAdjacentColumn(taskId, direction) {
+  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
+  if (index === -1) return;
+
+  const status = normalizeTaskStatus(tasks[index].status);
+  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
+  const targetStatus = getAdjacentStatus(order, status, direction);
+  if (!targetStatus) return;
+
+  await moveTaskToStatus(taskId, targetStatus);
+}
+
+document.addEventListener("click", (event) => {
+  if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
+
+  const clickInsideMenu = moveMenuElement.contains(event.target);
+  const clickOnMoveBtn = event.target.closest(".card-move-btn");
+
+  if (!clickInsideMenu && !clickOnMoveBtn) {
+    closeMoveMenu();
+  }
+});
+
+window.addEventListener("scroll", closeMoveMenu);
+window.addEventListener("resize", closeMoveMenu);
 
 document.addEventListener("DOMContentLoaded", loadScripts);

@@ -1,19 +1,26 @@
 function onTaskCardClick(event) {
-  const moveBtn = event.target.closest(".card-move-btn");
-  if (moveBtn) {
-    try {
-      event.stopPropagation();
-      event.preventDefault();
-    } catch (e) {
-    }
-    const card = moveBtn.closest(".card-task");
-    if (!card) return;
-    const taskId = card.dataset.taskId;
-    if (!taskId) return;
-    openMoveMenu(taskId, moveBtn);
-    return;
-  }
+  if (handleMoveButtonClick(event)) return;
+  handleTaskCardOpen(event);
+}
 
+function handleMoveButtonClick(event) {
+  const moveBtn = event.target.closest(".card-move-btn");
+  if (!moveBtn) return false;
+
+  event.stopPropagation();
+  event.preventDefault();
+
+  const card = moveBtn.closest(".card-task");
+  if (!card) return false;
+
+  const taskId = card.dataset.taskId;
+  if (!taskId) return false;
+
+  openMoveMenu(taskId, moveBtn);
+  return true;
+}
+
+function handleTaskCardOpen(event) {
   const card = event.target.closest(".card-task");
   if (!card) return;
 
@@ -29,72 +36,76 @@ function getOverlayElements() {
   return { overlay, content };
 }
 
+function createConfirmOverlay() {
+  const overlay = document.createElement("div");
+  overlay.className = "confirm-overlay confirm-overlay--open";
+  overlay.setAttribute("role", "dialog");
+  overlay.setAttribute("aria-modal", "true");
+  return overlay;
+}
+
+function createConfirmDialog(message) {
+  const dialog = document.createElement("div");
+  dialog.className = "confirm-dialog";
+  dialog.innerHTML = `
+    <h3 class="confirm-dialog__title">Confirm</h3>
+    <p class="confirm-dialog__message">
+      ${message || "Are you sure?"}
+    </p>
+    <div class="confirm-dialog__actions">
+      <button type="button" class="confirm-dialog__button confirm-dialog__button--cancel">
+        Cancel
+      </button>
+      <button type="button" class="confirm-dialog__button confirm-dialog__button--confirm">
+        Delete
+      </button>
+    </div>
+  `;
+  return dialog;
+}
+
+function focusCancelButton(dialog) {
+  const cancelBtn = dialog.querySelector(".confirm-dialog__button--cancel");
+  if (cancelBtn) cancelBtn.focus();
+}
+
+function attachConfirmKeydown(cleanup) {
+  const handler = (event) => {
+    if (event.key === "Escape") {
+      document.removeEventListener("keydown", handler);
+      cleanup(false);
+    }
+  };
+  document.addEventListener("keydown", handler);
+}
+
+function setupConfirmEvents(overlay, dialog, resolve) {
+  const cancelBtn = dialog.querySelector(".confirm-dialog__button--cancel");
+  const confirmBtn = dialog.querySelector(".confirm-dialog__button--confirm");
+
+  const cleanup = (result) => {
+    overlay.remove();
+    resolve(result);
+  };
+
+  cancelBtn.addEventListener("click", () => cleanup(false));
+  confirmBtn.addEventListener("click", () => cleanup(true));
+
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) cleanup(false);
+  });
+
+  attachConfirmKeydown(cleanup);
+}
+
 function showConfirmPopup(message) {
   return new Promise((resolve) => {
-    const overlay = document.createElement("div");
-    overlay.className = "confirm-overlay confirm-overlay--open";
-    overlay.setAttribute("role", "dialog");
-    overlay.setAttribute("aria-modal", "true");
-
-    const dialog = document.createElement("div");
-    dialog.className = "confirm-dialog";
-
-    const title = document.createElement("h3");
-    title.className = "confirm-dialog__title";
-    title.textContent = "Confirm";
-
-    const msg = document.createElement("p");
-    msg.className = "confirm-dialog__message";
-    msg.textContent = message || "Are you sure?";
-
-    const actions = document.createElement("div");
-    actions.className = "confirm-dialog__actions";
-
-    const btnCancel = document.createElement("button");
-    btnCancel.type = "button";
-    btnCancel.className = "confirm-dialog__button confirm-dialog__button--cancel";
-    btnCancel.textContent = "Cancel";
-
-    const btnConfirm = document.createElement("button");
-    btnConfirm.type = "button";
-    btnConfirm.className = "confirm-dialog__button confirm-dialog__button--confirm";
-    btnConfirm.textContent = "Delete";
-
-    actions.appendChild(btnCancel);
-    actions.appendChild(btnConfirm);
-
-    dialog.appendChild(title);
-    dialog.appendChild(msg);
-    dialog.appendChild(actions);
+    const overlay = createConfirmOverlay();
+    const dialog = createConfirmDialog(message);
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
-
-    btnCancel.focus();
-
-    function cleanup(result) {
-      try {
-        overlay.remove();
-      } catch (e) {}
-      resolve(result);
-    }
-
-    btnCancel.addEventListener("click", () => cleanup(false));
-    btnConfirm.addEventListener("click", () => cleanup(true));
-
-    overlay.addEventListener("click", (ev) => {
-      if (ev.target === overlay) cleanup(false);
-    });
-
-    document.addEventListener(
-      "keydown",
-      function onKey(e) {
-        if (e.key === "Escape") {
-          document.removeEventListener("keydown", onKey);
-          cleanup(false);
-        }
-      },
-      { once: true }
-    );
+    focusCancelButton(dialog);
+    setupConfirmEvents(overlay, dialog, resolve);
   });
 }
 
@@ -106,11 +117,9 @@ function openTaskCard(taskId) {
   if (!task) return;
 
   content.innerHTML = taskCardContentTemplate(task);
-
   overlay.style.display = "flex";
   overlay.classList.add("overlay-task-card--open");
   document.body.style.overflow = "hidden";
-
   closeMoveMenu();
 }
 
@@ -129,16 +138,13 @@ function closeTaskCard() {
   closeMoveMenu();
 }
 
-document.addEventListener("click", function (event) {
+document.addEventListener("click", (event) => {
   const { overlay } = getOverlayElements();
   if (!overlay) return;
-
-  if (event.target === overlay) {
-    closeTaskCard();
-  }
+  if (event.target === overlay) closeTaskCard();
 });
 
-document.addEventListener("keydown", function (event) {
+document.addEventListener("keydown", (event) => {
   if (event.key === "Escape") {
     closeTaskCard();
     closeMoveMenu();
@@ -153,78 +159,106 @@ function onTaskEditClick(taskId) {
   if (!task) return;
 
   content.innerHTML = taskCardEditTemplate(task);
-  
   removeMinDate();
-  
+  initEditAssignedSection(task, content);
+}
+
+function initEditAssignedSection(task, content) {
   setTimeout(() => {
     try {
-      if (Array.isArray(task.assignedTo) && typeof selectedAssignees !== "undefined") {
-        const ids = (task.assignedTo || [])
-          .map((a) => {
-            if (!a) return null;
-            if (typeof a === "string") {
-              const c = contacts.find((x) => x.name === a || x.id === a);
-              return c ? c.id : null;
-            }
-            if (typeof a === "object") {
-              if (a.id) return a.id;
-              const c = contacts.find((x) => x.name === a.name);
-              return c ? c.id : null;
-            }
-            return null;
-          })
-          .filter(Boolean);
-
-        selectedAssignees = ids;
-      }
-
-      if (typeof initAssignedToScoped === "function") {
-        initAssignedToScoped(content);
-      } else if (typeof initAssignedTo === "function") {
-        initAssignedTo();
-      }
-      const dd = content.querySelector('.assigned-to-dropdown');
-      if (dd) dd.style.display = 'none';
-    } catch (err) {
-      console.error("onTaskEditClick: initAssignedTo failed", err);
+      updateSelectedAssignees(task);
+      initAssignedToInEdit(content);
+      hideAssignedDropdown(content);
+    } catch (error) {
+      console.error("onTaskEditClick: initAssignedTo failed", error);
     }
   }, 0);
+}
+
+function updateSelectedAssignees(task) {
+  if (!Array.isArray(task.assignedTo)) return;
+  if (typeof selectedAssignees === "undefined") return;
+
+  const ids = task.assignedTo
+    .map((entry) => normalizeAssigneeId(entry))
+    .filter(Boolean);
+
+  selectedAssignees = ids;
+}
+
+function normalizeAssigneeId(entry) {
+  if (!entry) return null;
+
+  if (typeof entry === "string") {
+    const contact = contacts.find((c) => c.name === entry || c.id === entry);
+    return contact ? contact.id : null;
+  }
+
+  if (typeof entry === "object") {
+    if (entry.id) return entry.id;
+    const contact = contacts.find((c) => c.name === entry.name);
+    return contact ? contact.id : null;
+  }
+
+  return null;
+}
+
+function initAssignedToInEdit(content) {
+  if (typeof initAssignedToScoped === "function") {
+    initAssignedToScoped(content);
+    return;
+  }
+  if (typeof initAssignedTo === "function") {
+    initAssignedTo();
+  }
+}
+
+function hideAssignedDropdown(content) {
+  const dropdown = content.querySelector(".assigned-to-dropdown");
+  if (dropdown) dropdown.style.display = "none";
 }
 
 function onTaskEditCancel(taskId) {
   openTaskCard(taskId);
 }
 
-async function onTaskEditSave(event, taskId) {
-  event.preventDefault();
-  const form = event.target;
-  if (!form) return;
-
-  const formData = new FormData(form);
+function buildTaskUpdatePayload(formData) {
   const title = String(formData.get("title") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const dueDate = String(formData.get("dueDate") || "").trim();
   const priorityRaw = String(formData.get("priority") || "Medium").trim();
+  return { title, description, dueDate, priorityRaw };
+}
 
-  if (!title) {
+function isEditPayloadValid(payload) {
+  if (!payload.title) {
     alert("Title is required.");
-    return;
+    return false;
   }
+  return true;
+}
 
-  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (index === -1) return;
+function findTaskIndexById(taskId) {
+  return tasks.findIndex((task) => String(task.id) === String(taskId));
+}
 
-  const oldTask = tasks[index];
+function createUpdatedTask(oldTask, payload) {
+  const assignedTo =
+    typeof getAssignedTo === "function"
+      ? getAssignedTo()
+      : oldTask.assignedTo;
 
-  const updatedTask = {
+  return {
     ...oldTask,
-    title,
-    description,
-    dueDate,
-    priority: normalizePriority(priorityRaw),
-    assignedTo: typeof getAssignedTo === "function" ? getAssignedTo() : oldTask.assignedTo,
+    title: payload.title,
+    description: payload.description,
+    dueDate: payload.dueDate,
+    priority: normalizePriority(payload.priorityRaw),
+    assignedTo,
   };
+}
 
+async function persistEditedTask(updatedTask, index, taskId) {
   try {
     await saveTask(updatedTask);
     tasks[index] = updatedTask;
@@ -234,6 +268,23 @@ async function onTaskEditSave(event, taskId) {
     console.error("onTaskEditSave: error saving task", error);
     alert("Error while saving the task.");
   }
+}
+
+async function onTaskEditSave(event, taskId) {
+  event.preventDefault();
+
+  const form = event.target;
+  if (!form) return;
+
+  const formData = new FormData(form);
+  const payload = buildTaskUpdatePayload(formData);
+  if (!isEditPayloadValid(payload)) return;
+
+  const index = findTaskIndexById(taskId);
+  if (index === -1) return;
+
+  const updatedTask = createUpdatedTask(tasks[index], payload);
+  await persistEditedTask(updatedTask, index, taskId);
 }
 
 function onEditPriorityClick(event) {
@@ -247,24 +298,26 @@ function onEditPriorityClick(event) {
   button.classList.add("is-active");
 
   const hidden = wrapper.querySelector('input[name="priority"]');
-  if (hidden) {
-    hidden.value = button.dataset.priority || "Medium";
-  }
+  if (hidden) hidden.value = button.dataset.priority || "Medium";
 }
 
 async function onOverlayDeleteClick(taskId) {
-  const confirmDelete = await showConfirmPopup(
+  const confirmed = await showConfirmPopup(
     "Do you really want to delete this task?"
   );
-  if (!confirmDelete) return;
+  if (!confirmed) return;
 
+  await deleteTask(taskId);
+}
+
+async function deleteTask(taskId) {
   try {
     await deleteTaskById(taskId);
 
     tasks = tasks.filter(
-      (t) =>
-        String(t.id) !== String(taskId) &&
-        String(t.firebaseId) !== String(taskId)
+      (task) =>
+        String(task.id) !== String(taskId) &&
+        String(task.firebaseId) !== String(taskId)
     );
 
     closeTaskCard();
@@ -275,178 +328,35 @@ async function onOverlayDeleteClick(taskId) {
   }
 }
 
-async function onSubtaskToggle(taskId, index, checked) {
-  const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (taskIndex === -1) return;
+function getClonedSubtasks(task) {
+  return Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+}
 
-  const task = tasks[taskIndex];
-  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
+function createUpdatedSubtask(subtask, checked) {
+  const done = !!checked;
+  return { ...subtask, done, checked: done };
+}
 
-  if (!subtasks[index]) return;
-
-  const updatedSubtask = {
-    ...subtasks[index],
-    done: !!checked,
-    checked: !!checked,
-  };
-  subtasks[index] = updatedSubtask;
-
-  const updatedTask = {
-    ...task,
-    subtasks,
-  };
-
+async function persistSubtaskUpdate(updatedTask, index) {
   try {
     await saveTask(updatedTask);
-    tasks[taskIndex] = updatedTask;
+    tasks[index] = updatedTask;
     renderBoard();
   } catch (error) {
     console.error("onSubtaskToggle: error saving subtask state", error);
   }
 }
 
-let moveMenuElement = null;
+async function onSubtaskToggle(taskId, index, checked) {
+  const taskIndex = findTaskIndexById(taskId);
+  if (taskIndex === -1) return;
 
-function ensureMoveMenuElement() {
-  if (moveMenuElement) return moveMenuElement;
+  const task = tasks[taskIndex];
+  const subtasks = getClonedSubtasks(task);
+  if (!subtasks[index]) return;
 
-  const el = document.createElement("div");
-  el.className = "card-move-menu";
-  el.innerHTML = `
-    <div class="card-move-menu__inner">
-      <p class="card-move-menu__title">Move task:</p>
-      <div class="card-move-menu__options"></div>
-    </div>
-  `;
-  document.body.appendChild(el);
-  moveMenuElement = el;
+  subtasks[index] = createUpdatedSubtask(subtasks[index], checked);
+  const updatedTask = { ...task, subtasks };
 
-  return moveMenuElement;
+  await persistSubtaskUpdate(updatedTask, taskIndex);
 }
-
-function createMoveMenuOption(container, arrow, label, disabled, onClick) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "card-move-menu__option";
-  button.disabled = disabled;
-  button.innerHTML =
-    '<span class="card-move-menu__arrow">' +
-    arrow +
-    "</span>" +
-    "<span>" +
-    label +
-    "</span>";
-  if (!disabled) {
-    button.addEventListener("click", onClick);
-  }
-  container.appendChild(button);
-}
-
-function openMoveMenu(taskId, anchorEl) {
-  if (window.innerWidth >= 1024) return;
-
-  const menu = ensureMoveMenuElement();
-  const optionsContainer = menu.querySelector(".card-move-menu__options");
-  if (!optionsContainer) return;
-
-  if (menu.style.display === "block" && String(currentMoveTaskId) === String(taskId)) {
-    closeMoveMenu();
-    return;
-  }
-
-  currentMoveTaskId = taskId;
-
-  const globalIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (globalIndex === -1) return;
-
-  const task = tasks[globalIndex];
-  const status = normalizeTaskStatus(task.status);
-  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
-  const labels =
-    typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
-  const statusIndex = order.indexOf(status);
-  if (statusIndex === -1) return;
-
-  const previousStatus = statusIndex > 0 ? order[statusIndex - 1] : null;
-  const nextStatus =
-    statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
-
-  optionsContainer.innerHTML = "";
-
-  const prevLabel = previousStatus
-    ? "Move to " + (labels[previousStatus] || "previous column")
-    : "No previous column";
-  const nextLabel = nextStatus
-    ? "Move to " + (labels[nextStatus] || "next column")
-    : "No next column";
-
-  createMoveMenuOption(
-    optionsContainer,
-    "←",
-    prevLabel,
-    !previousStatus,
-    function () {
-      moveTaskToAdjacentColumn(taskId, "prev");
-    }
-  );
-
-  createMoveMenuOption(
-    optionsContainer,
-    "→",
-    nextLabel,
-    !nextStatus,
-    function () {
-      moveTaskToAdjacentColumn(taskId, "next");
-    }
-  );
-
-  const rect = anchorEl.getBoundingClientRect();
-  const top = rect.bottom + window.scrollY + 6;
-  const left = rect.left + window.scrollX;
-
-  menu.style.top = top + "px";
-  menu.style.left = left + "px";
-  menu.style.display = "block";
-}
-
-function closeMoveMenu() {
-  if (!moveMenuElement) return;
-  moveMenuElement.style.display = "none";
-}
-
-async function moveTaskToAdjacentColumn(taskId, direction) {
-  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (index === -1) return;
-
-  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
-  const status = normalizeTaskStatus(tasks[index].status);
-  const currentPosition = order.indexOf(status);
-  if (currentPosition === -1) return;
-
-  const offset = direction === "prev" ? -1 : 1;
-  const targetStatus = order[currentPosition + offset];
-  if (!targetStatus) return;
-
-  try {
-    await updateTaskStatus(taskId, targetStatus);
-    closeMoveMenu();
-    renderBoard();
-  } catch (error) {
-    console.error("moveTaskToAdjacentColumn: failed", error);
-  }
-}
-
-document.addEventListener("click", function (event) {
-  if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
-
-  const clickInsideMenu = moveMenuElement.contains(event.target);
-  const clickOnMoveBtn = event.target.closest(".card-move-btn");
-
-  if (!clickInsideMenu && !clickOnMoveBtn) {
-    closeMoveMenu();
-  }
-});
-
-window.addEventListener("scroll", closeMoveMenu);
-window.addEventListener("resize", closeMoveMenu);
- 
