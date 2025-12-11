@@ -1,8 +1,5 @@
-// scripts/summary-kpi.js
-// Loads tasks from Firebase and updates KPI values
 (function () {
   async function init() {
-    // Wait until firebase-init.js is loaded
     if (!window.firebaseDb || !window.ref || !window.onValue) {
       setTimeout(init, 100);
       return;
@@ -20,16 +17,10 @@
     });
   }
 
-  /**
-   * Count tasks by status type.
-   */
   function countByStatus(tasks, ...statusValues) {
     return tasks.filter((t) => statusValues.some((s) => t.status === s)).length;
   }
 
-  /**
-   * Filter tasks by priority.
-   */
   function filterByPriority(tasks, priority) {
     const lowerPriority = priority.toLowerCase();
     return tasks.filter(
@@ -37,9 +28,6 @@
     );
   }
 
-  /**
-   * Update all KPI values in DOM.
-   */
   function updateAllKPIElements(counts) {
     updateElement("kpi-todo", counts.todo);
     updateElement("kpi-done", counts.done);
@@ -73,9 +61,6 @@
     if (el) el.textContent = value;
   }
 
-  /**
-   * Find earliest due date from task list.
-   */
   function findEarliestTask(tasks) {
     return tasks.reduce((earliest, current) => {
       const currentDate = new Date(current.dueDate);
@@ -84,9 +69,6 @@
     });
   }
 
-  /**
-   * Format date as "Month Day, Year".
-   */
   function formatDeadlineDate(dateStr) {
     const date = new Date(dateStr);
     const options = { year: "numeric", month: "long", day: "numeric" };

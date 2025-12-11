@@ -1,9 +1,6 @@
-// scripts/contacts.js
-// Loads contacts from Firebase Realtime Database and renders them in .contact-list
 (function () {
-  let currentContact = null; // Stores the currently selected contact
+  let currentContact = null;
 
-  // Avatar colors (same as in task_tamplates.js)
   const AVATAR_COLORS = [
     "rgb(110, 82, 255)",
     "rgb(253, 112, 255)",
@@ -51,12 +48,10 @@
     }
   }
 
-  // Make checkEmailExists globally available
   window.checkEmailExists = checkEmailExists;
 
   async function init() {
     if (!window.firebaseDb || !window.ref || !window.get) {
-      // firebase-init.js not yet loaded -> try again in 100ms
       setTimeout(init, 100);
       return;
     }
@@ -64,7 +59,6 @@
     try {
       await seedIfEmpty();
     } catch (e) {
-      // Seed failed, continue with empty list
     }
 
     const contactsRef = window.ref(window.firebaseDb, "contacts");
@@ -145,18 +139,15 @@
   let lastSelectedItem = null;
 
   function selectContact(contact, itemEl) {
-    currentContact = contact; // Store the currently selected contact
+    currentContact = contact;
 
-    // Check if mobile view
     const isMobile = window.innerWidth <= 1023;
 
     if (isMobile) {
-      // Show mobile contact detail view
       showMobileContactDetail(contact);
       return;
     }
 
-    // Desktop view: update info panel
     try {
       const logoEl = document.querySelector(".name-logo-large");
       const nameEl = document.querySelector(".name-large");
@@ -173,7 +164,6 @@
 
       if (logoEl) {
         logoEl.textContent = initials;
-        // Set the color based on the name
         logoEl.style.backgroundColor = getAvatarColor(contact.name || "");
       }
       if (nameEl) nameEl.textContent = contact.name || "";
@@ -193,11 +183,9 @@
       if (itemEl) itemEl.classList.add("active-contact");
       lastSelectedItem = itemEl;
     } catch (e) {
-      // Selection failed, ignore
     }
   }
 
-  // Make currentContact globally available
   window.getCurrentContact = function () {
     return currentContact;
   };
@@ -245,10 +233,8 @@
           <div class="user-email">${escapeHtml(c.email || "")}</div>
         </div>
       `;
-      // Click handler: fill the info panel
       item.addEventListener("click", () => selectContact(c, item));
       last.appendChild(item);
-      // If first entry, select automatically
       if (idx === 0) {
         selectContact(c, item);
       }
@@ -269,7 +255,6 @@
 
   document.addEventListener("DOMContentLoaded", init);
 
-  // Toast Notification
   function showToast(message) {
     const toast = document.getElementById("toastNotification");
     const toastMessage = document.getElementById("toastMessage");
@@ -284,7 +269,6 @@
     }
   }
 
-  // Mobile Contact Detail View
   function showMobileContactDetail(contact) {
     const mobileDetail = document.getElementById("mobileContactDetail");
     if (!mobileDetail) return;
@@ -292,13 +276,11 @@
     const isMobile = window.innerWidth <= 1023;
     if (!isMobile) return;
 
-    // Validate contact data
     if (!contact || !contact.name || !contact.email) {
       console.error("Invalid contact data:", contact);
       return;
     }
 
-    // Update mobile view content
     const avatar = document.getElementById("mobileContactAvatar");
     const name = document.getElementById("mobileContactName");
     const email = document.getElementById("mobileContactEmail");
@@ -333,7 +315,6 @@
       mobileDetail.classList.remove("active");
       document.body.style.overflow = "";
     }
-    // Close menu if open
     const menu = document.getElementById("mobileContactMenu");
     if (menu) {
       menu.classList.remove("show");
@@ -348,28 +329,22 @@
   }
 
   function editMobileContact() {
-    // Close menu
     const menu = document.getElementById("mobileContactMenu");
     if (menu) {
       menu.classList.remove("show");
     }
-    // Close mobile detail view
     closeMobileContactDetail();
-    // Open edit dialog
     openEditContactDialog();
   }
 
   function deleteMobileContact() {
-    // Close menu
     const menu = document.getElementById("mobileContactMenu");
     if (menu) {
       menu.classList.remove("show");
     }
-    // Delete contact
     deleteCurrentContact();
   }
 
-  // Make functions globally available
   window.showToast = showToast;
   window.showMobileContactDetail = showMobileContactDetail;
   window.closeMobileContactDetail = closeMobileContactDetail;
@@ -378,5 +353,3 @@
   window.deleteMobileContact = deleteMobileContact;
   window.getAvatarColor = getAvatarColor;
 })();
-
-// Dialog functions moved to contacts_dialogs.js

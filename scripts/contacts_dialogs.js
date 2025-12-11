@@ -1,9 +1,3 @@
-// scripts/contacts_dialogs.js
-// Contact dialog and form handlers
-
-/**
- * Open add contact dialog
- */
 function openAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -12,9 +6,6 @@ function openAddContactDialog() {
   }
 }
 
-/**
- * Close add contact dialog
- */
 function closeAddContactDialog() {
   const dialog = document.getElementById("addContactDialog");
   if (dialog) {
@@ -26,9 +17,6 @@ function closeAddContactDialog() {
   }
 }
 
-/**
- * Open edit contact dialog
- */
 function openEditContactDialog() {
   const contact = window.getCurrentContact();
   if (!contact) {
@@ -59,9 +47,6 @@ function openEditContactDialog() {
   document.body.style.overflow = "hidden";
 }
 
-/**
- * Restore mobile contact view after dialog close.
- */
 function restoreMobileContactView() {
   const isMobile = window.innerWidth <= 1023;
   if (isMobile) {
@@ -70,9 +55,6 @@ function restoreMobileContactView() {
   }
 }
 
-/**
- * Close edit contact dialog
- */
 function closeEditContactDialog() {
   const dialog = document.getElementById("editContactDialog");
   if (dialog) {
@@ -83,17 +65,11 @@ function closeEditContactDialog() {
   restoreMobileContactView();
 }
 
-/**
- * Delete contact from dialog
- */
 function deleteContactFromDialog() {
   deleteCurrentContact();
   closeEditContactDialog();
 }
 
-/**
- * Delete current contact
- */
 async function deleteCurrentContact() {
   const contact = window.getCurrentContact();
   if (!contact || !contact.id) {
@@ -120,9 +96,6 @@ async function deleteCurrentContact() {
   }
 }
 
-/**
- * Select newly added contact
- */
 function selectNewlyAddedContact(id, name, email, phone) {
   const contact = { id, name, email, phone };
   const isMobile = window.innerWidth <= 1023;
@@ -146,9 +119,6 @@ function selectNewlyAddedContact(id, name, email, phone) {
   }
 }
 
-/**
- * Show success message
- */
 function showSuccessMessage(message) {
   const infoArea = document.querySelector(".info-contact-area");
   if (!infoArea) return;
@@ -168,9 +138,6 @@ function showSuccessMessage(message) {
   }, 2000);
 }
 
-/**
- * Show validation error for input field
- */
 function showValidationError(inputId, errorId, message) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);
@@ -186,9 +153,6 @@ function showValidationError(inputId, errorId, message) {
   }
 }
 
-/**
- * Clear all validation errors
- */
 function clearValidationErrors(formType) {
   if (formType === "add") {
     clearFieldError("newContactName", "errorContactName");
@@ -201,9 +165,6 @@ function clearValidationErrors(formType) {
   }
 }
 
-/**
- * Clear error for single field
- */
 function clearFieldError(inputId, errorId) {
   const input = document.getElementById(inputId);
   const error = document.getElementById(errorId);
@@ -219,7 +180,6 @@ function clearFieldError(inputId, errorId) {
   }
 }
 
-// Form submit handlers
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("addContactForm");
   if (form) {
@@ -241,7 +201,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        // Check if name contains only letters, spaces, hyphens, and apostrophes
         const namePattern = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s'\-\.]+$/;
         if (!namePattern.test(name)) {
           showValidationError(
@@ -281,7 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        // Check if phone contains only allowed characters (digits, +, -, (, ), space)
         const phonePattern = /^[0-9+\-\(\)\s]+$/;
         if (!phonePattern.test(phone)) {
           showValidationError(
@@ -359,7 +317,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        // Check if name contains only letters, spaces, hyphens, and apostrophes
         const namePattern = /^[a-zA-Z\u00C0-\u024F\u1E00-\u1EFF\s'\-\.]+$/;
         if (!namePattern.test(name)) {
           showValidationError(
@@ -399,7 +356,6 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         hasError = true;
       } else {
-        // Check if phone contains only allowed characters (digits, +, -, (, ), space)
         const phonePattern = /^[0-9+\-\(\)\s]+$/;
         if (!phonePattern.test(phone)) {
           showValidationError(

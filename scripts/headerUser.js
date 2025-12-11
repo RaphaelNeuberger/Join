@@ -1,15 +1,7 @@
-// Ultra-robuste Version – funktioniert immer
-
-/**
- * Check if user is guest or has no valid name.
- */
 function isGuestUser(user) {
   return user.isGuest || !user.name || user.name.trim() === "";
 }
 
-/**
- * Calculate initials from user name.
- */
 function calculateInitials(name) {
   const parts = name.trim().split(/\s+/);
   if (parts.length >= 2) {
@@ -21,9 +13,6 @@ function calculateInitials(name) {
   return "G";
 }
 
-/**
- * Get user initials from localStorage or default "G" for guest.
- */
 function getUserInitials() {
   try {
     const data = localStorage.getItem("loggedInUser");
@@ -45,7 +34,6 @@ function showInitials() {
   span.textContent = getUserInitials();
 }
 
-// Try 3 times (in case header is loaded via JS)
 showInitials();
 setTimeout(showInitials, 200);
 setTimeout(showInitials, 500);

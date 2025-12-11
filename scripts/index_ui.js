@@ -1,5 +1,3 @@
-// scripts/index_ui.js - UI handlers for login/signup page
-
 function initPasswordToggle() {
   const togglePassword = document.getElementById("toggle-password");
   const passwordInput = document.getElementById("password");

@@ -1,16 +1,11 @@
-// summary.js - Greeting handling (replace existing file / function)
-
 function getCurrentUser() {
-  // Versuche zuerst zentrale Funktion (falls vorhanden)
   if (typeof window.getCurrentUser === "function") {
     try {
       return window.getCurrentUser();
     } catch (e) {
-      /* fallback */
     }
   }
 
-  // Fallback: aus localStorage lesen
   try {
     const raw = localStorage.getItem("loggedInUser");
     if (!raw) return null;
@@ -21,7 +16,6 @@ function getCurrentUser() {
   }
 }
 
-// Function for greeting (Splash + right side)
 function showGreeting() {
   const body = document.body;
   const splashScreen = document.getElementById("greeting-splash");
@@ -36,10 +30,8 @@ function showGreeting() {
   // Add body class to prevent scrolling (for splash)
   body.classList.add("splash-active");
 
-  // Namen dynamisch setzen
   const user = getCurrentUser();
 
-  // Hilfsfunktion: entscheidet, ob wir einen Namen anzeigen sollen
   const shouldShowName = (u) => {
     if (!u) return false;
     if (typeof u.name === "undefined" || u.name === null) return false;
@@ -49,20 +41,17 @@ function showGreeting() {
     return true;
   };
 
-  // --- Splash greeting ---
   if (greetNameSplash && greetTextSplash) {
     if (shouldShowName(user)) {
       greetNameSplash.textContent = user.name;
       greetNameSplash.style.display = "block";
       greetTextSplash.textContent = "Good morning,";
     } else {
-      // No name (guest or not logged in) -> only "Good morning," without name
       greetNameSplash.style.display = "none";
       greetTextSplash.textContent = "Good morning!";
     }
   }
 
-  // --- Main page top right greeting (e.g. desktop display) ---
   if (greetTextMain && greetNameMain) {
     if (shouldShowName(user)) {
       greetNameMain.textContent = user.name;
@@ -74,9 +63,7 @@ function showGreeting() {
     }
   }
 
-  // Hide splash immediately on desktop, show on mobile
   if (window.innerWidth <= 640) {
-    // Mobile: show splash animation
     setTimeout(() => {
       body.classList.remove("splash-active");
       if (splashScreen) {
@@ -84,7 +71,6 @@ function showGreeting() {
       }
     }, 4500);
   } else {
-    // Desktop: hide splash immediately
     body.classList.remove("splash-active");
     if (splashScreen) {
       splashScreen.style.display = "none";

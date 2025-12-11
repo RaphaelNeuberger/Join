@@ -1,5 +1,3 @@
-// task_assignees.js - Assigned-to dropdown handling
-
 const contacts = [
   { id: "sm", name: "Sofia Müller", avatarClass: "avatar-sm", initials: "SM" },
   { id: "am", name: "Anton Mayer", avatarClass: "avatar-am", initials: "AM" },
@@ -20,9 +18,6 @@ const contacts = [
 
 let selectedAssignees = [];
 
-/**
- * Initialize the Assigned To multi-select.
- */
 function initAssignedTo() {
   const input = document.getElementById("assignedToInput");
   const dropdown = document.getElementById("assignedToDropdown");
@@ -32,57 +27,37 @@ function initAssignedTo() {
   if (!input || !dropdown || !list || !selectedContainer) return;
 
   renderContactOptions();
+  attachAssignedToHandlers(input, dropdown, list, selectedContainer);
+}
 
+function attachAssignedToHandlers(input, dropdown, list, selectedContainer) {
   input.addEventListener("focus", showDropdown);
-  input.addEventListener("click", (e) => {
-    // toggle when clicking input (click on toggle should also trigger input click handler)
-    const wrapper = input.closest('.assigned-to-wrapper');
-    if (dropdown.style.display === 'block') {
+  input.addEventListener("click", () => {
+    const wrapper = input.closest(".assigned-to-wrapper");
+    if (dropdown.style.display === "block") {
       hideDropdown();
-      if (wrapper) wrapper.classList.remove('is-open');
+      if (wrapper) wrapper.classList.remove("is-open");
     } else {
       showDropdown();
-      if (wrapper) wrapper.classList.add('is-open');
+      if (wrapper) wrapper.classList.add("is-open");
     }
   });
-  // toggle element on the right inside wrapper
-  try {
-    const wrapper = input.closest('.assigned-to-wrapper');
-    if (wrapper) {
-      const toggleEl = wrapper.querySelector('.assigned-to-toggle');
-      if (toggleEl) {
-        toggleEl.addEventListener('click', (ev) => {
-          ev.stopPropagation();
-          if (dropdown.style.display === 'block') {
-            hideDropdown();
-            wrapper.classList.remove('is-open');
-          } else {
-            showDropdown();
-            wrapper.classList.add('is-open');
-          }
-        });
-      }
-    }
-  } catch (e) {
-    // ignore if wrapper not present
+
+  const wrapper = input.closest(".assigned-to-wrapper");
+  if (wrapper) {
+    const toggleEl = wrapper.querySelector(".assigned-to-toggle");
+    if (toggleEl) toggleEl.addEventListener("click", (ev) => {
+      ev.stopPropagation();
+      if (dropdown.style.display === "block") { hideDropdown(); wrapper.classList.remove("is-open"); }
+      else { showDropdown(); wrapper.classList.add("is-open"); }
+    });
   }
+
   input.addEventListener("input", filterContacts);
-
-  document.addEventListener("click", (event) => {
-    if (!input.contains(event.target) && !dropdown.contains(event.target)) {
-      hideDropdown();
-    }
-  });
-
+  document.addEventListener("click", (event) => { if (!input.contains(event.target) && !dropdown.contains(event.target)) hideDropdown(); });
   dropdown.addEventListener("click", (e) => e.stopPropagation());
 }
 
-
-/**
- * Initialize Assigned-To controls scoped to a specific container element (e.g. overlay content).
- * Uses the same global `selectedAssignees` array but renders/attaches listeners inside `root`.
- * @param {HTMLElement} root
- */
 function initAssignedToScoped(root) {
   if (!root || !(root instanceof HTMLElement)) return;
 
@@ -189,7 +164,6 @@ function initAssignedToScoped(root) {
       filterContactsScoped();
     }
   });
-  // scoped toggle element
   try {
     const wrapperScoped = input.closest('.assigned-to-wrapper');
     if (wrapperScoped) {
@@ -212,7 +186,6 @@ function initAssignedToScoped(root) {
       }
     }
   } catch (e) {
-    // ignore
   }
   input.addEventListener("input", filterContactsScoped);
 
@@ -229,16 +202,12 @@ function initAssignedToScoped(root) {
   renderSelectedBadgesScoped();
 }
 
-/**
- * Show the dropdown.
- */
 function showDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
   const selectedContainer = document.getElementById("assignedToSelected");
   if (!dropdown) return;
   dropdown.style.display = "block";
   if (selectedContainer) selectedContainer.style.display = "none";
-  // add is-open class to wrapper if exists
   const input = document.getElementById('assignedToInput');
   if (input) {
     const wrapper = input.closest('.assigned-to-wrapper');
@@ -247,16 +216,12 @@ function showDropdown() {
   filterContacts();
 }
 
-/**
- * Hide the dropdown.
- */
 function hideDropdown() {
   const dropdown = document.getElementById("assignedToDropdown");
   const selectedContainer = document.getElementById("assignedToSelected");
   if (!dropdown) return;
   dropdown.style.display = "none";
   
-  // Only show selected container if there are assignees
   if (selectedContainer) {
     if (selectedAssignees.length > 0) {
       selectedContainer.style.display = "flex";
@@ -272,9 +237,6 @@ function hideDropdown() {
   }
 }
 
-/**
- * Render contact options in dropdown.
- */
 function renderContactOptions(filteredContacts = contacts) {
   const list = document.getElementById("assignedToList");
   list.innerHTML = "";
@@ -301,9 +263,6 @@ function renderContactOptions(filteredContacts = contacts) {
   });
 }
 
-/**
- * Filter contacts based on input value.
- */
 function filterContacts() {
   const input = document.getElementById("assignedToInput");
   const query = input.value.trim().toLowerCase();
@@ -311,9 +270,6 @@ function filterContacts() {
   renderContactOptions(filtered);
 }
 
-/**
- * Toggle a contact's selection.
- */
 function toggleAssignee(id, listItemElement = null) {
   const index = selectedAssignees.indexOf(id);
   const wasSelected = index !== -1;
@@ -334,20 +290,15 @@ function toggleAssignee(id, listItemElement = null) {
   renderSelectedBadges();
 }
 
-/**
- * Render selected assignees as badges.
- */
 function renderSelectedBadges() {
   const selectedContainer = document.getElementById("assignedToSelected");
   selectedContainer.innerHTML = "";
 
   if (selectedAssignees.length === 0) {
-    // Hide the container if no assignees are selected
     selectedContainer.style.display = "none";
     return;
   }
 
-  // Show the container if there are assignees
   selectedContainer.style.display = "flex";
 
   selectedAssignees.forEach((id) => {
@@ -363,9 +314,6 @@ function renderSelectedBadges() {
   });
 }
 
-/**
- * Get assigned-to as array of objects with name, id, and avatarClass.
- */
 function getAssignedTo() {
   return selectedAssignees.map((id) => {
     const contact = contacts.find((c) => c.id === id);
@@ -378,9 +326,6 @@ function getAssignedTo() {
   }).filter(Boolean);
 }
 
-/**
- * Reset assigned-to selection.
- */
 function resetAssignedTo() {
   selectedAssignees = [];
   renderSelectedBadges();

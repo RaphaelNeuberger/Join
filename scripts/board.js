@@ -1,19 +1,14 @@
-// scripts/board.js
-
 const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
 const STATUS_LABELS = {
   todo: "To do",
   inprogress: "In progress",
-  await_feedback: "Review", // in Move menu as "Review"
+  await_feedback: "Review",
   done: "Done",
 };
 
 const BOARD_STATUS_LABELS = STATUS_LABELS;
 let currentMoveTaskId = null;
 
-/**
- * Entry point: Initialize layout and board.
- */
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -22,9 +17,6 @@ async function loadScripts() {
   initDragAndDrop();
 }
 
-/**
- * Initialize Header/Sidebar and form UI.
- */
 function initLayout() {
   includeHeaderHTML();
   includeSidebarHTML();
@@ -32,9 +24,6 @@ function initLayout() {
   initAddTaskForm();
 }
 
-/**
- * Search at top of board (Debounce).
- */
 function initBoardSearch() {
   const input = document.getElementById("boardSearch");
   if (!input) return;
@@ -49,18 +38,12 @@ function initBoardSearch() {
   });
 }
 
-/**
- * Load tasks and render board.
- */
 async function initBoard() {
   await seedTasksIfEmpty();
   await fetchTasks();
   renderBoard();
 }
 
-/**
- * Render entire board (all columns).
- */
 function renderBoard() {
   renderColumn("todo", "to-do-tasks");
   renderColumn("inprogress", "in-progress-tasks");
@@ -69,9 +52,6 @@ function renderBoard() {
   renderNoTasksIfEmpty();
 }
 
-/**
- * Render board filtered by search string.
- */
 function renderBoardFiltered(query) {
   if (!query) {
     renderBoard();
@@ -95,9 +75,6 @@ function renderBoardFiltered(query) {
   renderNoTasksIfEmpty();
 }
 
-/**
- * Filter tasks by status.
- */
 function getTasksByStatus(status) {
   if (!Array.isArray(tasks) || tasks.length === 0) {
     return [];
@@ -105,9 +82,6 @@ function getTasksByStatus(status) {
   return tasks.filter((task) => normalizeTaskStatus(task.status) === status);
 }
 
-/**
- * Insert cards into column.
- */
 function fillColumn(container, tasksForStatus) {
   if (!tasksForStatus.length) return;
 
@@ -116,9 +90,6 @@ function fillColumn(container, tasksForStatus) {
   });
 }
 
-/**
- * Render column by default (incl. placeholder).
- */
 function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -128,9 +99,6 @@ function renderColumn(status, containerId) {
   fillColumn(container, tasksForStatus);
 }
 
-/**
- * Render column with already filtered tasks.
- */
 function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -143,9 +111,6 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   fillColumn(container, tasksForStatus);
 }
 
-/**
- * If no tasks in a column → insert placeholder.
- */
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll(".task-cards");
 
@@ -163,27 +128,17 @@ function renderNoTasksIfEmpty() {
   });
 }
 
-/* ===================== Drag & Drop ===================== */
-
-/**
- * Click/Drag Events for cards (Delegation).
- */
 function initTaskCardEvents() {
   const columnsWrapper = document.querySelector(".tasks-columns");
   if (!columnsWrapper) return;
 
-  // Click: either "Move" button or open card
   columnsWrapper.addEventListener("click", onTaskCardClick);
 
-  // Dragstart → Task-ID setzen
   columnsWrapper.addEventListener("dragstart", function (event) {
     dragstartHandler(event);
   });
 }
 
-/**
- * Register drop/dragover/dragleave on columns.
- */
 function initDragAndDrop() {
   const columns = document.querySelectorAll(".task-column");
   columns.forEach((col) => {
@@ -199,9 +154,6 @@ function initDragAndDrop() {
   });
 }
 
-/**
- * Dragstart: ID setzen.
- */
 function dragstartHandler(event) {
   const taskElement = event.target.closest(".card-task");
   if (!taskElement || !event.dataTransfer) return;
@@ -212,26 +164,17 @@ function dragstartHandler(event) {
   event.dataTransfer.setData("text/plain", taskId);
 }
 
-/**
- * Dragover: Prevent default + set drag-over style.
- */
 function dragoverHandler(event) {
   event.preventDefault();
   const col = event.currentTarget;
   if (col && col.classList) col.classList.add("drag-over");
 }
 
-/**
- * Dragleave: Drag-Over-Style entfernen.
- */
 function dragleaveHandler(event) {
   const col = event.currentTarget;
   if (col && col.classList) col.classList.remove("drag-over");
 }
 
-/**
- * Drop: Update status and re-render board.
- */
 async function dropHandler(event) {
   event.preventDefault();
   const col = event.currentTarget;
@@ -246,9 +189,5 @@ async function dropHandler(event) {
   await updateTaskStatus(taskId, newStatus);
   renderBoard();
 }
-
-// Overlay and mobile move menu functions moved to board_overlay.js
-
-/* ===================== Startpunkt ===================== */
 
 document.addEventListener("DOMContentLoaded", loadScripts);

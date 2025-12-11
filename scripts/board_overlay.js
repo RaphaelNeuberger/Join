@@ -1,21 +1,10 @@
-// scripts/board_overlay.js
-
-/**
- * Click-Handling on cards:
- * - Click on .card-move-btn -> open Move menu (Up/Down)
- * - Click on .card-task (otherwise) -> open Detail Overlay
- */
 function onTaskCardClick(event) {
   const moveBtn = event.target.closest(".card-move-btn");
   if (moveBtn) {
-    // Prevent the click from bubbling to the document-level handler
-    // which may immediately close the menu. Also prevent default
-    // to avoid any native button behavior.
     try {
       event.stopPropagation();
       event.preventDefault();
     } catch (e) {
-      // ignore if event is not cancelable
     }
     const card = moveBtn.closest(".card-task");
     if (!card) return;
@@ -34,30 +23,19 @@ function onTaskCardClick(event) {
   openTaskCard(taskId);
 }
 
-/* ============================================================
- *  Overlay: Task-Detail (View / Edit)
- * ============================================================ */
-
 function getOverlayElements() {
   const overlay = document.querySelector(".overlay-task-card");
   const content = document.getElementById("taskCardContent");
   return { overlay, content };
 }
 
-/**
- * Show a confirmation popup and return a Promise<boolean>.
- * @param {string} message
- * @returns {Promise<boolean>}
- */
 function showConfirmPopup(message) {
   return new Promise((resolve) => {
-    // create overlay
     const overlay = document.createElement("div");
     overlay.className = "confirm-overlay confirm-overlay--open";
     overlay.setAttribute("role", "dialog");
     overlay.setAttribute("aria-modal", "true");
 
-    // dialog
     const dialog = document.createElement("div");
     dialog.className = "confirm-dialog";
 
@@ -91,7 +69,6 @@ function showConfirmPopup(message) {
     overlay.appendChild(dialog);
     document.body.appendChild(overlay);
 
-    // focus handling
     btnCancel.focus();
 
     function cleanup(result) {
@@ -121,9 +98,6 @@ function showConfirmPopup(message) {
   });
 }
 
-/**
- * Open Task-Detail Overlay (View Mode).
- */
 function openTaskCard(taskId) {
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
@@ -140,9 +114,6 @@ function openTaskCard(taskId) {
   closeMoveMenu();
 }
 
-/**
- * Close Task-Detail Overlay.
- */
 function closeTaskCard() {
   const { overlay, content } = getOverlayElements();
   if (!overlay) return;
@@ -158,9 +129,6 @@ function closeTaskCard() {
   closeMoveMenu();
 }
 
-/**
- * Background click closes the overlay.
- */
 document.addEventListener("click", function (event) {
   const { overlay } = getOverlayElements();
   if (!overlay) return;
@@ -170,9 +138,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-/**
- * ESC closes the overlay + Move menu.
- */
 document.addEventListener("keydown", function (event) {
   if (event.key === "Escape") {
     closeTaskCard();
@@ -180,9 +145,6 @@ document.addEventListener("keydown", function (event) {
   }
 });
 
-/**
- * Edit button in overlay (View Mode).
- */
 function onTaskEditClick(taskId) {
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
@@ -192,14 +154,12 @@ function onTaskEditClick(taskId) {
 
   content.innerHTML = taskCardEditTemplate(task);
   
-  // Remove min date restriction for editing existing tasks
   removeMinDate();
   
   // Initialize Assigned-To controls after injecting the HTML
   // Use a short timeout so DOM is updated before initialization
   setTimeout(() => {
     try {
-      // Map assignedTo entries (string or object) to contact ids
       if (Array.isArray(task.assignedTo) && typeof selectedAssignees !== "undefined") {
         const ids = (task.assignedTo || [])
           .map((a) => {
@@ -220,13 +180,11 @@ function onTaskEditClick(taskId) {
         selectedAssignees = ids;
       }
 
-      // Use scoped init so we don't clash with other elements on the page
       if (typeof initAssignedToScoped === "function") {
         initAssignedToScoped(content);
       } else if (typeof initAssignedTo === "function") {
         initAssignedTo();
       }
-      // ensure dropdown hidden initially inside overlay
       const dd = content.querySelector('.assigned-to-dropdown');
       if (dd) dd.style.display = 'none';
     } catch (err) {
@@ -235,16 +193,10 @@ function onTaskEditClick(taskId) {
   }, 0);
 }
 
-/**
- * Cancel in Edit Mode -> back to View Mode.
- */
 function onTaskEditCancel(taskId) {
   openTaskCard(taskId);
 }
 
-/**
- * Save in Edit Mode.
- */
 async function onTaskEditSave(event, taskId) {
   event.preventDefault();
   const form = event.target;
@@ -272,7 +224,6 @@ async function onTaskEditSave(event, taskId) {
     description,
     dueDate,
     priority: normalizePriority(priorityRaw),
-    // preserve or update assignedTo if task_assignees provides selection
     assignedTo: typeof getAssignedTo === "function" ? getAssignedTo() : oldTask.assignedTo,
   };
 
@@ -287,9 +238,6 @@ async function onTaskEditSave(event, taskId) {
   }
 }
 
-/**
- * Priority buttons in Edit Overlay.
- */
 function onEditPriorityClick(event) {
   const button = event.currentTarget;
   const wrapper = button.closest(".priority-buttons");
@@ -306,9 +254,6 @@ function onEditPriorityClick(event) {
   }
 }
 
-/**
- * Delete button in View Overlay.
- */
 async function onOverlayDeleteClick(taskId) {
   const confirmDelete = await showConfirmPopup(
     "Do you really want to delete this task?"
@@ -318,7 +263,6 @@ async function onOverlayDeleteClick(taskId) {
   try {
     await deleteTaskById(taskId);
 
-    // locally remove from tasks
     tasks = tasks.filter(
       (t) =>
         String(t.id) !== String(taskId) &&
@@ -333,9 +277,6 @@ async function onOverlayDeleteClick(taskId) {
   }
 }
 
-/**
- * Checkbox change for subtasks in overlay.
- */
 async function onSubtaskToggle(taskId, index, checked) {
   const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (taskIndex === -1) return;
@@ -366,21 +307,8 @@ async function onSubtaskToggle(taskId, index, checked) {
   }
 }
 
-/* ============================================================
- *  Move menu (Up / Down within column)
- * ============================================================ */
-
-// IMPORTANT: currentMoveTaskId is already defined as global variable in board.js.
-// Do NOT define it again here with let/const, just use it.
-
-/**
- * Global element for the Move menu.
- */
 let moveMenuElement = null;
 
-/**
- * Ensure that the global Move menu element exists.
- */
 function ensureMoveMenuElement() {
   if (moveMenuElement) return moveMenuElement;
 
@@ -416,11 +344,6 @@ function createMoveMenuOption(container, arrow, label, disabled, onClick) {
   container.appendChild(button);
 }
 
-/**
- * Open Move menu.
- * @param {string} taskId
- * @param {HTMLElement} anchorEl - the icon element (button) on the card
- */
 function openMoveMenu(taskId, anchorEl) {
   if (window.innerWidth >= 1024) return;
 
@@ -428,7 +351,6 @@ function openMoveMenu(taskId, anchorEl) {
   const optionsContainer = menu.querySelector(".card-move-menu__options");
   if (!optionsContainer) return;
 
-  // Toggle: if the menu is already open for this task, close it
   if (menu.style.display === "block" && String(currentMoveTaskId) === String(taskId)) {
     closeMoveMenu();
     return;
@@ -489,17 +411,11 @@ function openMoveMenu(taskId, anchorEl) {
   menu.style.display = "block";
 }
 
-/**
- * Close Move menu.
- */
 function closeMoveMenu() {
   if (!moveMenuElement) return;
   moveMenuElement.style.display = "none";
 }
 
-/**
- * Move task one column left or right using the global status order.
- */
 async function moveTaskToAdjacentColumn(taskId, direction) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (index === -1) return;
@@ -522,10 +438,6 @@ async function moveTaskToAdjacentColumn(taskId, direction) {
   }
 }
 
-/**
- * Click anywhere in document closes the Move menu,
- * unless clicking on Move button or the menu itself.
- */
 document.addEventListener("click", function (event) {
   if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
 
@@ -537,9 +449,6 @@ document.addEventListener("click", function (event) {
   }
 });
 
-/**
- * On scroll/resize close Move menu (so it doesn't "hang in the air").
- */
 window.addEventListener("scroll", closeMoveMenu);
 window.addEventListener("resize", closeMoveMenu);
  

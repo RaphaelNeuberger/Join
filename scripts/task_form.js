@@ -1,10 +1,3 @@
-// task_form.js - Main task form orchestration
-// Depends on: task_priority.js, task_subtasks.js, task_assignees.js, task_validation.js
-
-
-/**
- * Open "Add Task" overlay.
- */
 function addTaskBtn() {
   const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
@@ -12,9 +5,6 @@ function addTaskBtn() {
 }
 
 
-/**
- * Close "Add Task" overlay.
- */
 function closeAddTaskBtn() {
   const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
@@ -22,9 +12,6 @@ function closeAddTaskBtn() {
 }
 
 
-/**
- * Initialize Add-Task form.
- */
 function initAddTaskForm() {
   const form = document.getElementById("taskForm");
   if (!form) return;
@@ -42,35 +29,36 @@ function initAddTaskForm() {
 }
 
 
-/**
- * Create task (form submit handler).
- */
 async function handleCreateTask(event) {
   if (event) event.preventDefault();
-
   const taskData = readTaskForm();
   if (!taskData) return;
+  await submitTask(taskData);
+}
 
+async function submitTask(data) {
   try {
-    await addTask(taskData);
-    renderBoard();
-    showSuccessMessage();
-    resetTaskForm();
-    closeAddTaskBtn();
-    // Redirect to board.html after successful task creation
-    setTimeout(() => {
-      window.location.href = "board.html";
-    }, 1000);
+    await addTask(data);
+    afterTaskSaved();
   } catch (err) {
-    console.error("handleCreateTask:", err);
-    alert("Task could not be created (see console).");
+    handleCreateTaskError(err);
   }
 }
 
+function afterTaskSaved() {
+  renderBoard();
+  showSuccessMessage();
+  resetTaskForm();
+  closeAddTaskBtn();
+  setTimeout(() => (window.location.href = "board.html"), 1000);
+}
 
-/**
- * Read form values, validate, and build task object.
- */
+function handleCreateTaskError(err) {
+  console.error("handleCreateTask:", err);
+  alert("Task could not be created (see console).");
+}
+
+
 function readTaskForm() {
   clearFormErrors();
 
@@ -88,9 +76,6 @@ function readTaskForm() {
 }
 
 
-/**
- * Build task object for addTask().
- */
 function buildTaskData(title, description, dueDate, category, assignedTo) {
   const subtasks = getSubtaskDrafts();
 
@@ -107,9 +92,6 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
 }
 
 
-/**
- * Reset form to default.
- */
 function resetTaskForm() {
   const form = document.getElementById("taskForm");
   if (form) form.reset();
@@ -126,18 +108,12 @@ function resetTaskForm() {
 }
 
 
-/**
- * Clear button pressed → reset form.
- */
 function handleClearTaskForm(event) {
   if (event) event.preventDefault();
   resetTaskForm();
 }
 
 
-/**
- * Show success message briefly.
- */
 function showSuccessMessage() {
   if (window.createNotification && typeof window.createNotification === "function") {
     window.createNotification({ type: "success", text: "Task created successfully!", duration: 1800 });
@@ -153,9 +129,6 @@ function showSuccessMessage() {
 
 
 
-/**
- * Set minimum date to today to prevent past date selection.
- */
 function setMinDate() {
   const dueDate = document.getElementById("dueDate");
   if (!dueDate) return;
@@ -170,16 +143,12 @@ function setMinDate() {
 }
 
 
-/**
- * Remove minimum date restriction (for editing existing tasks).
- */
 function removeMinDate() {
   const dueDate = document.getElementById("dueDate");
   if (!dueDate) return;
   dueDate.removeAttribute("min");
 }
 
-// scripts/notifications.js
 (function () {
   const container = document.getElementById("notificationContainer");
 
@@ -202,25 +171,19 @@ function removeMinDate() {
       <button class="notif-close" aria-label="Close notification">&times;</button>
     `;
 
-    // close handler
     const closeBtn = notif.querySelector(".notif-close");
     closeBtn.addEventListener("click", () => removeNotification(notif));
 
     container.appendChild(notif);
-    // trigger show animation
-    // small timeout to ensure transition works
     requestAnimationFrame(() => {
       notif.classList.add("show");
     });
 
-    // auto remove
     const timeout = setTimeout(() => removeNotification(notif), duration);
 
-    // remove function
     function removeNotification(el) {
       clearTimeout(timeout);
       el.classList.remove("show");
-      // wait for transition to finish then remove
       setTimeout(() => {
         if (el && el.parentNode) el.parentNode.removeChild(el);
       }, 250);
@@ -229,7 +192,6 @@ function removeMinDate() {
     return notif;
   }
 
-  // small helper (same as in your add_task js)
   function escapeHtml(s) {
     return String(s || "")
       .replace(/&/g, "&amp;")
@@ -239,6 +201,5 @@ function removeMinDate() {
       .replace(/'/g, "&#39;");
   }
 
-  // expose globally
   window.createNotification = createNotification;
 })();
