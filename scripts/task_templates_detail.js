@@ -1,9 +1,4 @@
-// scripts/task_templates_detail.js
-// Overlay templates for task card view and edit modes
 
-/**
- * Overlay "Task-View" (Read mode)
- */
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
   const cat = task.category || "Category";
@@ -63,9 +58,6 @@ function taskCardContentTemplate(task) {
     </div>`;
 }
 
-/**
- * Overlay "Task-Edit" (Edit mode)
- */
 function taskCardEditTemplate(task) {
   const priority = (task.priority || "medium").toLowerCase();
   const dueDate = task.dueDate || "";
@@ -206,9 +198,6 @@ function taskCardEditTemplate(task) {
   `;
 }
 
-/**
- * Detail view for assignees in overlay
- */
 function renderAssigneesDetail(list) {
   if (!list || !list.length) {
     return '<span class="assigned-name">No assignees</span>';
@@ -219,13 +208,11 @@ function renderAssigneesDetail(list) {
       const name = typeof item === "string" ? item : item?.name || "";
       const avatarClass = item?.avatarClass || "";
       const initials = item?.initials || getInitials(name);
-      
-      // If avatarClass is available, use it; otherwise use dynamic color
+
       let avatarHtml;
       if (avatarClass) {
         avatarHtml = '<div class="assigned-avatar-detail ' + avatarClass + '">' + initials + "</div>";
       } else {
-        // Fallback for old data without avatarClass
         const color = getAvatarColor(name, index);
         avatarHtml = '<div class="assigned-avatar-detail" style="background-color:' + color + '">' + initials + "</div>";
       }
@@ -242,9 +229,6 @@ function renderAssigneesDetail(list) {
     .join("");
 }
 
-/**
- * Subtask list in overlay
- */
 function renderSubtasksDetail(list, taskId) {
   if (!list || !list.length) {
     return '<li class="subtask-item"><span class="subtask-title">No subtasks</span></li>';

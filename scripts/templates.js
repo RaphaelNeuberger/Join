@@ -7,10 +7,8 @@ function includeSidebarHTML() {
       .then((html) => {
         el.innerHTML = html;
 
-        // ⬇️ VERY IMPORTANT: comes directly after innerHTML!
         updateSidebarForLoginState();
 
-        // and then e.g. your Active-Highlight (if present)
         if (typeof highlightActiveSidebarLink === "function") {
           highlightActiveSidebarLink();
         }
@@ -56,13 +54,11 @@ function setupHeaderMenu() {
     toggle(!menu.classList.contains("open"));
   });
 
-  // close when clicking outside
   document.addEventListener("click", (e) => {
     if (!menu.classList.contains("open")) return;
     if (!menu.contains(e.target) && e.target !== btn) toggle(false);
   });
 
-  // close on Escape
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") toggle(false);
   });
@@ -82,7 +78,6 @@ function highlightActiveSidebarLink() {
   });
 }
 
-/////
 function updateSidebarForLoginState() {
   const navAuth = document.querySelector(".nav-auth");
   const navGuest = document.querySelector(".nav-guest");
@@ -94,19 +89,16 @@ function updateSidebarForLoginState() {
   const loggedInUser = localStorage.getItem("loggedInUser");
 
   if (loggedInUser) {
-    // Logged in → show app menu
+
     navAuth.style.display = "flex";
     navGuest.style.display = "none";
   } else {
-    // Not logged in → show only Login
+
     navAuth.style.display = "none";
     navGuest.style.display = "flex";
   }
 }
 
-/**
- * Sign out from Firebase if available.
- */
 function signOutFirebase() {
   if (window.firebaseAuth && window.firebaseAuth.signOut) {
     firebaseAuth.signOut().catch((err) => {
@@ -126,10 +118,9 @@ function initHeaderUserMenu() {
   const menu = document.getElementById("userMenu");
 
   if (!btn || !menu) {
-    return; // on pages without header simply do nothing
+    return; 
   }
 
-  // Toggle on button click
   btn.addEventListener("click", (event) => {
     event.stopPropagation();
     const isOpen = menu.classList.toggle("open");
@@ -137,7 +128,6 @@ function initHeaderUserMenu() {
     btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
   });
 
-  // Click outside closes the menu
   document.addEventListener("click", (event) => {
     if (!menu.contains(event.target) && !btn.contains(event.target)) {
       if (menu.classList.contains("open")) {

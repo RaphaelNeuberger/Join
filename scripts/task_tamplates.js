@@ -1,6 +1,4 @@
-// scripts/task_tamplates.js
 
-// Placeholder-Templates
 function noTaskTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
@@ -13,7 +11,6 @@ function noResultsTemplate() {
   );
 }
 
-// Avatar-Farben
 const AVATAR_COLORS = [
   "rgb(110, 82, 255)",
   "rgb(253, 112, 255)",
@@ -45,9 +42,6 @@ function getAvatarColor(name = "", index = 0) {
   return AVATAR_COLORS[colorIndex];
 }
 
-/**
- * Small avatars for card view
- */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
     assignees = assignees ? [assignees] : [];
