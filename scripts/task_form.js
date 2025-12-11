@@ -46,10 +46,7 @@ function afterTaskSaved() {
   renderBoard();
   showSuccessMessage();
   resetTaskForm();
-  closeAddTaskBtn();
-  setTimeout(() => {
-    window.location.href = "board.html";
-  }, 1000);
+  setTimeout(() => closeAddTaskBtn(), 800);
 }
 
 function handleCreateTaskError(error) {
