@@ -844,3 +844,75 @@ body {
 .hidden {
   display: none;
 }
+
+/* ===== Notification (Index-style) ===== */
+#notification-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+/* single-row, ellipsis if too long */
+.notification {
+  padding: 14px 18px;
+  border-radius: 12px;
+  color: #7ae229;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  animation: fadeInOut 3.2s ease forwards;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;      
+  overflow: hidden;    
+  text-overflow: ellipsis;     
+  max-width: 480px;            
+  pointer-events: auto;        
+}
+
+.notification.success {
+  background-color: #28a745; 
+}
+
+.notification.error {
+  background-color: #dc3545; 
+}
+
+@keyframes fadeInOut {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  10%, 80% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
+/* small-screen adjustments (stack near bottom) */
+@media (max-width: 640px) {
+  #notification-container {
+    left: 12px;
+    right: 12px;
+    top: auto;
+    bottom: 18px;
+    align-items: stretch;
+  }
+  .notification {
+    width: 100%;
+    max-width: none;
+    border-radius: 12px;
+  }
+}

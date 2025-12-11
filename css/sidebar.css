@@ -283,11 +283,10 @@ body.logged-out .nav-guest {
   .sidebar-nav {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap; /* everything in one row */
-    justify-content: space-between; /* even spacing */
+    flex-wrap: nowrap; 
     align-items: center;
     width: 100%;
-    overflow-x: hidden; /* no scroll */
+    overflow-x: hidden; 
     padding: 0 4px;
     box-sizing: border-box;
   }

@@ -284,14 +284,18 @@
     if (!note) {
       note = document.createElement("div");
       note.className = "note-text";
-      note.style.fontSize = "13px";
+      note.style.fontSize = "16px";
       note.style.marginTop = "6px";
       success.appendChild(note);
     }
     note.textContent = customText;
   }
 
-  function showSuccess(customText) {
+function showSuccess(customText) {
+  const text = customText || "Task created successfully!";
+  if (window.createNotification && typeof window.createNotification === "function") {
+    window.createNotification({ type: "success", text, duration: 1400 });
+  } else {
     const success = $("#successMessage");
     if (!success) return;
     if (customText) updateSuccessNote(success, customText);
@@ -302,6 +306,10 @@
     }, 1200);
   }
 
+  clearForm();
+}
+
+
   function clearForm() {
     const form = $("#taskForm");
     if (!form) return;
@@ -309,12 +317,10 @@
     // remove subtasks
     const sub = $("#subtaskList");
     if (sub) sub.innerHTML = "";
-    // reset assigned visible input + hidden
     const assignedHidden = $("#assignedToHidden");
     const assignedInput = $("#assignedToInput");
     if (assignedHidden) assignedHidden.value = "";
     if (assignedInput) assignedInput.value = "";
-    // reset priority to Medium if exists
     const medium = $$(".priority-buttons__button").find
       ? $$(".priority-buttons__button").find(
           (b) => b.dataset.priority === "Medium"
