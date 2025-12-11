@@ -59,7 +59,6 @@ function renderAssignees(assignees = []) {
       const avatarClass = item?.avatarClass || "";
       const initials = item?.initials || getInitials(name);
       
-      // If avatarClass is available, use it; otherwise use dynamic color
       if (avatarClass) {
         return (
           '<span class="assigned-avatar ' +
@@ -70,7 +69,6 @@ function renderAssignees(assignees = []) {
         );
       }
       
-      // Fallback for old data without avatarClass
       const color = getAvatarColor(name, index);
       return (
         '<span class="assigned-avatar" style="background-color: ' +
@@ -83,10 +81,6 @@ function renderAssignees(assignees = []) {
     .join("");
 }
 
-/**
- * Card in board
- * - no onclick / ondragstart (DOM event handling in board.js)
- */
 function taskTemplate(task) {
   const { id, category, title, description, assignedTo, priority, subtasks } =
     task;
@@ -119,9 +113,6 @@ function taskTemplate(task) {
     </div>`;
 }
 
-/**
- * Datum für Anzeige im Overlay von YYYY-MM-DD zu DD/MM/YY
- */
 function formatDateToDDMMYY(dateStr) {
   if (!dateStr) return "-";
   const parts = String(dateStr).split("-");
@@ -130,11 +121,6 @@ function formatDateToDDMMYY(dateStr) {
   const yy = y.slice(2);
   return `${d}/${m}/${yy}`;
 }
-
-// Overlay templates (taskCardContentTemplate, taskCardEditTemplate, renderAssigneesDetail, renderSubtasksDetail)
-// moved to task_templates_detail.js
-
-/* Utility-Funktionen */
 
 function capitalize(str) {
   if (!str) return "";
