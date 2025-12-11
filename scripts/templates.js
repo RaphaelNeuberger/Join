@@ -4,16 +4,14 @@ function includeSidebarHTML() {
     let file = el.getAttribute("sidebar-html");
     fetch(file)
       .then((resp) => resp.text())
-      .then((html) => {
-        el.innerHTML = html;
-
-        updateSidebarForLoginState();
-
-        if (typeof highlightActiveSidebarLink === "function") {
-          highlightActiveSidebarLink();
-        }
-      });
+      .then((html) => handleSidebarLoaded(el, html));
   });
+}
+
+function handleSidebarLoaded(el, html) {
+  el.innerHTML = html;
+  updateSidebarForLoginState();
+  if (typeof highlightActiveSidebarLink === "function") highlightActiveSidebarLink();
 }
 
 function includeHeaderHTML() {
@@ -36,32 +34,19 @@ function setupHeaderMenu() {
   const btn = document.getElementById("headerUserBtn");
   const menu = document.getElementById("userMenu");
   if (!btn || !menu) return;
+  btn.addEventListener("click", (e) => { e.stopPropagation(); toggleMenu(menu, btn, !menu.classList.contains("open")); });
+  document.addEventListener("click", (e) => handleOutsideClick(e, menu, btn));
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") toggleMenu(menu, btn, false); });
+}
 
-  const toggle = (open) => {
-    if (open) {
-      menu.classList.add("open");
-      menu.setAttribute("aria-hidden", "false");
-      btn.setAttribute("aria-expanded", "true");
-    } else {
-      menu.classList.remove("open");
-      menu.setAttribute("aria-hidden", "true");
-      btn.setAttribute("aria-expanded", "false");
-    }
-  };
+function handleOutsideClick(e, menu, btn) {
+  if (menu.classList.contains("open") && !menu.contains(e.target) && e.target !== btn) toggleMenu(menu, btn, false);
+}
 
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    toggle(!menu.classList.contains("open"));
-  });
-
-  document.addEventListener("click", (e) => {
-    if (!menu.classList.contains("open")) return;
-    if (!menu.contains(e.target) && e.target !== btn) toggle(false);
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") toggle(false);
-  });
+function toggleMenu(menu, btn, open) {
+  menu.classList.toggle("open", open);
+  menu.setAttribute("aria-hidden", open ? "false" : "true");
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
 }
 
 function highlightActiveSidebarLink() {
@@ -81,22 +66,10 @@ function highlightActiveSidebarLink() {
 function updateSidebarForLoginState() {
   const navAuth = document.querySelector(".nav-auth");
   const navGuest = document.querySelector(".nav-guest");
-
-  if (!navAuth || !navGuest) {
-    return;
-  }
-
-  const loggedInUser = localStorage.getItem("loggedInUser");
-
-  if (loggedInUser) {
-
-    navAuth.style.display = "flex";
-    navGuest.style.display = "none";
-  } else {
-
-    navAuth.style.display = "none";
-    navGuest.style.display = "flex";
-  }
+  if (!navAuth || !navGuest) return;
+  const loggedIn = !!localStorage.getItem("loggedInUser");
+  navAuth.style.display = loggedIn ? "flex" : "none";
+  navGuest.style.display = loggedIn ? "none" : "flex";
 }
 
 function signOutFirebase() {
@@ -116,25 +89,20 @@ function logout() {
 function initHeaderUserMenu() {
   const btn = document.getElementById("headerUserBtn");
   const menu = document.getElementById("userMenu");
+  if (!btn || !menu) return;
+  btn.addEventListener("click", (event) => { event.stopPropagation(); toggleUserMenu(menu, btn); });
+  document.addEventListener("click", (event) => { if (!menu.contains(event.target) && !btn.contains(event.target)) closeUserMenu(menu, btn); });
+}
 
-  if (!btn || !menu) {
-    return; 
-  }
+function toggleUserMenu(menu, btn) {
+  const isOpen = menu.classList.toggle("open");
+  menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
+  btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+}
 
-  btn.addEventListener("click", (event) => {
-    event.stopPropagation();
-    const isOpen = menu.classList.toggle("open");
-    menu.setAttribute("aria-hidden", isOpen ? "false" : "true");
-    btn.setAttribute("aria-expanded", isOpen ? "true" : "false");
-  });
-
-  document.addEventListener("click", (event) => {
-    if (!menu.contains(event.target) && !btn.contains(event.target)) {
-      if (menu.classList.contains("open")) {
-        menu.classList.remove("open");
-        menu.setAttribute("aria-hidden", "true");
-        btn.setAttribute("aria-expanded", "false");
-      }
-    }
-  });
+function closeUserMenu(menu, btn) {
+  if (!menu.classList.contains("open")) return;
+  menu.classList.remove("open");
+  menu.setAttribute("aria-hidden", "true");
+  btn.setAttribute("aria-expanded", "false");
 }
