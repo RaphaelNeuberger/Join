@@ -243,6 +243,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-height: 264px; /* show up to ~5 items then scroll */
+  overflow-y: auto;
+  padding-right: 6px; /* room for scrollbar */
 }
 
 .subtask-item {
@@ -327,6 +330,9 @@ overlay-modal {
   display: flex;
   flex-direction: column;
   gap: 6px;
+  max-height: 264px; /* show up to ~5 items then scroll */
+  overflow-y: auto;
+  padding-right: 6px; /* room for scrollbar */
 }
 
 .subtask-remove-btn {
