@@ -1,10 +1,6 @@
-// task_subtasks.js - Subtask handling
 
 let subtaskDrafts = [];
 
-/**
- * Initialize subtask controls.
- */
 function initSubtaskControls() {
   const input = document.getElementById("subtaskInput");
   const addBtn = document.getElementById("addSubtaskBtn");
@@ -24,9 +20,6 @@ function initSubtaskControls() {
   renderSubtaskDrafts();
 }
 
-/**
- * Read value from subtask input and add it.
- */
 function addSubtaskFromInput() {
   const input = document.getElementById("subtaskInput");
   if (!input) return;
@@ -43,18 +36,12 @@ function addSubtaskFromInput() {
   renderSubtaskDrafts();
 }
 
-/**
- * Remove a subtask from the draft.
- */
 function removeSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
   subtaskDrafts.splice(index, 1);
   renderSubtaskDrafts();
 }
 
-/**
- * Edit a subtask.
- */
 function editSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
   
@@ -69,9 +56,6 @@ function editSubtaskDraft(index) {
   removeSubtaskDraft(index);
 }
 
-/**
- * Render current subtask drafts to the list.
- */
 function renderSubtaskDrafts() {
   const list = document.getElementById("subtaskList");
   if (!list) return;
@@ -117,9 +101,6 @@ function renderSubtaskDrafts() {
   });
 }
 
-/**
- * Get current subtask drafts.
- */
 function getSubtaskDrafts() {
   return subtaskDrafts.map((s) => ({
     title: s.title,
@@ -127,18 +108,11 @@ function getSubtaskDrafts() {
   }));
 }
 
-/**
- * Reset subtasks to empty.
- */
 function resetSubtasks() {
   subtaskDrafts = [];
   renderSubtaskDrafts();
 }
 
-/**
- * Add a subtask from the edit overlay input and persist it to the task.
- * @param {string} taskId
- */
 async function onAddSubtaskFromOverlay(taskId) {
   const input = document.getElementById("overlaySubtaskInput");
   if (!input) return;
@@ -146,7 +120,6 @@ async function onAddSubtaskFromOverlay(taskId) {
   const value = String(input.value || "").trim();
   if (!value) return;
 
-  // Find task in global tasks array
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (index === -1) return;
 
@@ -161,12 +134,11 @@ async function onAddSubtaskFromOverlay(taskId) {
     await saveTask(updatedTask);
     tasks[index] = updatedTask;
 
-    // Clear input and re-open edit overlay to reflect changes
     input.value = "";
     if (typeof onTaskEditClick === "function") {
       onTaskEditClick(taskId);
     }
-    // Also update board view
+
     if (typeof renderBoard === "function") renderBoard();
   } catch (err) {
     console.error("onAddSubtaskFromOverlay: error saving subtask", err);

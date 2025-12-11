@@ -160,9 +160,6 @@ function getInitialsFromName(name) {
   );
 }
 
-/**
- * Priority Normalisierung
- */
 function normalizePriority(p) {
   const v = String(p || "Medium").toLowerCase();
   if (v.startsWith("u")) return "Urgent";
@@ -188,7 +185,6 @@ function priorityIcon(priority) {
 function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
-  // URGENT: Doppel-Chevron ↑↑
   if (p === "Urgent") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
@@ -201,7 +197,6 @@ function priorityIconSVG(priority) {
       </svg>`;
   }
 
-  // LOW: Doppel-Chevron ↓↓
   if (p === "Low") {
     return `
       <svg width="20" height="16" viewBox="0 0 20 16" aria-hidden="true">
@@ -214,7 +209,6 @@ function priorityIconSVG(priority) {
       </svg>`;
   }
 
-  // MEDIUM: two bars ‖
   return `
     <svg width="20" height="12" viewBox="0 0 20 12" aria-hidden="true">
       <rect x="2" y="3" width="16" height="2" rx="1" fill="currentColor"/>
@@ -232,9 +226,6 @@ function priorityBadge(priority, withText = true) {
   )}${txt}</span>`;
 }
 
-/**
- * Subtask progress bar on cards
- */
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
   if (!list.length) return "";

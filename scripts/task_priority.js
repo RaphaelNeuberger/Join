@@ -1,10 +1,6 @@
-// task_priority.js - Priority button handling
 
 let selectedPriority = "Medium";
 
-/**
- * Initialize priority buttons (Add-Task form).
- */
 function initPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -13,9 +9,6 @@ function initPriorityButtons() {
   setInitialPriority(buttons);
 }
 
-/**
- * Set a button as active.
- */
 function setPriorityActive(buttons, activeButton) {
   buttons.forEach((button) => {
     button.classList.remove("is-active");
@@ -27,9 +20,6 @@ function setPriorityActive(buttons, activeButton) {
   selectedPriority = activeButton.dataset.priority || "Medium";
 }
 
-/**
- * Setup click and keyboard events for priority buttons.
- */
 function setupPriorityButtonInteractions(buttons) {
   buttons.forEach((btn) => {
     btn.setAttribute("role", "button");
@@ -47,9 +37,6 @@ function setupPriorityButtonInteractions(buttons) {
   });
 }
 
-/**
- * Set initial priority button (Medium or first button).
- */
 function setInitialPriority(buttons) {
   let defaultButton = document.querySelector(
     ".priority-buttons__button.priority-buttons__button--active"
@@ -67,9 +54,6 @@ function setInitialPriority(buttons) {
   }
 }
 
-/**
- * Reset priority buttons to default.
- */
 function resetPriorityButtons() {
   const buttons = document.querySelectorAll(".priority-buttons__button");
   if (!buttons.length) return;
@@ -78,9 +62,6 @@ function resetPriorityButtons() {
   setInitialPriority(buttons);
 }
 
-/**
- * Get the currently selected priority.
- */
 function getSelectedPriority() {
   return selectedPriority || "Medium";
 }

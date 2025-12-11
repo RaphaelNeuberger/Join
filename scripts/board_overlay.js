@@ -1,30 +1,22 @@
-// scripts/board_overlay.js
 
-/**
- * Click-Handling on cards:
- * - Click on .card-move-btn -> open Move menu (Up/Down)
- * - Click on .card-task (otherwise) -> open Detail Overlay
- */
 function onTaskCardClick(event) {
-  const moveBtn = event.target.closest(".card-move-btn");
-  if (moveBtn) {
-    // Prevent the click from bubbling to the document-level handler
-    // which may immediately close the menu. Also prevent default
-    // to avoid any native button behavior.
-    try {
-      event.stopPropagation();
-      event.preventDefault();
-    } catch (e) {
-      // ignore if event is not cancelable
-    }
-    const card = moveBtn.closest(".card-task");
-    if (!card) return;
-    const taskId = card.dataset.taskId;
-    if (!taskId) return;
-    openMoveMenu(taskId, moveBtn);
-    return;
-  }
+  if (handleMoveButtonClick(event)) return;
+  handleCardClick(event);
+}
 
+function handleMoveButtonClick(event) {
+  const moveBtn = event.target.closest(".card-move-btn");
+  if (!moveBtn) return false;
+
+  tryStopClick(event);
+  const taskId = moveBtn.dataset.taskId;
+  if (!taskId) return true;
+
+  openMoveMenu(taskId, moveBtn);
+  return true;
+}
+
+function handleCardClick(event) {
   const card = event.target.closest(".card-task");
   if (!card) return;
 
@@ -34,9 +26,15 @@ function onTaskCardClick(event) {
   openTaskCard(taskId);
 }
 
-/* ============================================================
- *  Overlay: Task-Detail (View / Edit)
- * ============================================================ */
+function tryStopClick(event) {
+  if (!event) return;
+  if (typeof event.stopPropagation === "function") {
+    event.stopPropagation();
+  }
+  if (typeof event.preventDefault === "function") {
+    event.preventDefault();
+  }
+}
 
 function getOverlayElements() {
   const overlay = document.querySelector(".overlay-task-card");
@@ -44,136 +42,110 @@ function getOverlayElements() {
   return { overlay, content };
 }
 
-/**
- * Open Task-Detail Overlay (View Mode).
- */
 function openTaskCard(taskId) {
+  const task = getTaskById(taskId);
+  if (!task) return;
+
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
 
-  const task = tasks.find((t) => String(t.id) === String(taskId));
-  if (!task) return;
-
   content.innerHTML = taskCardContentTemplate(task);
-
-  overlay.style.display = "flex";
-  overlay.classList.add("overlay-task-card--open");
-  document.body.style.overflow = "hidden";
-
+  showOverlay(overlay);
   closeMoveMenu();
 }
 
-/**
- * Close Task-Detail Overlay.
- */
 function closeTaskCard() {
   const { overlay, content } = getOverlayElements();
   if (!overlay) return;
 
-  overlay.style.display = "none";
-  overlay.classList.remove("overlay-task-card--open");
-  document.body.style.overflow = "";
-
+  hideOverlay(overlay);
   if (content) {
     content.innerHTML = "";
   }
-
-  closeMoveMenu();
 }
 
-/**
- * Background click closes the overlay.
- */
-document.addEventListener("click", function (event) {
-  const { overlay } = getOverlayElements();
-  if (!overlay) return;
+function showOverlay(overlay) {
+  overlay.style.display = "flex";
+  overlay.classList.add("overlay-task-card--open");
+  document.body.style.overflow = "hidden";
+}
 
-  if (event.target === overlay) {
-    closeTaskCard();
-  }
-});
+function hideOverlay(overlay) {
+  overlay.style.display = "none";
+  overlay.classList.remove("overlay-task-card--open");
+  document.body.style.overflow = "";
+}
 
-/**
- * ESC closes the overlay + Move menu.
- */
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Escape") {
-    closeTaskCard();
-    closeMoveMenu();
-  }
-});
-
-/**
- * Edit button in overlay (View Mode).
- */
 function onTaskEditClick(taskId) {
+  const task = getTaskById(taskId);
+  if (!task) return;
+
   const { overlay, content } = getOverlayElements();
   if (!overlay || !content) return;
 
-  const task = tasks.find((t) => String(t.id) === String(taskId));
-  if (!task) return;
-
   content.innerHTML = taskCardEditTemplate(task);
-  
-  // Remove min date restriction for editing existing tasks
-  removeMinDate();
-  
-  // Initialize Assigned-To controls after injecting the HTML
-  // Use a short timeout so DOM is updated before initialization
-  setTimeout(() => {
-    try {
-      // Map assignedTo entries (string or object) to contact ids
-      if (Array.isArray(task.assignedTo) && typeof selectedAssignees !== "undefined") {
-        const ids = (task.assignedTo || [])
-          .map((a) => {
-            if (!a) return null;
-            if (typeof a === "string") {
-              const c = contacts.find((x) => x.name === a || x.id === a);
-              return c ? c.id : null;
-            }
-            if (typeof a === "object") {
-              if (a.id) return a.id;
-              const c = contacts.find((x) => x.name === a.name);
-              return c ? c.id : null;
-            }
-            return null;
-          })
-          .filter(Boolean);
-
-        selectedAssignees = ids;
-      }
-
-      // Use scoped init so we don't clash with other elements on the page
-      if (typeof initAssignedToScoped === "function") {
-        initAssignedToScoped(content);
-      } else if (typeof initAssignedTo === "function") {
-        initAssignedTo();
-      }
-      // ensure dropdown hidden initially inside overlay
-      const dd = content.querySelector('.assigned-to-dropdown');
-      if (dd) dd.style.display = 'none';
-    } catch (err) {
-      console.error("onTaskEditClick: initAssignedTo failed", err);
-    }
-  }, 0);
+  showOverlay(overlay);
+  initEditOverlay();
 }
 
-/**
- * Cancel in Edit Mode -> back to View Mode.
- */
 function onTaskEditCancel(taskId) {
   openTaskCard(taskId);
 }
 
-/**
- * Save in Edit Mode.
- */
+function initEditOverlay() {
+  initEditPriorityButtons();
+  initEditAssignedTo();
+}
+
+function initEditPriorityButtons() {
+  const root = document.querySelector(".task-card-edit-form");
+  if (!root) return;
+
+  const buttons = root.querySelectorAll(".priority-buttons__button");
+  buttons.forEach(function (btn) {
+    btn.addEventListener("click", function (event) {
+      onEditPriorityClick(event);
+    });
+  });
+}
+
+function initEditAssignedTo() {
+  if (typeof initAssignedTo === "function") {
+    try {
+      initAssignedTo();
+    } catch (error) {
+      console.error("initEditAssignedTo failed", error);
+    }
+  }
+}
+
 async function onTaskEditSave(event, taskId) {
-  event.preventDefault();
+  tryStopClick(event);
+
   const form = event.target;
   if (!form) return;
 
+  const index = findTaskIndexById(taskId);
+  if (index === -1) return;
+
+  const oldTask = tasks[index];
+  const formData = readEditFormData(form);
+  if (!formData) return;
+
+  const updatedTask = buildTaskFromEdit(oldTask, formData);
+
+  await saveEditedTask(index, updatedTask, taskId);
+}
+
+function findTaskIndexById(taskId) {
+  return tasks.findIndex(function (t) {
+    return String(t.id) === String(taskId);
+  });
+}
+
+function readEditFormData(form) {
   const formData = new FormData(form);
+
   const title = String(formData.get("title") || "").trim();
   const description = String(formData.get("description") || "").trim();
   const dueDate = String(formData.get("dueDate") || "").trim();
@@ -181,24 +153,30 @@ async function onTaskEditSave(event, taskId) {
 
   if (!title) {
     alert("Title is required.");
-    return;
+    return null;
   }
 
-  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (index === -1) return;
+  return { title, description, dueDate, priorityRaw };
+}
 
-  const oldTask = tasks[index];
+function buildTaskFromEdit(oldTask, formData) {
+  const priority = normalizePriority(formData.priorityRaw);
 
-  const updatedTask = {
+  const assignedTo = typeof getAssignedTo === "function"
+    ? getAssignedTo()
+    : oldTask.assignedTo;
+
+  return {
     ...oldTask,
-    title,
-    description,
-    dueDate,
-    priority: normalizePriority(priorityRaw),
-    // preserve or update assignedTo if task_assignees provides selection
-    assignedTo: typeof getAssignedTo === "function" ? getAssignedTo() : oldTask.assignedTo,
+    title: formData.title,
+    description: formData.description,
+    dueDate: formData.dueDate,
+    priority: priority,
+    assignedTo: assignedTo,
   };
+}
 
+async function saveEditedTask(index, updatedTask, taskId) {
   try {
     await saveTask(updatedTask);
     tasks[index] = updatedTask;
@@ -210,247 +188,256 @@ async function onTaskEditSave(event, taskId) {
   }
 }
 
-/**
- * Priority buttons in Edit Overlay.
- */
 function onEditPriorityClick(event) {
   const button = event.currentTarget;
-  const wrapper = button.closest(".priority-buttons");
-  if (!wrapper) return;
+  if (!button) return;
 
-  const buttons = wrapper.querySelectorAll(".priority-buttons__button");
-  buttons.forEach((btn) => btn.classList.remove("is-active"));
+  const root = button.closest(".task-card-edit-form");
+  if (!root) return;
 
-  button.classList.add("is-active");
-
-  const hidden = wrapper.querySelector('input[name="priority"]');
-  if (hidden) {
-    hidden.value = button.dataset.priority || "Medium";
-  }
+  setActivePriorityButton(root, button);
+  updateHiddenPriority(root, button);
 }
 
-/**
- * Delete button in View Overlay.
- */
+function setActivePriorityButton(root, activeButton) {
+  const buttons = root.querySelectorAll(".priority-buttons__button");
+  buttons.forEach(function (btn) {
+    btn.classList.remove("is-active");
+  });
+  activeButton.classList.add("is-active");
+}
+
+function updateHiddenPriority(root, button) {
+  const value = button.getAttribute("data-priority") || "Medium";
+  const hiddenInput = root.querySelector('input[name="priority"]');
+  if (!hiddenInput) return;
+
+  hiddenInput.value = value;
+}
+
 async function onOverlayDeleteClick(taskId) {
-  const confirmDelete = window.confirm(
-    "Do you really want to delete this task?"
-  );
-  if (!confirmDelete) return;
+  if (!taskId) return;
 
   try {
     await deleteTaskById(taskId);
-
-    // locally remove from tasks
-    tasks = tasks.filter(
-      (t) =>
-        String(t.id) !== String(taskId) &&
-        String(t.firebaseId) !== String(taskId)
-    );
-
-    closeTaskCard();
+    removeTaskFromLocalList(taskId);
     renderBoard();
+    closeTaskCard();
   } catch (error) {
     console.error("onOverlayDeleteClick: error deleting task", error);
     alert("Error while deleting the task.");
   }
 }
 
-/**
- * Checkbox change for subtasks in overlay.
- */
+function removeTaskFromLocalList(taskId) {
+  const index = findTaskIndexById(taskId);
+  if (index === -1) return;
+
+  tasks.splice(index, 1);
+}
+
 async function onSubtaskToggle(taskId, index, checked) {
-  const taskIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
+  const taskIndex = findTaskIndexById(taskId);
   if (taskIndex === -1) return;
 
   const task = tasks[taskIndex];
-  const subtasks = Array.isArray(task.subtasks) ? [...task.subtasks] : [];
-
+  const subtasks = cloneSubtasks(task);
   if (!subtasks[index]) return;
 
-  const updatedSubtask = {
-    ...subtasks[index],
-    done: !!checked,
-    checked: !!checked,
-  };
+  const updatedSubtask = buildToggledSubtask(subtasks[index], checked);
   subtasks[index] = updatedSubtask;
 
-  const updatedTask = {
-    ...task,
-    subtasks,
-  };
+  const updatedTask = buildTaskWithSubtasks(task, subtasks);
+  await saveTaskWithSubtasks(taskIndex, updatedTask);
+}
 
+function cloneSubtasks(task) {
+  if (!Array.isArray(task.subtasks)) {
+    return [];
+  }
+  return task.subtasks.map(function (s) {
+    return { ...s };
+  });
+}
+
+function buildToggledSubtask(subtask, checked) {
+  const flag = !!checked;
+  return {
+    ...subtask,
+    done: flag,
+    checked: flag,
+  };
+}
+
+function buildTaskWithSubtasks(task, subtasks) {
+  return {
+    ...task,
+    subtasks: subtasks,
+  };
+}
+
+async function saveTaskWithSubtasks(index, updatedTask) {
   try {
     await saveTask(updatedTask);
-    tasks[taskIndex] = updatedTask;
+    tasks[index] = updatedTask;
     renderBoard();
   } catch (error) {
     console.error("onSubtaskToggle: error saving subtask state", error);
   }
 }
 
-/* ============================================================
- *  Move menu (Up / Down within column)
- * ============================================================ */
+async function onAddSubtaskFromOverlay(taskId) {
+  const input = document.getElementById("overlaySubtaskInput");
+  if (!input) return;
 
-// IMPORTANT: currentMoveTaskId is already defined as global variable in board.js.
-// Do NOT define it again here with let/const, just use it.
+  const title = String(input.value || "").trim();
+  if (!title) return;
 
-/**
- * Global element for the Move menu.
- */
-let moveMenuElement = null;
+  const taskIndex = findTaskIndexById(taskId);
+  if (taskIndex === -1) return;
 
-/**
- * Ensure that the global Move menu element exists.
- */
-function ensureMoveMenuElement() {
-  if (moveMenuElement) return moveMenuElement;
+  const task = tasks[taskIndex];
+  const subtasks = cloneSubtasks(task);
 
-  const el = document.createElement("div");
-  el.className = "card-move-menu";
-  el.innerHTML = `
-    <div class="card-move-menu__inner">
-      <p class="card-move-menu__title">Move task:</p>
-      <div class="card-move-menu__options"></div>
-    </div>
-  `;
-  document.body.appendChild(el);
-  moveMenuElement = el;
+  subtasks.push({ title: title, done: false, checked: false });
 
-  return moveMenuElement;
-}
-
-function createMoveMenuOption(container, arrow, label, disabled, onClick) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "card-move-menu__option";
-  button.disabled = disabled;
-  button.innerHTML =
-    '<span class="card-move-menu__arrow">' +
-    arrow +
-    "</span>" +
-    "<span>" +
-    label +
-    "</span>";
-  if (!disabled) {
-    button.addEventListener("click", onClick);
-  }
-  container.appendChild(button);
-}
-
-/**
- * Open Move menu.
- * @param {string} taskId
- * @param {HTMLElement} anchorEl - the icon element (button) on the card
- */
-function openMoveMenu(taskId, anchorEl) {
-  if (window.innerWidth >= 1024) return;
-
-  const menu = ensureMoveMenuElement();
-  const optionsContainer = menu.querySelector(".card-move-menu__options");
-  if (!optionsContainer) return;
-
-  // Toggle: if the menu is already open for this task, close it
-  if (menu.style.display === "block" && String(currentMoveTaskId) === String(taskId)) {
-    closeMoveMenu();
-    return;
-  }
-
-  currentMoveTaskId = taskId;
-
-  const globalIndex = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (globalIndex === -1) return;
-
-  const task = tasks[globalIndex];
-  const status = normalizeTaskStatus(task.status);
-  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
-  const labels =
-    typeof BOARD_STATUS_LABELS === "object" ? BOARD_STATUS_LABELS : {};
-  const statusIndex = order.indexOf(status);
-  if (statusIndex === -1) return;
-
-  const previousStatus = statusIndex > 0 ? order[statusIndex - 1] : null;
-  const nextStatus =
-    statusIndex < order.length - 1 ? order[statusIndex + 1] : null;
-
-  optionsContainer.innerHTML = "";
-
-  const prevLabel = previousStatus
-    ? "Move to " + (labels[previousStatus] || "previous column")
-    : "No previous column";
-  const nextLabel = nextStatus
-    ? "Move to " + (labels[nextStatus] || "next column")
-    : "No next column";
-
-  createMoveMenuOption(
-    optionsContainer,
-    "←",
-    prevLabel,
-    !previousStatus,
-    function () {
-      moveTaskToAdjacentColumn(taskId, "prev");
-    }
-  );
-
-  createMoveMenuOption(
-    optionsContainer,
-    "→",
-    nextLabel,
-    !nextStatus,
-    function () {
-      moveTaskToAdjacentColumn(taskId, "next");
-    }
-  );
-
-  const rect = anchorEl.getBoundingClientRect();
-  const top = rect.bottom + window.scrollY + 6;
-  const left = rect.left + window.scrollX;
-
-  menu.style.top = top + "px";
-  menu.style.left = left + "px";
-  menu.style.display = "block";
-}
-
-/**
- * Close Move menu.
- */
-function closeMoveMenu() {
-  if (!moveMenuElement) return;
-  moveMenuElement.style.display = "none";
-}
-
-/**
- * Move task one column left or right using the global status order.
- */
-async function moveTaskToAdjacentColumn(taskId, direction) {
-  const index = tasks.findIndex((t) => String(t.id) === String(taskId));
-  if (index === -1) return;
-
-  const order = Array.isArray(BOARD_STATUS_ORDER) ? BOARD_STATUS_ORDER : [];
-  const status = normalizeTaskStatus(tasks[index].status);
-  const currentPosition = order.indexOf(status);
-  if (currentPosition === -1) return;
-
-  const offset = direction === "prev" ? -1 : 1;
-  const targetStatus = order[currentPosition + offset];
-  if (!targetStatus) return;
+  const updatedTask = buildTaskWithSubtasks(task, subtasks);
 
   try {
-    await updateTaskStatus(taskId, targetStatus);
-    closeMoveMenu();
+    await saveTask(updatedTask);
+    tasks[taskIndex] = updatedTask;
+    input.value = "";
+    refreshOverlaySubtasks(updatedTask);
     renderBoard();
   } catch (error) {
-    console.error("moveTaskToAdjacentColumn: failed", error);
+    console.error("onAddSubtaskFromOverlay: error saving subtask", error);
   }
 }
 
-/**
- * Click anywhere in document closes the Move menu,
- * unless clicking on Move button or the menu itself.
- */
+function refreshOverlaySubtasks(task) {
+  const list = document.querySelector(".subtask-list-detail");
+  if (!list) return;
+
+  list.innerHTML = renderSubtasksDetail(task.subtasks || [], task.id);
+}
+
+function getTaskById(taskId) {
+  return tasks.find(function (t) {
+    return String(t.id) === String(taskId);
+  });
+}
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Escape") {
+    closeTaskCard();
+    closeMoveMenu();
+  }
+});
+
 document.addEventListener("click", function (event) {
-  if (!moveMenuElement || moveMenuElement.style.display !== "block") return;
+  const { overlay } = getOverlayElements();
+  if (!overlay) return;
+
+  const isOverlayVisible = overlay.style.display === "flex";
+  const clickedOnBackground = event.target === overlay;
+
+  if (isOverlayVisible && clickedOnBackground) {
+    closeTaskCard();
+  }
+});
+
+let moveMenuElement = null;
+let moveMenuTaskId = null;
+
+function openMoveMenu(taskId, button) {
+  ensureMoveMenuElement();
+  if (!moveMenuElement) return;
+
+  moveMenuTaskId = taskId;
+  attachMoveMenuHandlers();
+
+  positionMoveMenu(button);
+  showMoveMenu();
+}
+
+function ensureMoveMenuElement() {
+  moveMenuElement = document.querySelector(".move-menu");
+}
+
+function attachMoveMenuHandlers() {
+  const upBtn = moveMenuElement.querySelector("[data-move='up']");
+  const downBtn = moveMenuElement.querySelector("[data-move='down']");
+
+  if (upBtn) {
+    upBtn.onclick = onMoveUpClick;
+  }
+  if (downBtn) {
+    downBtn.onclick = onMoveDownClick;
+  }
+}
+
+function positionMoveMenu(button) {
+  const rect = button.getBoundingClientRect();
+  moveMenuElement.style.top = rect.bottom + window.scrollY + "px";
+  moveMenuElement.style.left = rect.right + window.scrollX - 120 + "px";
+}
+
+function showMoveMenu() {
+  moveMenuElement.classList.add("move-menu--open");
+}
+
+function closeMoveMenu() {
+  if (!moveMenuElement) return;
+  moveMenuElement.classList.remove("move-menu--open");
+  moveMenuTaskId = null;
+}
+
+function onMoveUpClick() {
+  moveTaskOneStep("up");
+}
+
+function onMoveDownClick() {
+  moveTaskOneStep("down");
+}
+
+function moveTaskOneStep(direction) {
+  if (!moveMenuTaskId) return;
+
+  const index = findTaskIndexById(moveMenuTaskId);
+  if (index === -1) return;
+
+  const status = normalizeTaskStatus(tasks[index].status);
+  const neighborIndex = findNeighborIndex(index, status, direction);
+  if (neighborIndex === -1) return;
+
+  swapTasks(index, neighborIndex);
+  renderBoard();
+}
+
+function findNeighborIndex(index, status, direction) {
+  const step = direction === "up" ? -1 : 1;
+  let i = index + step;
+
+  while (i >= 0 && i < tasks.length) {
+    if (normalizeTaskStatus(tasks[i].status) === status) {
+      return i;
+    }
+    i += step;
+  }
+
+  return -1;
+}
+
+function swapTasks(i, j) {
+  const tmp = tasks[i];
+  tasks[i] = tasks[j];
+  tasks[j] = tmp;
+}
+
+document.addEventListener("click", function (event) {
+  if (!moveMenuElement || !moveMenuElement.classList.contains("move-menu--open")) {
+    return;
+  }
 
   const clickInsideMenu = moveMenuElement.contains(event.target);
   const clickOnMoveBtn = event.target.closest(".card-move-btn");
@@ -460,8 +447,5 @@ document.addEventListener("click", function (event) {
   }
 });
 
-/**
- * On scroll/resize close Move menu (so it doesn't "hang in the air").
- */
 window.addEventListener("scroll", closeMoveMenu);
 window.addEventListener("resize", closeMoveMenu);
