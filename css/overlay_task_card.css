@@ -36,6 +36,72 @@
   display: flex;
 }
 
+/* Confirmation popup (used for delete confirmations) */
+.confirm-overlay {
+  display: none;
+  position: fixed;
+  z-index: 1100;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  align-items: center;
+  justify-content: center;
+}
+
+.confirm-overlay--open {
+  display: flex;
+}
+
+.confirm-dialog {
+  width: 420px;
+  max-width: 92%;
+  background: #ffffff;
+  padding: 20px 20px 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.2);
+  border: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+.confirm-dialog__title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.confirm-dialog__message {
+  margin: 0 0 18px;
+  color: #374151;
+  font-size: 15px;
+}
+
+.confirm-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.confirm-dialog__button {
+  min-width: 88px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.confirm-dialog__button--cancel {
+  background: #f3f4f6;
+  color: #111827;
+}
+
+.confirm-dialog__button--confirm {
+  background: #dc2626;
+  color: #fff;
+}
+
 .task-card-content {
   width: 525px;
   max-width: 600px;

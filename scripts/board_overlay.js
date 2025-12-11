@@ -45,6 +45,83 @@ function getOverlayElements() {
 }
 
 /**
+ * Show a confirmation popup and return a Promise<boolean>.
+ * @param {string} message
+ * @returns {Promise<boolean>}
+ */
+function showConfirmPopup(message) {
+  return new Promise((resolve) => {
+    // create overlay
+    const overlay = document.createElement("div");
+    overlay.className = "confirm-overlay confirm-overlay--open";
+    overlay.setAttribute("role", "dialog");
+    overlay.setAttribute("aria-modal", "true");
+
+    // dialog
+    const dialog = document.createElement("div");
+    dialog.className = "confirm-dialog";
+
+    const title = document.createElement("h3");
+    title.className = "confirm-dialog__title";
+    title.textContent = "Confirm";
+
+    const msg = document.createElement("p");
+    msg.className = "confirm-dialog__message";
+    msg.textContent = message || "Are you sure?";
+
+    const actions = document.createElement("div");
+    actions.className = "confirm-dialog__actions";
+
+    const btnCancel = document.createElement("button");
+    btnCancel.type = "button";
+    btnCancel.className = "confirm-dialog__button confirm-dialog__button--cancel";
+    btnCancel.textContent = "Cancel";
+
+    const btnConfirm = document.createElement("button");
+    btnConfirm.type = "button";
+    btnConfirm.className = "confirm-dialog__button confirm-dialog__button--confirm";
+    btnConfirm.textContent = "Delete";
+
+    actions.appendChild(btnCancel);
+    actions.appendChild(btnConfirm);
+
+    dialog.appendChild(title);
+    dialog.appendChild(msg);
+    dialog.appendChild(actions);
+    overlay.appendChild(dialog);
+    document.body.appendChild(overlay);
+
+    // focus handling
+    btnCancel.focus();
+
+    function cleanup(result) {
+      try {
+        overlay.remove();
+      } catch (e) {}
+      resolve(result);
+    }
+
+    btnCancel.addEventListener("click", () => cleanup(false));
+    btnConfirm.addEventListener("click", () => cleanup(true));
+
+    overlay.addEventListener("click", (ev) => {
+      if (ev.target === overlay) cleanup(false);
+    });
+
+    document.addEventListener(
+      "keydown",
+      function onKey(e) {
+        if (e.key === "Escape") {
+          document.removeEventListener("keydown", onKey);
+          cleanup(false);
+        }
+      },
+      { once: true }
+    );
+  });
+}
+
+/**
  * Open Task-Detail Overlay (View Mode).
  */
 function openTaskCard(taskId) {
@@ -233,7 +310,7 @@ function onEditPriorityClick(event) {
  * Delete button in View Overlay.
  */
 async function onOverlayDeleteClick(taskId) {
-  const confirmDelete = window.confirm(
+  const confirmDelete = await showConfirmPopup(
     "Do you really want to delete this task?"
   );
   if (!confirmDelete) return;
