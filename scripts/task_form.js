@@ -4,13 +4,11 @@ function addTaskBtn() {
   overlay.style.display = "flex";
 }
 
-
 function closeAddTaskBtn() {
   const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
   overlay.style.display = "none";
 }
-
 
 function initAddTaskForm() {
   const form = document.getElementById("taskForm");
@@ -28,7 +26,6 @@ function initAddTaskForm() {
   setMinDate();
 }
 
-
 async function handleCreateTask(event) {
   if (event) event.preventDefault();
   const taskData = readTaskForm();
@@ -40,8 +37,8 @@ async function submitTask(data) {
   try {
     await addTask(data);
     afterTaskSaved();
-  } catch (err) {
-    handleCreateTaskError(err);
+  } catch (error) {
+    handleCreateTaskError(error);
   }
 }
 
@@ -50,14 +47,15 @@ function afterTaskSaved() {
   showSuccessMessage();
   resetTaskForm();
   closeAddTaskBtn();
-  setTimeout(() => (window.location.href = "board.html"), 1000);
+  setTimeout(() => {
+    window.location.href = "board.html";
+  }, 1000);
 }
 
-function handleCreateTaskError(err) {
-  console.error("handleCreateTask:", err);
+function handleCreateTaskError(error) {
+  console.error("handleCreateTask:", error);
   alert("Task could not be created (see console).");
 }
-
 
 function readTaskForm() {
   clearFormErrors();
@@ -75,7 +73,6 @@ function readTaskForm() {
   return buildTaskData(title, description, dueDate, category, assignedTo);
 }
 
-
 function buildTaskData(title, description, dueDate, category, assignedTo) {
   const subtasks = getSubtaskDrafts();
 
@@ -90,7 +87,6 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
     status: "todo",
   };
 }
-
 
 function resetTaskForm() {
   const form = document.getElementById("taskForm");
@@ -107,27 +103,33 @@ function resetTaskForm() {
   }
 }
 
-
 function handleClearTaskForm(event) {
   if (event) event.preventDefault();
   resetTaskForm();
 }
 
-
 function showSuccessMessage() {
-  if (window.createNotification && typeof window.createNotification === "function") {
-    window.createNotification({ type: "success", text: "Task created successfully!", duration: 1800 });
+  const canNotify =
+    typeof window.createNotification === "function";
+
+  if (canNotify) {
+    window.createNotification({
+      type: "success",
+      text: "Task created successfully!",
+      duration: 1800,
+    });
     return;
   }
+
   const messageElement = document.getElementById("successMessage");
   if (!messageElement) return;
+
   messageElement.style.display = "flex";
+
   setTimeout(() => {
     messageElement.style.display = "none";
   }, 2000);
 }
-
-
 
 function setMinDate() {
   const dueDate = document.getElementById("dueDate");
@@ -137,11 +139,10 @@ function setMinDate() {
   const year = today.getFullYear();
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const day = String(today.getDate()).padStart(2, "0");
-  const minDate = `${year}-${month}-${day}`;
 
+  const minDate = `${year}-${month}-${day}`;
   dueDate.min = minDate;
 }
-
 
 function removeMinDate() {
   const dueDate = document.getElementById("dueDate");
@@ -149,57 +150,84 @@ function removeMinDate() {
   dueDate.removeAttribute("min");
 }
 
-(function () {
-  const container = document.getElementById("notificationContainer");
+function getNotificationContainer() {
+  return document.getElementById("notificationContainer");
+}
 
-  function createNotification({ type = "success", text = "Task created successfully!", duration = 1800 } = {}) {
-    if (!container) return;
-    const notif = document.createElement("div");
-    notif.className = `notification notification--${type}`;
-    notif.setAttribute("role", "status");
-    notif.setAttribute("aria-live", "polite");
+function buildNotificationTemplate(type, text) {
+  const safeText =
+    typeof escapeHtml === "function"
+      ? escapeHtml(text || "Task created successfully!")
+      : String(text || "Task created successfully!");
 
-    notif.innerHTML = `
-      <span class="notif-icon" aria-hidden="true">
-        <!-- simple check icon -->
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.12"/>
-          <path d="M7 12.5L10 15.5L17 8.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
-      <div class="notif-message">${escapeHtml(text)}</div>
-      <button class="notif-close" aria-label="Close notification">&times;</button>
-    `;
+  return `
+    <span class="notif-icon" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+           xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10"
+                fill="currentColor" opacity="0.12"/>
+        <path d="M7 12.5L10 15.5L17 8.5"
+              stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <div class="notif-message">${safeText}</div>
+    <button class="notif-close" aria-label="Close notification">&times;</button>
+  `;
+}
 
-    const closeBtn = notif.querySelector(".notif-close");
+function removeNotification(element) {
+  if (!element) return;
+
+  element.classList.remove("show");
+  element.addEventListener(
+    "transitionend",
+    () => {
+      if (element && element.parentNode) {
+        element.parentNode.removeChild(element);
+      }
+    },
+    { once: true }
+  );
+}
+
+function createNotificationElement(type, text) {
+  const notif = document.createElement("div");
+  notif.className = `notification notification--${type}`;
+  notif.setAttribute("role", "status");
+  notif.setAttribute("aria-live", "polite");
+  notif.innerHTML = buildNotificationTemplate(type, text);
+
+  const closeBtn = notif.querySelector(".notif-close");
+  if (closeBtn) {
     closeBtn.addEventListener("click", () => removeNotification(notif));
-
-    container.appendChild(notif);
-    requestAnimationFrame(() => {
-      notif.classList.add("show");
-    });
-
-    const timeout = setTimeout(() => removeNotification(notif), duration);
-
-    function removeNotification(el) {
-      clearTimeout(timeout);
-      el.classList.remove("show");
-      setTimeout(() => {
-        if (el && el.parentNode) el.parentNode.removeChild(el);
-      }, 250);
-    }
-
-    return notif;
   }
 
-  function escapeHtml(s) {
-    return String(s || "")
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  }
+  return notif;
+}
 
+function createNotification(options = {}) {
+  const {
+    type = "success",
+    text = "Task created successfully!",
+    duration = 1800,
+  } = options;
+
+  const container = getNotificationContainer();
+  if (!container) return;
+
+  const notif = createNotificationElement(type, text);
+  container.appendChild(notif);
+
+  requestAnimationFrame(() => {
+    notif.classList.add("show");
+  });
+
+  setTimeout(() => {
+    removeNotification(notif);
+  }, duration);
+}
+
+if (typeof window !== "undefined") {
   window.createNotification = createNotification;
-})();
+}
