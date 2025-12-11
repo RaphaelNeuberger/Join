@@ -42,11 +42,19 @@ async function submitTask(data) {
   }
 }
 
+function isOnAddTaskPage() {
+  return window.location.pathname.includes("add_task.html");
+}
+
 function afterTaskSaved() {
-  renderBoard();
   showSuccessMessage();
   resetTaskForm();
-  setTimeout(() => closeAddTaskBtn(), 800);
+  if (isOnAddTaskPage()) {
+    setTimeout(() => { window.location.href = "board.html"; }, 1500);
+  } else {
+    if (typeof renderBoard === "function") renderBoard();
+    setTimeout(() => closeAddTaskBtn(), 1500);
+  }
 }
 
 function handleCreateTaskError(error) {
