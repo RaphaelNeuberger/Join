@@ -1,4 +1,5 @@
 const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
+
 const STATUS_LABELS = {
   todo: "To do",
   inprogress: "In progress",
@@ -24,24 +25,24 @@ function initLayout() {
   initAddTaskForm();
 }
 
-function initBoardSearch() {
-  const input = document.getElementById("boardSearch");
-  if (!input) return;
-
-  let t;
-  input.addEventListener("input", function () {
-    clearTimeout(t);
-    const q = this.value.trim().toLowerCase();
-    t = setTimeout(function () {
-      renderBoardFiltered(q);
-    }, 150);
-  });
-}
-
 async function initBoard() {
   await seedTasksIfEmpty();
   await fetchTasks();
   renderBoard();
+}
+
+function initBoardSearch() {
+  const input = document.getElementById("boardSearch");
+  if (!input) return;
+
+  let timeoutId;
+  input.addEventListener("input", function () {
+    clearTimeout(timeoutId);
+    const query = this.value.trim().toLowerCase();
+    timeoutId = setTimeout(() => {
+      renderBoardFiltered(query);
+    }, 150);
+  });
 }
 
 function renderBoard() {
@@ -52,26 +53,32 @@ function renderBoard() {
   renderNoTasksIfEmpty();
 }
 
+function matchesQuery(task, query) {
+  const title = String(task.title || "").toLowerCase();
+  const description = String(task.description || "").toLowerCase();
+  return title.includes(query) || description.includes(query);
+}
+
+function filterTasksByStatusAndQuery(status, query) {
+  const tasksForStatus = getTasksByStatus(status);
+  return tasksForStatus.filter((task) => matchesQuery(task, query));
+}
+
+function renderFilteredStatusColumn(status, containerId, query) {
+  const tasksForStatus = filterTasksByStatusAndQuery(status, query);
+  renderColumnWithTasks(tasksForStatus, containerId, true);
+}
+
 function renderBoardFiltered(query) {
   if (!query) {
     renderBoard();
     return;
   }
 
-  const match = function (t) {
-    const a = String(t.title || "").toLowerCase();
-    const b = String(t.description || "").toLowerCase();
-    return a.includes(query) || b.includes(query);
-  };
-
-  const by = function (s) {
-    return getTasksByStatus(s).filter(match);
-  };
-
-  renderColumnWithTasks(by("todo"), "to-do-tasks", true);
-  renderColumnWithTasks(by("inprogress"), "in-progress-tasks", true);
-  renderColumnWithTasks(by("await_feedback"), "await-feedback-tasks", true);
-  renderColumnWithTasks(by("done"), "done-tasks", true);
+  renderFilteredStatusColumn("todo", "to-do-tasks", query);
+  renderFilteredStatusColumn("inprogress", "in-progress-tasks", query);
+  renderFilteredStatusColumn("await_feedback", "await-feedback-tasks", query);
+  renderFilteredStatusColumn("done", "done-tasks", query);
   renderNoTasksIfEmpty();
 }
 
@@ -84,7 +91,6 @@ function getTasksByStatus(status) {
 
 function fillColumn(container, tasksForStatus) {
   if (!tasksForStatus.length) return;
-
   tasksForStatus.forEach((task) => {
     container.innerHTML += taskTemplate(task);
   });
@@ -113,7 +119,6 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
 
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll(".task-cards");
-
   taskBoards.forEach((board) => {
     const hasTask = board.querySelector(".card-task");
     const placeholder = board.querySelector(".card-no-task");
@@ -133,22 +138,22 @@ function initTaskCardEvents() {
   if (!columnsWrapper) return;
 
   columnsWrapper.addEventListener("click", onTaskCardClick);
-
-  columnsWrapper.addEventListener("dragstart", function (event) {
+  columnsWrapper.addEventListener("dragstart", (event) => {
     dragstartHandler(event);
   });
 }
 
 function initDragAndDrop() {
   const columns = document.querySelectorAll(".task-column");
-  columns.forEach((col) => {
-    col.addEventListener("dragover", function (event) {
+
+  columns.forEach((column) => {
+    column.addEventListener("dragover", (event) => {
       dragoverHandler(event);
     });
-    col.addEventListener("dragleave", function (event) {
+    column.addEventListener("dragleave", (event) => {
       dragleaveHandler(event);
     });
-    col.addEventListener("drop", function (event) {
+    column.addEventListener("drop", (event) => {
       dropHandler(event);
     });
   });
@@ -166,23 +171,23 @@ function dragstartHandler(event) {
 
 function dragoverHandler(event) {
   event.preventDefault();
-  const col = event.currentTarget;
-  if (col && col.classList) col.classList.add("drag-over");
+  const column = event.currentTarget;
+  if (column && column.classList) column.classList.add("drag-over");
 }
 
 function dragleaveHandler(event) {
-  const col = event.currentTarget;
-  if (col && col.classList) col.classList.remove("drag-over");
+  const column = event.currentTarget;
+  if (column && column.classList) column.classList.remove("drag-over");
 }
 
 async function dropHandler(event) {
   event.preventDefault();
-  const col = event.currentTarget;
-  if (col && col.classList) col.classList.remove("drag-over");
+  const column = event.currentTarget;
+  if (column && column.classList) column.classList.remove("drag-over");
 
   if (!event.dataTransfer) return;
   const taskId = event.dataTransfer.getData("text/plain");
-  const rawStatus = col && col.dataset ? col.dataset.status : "";
+  const rawStatus = column && column.dataset ? column.dataset.status : "";
   const newStatus = normalizeTaskStatus(rawStatus);
   if (!taskId || !newStatus) return;
 
