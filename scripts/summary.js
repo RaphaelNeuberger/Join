@@ -27,7 +27,6 @@ function showGreeting() {
   const greetNameMain = document.getElementById("greet-name");
   const greetTextMain = document.querySelector(".kpi-right .greet-text");
 
-  // Add body class to prevent scrolling (for splash)
   body.classList.add("splash-active");
 
   const user = getCurrentUser();

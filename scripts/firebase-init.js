@@ -16,7 +16,6 @@ const app = initializeApp(window.firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
 
-// Expose commonly used DB functions on window so non-module scripts can use them
 window.firebaseApp = app;
 window.firebaseAuth = auth;
 window.firebaseDb = db;

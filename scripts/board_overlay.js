@@ -156,8 +156,6 @@ function onTaskEditClick(taskId) {
   
   removeMinDate();
   
-  // Initialize Assigned-To controls after injecting the HTML
-  // Use a short timeout so DOM is updated before initialization
   setTimeout(() => {
     try {
       if (Array.isArray(task.assignedTo) && typeof selectedAssignees !== "undefined") {

@@ -112,7 +112,6 @@ function initIntroAnimation() {
   });
 }
 
-// Initialize all UI handlers on load
 document.addEventListener("DOMContentLoaded", () => {
   initPasswordToggle();
   initFormToggle();

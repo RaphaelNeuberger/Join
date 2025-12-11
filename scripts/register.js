@@ -15,7 +15,6 @@ function clearFormMessage(formId) {
     el.classList.remove("error", "success");
     el.style.display = "none";
   }
-  // remove input error highlights
   document.querySelectorAll(`#${formId === "login" ? "form-login" : "form-signup"} .input-group input`).forEach(i=>{
     i.classList.remove("input-error");
   });
@@ -37,7 +36,6 @@ function showFormMessage(formId, message, type = "error", inputEl = null) {
   }
 }
 
-/* Generic form validation helper: checks built-in validity and shows first invalid message at top */
 function validateFormAndShow(formEl, formKey) {
   if (!formEl.checkValidity()) {
     const firstInvalid = formEl.querySelector(":invalid");
@@ -57,7 +55,6 @@ function validateFormAndShow(formEl, formKey) {
       return false;
     }
   }
-  // extra custom checks (e.g. passwords match)
   if (formKey === "signup") {
     const pw = document.getElementById("signup-password").value.trim();
     const cpw = document.getElementById("confirm-password").value.trim();
@@ -73,7 +70,6 @@ function validateFormAndShow(formEl, formKey) {
   return true;
 }
 
-/* ---------- Firebase / Auth functions ---------- */
 let recaptchaVerifier;
 function initRecaptcha() {
   if (!recaptchaVerifier && typeof RecaptchaVerifier !== "undefined") {
@@ -94,7 +90,6 @@ function initRecaptcha() {
 async function addUser() {
   clearFormMessage("signup");
   const form = document.getElementById("form-signup");
-  // defensive check: addUser only proceeds if valid
   if (!validateFormAndShow(form, "signup")) return;
 
   const name = document.getElementById("name").value.trim();
