@@ -62,7 +62,6 @@ function initAssignedToScoped(root) {
 
 function attachScopedListeners() {
   const { input, dropdown, selectedContainer } = scopedElements;
-  input.addEventListener("focus", () => openScopedDropdown());
   input.addEventListener("click", (e) => { e.stopPropagation(); toggleScopedDropdown(); });
   attachScopedToggle();
   input.addEventListener("input", filterContactsScoped);
@@ -219,9 +218,11 @@ function updateListItem(li, isNowSelected) {
 
 function renderSelectedBadges() {
   const selectedContainer = document.getElementById("assignedToSelected");
+  const dropdown = document.getElementById("assignedToDropdown");
   selectedContainer.innerHTML = "";
   if (selectedAssignees.length === 0) { selectedContainer.style.display = "none"; return; }
-  selectedContainer.style.display = "flex";
+  const isDropdownOpen = dropdown && dropdown.style.display === "block";
+  selectedContainer.style.display = isDropdownOpen ? "none" : "flex";
   selectedAssignees.forEach((id) => appendBadge(selectedContainer, id));
 }
 
