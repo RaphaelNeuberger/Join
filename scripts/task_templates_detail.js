@@ -1,4 +1,3 @@
-
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
   const cat = task.category || "Category";

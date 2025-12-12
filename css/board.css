@@ -430,7 +430,7 @@ body {
 .assigned-to-toggle {
   position: absolute;
   right: 14px;
-  top: 25%;
+  margin-top: 16px;
   transform: translateY(-25%);
   width: 18px;
   height: 18px;
