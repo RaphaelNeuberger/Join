@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Overlay functionality for adding tasks from the board
+ * @module overlay_add_task
+ */
+
+/**
+ * Initializes the add task overlay with event listeners
+ */
 function initAddTaskOverlay() {
   const overlay = document.querySelector("overlay-modal");
   const form = document.getElementById("taskForm");
@@ -24,6 +32,10 @@ function initAddTaskOverlay() {
   });
 }
 
+/**
+ * Opens the add task overlay with a specific status
+ * @param {string} status - The initial task status (todo, in-progress, etc.)
+ */
 function openAddTaskOverlay(status) {
   const overlay = document.querySelector("overlay-modal");
   const form = document.getElementById("taskForm");
@@ -44,6 +56,9 @@ function openAddTaskOverlay(status) {
   document.body.style.overflow = "hidden";
 }
 
+/**
+ * Closes the add task overlay
+ */
 function closeAddTaskOverlay() {
   const overlay = document.querySelector("overlay-modal");
   if (!overlay) return;
@@ -52,10 +67,17 @@ function closeAddTaskOverlay() {
   document.body.style.overflow = "";
 }
 
+/**
+ * Button handler to open add task overlay
+ * @param {string} [status='todo'] - The task status
+ */
 function addTaskBtn(status) {
   openAddTaskOverlay(status || "todo");
 }
 
+/**
+ * Button handler to close add task overlay
+ */
 function closeAddTaskBtn() {
   closeAddTaskOverlay();
 }

@@ -1,3 +1,9 @@
+/**
+ * @fileoverview Firebase configuration
+ * @module config
+ */
+
+/** @constant {Object} */
 const firebaseConfig = {
   apiKey: "AIzaSyBI4JD0XBE-srOGHaLT81iUZ6meuOjgV8M",
   authDomain: "join-60a91.firebaseapp.com",

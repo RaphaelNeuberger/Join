@@ -1,15 +1,29 @@
+/**
+ * @fileoverview Task form handling and submission
+ * @module task_form
+ */
+
+/**
+ * Opens the add task overlay modal
+ */
 function addTaskBtn() {
   const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
   overlay.style.display = "flex";
 }
 
+/**
+ * Closes the add task overlay modal
+ */
 function closeAddTaskBtn() {
   const overlay = document.querySelector(".overlay-modal");
   if (!overlay) return;
   overlay.style.display = "none";
 }
 
+/**
+ * Initializes the add task form with event handlers
+ */
 function initAddTaskForm() {
   const form = document.getElementById("taskForm");
   if (!form) return;
@@ -26,6 +40,11 @@ function initAddTaskForm() {
   setMinDate();
 }
 
+/**
+ * Handles the create task form submission
+ * @async
+ * @param {Event} [event] - The submit event
+ */
 async function handleCreateTask(event) {
   if (event) event.preventDefault();
   const taskData = readTaskForm();
@@ -33,6 +52,11 @@ async function handleCreateTask(event) {
   await submitTask(taskData);
 }
 
+/**
+ * Submits task data to the API
+ * @async
+ * @param {Object} data - The task data to submit
+ */
 async function submitTask(data) {
   try {
     await addTask(data);
@@ -42,10 +66,17 @@ async function submitTask(data) {
   }
 }
 
+/**
+ * Checks if current page is the add task page
+ * @returns {boolean} Whether on add_task.html
+ */
 function isOnAddTaskPage() {
   return window.location.pathname.includes("add_task.html");
 }
 
+/**
+ * Handles post-save actions after task creation
+ */
 function afterTaskSaved() {
   showSuccessMessage();
   resetTaskForm();
@@ -57,11 +88,19 @@ function afterTaskSaved() {
   }
 }
 
+/**
+ * Handles task creation errors
+ * @param {Error} error - The error that occurred
+ */
 function handleCreateTaskError(error) {
   console.error("handleCreateTask:", error);
   alert("Task could not be created (see console).");
 }
 
+/**
+ * Reads and validates task form data
+ * @returns {Object|null} Task data object or null if invalid
+ */
 function readTaskForm() {
   clearFormErrors();
 
@@ -78,6 +117,15 @@ function readTaskForm() {
   return buildTaskData(title, description, dueDate, category, assignedTo);
 }
 
+/**
+ * Builds the task data object from form values
+ * @param {string} title - Task title
+ * @param {string} description - Task description
+ * @param {string} dueDate - Task due date
+ * @param {string} category - Task category
+ * @param {Array} assignedTo - Assigned users
+ * @returns {Object} The task data object
+ */
 function buildTaskData(title, description, dueDate, category, assignedTo) {
   const subtasks = getSubtaskDrafts();
 
@@ -93,6 +141,9 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
   };
 }
 
+/**
+ * Resets the task form to initial state
+ */
 function resetTaskForm() {
   const form = document.getElementById("taskForm");
   if (form) form.reset();
@@ -108,11 +159,18 @@ function resetTaskForm() {
   }
 }
 
+/**
+ * Handles clear button click to reset form
+ * @param {Event} [event] - The click event
+ */
 function handleClearTaskForm(event) {
   if (event) event.preventDefault();
   resetTaskForm();
 }
 
+/**
+ * Shows a success message after task creation
+ */
 function showSuccessMessage() {
   const canNotify =
     typeof window.createNotification === "function";
@@ -136,6 +194,9 @@ function showSuccessMessage() {
   }, 2000);
 }
 
+/**
+ * Sets the minimum date for due date input to today
+ */
 function setMinDate() {
   const dueDate = document.getElementById("dueDate");
   if (!dueDate) return;
@@ -149,16 +210,29 @@ function setMinDate() {
   dueDate.min = minDate;
 }
 
+/**
+ * Removes the minimum date restriction from due date input
+ */
 function removeMinDate() {
   const dueDate = document.getElementById("dueDate");
   if (!dueDate) return;
   dueDate.removeAttribute("min");
 }
 
+/**
+ * Gets the notification container element
+ * @returns {HTMLElement|null} The notification container
+ */
 function getNotificationContainer() {
   return document.getElementById("notificationContainer");
 }
 
+/**
+ * Builds HTML template for notification
+ * @param {string} type - Notification type
+ * @param {string} text - Notification message
+ * @returns {string} HTML template string
+ */
 function buildNotificationTemplate(type, text) {
   const safeText =
     typeof escapeHtml === "function"
@@ -181,6 +255,10 @@ function buildNotificationTemplate(type, text) {
   `;
 }
 
+/**
+ * Removes a notification element with animation
+ * @param {HTMLElement} element - The notification element to remove
+ */
 function removeNotification(element) {
   if (!element) return;
 
@@ -196,6 +274,12 @@ function removeNotification(element) {
   );
 }
 
+/**
+ * Creates a notification DOM element
+ * @param {string} type - Notification type
+ * @param {string} text - Notification message
+ * @returns {HTMLElement} The notification element
+ */
 function createNotificationElement(type, text) {
   const notif = document.createElement("div");
   notif.className = `notification notification--${type}`;
@@ -211,6 +295,13 @@ function createNotificationElement(type, text) {
   return notif;
 }
 
+/**
+ * Creates and displays a notification
+ * @param {Object} [options={}] - Notification options
+ * @param {string} [options.type='success'] - Notification type
+ * @param {string} [options.text='Task created successfully!'] - Message text
+ * @param {number} [options.duration=1800] - Display duration in ms
+ */
 function createNotification(options = {}) {
   const {
     type = "success",

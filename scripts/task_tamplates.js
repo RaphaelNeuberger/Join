@@ -1,15 +1,33 @@
+/**
+ * @fileoverview Task card HTML templates for the board
+ * @module task_templates
+ */
+
+/**
+ * Returns HTML template for empty task column
+ * @returns {string} HTML string
+ */
 function noTaskTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
   );
 }
 
+/**
+ * Returns HTML template for no search results
+ * @returns {string} HTML string
+ */
 function noResultsTemplate() {
   return (
     '<div class="card-no-task">' + "<span>No results found</span>" + "</div>"
   );
 }
 
+/**
+ * Renders assignee avatars HTML
+ * @param {Array} [assignees=[]] - Array of assignee objects or strings
+ * @returns {string} HTML string of assignee avatars
+ */
 function renderAssignees(assignees = []) {
   if (!Array.isArray(assignees)) {
     assignees = assignees ? [assignees] : [];
@@ -43,6 +61,18 @@ function renderAssignees(assignees = []) {
     .join("");
 }
 
+/**
+ * Generates HTML template for a task card
+ * @param {Object} task - The task object
+ * @param {string} task.id - Task ID
+ * @param {string} task.category - Task category
+ * @param {string} task.title - Task title
+ * @param {string} task.description - Task description
+ * @param {Array} task.assignedTo - Assigned users
+ * @param {string} task.priority - Task priority
+ * @param {Array} task.subtasks - Subtasks array
+ * @returns {string} HTML string for task card
+ */
 function taskTemplate(task) {
   const { id, category, title, description, assignedTo, priority, subtasks } =
     task;
@@ -75,6 +105,11 @@ function taskTemplate(task) {
     </div>`;
 }
 
+/**
+ * Generates priority icon HTML
+ * @param {string} priority - Priority level
+ * @returns {string} HTML string for priority icon
+ */
 function priorityIcon(priority) {
   const p = normalizePriority(priority);
   const color = priorityColor(p);
@@ -83,6 +118,11 @@ function priorityIcon(priority) {
   )}</span>`;
 }
 
+/**
+ * Returns SVG markup for priority icon
+ * @param {string} priority - Priority level
+ * @returns {string} SVG HTML string
+ */
 function priorityIconSVG(priority) {
   const p = normalizePriority(priority);
 
@@ -117,6 +157,12 @@ function priorityIconSVG(priority) {
     </svg>`;
 }
 
+/**
+ * Generates priority badge HTML with optional text
+ * @param {string} priority - Priority level
+ * @param {boolean} [withText=true] - Whether to include text label
+ * @returns {string} HTML string for priority badge
+ */
 function priorityBadge(priority, withText = true) {
   const p = normalizePriority(priority);
   const cls = p === "Urgent" ? "urgent" : p === "Low" ? "low" : "medium";
@@ -127,6 +173,11 @@ function priorityBadge(priority, withText = true) {
   )}${txt}</span>`;
 }
 
+/**
+ * Generates subtask progress bar HTML
+ * @param {Array} subtasks - Array of subtask objects
+ * @returns {string} HTML string for progress bar or empty string
+ */
 function subtaskProgressHTML(subtasks) {
   const list = Array.isArray(subtasks) ? subtasks : [];
   if (!list.length) return "";

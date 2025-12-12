@@ -1,5 +1,12 @@
+/**
+ * @fileoverview Board page functionality for task management
+ * @module board
+ */
+
+/** @constant {Array<string>} */
 const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
 
+/** @constant {Object<string, string>} */
 const STATUS_LABELS = {
   todo: "To do",
   inprogress: "In progress",
@@ -7,10 +14,19 @@ const STATUS_LABELS = {
   done: "Done",
 };
 
+/** @constant {Object<string, string>} */
 const BOARD_STATUS_LABELS = STATUS_LABELS;
+
+/** @type {string|null} */
 let currentMoveTaskId = null;
+
+/** @type {HTMLElement|null} */
 let moveMenuElement = null;
 
+/**
+ * Loads all required scripts and initializes the board
+ * @async
+ */
 async function loadScripts() {
   initLayout();
   await initBoard();
@@ -19,6 +35,9 @@ async function loadScripts() {
   initDragAndDrop();
 }
 
+/**
+ * Initializes the page layout components
+ */
 function initLayout() {
   includeHeaderHTML();
   includeSidebarHTML();
@@ -26,12 +45,19 @@ function initLayout() {
   initAddTaskForm();
 }
 
+/**
+ * Initializes the board with tasks from Firebase
+ * @async
+ */
 async function initBoard() {
   await seedTasksIfEmpty();
   await fetchTasks();
   renderBoard();
 }
 
+/**
+ * Initializes the board search functionality
+ */
 function initBoardSearch() {
   const input = document.getElementById("boardSearch");
   if (!input) return;
@@ -46,6 +72,9 @@ function initBoardSearch() {
   });
 }
 
+/**
+ * Renders all board columns
+ */
 function renderBoard() {
   renderColumn("todo", "to-do-tasks");
   renderColumn("inprogress", "in-progress-tasks");
@@ -54,22 +83,44 @@ function renderBoard() {
   renderNoTasksIfEmpty();
 }
 
+/**
+ * Checks if a task matches the search query
+ * @param {Object} task - The task to check
+ * @param {string} query - The search query
+ * @returns {boolean} True if the task matches
+ */
 function matchesQuery(task, query) {
   const title = String(task.title || "").toLowerCase();
   const description = String(task.description || "").toLowerCase();
   return title.includes(query) || description.includes(query);
 }
 
+/**
+ * Filters tasks by status and search query
+ * @param {string} status - The status to filter by
+ * @param {string} query - The search query
+ * @returns {Array<Object>} Filtered tasks
+ */
 function filterTasksByStatusAndQuery(status, query) {
   const list = getTasksByStatus(status);
   return list.filter((task) => matchesQuery(task, query));
 }
 
+/**
+ * Renders a filtered status column
+ * @param {string} status - The status to filter by
+ * @param {string} containerId - The container element ID
+ * @param {string} query - The search query
+ */
 function renderFilteredStatusColumn(status, containerId, query) {
   const tasksForStatus = filterTasksByStatusAndQuery(status, query);
   renderColumnWithTasks(tasksForStatus, containerId, true);
 }
 
+/**
+ * Renders the board with filtered results
+ * @param {string} query - The search query
+ */
 function renderBoardFiltered(query) {
   if (!query) {
     renderBoard();
@@ -83,6 +134,11 @@ function renderBoardFiltered(query) {
   renderNoTasksIfEmpty();
 }
 
+/**
+ * Gets tasks filtered by status
+ * @param {string} status - The status to filter by
+ * @returns {Array<Object>} Tasks with the given status
+ */
 function getTasksByStatus(status) {
   if (!Array.isArray(tasks) || tasks.length === 0) {
     return [];
@@ -92,6 +148,11 @@ function getTasksByStatus(status) {
   );
 }
 
+/**
+ * Fills a container with task cards
+ * @param {HTMLElement} container - The container element
+ * @param {Array<Object>} tasksForStatus - Tasks to render
+ */
 function fillColumn(container, tasksForStatus) {
   if (!tasksForStatus.length) return;
   tasksForStatus.forEach((task) => {
@@ -99,6 +160,11 @@ function fillColumn(container, tasksForStatus) {
   });
 }
 
+/**
+ * Renders a single column by status
+ * @param {string} status - The status to render
+ * @param {string} containerId - The container element ID
+ */
 function renderColumn(status, containerId) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -108,6 +174,12 @@ function renderColumn(status, containerId) {
   fillColumn(container, tasksForStatus);
 }
 
+/**
+ * Renders a column with specific tasks
+ * @param {Array<Object>} tasksForStatus - Tasks to render
+ * @param {string} containerId - The container element ID
+ * @param {boolean} isSearch - Whether this is a search result
+ */
 function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
@@ -120,6 +192,9 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   fillColumn(container, tasksForStatus);
 }
 
+/**
+ * Renders placeholder text for empty columns
+ */
 function renderNoTasksIfEmpty() {
   const taskBoards = document.querySelectorAll(".task-cards");
 
@@ -137,6 +212,9 @@ function renderNoTasksIfEmpty() {
   });
 }
 
+/**
+ * Initializes task card click events
+ */
 function initTaskCardEvents() {
   const columnsWrapper = document.querySelector(".tasks-columns");
   if (!columnsWrapper) return;
@@ -147,6 +225,9 @@ function initTaskCardEvents() {
   });
 }
 
+/**
+ * Initializes drag and drop functionality
+ */
 function initDragAndDrop() {
   const columns = document.querySelectorAll(".task-column");
 
@@ -163,6 +244,10 @@ function initDragAndDrop() {
   });
 }
 
+/**
+ * Handles drag start event
+ * @param {DragEvent} event - The drag event
+ */
 function dragstartHandler(event) {
   const taskElement = event.target.closest(".card-task");
   if (!taskElement || !event.dataTransfer) return;
@@ -173,17 +258,30 @@ function dragstartHandler(event) {
   event.dataTransfer.setData("text/plain", taskId);
 }
 
+/**
+ * Handles drag over event
+ * @param {DragEvent} event - The drag event
+ */
 function dragoverHandler(event) {
   event.preventDefault();
   const column = event.currentTarget;
   if (column && column.classList) column.classList.add("drag-over");
 }
 
+/**
+ * Handles drag leave event
+ * @param {DragEvent} event - The drag event
+ */
 function dragleaveHandler(event) {
   const column = event.currentTarget;
   if (column && column.classList) column.classList.remove("drag-over");
 }
 
+/**
+ * Handles drop event
+ * @async
+ * @param {DragEvent} event - The drag event
+ */
 async function dropHandler(event) {
   event.preventDefault();
   const column = event.currentTarget;
@@ -199,6 +297,10 @@ async function dropHandler(event) {
   renderBoard();
 }
 
+/**
+ * Ensures the move menu element exists
+ * @returns {HTMLElement} The move menu element
+ */
 function ensureMoveMenuElement() {
   if (moveMenuElement) return moveMenuElement;
 
@@ -216,6 +318,14 @@ function ensureMoveMenuElement() {
   return moveMenuElement;
 }
 
+/**
+ * Creates a move menu option button
+ * @param {HTMLElement} container - The container element
+ * @param {string} arrow - The arrow symbol
+ * @param {string} label - The button label
+ * @param {boolean} disabled - Whether the button is disabled
+ * @param {Function} onClick - Click handler
+ */
 function createMoveMenuOption(container, arrow, label, disabled, onClick) {
   const button = document.createElement("button");
   button.type = "button";
@@ -234,12 +344,23 @@ function createMoveMenuOption(container, arrow, label, disabled, onClick) {
   container.appendChild(button);
 }
 
+/**
+ * Checks if the same move menu is already open
+ * @param {string} taskId - The task ID
+ * @param {HTMLElement} menu - The menu element
+ * @returns {boolean} True if the same menu is open
+ */
 function isSameMoveMenuOpen(taskId, menu) {
   const visible = menu.style.display === "block";
   const sameTask = String(currentMoveTaskId) === String(taskId);
   return visible && sameTask;
 }
 
+/**
+ * Gets the move menu state for a task
+ * @param {string} taskId - The task ID
+ * @returns {Object|null} The move menu state or null
+ */
 function getMoveMenuState(taskId) {
   currentMoveTaskId = taskId;
 
@@ -262,6 +383,13 @@ function getMoveMenuState(taskId) {
   return { previousStatus, nextStatus, labels };
 }
 
+/**
+ * Gets the label for a move option
+ * @param {Object} labels - Status labels
+ * @param {string|null} status - Target status
+ * @param {string} kind - Direction kind (prev/next)
+ * @returns {string} The move label
+ */
 function getMoveLabel(labels, status, kind) {
   if (!status) {
     return kind === "prev" ? "No previous column" : "No next column";
@@ -270,6 +398,11 @@ function getMoveLabel(labels, status, kind) {
   return "Move to " + (labels[status] || fallback);
 }
 
+/**
+ * Renders move menu options
+ * @param {HTMLElement} container - The container element
+ * @param {Object} state - The move menu state
+ */
 function renderMoveOptions(container, state) {
   const prevLabel = getMoveLabel(state.labels, state.previousStatus, "prev");
   const nextLabel = getMoveLabel(state.labels, state.nextStatus, "next");
@@ -293,6 +426,11 @@ function renderMoveOptions(container, state) {
   );
 }
 
+/**
+ * Positions the move menu relative to an anchor element
+ * @param {HTMLElement} menu - The menu element
+ * @param {HTMLElement} anchorEl - The anchor element
+ */
 function positionMoveMenu(menu, anchorEl) {
   const rect = anchorEl.getBoundingClientRect();
   const top = rect.bottom + window.scrollY + 6;
@@ -303,6 +441,11 @@ function positionMoveMenu(menu, anchorEl) {
   menu.style.display = "block";
 }
 
+/**
+ * Opens the move menu for a task
+ * @param {string} taskId - The task ID
+ * @param {HTMLElement} anchorEl - The anchor element
+ */
 function openMoveMenu(taskId, anchorEl) {
   if (window.innerWidth >= 1024) return;
 
@@ -322,11 +465,21 @@ function openMoveMenu(taskId, anchorEl) {
   positionMoveMenu(menu, anchorEl);
 }
 
+/**
+ * Closes the move menu
+ */
 function closeMoveMenu() {
   if (!moveMenuElement) return;
   moveMenuElement.style.display = "none";
 }
 
+/**
+ * Gets the adjacent status in a given direction
+ * @param {Array<string>} order - Status order array
+ * @param {string} status - Current status
+ * @param {string} direction - Direction (prev/next)
+ * @returns {string|null} Adjacent status or null
+ */
 function getAdjacentStatus(order, status, direction) {
   const index = order.indexOf(status);
   if (index === -1) return null;
@@ -335,6 +488,12 @@ function getAdjacentStatus(order, status, direction) {
   return order[index + offset] || null;
 }
 
+/**
+ * Moves a task to a new status
+ * @async
+ * @param {string} taskId - The task ID
+ * @param {string} targetStatus - The target status
+ */
 async function moveTaskToStatus(taskId, targetStatus) {
   try {
     await updateTaskStatus(taskId, targetStatus);
@@ -345,6 +504,12 @@ async function moveTaskToStatus(taskId, targetStatus) {
   }
 }
 
+/**
+ * Moves a task to an adjacent column
+ * @async
+ * @param {string} taskId - The task ID
+ * @param {string} direction - Direction (prev/next)
+ */
 async function moveTaskToAdjacentColumn(taskId, direction) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (index === -1) return;

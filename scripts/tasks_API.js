@@ -1,16 +1,34 @@
+/**
+ * @fileoverview Tasks API module for Firebase task management
+ * @module tasks_API
+ */
 
+/** @type {Array<Object>} */
 let tasks = [];
 
+/** @constant {string} */
 const FIREBASE_BASE_URL =
   "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app";
+
+/** @constant {string} */
 const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
 
+/**
+ * Checks if the given value represents an in-progress status
+ * @param {string} value - The status value to check
+ * @returns {boolean} True if the value is an in-progress status
+ */
 function isInProgressStatus(value) {
   return (
     value === "inprogress" || value === "in-progress" || value === "in_progress"
   );
 }
 
+/**
+ * Checks if the given value represents an await-feedback status
+ * @param {string} value - The status value to check
+ * @returns {boolean} True if the value is an await-feedback status
+ */
 function isAwaitFeedbackStatus(value) {
   return (
     value === "awaitfeedback" ||
@@ -19,6 +37,11 @@ function isAwaitFeedbackStatus(value) {
   );
 }
 
+/**
+ * Normalizes a task status string to a consistent format
+ * @param {string} [status=""] - The status to normalize
+ * @returns {string} The normalized status
+ */
 function normalizeTaskStatus(status = "") {
   const value = String(status).trim().toLowerCase();
   if (!value) return "todo";
@@ -29,6 +52,11 @@ function normalizeTaskStatus(status = "") {
   return value;
 }
 
+/**
+ * Fetches all tasks from Firebase
+ * @async
+ * @returns {Promise<Array<Object>>} Array of task objects
+ */
 async function fetchTasks() {
   try {
     const response = await fetch(`${TASKS_BASE_URL}.json`, {
@@ -49,6 +77,11 @@ async function fetchTasks() {
   }
 }
 
+/**
+ * Normalizes raw task data from Firebase into a consistent format
+ * @param {Object|Array|null} raw - Raw task data from Firebase
+ * @returns {Array<Object>} Array of normalized task objects
+ */
 function normalizeTasks(raw) {
   if (!raw) return [];
 
@@ -61,6 +94,11 @@ function normalizeTasks(raw) {
   );
 }
 
+/**
+ * Enriches a task object with default values and normalized fields
+ * @param {Object} task - The task object to enrich
+ * @returns {Object} The enriched task object
+ */
 function enrichTask(task) {
   const idFromTask = task.id || task.firebaseId;
   const id = idFromTask || generateId();
@@ -88,6 +126,13 @@ function enrichTask(task) {
   };
 }
 
+/**
+ * Adds a new task to Firebase
+ * @async
+ * @param {Object} taskData - The task data to add
+ * @returns {Promise<Object>} The newly created task object
+ * @throws {Error} If the request fails
+ */
 async function addTask(taskData) {
   const cleanTask = enrichTask({
     ...taskData,
@@ -119,6 +164,13 @@ async function addTask(taskData) {
   return newTask;
 }
 
+/**
+ * Updates the status of a task in Firebase
+ * @async
+ * @param {string} taskId - The ID of the task to update
+ * @param {string} newStatus - The new status to set
+ * @throws {Error} If the request fails
+ */
 async function updateTaskStatus(taskId, newStatus) {
   const index = tasks.findIndex((t) => String(t.id) === String(taskId));
   if (index === -1) return;
@@ -145,10 +197,20 @@ async function updateTaskStatus(taskId, newStatus) {
   tasks[index] = { ...task, status: normalizedStatus };
 }
 
+/**
+ * Generates a unique ID based on timestamp and random number
+ * @returns {string} A unique identifier
+ */
 function generateId() {
   return String(Date.now() + Math.random());
 }
 
+/**
+ * Saves a task to Firebase
+ * @async
+ * @param {Object} task - The task object to save
+ * @throws {Error} If the HTTP request fails
+ */
 async function saveTask(task) {
   let firebaseId = task.firebaseId;
 
@@ -172,6 +234,12 @@ async function saveTask(task) {
   }
 }
 
+/**
+ * Deletes a task from Firebase by its ID
+ * @async
+ * @param {string} taskId - The ID of the task to delete
+ * @throws {Error} If the request fails
+ */
 async function deleteTaskById(taskId) {
   const task = tasks.find(
     (t) =>
@@ -189,6 +257,10 @@ async function deleteTaskById(taskId) {
   }
 }
 
+/**
+ * Creates date helper values for sample tasks
+ * @returns {Object} Object containing formatted date strings
+ */
 function createDateHelpers() {
   const today = new Date();
   const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
@@ -198,6 +270,10 @@ function createDateHelpers() {
   return { tomorrow: formatDate(tomorrow), nextWeek: formatDate(nextWeek), nextMonth: formatDate(nextMonth) };
 }
 
+/**
+ * Returns an array of sample tasks for seeding
+ * @returns {Array<Object>} Array of sample task objects
+ */
 function getSampleTasks() {
   const { tomorrow, nextWeek, nextMonth } = createDateHelpers();
   return [
@@ -211,6 +287,10 @@ function getSampleTasks() {
   ];
 }
 
+/**
+ * Seeds the database with sample tasks if empty
+ * @async
+ */
 async function seedTasksIfEmpty() {
   try {
     const response = await fetch(`${TASKS_BASE_URL}.json`);

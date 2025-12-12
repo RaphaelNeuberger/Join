@@ -1,6 +1,17 @@
+/**
+ * @fileoverview Subtask management for task forms
+ * @module task_subtasks
+ */
 
+/**
+ * Array of subtask drafts before task submission
+ * @type {Array<{title: string, done: boolean}>}
+ */
 let subtaskDrafts = [];
 
+/**
+ * Initializes subtask input controls and event handlers
+ */
 function initSubtaskControls() {
   const input = document.getElementById("subtaskInput");
   const addBtn = document.getElementById("addSubtaskBtn");
@@ -20,6 +31,9 @@ function initSubtaskControls() {
   renderSubtaskDrafts();
 }
 
+/**
+ * Adds a subtask from the input field
+ */
 function addSubtaskFromInput() {
   const input = document.getElementById("subtaskInput");
   if (!input) return;
@@ -36,12 +50,20 @@ function addSubtaskFromInput() {
   renderSubtaskDrafts();
 }
 
+/**
+ * Removes a subtask draft by index
+ * @param {number} index - The index of the subtask to remove
+ */
 function removeSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
   subtaskDrafts.splice(index, 1);
   renderSubtaskDrafts();
 }
 
+/**
+ * Edits a subtask draft by moving it back to input
+ * @param {number} index - The index of the subtask to edit
+ */
 function editSubtaskDraft(index) {
   if (index < 0 || index >= subtaskDrafts.length) return;
   
@@ -56,6 +78,9 @@ function editSubtaskDraft(index) {
   removeSubtaskDraft(index);
 }
 
+/**
+ * Renders the list of subtask drafts
+ */
 function renderSubtaskDrafts() {
   const list = document.getElementById("subtaskList");
   if (!list) return;
@@ -101,6 +126,10 @@ function renderSubtaskDrafts() {
   });
 }
 
+/**
+ * Gets the current subtask drafts for submission
+ * @returns {Array<{title: string, done: boolean}>} Array of subtask objects
+ */
 function getSubtaskDrafts() {
   return subtaskDrafts.map((s) => ({
     title: s.title,
@@ -108,11 +137,19 @@ function getSubtaskDrafts() {
   }));
 }
 
+/**
+ * Resets all subtask drafts
+ */
 function resetSubtasks() {
   subtaskDrafts = [];
   renderSubtaskDrafts();
 }
 
+/**
+ * Adds a subtask from the overlay edit form
+ * @async
+ * @param {string} taskId - The task ID to add subtask to
+ */
 async function onAddSubtaskFromOverlay(taskId) {
   const input = document.getElementById("overlaySubtaskInput");
   if (!input) return;

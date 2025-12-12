@@ -1,7 +1,22 @@
+/**
+ * @fileoverview Header user initials display
+ * @module headerUser
+ */
+
+/**
+ * Checks if user is a guest
+ * @param {Object} user - User object
+ * @returns {boolean} True if guest user
+ */
 function isGuestUser(user) {
   return user.isGuest || !user.name || user.name.trim() === "";
 }
 
+/**
+ * Calculates initials from a name
+ * @param {string} name - The full name
+ * @returns {string} The initials
+ */
 function calculateInitials(name) {
   const parts = name.trim().split(/\s+/);
   if (parts.length >= 2) {
@@ -13,6 +28,10 @@ function calculateInitials(name) {
   return "G";
 }
 
+/**
+ * Gets user initials from localStorage
+ * @returns {string} User initials or "G" for guest
+ */
 function getUserInitials() {
   try {
     const data = localStorage.getItem("loggedInUser");
@@ -25,6 +44,9 @@ function getUserInitials() {
   }
 }
 
+/**
+ * Displays user initials in the header
+ */
 function showInitials() {
   const span = document.getElementById("userInitials");
   if (!span) {

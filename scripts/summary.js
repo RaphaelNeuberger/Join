@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Summary page greeting functionality
+ * @module summary
+ */
+
+/**
+ * Gets the current logged in user from localStorage or window
+ * @returns {Object|null} The current user object or null
+ */
 function getCurrentUser() {
   if (typeof window.getCurrentUser === "function") {
     try { return window.getCurrentUser(); } catch (e) {}
@@ -9,12 +18,24 @@ function getCurrentUser() {
   } catch (e) { return null; }
 }
 
+/**
+ * Determines if the user's name should be displayed
+ * @param {Object|null} u - The user object
+ * @returns {boolean} Whether to show the user's name
+ */
 function shouldShowName(u) {
   if (!u || typeof u.name === "undefined" || u.name === null) return false;
   const nm = String(u.name).trim();
   return nm && nm.toLowerCase() !== "guest";
 }
 
+/**
+ * Updates greeting elements with user name
+ * @param {HTMLElement|null} nameEl - The name display element
+ * @param {HTMLElement|null} textEl - The greeting text element
+ * @param {Object|null} user - The user object
+ * @param {string} displayStyle - CSS display value for name element
+ */
 function updateGreetingElement(nameEl, textEl, user, displayStyle) {
   if (!nameEl || !textEl) return;
   if (shouldShowName(user)) {
@@ -27,11 +48,19 @@ function updateGreetingElement(nameEl, textEl, user, displayStyle) {
   }
 }
 
+/**
+ * Hides the splash screen
+ * @param {HTMLElement} body - The document body
+ * @param {HTMLElement|null} splashScreen - The splash screen element
+ */
 function hideSplashScreen(body, splashScreen) {
   body.classList.remove("splash-active");
   if (splashScreen) splashScreen.style.display = "none";
 }
 
+/**
+ * Shows the greeting message with user name
+ */
 function showGreeting() {
   const body = document.body;
   const splashScreen = document.getElementById("greeting-splash");
