@@ -189,139 +189,39 @@ async function deleteTaskById(taskId) {
   }
 }
 
+function createDateHelpers() {
+  const today = new Date();
+  const tomorrow = new Date(today); tomorrow.setDate(tomorrow.getDate() + 1);
+  const nextWeek = new Date(today); nextWeek.setDate(nextWeek.getDate() + 7);
+  const nextMonth = new Date(today); nextMonth.setMonth(nextMonth.getMonth() + 1);
+  const formatDate = (date) => date.toISOString().split("T")[0];
+  return { tomorrow: formatDate(tomorrow), nextWeek: formatDate(nextWeek), nextMonth: formatDate(nextMonth) };
+}
+
+function getSampleTasks() {
+  const { tomorrow, nextWeek, nextMonth } = createDateHelpers();
+  return [
+    { title: "Design new landing page", description: "Create mockups and wireframes for the new product landing page with focus on conversion optimization.", dueDate: nextWeek, category: "Technical Tasks", priority: "Urgent", status: "todo", assignedTo: ["Sofia Müller", "David Eisenberg"], subtasks: [{ title: "Research competitor designs", done: true }, { title: "Create wireframes", done: false }, { title: "Design high-fidelity mockups", done: false }] },
+    { title: "Implement user authentication", description: "Add Firebase authentication with email/password and social login options.", dueDate: tomorrow, category: "Technical Tasks", priority: "Urgent", status: "inprogress", assignedTo: ["Anton Mayer"], subtasks: [{ title: "Set up Firebase Auth", done: true }, { title: "Create login form", done: true }, { title: "Add password reset", done: false }, { title: "Implement social login", done: false }] },
+    { title: "User feedback collection", description: "Gather and analyze user feedback from the beta testing phase to improve UX.", dueDate: nextMonth, category: "User Story", priority: "Medium", status: "await_feedback", assignedTo: ["Anja Schulz", "Benedikt Ziegler"], subtasks: [{ title: "Send feedback survey", done: true }, { title: "Analyze responses", done: false }] },
+    { title: "Update documentation", description: "Update API documentation and user guides for the latest feature release.", dueDate: nextWeek, category: "Technical Tasks", priority: "Low", status: "todo", assignedTo: ["Sofia Müller"], subtasks: [] },
+    { title: "Fix mobile responsiveness", description: "Resolve layout issues on mobile devices, especially for the dashboard page.", dueDate: tomorrow, category: "Technical Tasks", priority: "Medium", status: "done", assignedTo: ["David Eisenberg", "Anton Mayer"], subtasks: [{ title: "Test on iOS devices", done: true }, { title: "Test on Android devices", done: true }, { title: "Fix CSS issues", done: true }] },
+    { title: "Prepare sprint review presentation", description: "Create slides and demo for the upcoming sprint review meeting with stakeholders.", dueDate: nextWeek, category: "User Story", priority: "Medium", status: "inprogress", assignedTo: ["Benedikt Ziegler"], subtasks: [{ title: "Collect sprint achievements", done: true }, { title: "Create presentation slides", done: false }, { title: "Prepare live demo", done: false }] },
+    { title: "Database optimization", description: "Optimize database queries to improve application performance and reduce load times.", dueDate: nextMonth, category: "Technical Tasks", priority: "Low", status: "todo", assignedTo: ["Anton Mayer", "David Eisenberg"], subtasks: [{ title: "Analyze slow queries", done: false }, { title: "Add database indexes", done: false }, { title: "Test performance improvements", done: false }] }
+  ];
+}
+
 async function seedTasksIfEmpty() {
   try {
     const response = await fetch(`${TASKS_BASE_URL}.json`);
     if (!response.ok) return;
-
     const data = await response.json();
-
-    if (data && Object.keys(data).length > 0) {
-      return;
-    }
-
-    const today = new Date();
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const nextWeek = new Date(today);
-    nextWeek.setDate(nextWeek.getDate() + 7);
-    const nextMonth = new Date(today);
-    nextMonth.setMonth(nextMonth.getMonth() + 1);
-
-    const formatDate = (date) => date.toISOString().split("T")[0];
-
-    const sampleTasks = [
-      {
-        title: "Design new landing page",
-        description:
-          "Create mockups and wireframes for the new product landing page with focus on conversion optimization.",
-        dueDate: formatDate(nextWeek),
-        category: "Technical Tasks",
-        priority: "Urgent",
-        status: "todo",
-        assignedTo: ["Sofia Müller", "David Eisenberg"],
-        subtasks: [
-          { title: "Research competitor designs", done: true },
-          { title: "Create wireframes", done: false },
-          { title: "Design high-fidelity mockups", done: false },
-        ],
-      },
-      {
-        title: "Implement user authentication",
-        description:
-          "Add Firebase authentication with email/password and social login options.",
-        dueDate: formatDate(tomorrow),
-        category: "Technical Tasks",
-        priority: "Urgent",
-        status: "inprogress",
-        assignedTo: ["Anton Mayer"],
-        subtasks: [
-          { title: "Set up Firebase Auth", done: true },
-          { title: "Create login form", done: true },
-          { title: "Add password reset", done: false },
-          { title: "Implement social login", done: false },
-        ],
-      },
-      {
-        title: "User feedback collection",
-        description:
-          "Gather and analyze user feedback from the beta testing phase to improve UX.",
-        dueDate: formatDate(nextMonth),
-        category: "User Story",
-        priority: "Medium",
-        status: "await_feedback",
-        assignedTo: ["Anja Schulz", "Benedikt Ziegler"],
-        subtasks: [
-          { title: "Send feedback survey", done: true },
-          { title: "Analyze responses", done: false },
-        ],
-      },
-      {
-        title: "Update documentation",
-        description:
-          "Update API documentation and user guides for the latest feature release.",
-        dueDate: formatDate(nextWeek),
-        category: "Technical Tasks",
-        priority: "Low",
-        status: "todo",
-        assignedTo: ["Sofia Müller"],
-        subtasks: [],
-      },
-      {
-        title: "Fix mobile responsiveness",
-        description:
-          "Resolve layout issues on mobile devices, especially for the dashboard page.",
-        dueDate: formatDate(tomorrow),
-        category: "Technical Tasks",
-        priority: "Medium",
-        status: "done",
-        assignedTo: ["David Eisenberg", "Anton Mayer"],
-        subtasks: [
-          { title: "Test on iOS devices", done: true },
-          { title: "Test on Android devices", done: true },
-          { title: "Fix CSS issues", done: true },
-        ],
-      },
-      {
-        title: "Prepare sprint review presentation",
-        description:
-          "Create slides and demo for the upcoming sprint review meeting with stakeholders.",
-        dueDate: formatDate(nextWeek),
-        category: "User Story",
-        priority: "Medium",
-        status: "inprogress",
-        assignedTo: ["Benedikt Ziegler"],
-        subtasks: [
-          { title: "Collect sprint achievements", done: true },
-          { title: "Create presentation slides", done: false },
-          { title: "Prepare live demo", done: false },
-        ],
-      },
-      {
-        title: "Database optimization",
-        description:
-          "Optimize database queries to improve application performance and reduce load times.",
-        dueDate: formatDate(nextMonth),
-        category: "Technical Tasks",
-        priority: "Low",
-        status: "todo",
-        assignedTo: ["Anton Mayer", "David Eisenberg"],
-        subtasks: [
-          { title: "Analyze slow queries", done: false },
-          { title: "Add database indexes", done: false },
-          { title: "Test performance improvements", done: false },
-        ],
-      },
-    ];
-
-    for (const task of sampleTasks) {
-      await fetch(`${TASKS_BASE_URL}.json`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(task),
-      });
+    if (data && Object.keys(data).length > 0) return;
+    for (const task of getSampleTasks()) {
+      await fetch(`${TASKS_BASE_URL}.json`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(task) });
     }
   } catch (error) {
     console.error("Error seeding tasks:", error);
   }
 }
+
