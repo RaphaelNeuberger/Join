@@ -149,7 +149,7 @@ overlay-modal {
 
 .priority-buttons__button {
   flex: 1;
-  border: none;
+  border: 1px solid #d1d1d1;
   border-radius: 10px;
   background-color: #ffffff;
   color: #2a3647;
@@ -184,7 +184,7 @@ overlay-modal {
 .priority-buttons__button.is-active,
 .priority-buttons__button[aria-pressed="true"] {
   color: #ffffff;
-  box-shadow: 0 6px 18px rgba(18, 25, 36, 0.12);
+  box-shadow: 0 8px 20px rgba(18, 25, 36, 0.12);
 }
 
 .priority-buttons__button--urgent.is-active,

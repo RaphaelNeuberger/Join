@@ -272,14 +272,17 @@
                 <label class="form-group__label" for="category">
                   Category <span class="form-group__required">*</span>
                 </label>
-                <select
-                  id="category"
-                  name="category"
-                  class="form-group__select">
-                  <option value="">Select task category</option>
-                  <option value="Technical Tasks">Technical Tasks</option>
-                  <option value="User Story">User Story</option>
-                </select>
+                <div class="category-wrapper">
+                  <select
+                    id="category"
+                    name="category"
+                    class="form-group__select">
+                    <option value="">Select task category</option>
+                    <option value="Technical Tasks">Technical Tasks</option>
+                    <option value="User Story">User Story</option>
+                  </select>
+                  <span class="category-toggle" aria-hidden="true"></span>
+                </div>
                 <span class="form-group__error" id="categoryError"></span>
               </div>
 
