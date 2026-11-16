@@ -118,30 +118,7 @@ function readTaskForm() {
 }
 
 /**
- * Reads the currently logged in user from localStorage and builds a creator
- * object. Falls back to Guest if no user info is present.
- * @returns {{email: string, name: string, type: "internal"}}
- */
-function getCurrentInternalCreator() {
-  try {
-    const raw = localStorage.getItem("loggedInUser");
-    if (!raw) {
-      return { email: "guest@join.local", name: "Guest", type: "internal" };
-    }
-    const user = JSON.parse(raw);
-    return {
-      email: user.email || "guest@join.local",
-      name: user.name || "Guest",
-      type: "internal",
-    };
-  } catch (_error) {
-    return { email: "guest@join.local", name: "Guest", type: "internal" };
-  }
-}
-
-/**
- * Builds the task data object from form values. New tasks always go into the
- * Triage column regardless of the column the user clicked + on.
+ * Builds the task data object from form values
  * @param {string} title - Task title
  * @param {string} description - Task description
  * @param {string} dueDate - Task due date
@@ -160,10 +137,7 @@ function buildTaskData(title, description, dueDate, category, assignedTo) {
     assignedTo,
     priority: getSelectedPriority(),
     subtasks,
-    status: "triage",
-    creator: getCurrentInternalCreator(),
-    aiGenerated: false,
-    createdAt: new Date().toISOString(),
+    status: "todo",
   };
 }
 

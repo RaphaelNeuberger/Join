@@ -38,11 +38,3 @@ scripts/config.local.js
 # Backup files
 *_old_backup.js
 *_backup.js
-
-# Design references, checklists, internal docs (not for public repo)
-gitignore/
-
-# n8n local config / credentials (workflow JSON exports in n8n/ are safe to commit)
-n8n/credentials/
-*.credentials.json
-scripts/config.local.js

@@ -1,59 +1,8 @@
-# Join - Kanban Task Management mit KI-Issue-Collector
+# Join - Kanban Task Management
 
 A modern, responsive task management application built with vanilla JavaScript, HTML5, and CSS3. Join helps teams organize their workflow with an intuitive Kanban board, contact management, and real-time collaboration features.
 
-**Version 1 erweitert Join um einen KI-gestuetzten Issue Collector:** Externe Stakeholder reichen Feature-Requests und Bug-Reports per E-Mail ein. Eine n8n-Automatisierung analysiert die Mail per OpenAI, erstellt strukturiert ein Ticket und legt es automatisch in einer "Triage"-Spalte ab - inklusive Tageslimit, Bestaetigungs- und Status-Mails.
-
 ![Join Logo](img/logo/join-logo.svg)
-
-## KI-Issue-Collector (Modul 17)
-
-### Was es macht
-
-```
-Stakeholder              n8n (self-hosted)                 Firebase RTDB
-   |                                                          /tasks
-   | E-Mail an                                                /rateLimits
-   | R.Neuberger@newmountains.it                                 ^
-   v                                                             |
-Outlook-Postfach ---> [Workflow 1: Issue Collector]              |
-                        Trigger -> KI-Analyse (OpenAI)           |
-                        -> Ticket in "Triage" --------->---------+
-                        -> Tageszaehler +1
-                        -> Mail in "Erledigt" + Bestaetigung
-                        Limit/Fehler -> "Zu bearbeiten" + Hinweis
-
-Team-Mitglied verschiebt Ticket im Board
-   | updateTaskStatus()  -- Webhook -->  [Workflow 2: Status Notification]
-   |                                       -> Mail an externen Ersteller
-```
-
-### Features im Detail
-
-- **"Triage"-Spalte** als Standard-Backlog - alle neuen Tickets (manuell + KI) landen hier
-- **KI-Klassifizierung** (OpenAI GPT-4.1-mini): Kategorie (Technical Tasks / User Story), praegnanter Titel, Prioritaet (Urgent/Medium/Low nach Keywords), Deadline-Erkennung
-- **KI-Hinweis** im Ticket-Beschreibungstext ("Dieses Ticket wurde KI-generiert...")
-- **Ersteller-Tracking**: Absender wird als Ersteller gesetzt, im Task-Detail sichtbar mit Badge "Member" (intern, Link zum Profil) bzw. "Extern" (Link zur E-Mail) sowie Hinweis "Ai-generated ticket"
-- **Throttling**: max. 10 KI-Tickets pro Tag (Kostenschutz), Zaehler in Firebase
-- **Auto-Antworten**: Bestaetigung bei Ticket-Erstellung, Hinweis bei erreichtem Limit, "Wir melden uns" bei Fehlern
-- **Status-Benachrichtigung**: externe Ersteller bekommen Mail bei Statusaenderung
-- **Stakeholder-Seiten** (nach Figma, responsiv): `index.html` (Rollen-Auswahl), `stakeholder.html` (Anleitung + Live-Tageslimit-Anzeige, eigener Zustand bei erreichtem Limit), `request.html` (Anfrage-Formular, v. a. mobil)
-
-### Demo-Nutzung (fuer Reviewer)
-
-1. **`index.html`** oeffnen - waehle "Create request" (Stakeholder) oder "Member log in" (Team)
-2. Als Stakeholder: auf `stakeholder.html` siehst Du das Tageslimit (`0 of 10`) und einen Button "Create Email Request"
-3. Button oeffnet eine vorbefuellte E-Mail an `R.Neuberger@newmountains.it` - sende eine Anfrage (Feature oder Bug). Mobil (bzw. direkt `request.html`): Formular ausfuellen und "send request" klicken
-4. Nach ~1 Min: Bestaetigungsmail im Postfach + neues Ticket in der **Triage-Spalte** auf `board.html` (mit AI-Badge)
-5. Als Team-Mitglied: Ticket per Drag&Drop verschieben -> der externe Ersteller bekommt eine Status-Mail
-
-### n8n-Workflows
-
-Alle Workflows liegen als JSON-Export in [`n8n/`](n8n/) inkl. Import-Anleitung:
-
-- `01_issue_collector.json` - E-Mail -> KI -> Ticket
-- `02_status_notification.json` - Statusaenderung -> Mail an Ersteller
-- `03_web_request.json` - Web-Formular -> KI -> Ticket (gleiche Kette wie 01)
 
 ## Features
 

@@ -8,19 +8,10 @@ let tasks = [];
 
 /** @constant {string} */
 const FIREBASE_BASE_URL =
-  "https://join-issue-collector-c68f9-default-rtdb.europe-west1.firebasedatabase.app";
+  "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app";
 
 /** @constant {string} */
 const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
-
-/**
- * n8n webhook that triggers the status-change notification workflow.
- * The workflow itself decides whether to send a mail (only for external,
- * AI-generated tickets) - the frontend just reports every status change.
- * @constant {string}
- */
-const N8N_STATUS_WEBHOOK =
-  "https://n8n.newmountains.it/webhook/status-change";
 
 /**
  * Checks if the given value represents an in-progress status
@@ -49,34 +40,16 @@ function isAwaitFeedbackStatus(value) {
 /**
  * Normalizes a task status string to a consistent format
  * @param {string} [status=""] - The status to normalize
- * @returns {string} The normalized status (defaults to "triage")
+ * @returns {string} The normalized status
  */
 function normalizeTaskStatus(status = "") {
   const value = String(status).trim().toLowerCase();
-  if (!value) return "triage";
-  if (value === "triage") return "triage";
+  if (!value) return "todo";
   if (isInProgressStatus(value)) return "inprogress";
   if (isAwaitFeedbackStatus(value)) return "await_feedback";
   if (value === "done") return "done";
   if (value === "todo") return "todo";
   return value;
-}
-
-/**
- * Builds a normalized creator object with safe fallbacks
- * @param {Object|undefined} raw - Raw creator field from task
- * @returns {{email: string, name: string, type: "internal"|"external"}}
- */
-function normalizeCreator(raw) {
-  if (!raw || typeof raw !== "object") {
-    return { email: "", name: "Legacy", type: "internal" };
-  }
-  const type = raw.type === "external" ? "external" : "internal";
-  return {
-    email: typeof raw.email === "string" ? raw.email : "",
-    name: typeof raw.name === "string" && raw.name ? raw.name : "Legacy",
-    type,
-  };
 }
 
 /**
@@ -137,7 +110,7 @@ function enrichTask(task) {
     : [];
 
   const subtasks = Array.isArray(task.subtasks) ? task.subtasks : [];
-  const status = normalizeTaskStatus(task.status);
+  const status = normalizeTaskStatus(task.status || "todo");
 
   return {
     id,
@@ -150,9 +123,6 @@ function enrichTask(task) {
     assignedTo: assigned,
     subtasks,
     status,
-    creator: normalizeCreator(task.creator),
-    aiGenerated: task.aiGenerated === true,
-    createdAt: task.createdAt || new Date().toISOString(),
   };
 }
 
@@ -208,7 +178,6 @@ async function updateTaskStatus(taskId, newStatus) {
   const task = tasks[index];
   const firebaseId = task.firebaseId || task.id;
   const normalizedStatus = normalizeTaskStatus(newStatus);
-  const oldStatus = normalizeTaskStatus(task.status);
 
   if (!firebaseId) {
     tasks[index] = { ...task, status: normalizedStatus };
@@ -226,28 +195,6 @@ async function updateTaskStatus(taskId, newStatus) {
   }
 
   tasks[index] = { ...task, status: normalizedStatus };
-  notifyStatusChange(firebaseId, oldStatus, normalizedStatus);
-}
-
-/**
- * Fires a fire-and-forget webhook to n8n on every status change. Never blocks
- * or breaks the UI - if n8n is down the move still succeeds locally.
- * @param {string} firebaseId - Firebase push-id of the task (the n8n workflow
- *   uses this to look up /tasks/{id}.json)
- * @param {string} oldStatus - Status before the move
- * @param {string} newStatus - Status after the move
- */
-function notifyStatusChange(firebaseId, oldStatus, newStatus) {
-  if (!firebaseId || oldStatus === newStatus) return;
-  try {
-    fetch(N8N_STATUS_WEBHOOK, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ taskId: firebaseId, oldStatus, newStatus }),
-    }).catch(() => {});
-  } catch (_error) {
-    /* fire-and-forget */
-  }
 }
 
 /**

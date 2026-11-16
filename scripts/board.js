@@ -4,11 +4,10 @@
  */
 
 /** @constant {Array<string>} */
-const BOARD_STATUS_ORDER = ["triage", "todo", "inprogress", "await_feedback", "done"];
+const BOARD_STATUS_ORDER = ["todo", "inprogress", "await_feedback", "done"];
 
 /** @constant {Object<string, string>} */
 const STATUS_LABELS = {
-  triage: "Triage",
   todo: "To do",
   inprogress: "In progress",
   await_feedback: "Review",
@@ -77,7 +76,6 @@ function initBoardSearch() {
  * Renders all board columns
  */
 function renderBoard() {
-  renderColumn("triage", "triage-tasks");
   renderColumn("todo", "to-do-tasks");
   renderColumn("inprogress", "in-progress-tasks");
   renderColumn("await_feedback", "await-feedback-tasks");
@@ -129,7 +127,6 @@ function renderBoardFiltered(query) {
     return;
   }
 
-  renderFilteredStatusColumn("triage", "triage-tasks", query);
   renderFilteredStatusColumn("todo", "to-do-tasks", query);
   renderFilteredStatusColumn("inprogress", "in-progress-tasks", query);
   renderFilteredStatusColumn("await_feedback", "await-feedback-tasks", query);
@@ -187,11 +184,9 @@ function renderColumnWithTasks(tasksForStatus, containerId, isSearch) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
-  const status = container.closest(".task-column")?.dataset?.status;
-
   container.innerHTML = "";
   if (!tasksForStatus || !tasksForStatus.length) {
-    container.innerHTML = isSearch ? noResultsTemplate() : noTaskTemplate(status);
+    container.innerHTML = isSearch ? noResultsTemplate() : noTaskTemplate();
     return;
   }
   fillColumn(container, tasksForStatus);
@@ -212,8 +207,7 @@ function renderNoTasksIfEmpty() {
     }
 
     if (!hasTask && !placeholder) {
-      const status = board.closest(".task-column")?.dataset?.status;
-      board.innerHTML = noTaskTemplate(status);
+      board.innerHTML = noTaskTemplate();
     }
   });
 }

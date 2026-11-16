@@ -19,15 +19,11 @@
 function taskCardContentTemplate(task) {
   const dueDate = task.dueDate || "-";
   const cat = task.category || "Category";
-  const aiBadge = task.aiGenerated ? aiGeneratedLabelTemplate() : "";
 
   return `
     <div class="task-card-header">
       <div class="task-card-header-category-close">
-        <div class="task-card-category-group">
-          <div class="task-card-category">${escapeHtml(cat)}</div>
-          ${aiBadge}
-        </div>
+        <div class="task-card-category">${escapeHtml(cat)}</div>
         <span class="task-card-close" onclick="closeTaskCard()">X</span>
       </div>
       <h2>${escapeHtml(task.title || "")}</h2>
@@ -35,8 +31,6 @@ function taskCardContentTemplate(task) {
 
     <div class="task-card-body">
       <p class="task-card-story">${escapeHtml(task.description || "")}</p>
-
-      ${creatorRowTemplate(task.creator)}
 
       <table>
         <tr>
@@ -302,79 +296,4 @@ function renderSubtasksDetail(list, taskId) {
       );
     })
     .join("");
-}
-
-/** @constant {RegExp} Accepts only plain email addresses for mailto links */
-const CREATOR_EMAIL_PATTERN = /^[^\s@<>"']+@[^\s@<>"']+\.[^\s@<>"']{2,}$/;
-
-/**
- * Label "Ai-generated ticket" next to the category (Figma task overlay v1).
- * @returns {string} HTML string
- */
-function aiGeneratedLabelTemplate() {
-  return `
-    <span class="task-card-ai-label" title="Dieses Ticket wurde KI-generiert">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 20 15 9m-2-2 2 2M17 3v3m-1.5-1.5h3M20 9v2m-1-1h2M9 3v2M8 4h2"
-          stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-      </svg>
-      Ai-generated ticket
-    </span>`;
-}
-
-/**
- * Creator row of the task detail: badge (Member / Extern), name and a
- * contact link (internal -> contacts page, external -> email).
- * @param {{name?: string, email?: string, type?: string}} [creator] - Task creator
- * @returns {string} HTML string
- */
-function creatorRowTemplate(creator) {
-  const c = creator || { name: "Legacy", email: "", type: "internal" };
-  const isExternal = c.type === "external";
-  const badge = isExternal
-    ? `<span class="creator-badge creator-badge--external">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
-          <path d="M3 12h18M12 3c2.5 2.6 3.7 5.6 3.7 9s-1.2 6.4-3.7 9c-2.5-2.6-3.7-5.6-3.7-9S9.5 5.6 12 3Z"
-            stroke="currentColor" stroke-width="2"/>
-        </svg>Extern</span>`
-    : `<span class="creator-badge creator-badge--internal">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <circle cx="9" cy="8" r="3.5" stroke="currentColor" stroke-width="2"/>
-          <path d="M2.5 19.5c.6-3.3 3.3-5.5 6.5-5.5s5.9 2.2 6.5 5.5M15.5 4.8a3.2 3.2 0 0 1 0 6.4M18 14.4c1.9.8 3.2 2.6 3.5 5.1"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>Member</span>`;
-  return `
-    <div class="task-card-creator">
-      <span class="task-card-creator__label">Creator:</span>
-      ${badge}
-      <span class="task-card-creator__name">${escapeHtml(c.name || "Legacy")}</span>
-      ${creatorContactLinkTemplate(c, isExternal)}
-    </div>`;
-}
-
-/**
- * Contact link right of the creator name.
- * @param {{email?: string}} creator - Normalized creator
- * @param {boolean} isExternal - True for stakeholders from the email collector
- * @returns {string} HTML string (empty when no valid target exists)
- */
-function creatorContactLinkTemplate(creator, isExternal) {
-  if (isExternal) {
-    const email = String(creator.email || "");
-    if (!CREATOR_EMAIL_PATTERN.test(email)) return "";
-    return `
-      <a class="task-card-creator__link" href="mailto:${encodeURIComponent(email)}"
-        title="${escapeHtml(email)}">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/>
-          <path d="m4 7 8 6 8-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>E-mail</a>`;
-  }
-  return `
-    <a class="task-card-creator__link" href="./contacts.html">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2"/>
-        <path d="M4 20c.8-3.6 4-6 8-6s7.2 2.4 8 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-      </svg>Profil</a>`;
 }

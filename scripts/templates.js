@@ -126,7 +126,7 @@ function signOutFirebase() {
 function logout() {
   localStorage.removeItem("loggedInUser");
   signOutFirebase();
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 /**
