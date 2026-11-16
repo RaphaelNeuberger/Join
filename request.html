@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Send your feature request to the Join team - our AI turns it into a ticket." />
+    <title>Your Request &bull; Join</title>
+    <link
+      rel="icon"
+      href="img/logo/Logo for Favicon construction.svg"
+      type="image/svg+xml" />
+    <link rel="stylesheet" href="css/fonts.css" />
+    <link rel="stylesheet" href="css/request.css" />
+  </head>
+  <body>
+    <header class="request-header">
+      <a href="index.html" class="request-header__logo">
+        <img src="img/logo/join_logo_black.svg" alt="Join - back to welcome" />
+      </a>
+    </header>
+
+    <main class="request-main">
+      <section class="request-card" aria-labelledby="request-title">
+        <div class="request-card__head">
+          <a
+            href="stakeholder.html"
+            class="request-back"
+            aria-label="Back to the stakeholder page">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M20 12H5m0 0 6.5-6.5M5 12l6.5 6.5"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </a>
+          <h1 id="request-title" class="request-card__title">Your Request</h1>
+        </div>
+
+        <form id="requestForm" class="request-form" novalidate>
+          <div class="request-field">
+            <label for="requestName" class="visually-hidden">Name</label>
+            <input
+              id="requestName"
+              name="name"
+              type="text"
+              placeholder="Name"
+              autocomplete="name"
+              maxlength="80"
+              required />
+            <img src="img/icons/person.svg" alt="" class="request-field__icon" />
+          </div>
+
+          <div class="request-field">
+            <label for="requestEmail" class="visually-hidden">Email</label>
+            <input
+              id="requestEmail"
+              name="email"
+              type="email"
+              placeholder="Email"
+              autocomplete="email"
+              maxlength="120"
+              required />
+            <img src="img/icons/mail.svg" alt="" class="request-field__icon" />
+          </div>
+
+          <div class="request-field">
+            <label for="requestSubject" class="visually-hidden">Subject</label>
+            <input
+              id="requestSubject"
+              name="subject"
+              type="text"
+              placeholder="Subject"
+              maxlength="120"
+              required />
+          </div>
+
+          <div class="request-field">
+            <label for="requestMessage" class="visually-hidden">Your request</label>
+            <textarea
+              id="requestMessage"
+              name="message"
+              placeholder="Your Request..."
+              maxlength="4000"
+              required></textarea>
+          </div>
+
+          <!-- Honeypot against bots: invisible for humans, must stay empty -->
+          <div class="request-honeypot" aria-hidden="true">
+            <label for="requestWebsite">Website</label>
+            <input id="requestWebsite" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <p id="requestError" class="request-error" role="alert" hidden></p>
+
+          <div class="request-form__actions">
+            <button type="submit" class="request-submit" id="requestSubmit">
+              send request
+            </button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <footer class="request-footer">
+      <a href="privacypolicy.html">Privacy Policy</a>
+      <a href="legal-notice.html">Legal notice</a>
+    </footer>
+
+    <div id="requestToast" class="request-toast" role="status" aria-live="polite" hidden></div>
+
+    <script src="scripts/request.js"></script>
+  </body>
+</html>

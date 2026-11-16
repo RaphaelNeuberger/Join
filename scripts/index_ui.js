@@ -51,6 +51,11 @@ function initFormToggle() {
   if (toggleForm) toggleForm.addEventListener("click", toggleForms);
   if (toggleForm2) toggleForm2.addEventListener("click", toggleForms);
 
+  // Deep link from the welcome page ("Not a Join user? Sign up")
+  if (window.location.hash === "#signup" && loginForm && signupForm) {
+    toggleForms();
+  }
+
   if (backArrow) {
     backArrow.addEventListener("click", () => {
       signupForm.classList.remove("active");
@@ -79,7 +84,10 @@ function initIntroAnimation() {
       return;
     }
 
-    const isMobile = window.matchMedia("(max-width: 480px)").matches;
+    // Dark pages (welcome) keep the dark intro on mobile, too
+    const isDarkIntro = document.body.dataset.intro === "dark";
+    const isMobile =
+      !isDarkIntro && window.matchMedia("(max-width: 480px)").matches;
 
     if (isMobile) {
       flyingLogo.src = "img/logo/join_logo_white.svg";

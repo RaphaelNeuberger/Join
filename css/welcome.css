@@ -1,0 +1,328 @@
+/* ==========================================================================
+   Welcome page (role picker) - Figma "Join Version 1 / Welcome"
+   Desktop frame 1440x1024, mobile frame "Screen 1 - logo"
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Open Sans", "Inter", sans-serif;
+  font-size: 16px;
+  color: #2a3647;
+  background-color: #2a3647;
+}
+
+/* --- Intro animation (logo flies to the corner, then the page reveals) --- */
+#intro-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #2a3647;
+  z-index: 9999;
+  transition: opacity 0.8s ease;
+}
+
+#intro-screen img {
+  width: 220px;
+  height: auto;
+}
+
+.welcome-header,
+.welcome-page,
+.welcome-footer {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+body.loaded .welcome-header,
+body.loaded .welcome-page,
+body.loaded .welcome-footer {
+  opacity: 1;
+}
+
+/* --- Header ---------------------------------------------------------------- */
+.welcome-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 40px 40px 0;
+  pointer-events: none;
+}
+
+.welcome-header__logo {
+  width: 100px;
+  height: auto;
+  pointer-events: auto;
+}
+
+/* Sign-up hint only exists in the mobile frame */
+.welcome-header__signup {
+  display: none;
+}
+
+/* --- Card ------------------------------------------------------------------ */
+.welcome-page {
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 160px 24px 96px;
+}
+
+.welcome-card {
+  width: 100%;
+  max-width: 789px;
+  padding: 52px 72px 56px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.08);
+}
+
+.welcome-card__title {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.welcome-card__title::after {
+  content: "";
+  display: block;
+  width: 124px;
+  height: 3px;
+  margin: 12px auto 0;
+  background-color: #29abe2;
+  border-radius: 2px;
+}
+
+.welcome-card__lead {
+  margin: 30px 0 60px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.welcome-roles {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-content: space-between;
+  column-gap: 64px;
+  row-gap: 40px;
+}
+
+.welcome-role {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.welcome-role__question {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.welcome-role__icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+/* --- Buttons --------------------------------------------------------------- */
+.welcome-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-family: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.welcome-btn:focus-visible {
+  outline: 3px solid #29abe2;
+  outline-offset: 2px;
+}
+
+.welcome-btn--primary {
+  font-size: 22px;
+  color: #ffffff;
+  background-color: #29abe2;
+  border: 1px solid #29abe2;
+}
+
+.welcome-btn--primary:hover {
+  background-color: #1a8fc2;
+  border-color: #1a8fc2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.welcome-btn--ghost {
+  font-size: 18px;
+  color: #2a3647;
+  background-color: #ffffff;
+  border: 1px solid #2a3647;
+}
+
+.welcome-btn--ghost:hover {
+  color: #29abe2;
+  border-color: #29abe2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+.welcome-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 0 24px 40px;
+  font-size: 16px;
+}
+
+.welcome-footer a {
+  color: #cdcdcd;
+  text-decoration: none;
+}
+
+.welcome-footer a:hover,
+.welcome-footer a:focus-visible {
+  color: #29abe2;
+}
+
+/* --- Tablet ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .welcome-card {
+    padding: 44px 40px 48px;
+  }
+
+  .welcome-roles {
+    column-gap: 32px;
+  }
+}
+
+/* --- Mobile (Figma mobile frame) ------------------------------------------ */
+@media (max-width: 640px) {
+  #intro-screen img {
+    width: 150px;
+  }
+
+  .welcome-header {
+    position: static;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 24px;
+    padding: 24px 16px 0;
+    pointer-events: auto;
+  }
+
+  .welcome-header__logo {
+    width: 50px;
+  }
+
+  .welcome-header__signup {
+    display: block;
+    margin: 0;
+    font-size: 16px;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .welcome-header__signup a {
+    margin-left: 6px;
+    color: #ffffff;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .welcome-header__signup a:hover {
+    color: #29abe2;
+  }
+
+  .welcome-page {
+    align-items: flex-start;
+    padding: 12px 16px 32px;
+  }
+
+  .welcome-card {
+    padding: 36px 20px 40px;
+    border-radius: 30px;
+    text-align: center;
+  }
+
+  .welcome-card__lead {
+    margin: 24px 0 40px;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  .welcome-roles {
+    grid-template-columns: 1fr;
+    justify-content: stretch;
+    row-gap: 32px;
+  }
+
+  .welcome-role {
+    align-items: center;
+    gap: 14px;
+  }
+
+  .welcome-role__question {
+    font-size: 18px;
+  }
+
+  .welcome-btn--primary {
+    font-size: 16px;
+    background-color: #2a3647;
+    border-color: #2a3647;
+  }
+
+  .welcome-btn--primary:hover {
+    background-color: #29abe2;
+    border-color: #29abe2;
+  }
+
+  .welcome-btn--ghost {
+    font-size: 16px;
+  }
+
+  .welcome-footer {
+    padding-bottom: 32px;
+  }
+
+  .welcome-footer a {
+    color: #ffffff;
+  }
+}

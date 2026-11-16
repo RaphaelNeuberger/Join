@@ -429,3 +429,88 @@
     box-sizing: border-box;
   }
 }
+
+/* Category pill + "Ai-generated ticket" label (Figma task overlay v1) */
+.task-card-category-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.task-card-ai-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #7b61ff;
+}
+
+/* Creator row: "Creator: [Member|Extern] Name   [Profil|E-mail]" */
+.task-card-creator {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+}
+
+.task-card-creator__label {
+  min-width: 112px;
+  color: #42526e;
+}
+
+.creator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 6px;
+  font-size: 16px;
+  line-height: 1.2;
+  border-radius: 4px;
+}
+
+.creator-badge--internal {
+  color: #1d7a52;
+  background-color: #c9f7e1;
+}
+
+.creator-badge--external {
+  color: #2a3647;
+  background-color: #eaff8f;
+}
+
+.task-card-creator__name {
+  color: #000000;
+}
+
+.task-card-creator__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: auto;
+  font-size: 16px;
+  color: #29abe2;
+  text-decoration: none;
+}
+
+.task-card-creator__link:hover,
+.task-card-creator__link:focus-visible {
+  text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+  .task-card-creator {
+    font-size: 16px;
+  }
+
+  .task-card-creator__label {
+    min-width: 0;
+  }
+
+  .task-card-creator__link {
+    margin-left: 0;
+  }
+}

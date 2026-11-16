@@ -1,0 +1,162 @@
+{
+  "name": "Join Status Notification",
+  "nodes": [
+    {
+      "parameters": {
+        "url": "={{ \"https://join-issue-collector-c68f9-default-rtdb.europe-west1.firebasedatabase.app/tasks/\" + $('Status Change Webhook').first().json.body.taskId + \".json\" }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "7eaaba34-3782-47e2-91b7-b85184556cf5",
+      "name": "Get Task from Firebase"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "status-change",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "05f29d6a-9f1c-4e88-b17b-f7d831e27b08",
+      "name": "Status Change Webhook",
+      "webhookId": "f2b72285-9957-45a6-917a-4ae941179ac0"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "2f1c91d0-8809-460c-ade0-10a42661a50a",
+              "leftValue": "={{ $json.aiGenerated }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "c99ad0e8-d951-4e15-b414-41a25448c2b8",
+              "leftValue": "={{ $json.creator.type }}",
+              "rightValue": "external",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            },
+            {
+              "id": "dfa2ab09-216e-4661-b243-ebe7d3b257c3",
+              "leftValue": "={{ $json.creator.email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "looseTypeValidation": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "fd2ad6ca-7114-40d3-8c2f-0e2e81f4efc3",
+      "name": "Should Send Mail?"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/me/sendMail",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOutlookOAuth2Api",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  message: {\n    subject: \"Status-Update: \\\"\" + $json.title + \"\\\"\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $json.creator.name + \",</p><p>Dein Ticket <strong>\\\"\" + $json.title + \"\\\"</strong> wurde im Kanban-Board verschoben:</p><p>Status: <strong>\" + $('Status Change Webhook').first().json.body.oldStatus + \"</strong> &rarr; <strong>\" + $('Status Change Webhook').first().json.body.newStatus + \"</strong></p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $json.creator.email } }]\n  },\n  saveToSentItems: true\n}) }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        624,
+        -96
+      ],
+      "id": "ecc5ff6b-96ee-4185-8455-0bbdc2faaea8",
+      "name": "Send Status Update Mail",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "5m8rMCBRF84iAbtg",
+          "name": "Microsoft Outlook account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Status Change Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get Task from Firebase",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Task from Firebase": {
+      "main": [
+        [
+          {
+            "node": "Should Send Mail?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Should Send Mail?": {
+      "main": [
+        [
+          {
+            "node": "Send Status Update Mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "dbb1c8e9-cfbd-474d-b67b-a5d512364f3b",
+  "meta": {
+    "instanceId": "20700f6970c5075693d4bc606ee50f0ed17c76a2f6881676a33ccd537c3bf253"
+  },
+  "id": "qm2b3iNDHmrJkrpr",
+  "tags": []
+}

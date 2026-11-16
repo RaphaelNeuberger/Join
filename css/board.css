@@ -959,3 +959,22 @@ body {
 .js-add-task-trigger {
   cursor: pointer;
 }
+
+/* Triage column - subtle accent to mark it as the AI/inbox entry column */
+#columnTriage .task-header span {
+  color: #6366f1;
+}
+
+/* AI-generated badge on board cards */
+.card-ai-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 1px 7px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #6366f1, #a855f7);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  vertical-align: middle;
+}

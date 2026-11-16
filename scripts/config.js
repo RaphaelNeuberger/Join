@@ -5,15 +5,14 @@
 
 /** @constant {Object} */
 const firebaseConfig = {
-  apiKey: "AIzaSyBI4JD0XBE-srOGHaLT81iUZ6meuOjgV8M",
-  authDomain: "join-60a91.firebaseapp.com",
+  apiKey: "AIzaSyAyj0MZ7iii2O2P51gg3s_1li_da2hIdPQ",
+  authDomain: "join-issue-collector-c68f9.firebaseapp.com",
   databaseURL:
-    "https://join-60a91-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "join-60a91",
-  storageBucket: "join-60a91.firebasedestorage.app",
-  messagingSenderId: "1027472895369",
-  appId: "1:1027472895369:web:254e2439fa85bc74d08558",
-  measurementId: "G-K7ZPGG17YR",
+    "https://join-issue-collector-c68f9-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "join-issue-collector-c68f9",
+  storageBucket: "join-issue-collector-c68f9.firebasestorage.app",
+  messagingSenderId: "353878554084",
+  appId: "1:353878554084:web:6ec1bce992f43737fac3f1",
 };
 
 if (typeof window !== "undefined") {

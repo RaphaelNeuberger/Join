@@ -1,0 +1,346 @@
+/* ==========================================================================
+   Request form - Figma "Join Version 1 / Request" (desktop + mobile)
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  color: #000000;
+  background-color: #f6f7f8;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --- Header ---------------------------------------------------------------- */
+.request-header {
+  padding: 80px 0 0 77px;
+}
+
+.request-header__logo {
+  display: inline-block;
+  line-height: 0;
+}
+
+.request-header__logo img {
+  width: 100px;
+  height: 122px;
+}
+
+/* --- Card ------------------------------------------------------------------ */
+.request-main {
+  flex: 1 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: -26px;
+  padding: 0 24px 48px;
+}
+
+.request-card {
+  width: 100%;
+  max-width: 598px;
+  padding: 48px 88px;
+  background-color: #ffffff;
+  border-radius: 30px;
+  box-shadow: 0 0 14px 3px rgba(0, 0, 0, 0.04);
+}
+
+.request-card__head {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.request-back {
+  position: absolute;
+  left: -40px;
+  top: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  color: #29abe2;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: background-color 0.15s ease;
+}
+
+.request-back:hover,
+.request-back:focus-visible {
+  background-color: #eef7fc;
+}
+
+.request-card__title {
+  margin: 0;
+  font-size: 61px;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+}
+
+.request-card__title::after {
+  content: "";
+  display: block;
+  width: 150px;
+  height: 3px;
+  margin: 8px auto 0;
+  background-color: #29abe2;
+  border-radius: 2px;
+}
+
+/* --- Form ------------------------------------------------------------------ */
+.request-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.request-field {
+  position: relative;
+}
+
+.request-field input,
+.request-field textarea {
+  width: 100%;
+  padding: 12px 52px 12px 21px;
+  font-family: inherit;
+  font-size: 20px;
+  color: #000000;
+  background-color: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.request-field textarea {
+  min-height: 232px;
+  padding-right: 21px;
+  resize: vertical;
+}
+
+.request-field input::placeholder,
+.request-field textarea::placeholder {
+  color: #a8a8a8;
+}
+
+.request-field input:focus,
+.request-field textarea:focus {
+  border-color: #29abe2;
+}
+
+.request-field input[aria-invalid="true"],
+.request-field textarea[aria-invalid="true"] {
+  border-color: #ff8190;
+}
+
+.request-field__icon {
+  position: absolute;
+  top: 50%;
+  right: 21px;
+  width: 24px;
+  height: 24px;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.request-honeypot {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.request-error {
+  margin: 0;
+  font-size: 14px;
+  color: #ff3d00;
+}
+
+.request-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.request-submit {
+  min-height: 55px;
+  padding: 0 24px;
+  font-family: inherit;
+  font-size: 21px;
+  font-weight: 700;
+  color: #ffffff;
+  background-color: #2a3647;
+  border: 1px solid #2a3647;
+  border-radius: 8px;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.request-submit:hover:not(:disabled) {
+  background-color: #29abe2;
+  border-color: #29abe2;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.request-submit:focus-visible {
+  outline: 3px solid #29abe2;
+  outline-offset: 2px;
+}
+
+.request-submit:disabled {
+  cursor: progress;
+  opacity: 0.6;
+}
+
+/* --- Toast (same style as "You Signed Up successfully") ------------------- */
+.request-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 48px;
+  max-width: calc(100% - 32px);
+  padding: 20px 28px;
+  font-size: 20px;
+  text-align: center;
+  color: #ffffff;
+  background-color: #2a3647;
+  border-radius: 20px;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  transform: translateX(-50%);
+  animation: request-toast-in 0.3s ease-out;
+}
+
+@keyframes request-toast-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 40px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* --- Footer ---------------------------------------------------------------- */
+.request-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  padding: 24px 24px 40px;
+  font-size: 16px;
+}
+
+.request-footer a {
+  color: #a8a8a8;
+  text-decoration: none;
+}
+
+.request-footer a:hover,
+.request-footer a:focus-visible {
+  color: #29abe2;
+}
+
+/* --- Tablet ---------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .request-header {
+    padding: 40px 0 0 40px;
+  }
+
+  .request-header__logo img {
+    width: 64px;
+    height: 78px;
+  }
+
+  .request-main {
+    margin-top: 24px;
+  }
+
+  .request-card {
+    padding: 40px 56px;
+  }
+}
+
+/* --- Mobile (Figma "Log in mobile" / request frame) ----------------------- */
+@media (max-width: 640px) {
+  .request-header {
+    padding: 24px 0 0 16px;
+  }
+
+  .request-header__logo img {
+    width: 34px;
+    height: 40px;
+  }
+
+  .request-main {
+    margin-top: 40px;
+    padding: 0 16px 32px;
+  }
+
+  .request-card {
+    padding: 32px 16px;
+  }
+
+  .request-back {
+    left: 0;
+  }
+
+  .request-card__title {
+    font-size: 36px;
+  }
+
+  .request-card__title::after {
+    width: 88px;
+  }
+
+  .request-field input,
+  .request-field textarea {
+    padding-left: 14px;
+    font-size: 16px;
+  }
+
+  .request-field textarea {
+    min-height: 160px;
+  }
+
+  .request-submit {
+    min-height: 44px;
+    font-size: 16px;
+  }
+
+  .request-toast {
+    bottom: 24px;
+    font-size: 16px;
+  }
+}

@@ -5,12 +5,19 @@
 
 /**
  * Returns HTML template for empty task column
+ * @param {string} [status] - Status of the column to tailor the placeholder
  * @returns {string} HTML string
  */
-function noTaskTemplate() {
-  return (
-    '<div class="card-no-task">' + "<span>No tasks To do</span>" + "</div>"
-  );
+function noTaskTemplate(status) {
+  const labels = {
+    triage: "No tickets in triage",
+    todo: "No tasks To do",
+    inprogress: "No tasks in progress",
+    await_feedback: "Nothing to review",
+    done: "Nothing done yet",
+  };
+  const text = labels[status] || "No tasks";
+  return '<div class="card-no-task"><span>' + text + "</span></div>";
 }
 
 /**
@@ -74,8 +81,12 @@ function renderAssignees(assignees = []) {
  * @returns {string} HTML string for task card
  */
 function taskTemplate(task) {
-  const { id, category, title, description, assignedTo, priority, subtasks } =
+  const { id, category, title, description, assignedTo, priority, subtasks, aiGenerated } =
     task;
+
+  const aiBadge = aiGenerated
+    ? '<span class="card-ai-badge" title="KI-generiert">AI</span>'
+    : "";
 
   return `
     <div class="card-task"
@@ -83,7 +94,7 @@ function taskTemplate(task) {
          data-task-id="${escapeHtml(id)}">
 
       <div class="card-header-row">
-        <p class="card-type">${escapeHtml(category || "")}</p>
+        <p class="card-type">${escapeHtml(category || "")}${aiBadge}</p>
         <button
           type="button"
           class="card-move-btn"

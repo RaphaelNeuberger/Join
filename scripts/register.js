@@ -150,7 +150,7 @@ async function addUser() {
     await updateProfile(user, { displayName: name });
     await set(ref(firebaseDb, "users/" + user.uid), { name, email, createdAt: new Date().toISOString() });
     showNotification("Successfully registered!", "success");
-    setTimeout(() => (window.location.href = "index.html?msg=Successfully registered"), 1200);
+    setTimeout(() => (window.location.href = "login.html?msg=Successfully registered"), 1200);
   } catch (e) { showNotification(getAddUserErrorMessage(e), "error"); }
 }
 
