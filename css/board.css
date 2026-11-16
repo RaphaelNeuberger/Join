@@ -244,8 +244,8 @@ body {
 }
 .prio-icon svg {
   display: block;
-  width: 16px;
-  height: 12px;
+  width: 1.5rem;
+  height: 2rem;
 }
 
 .subtask-progress {

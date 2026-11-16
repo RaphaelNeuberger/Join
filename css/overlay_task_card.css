@@ -205,11 +205,15 @@
 
 .task-card-body th,
 .task-card-body td {
-  text-align: left;
-  padding-bottom: 8px;
-  font-family: "Inter", sans-serif;
-  font-weight: 400;
-  font-size: 20px;
+    display: flex;
+    text-align: left;
+    padding-bottom: 8px;
+    font-family: "Inter", sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
 }
 
 .task-card-body table td:first-child {
@@ -217,6 +221,15 @@
   color: #6b7280;
 }
 
+.task-card-body table tr{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  align-items: center;
+}
+.prio-text{
+  margin-right: 1.8rem;
+}
 .overlay-task-card-label-big {
   font-size: 20px;
   font-weight: 400;
