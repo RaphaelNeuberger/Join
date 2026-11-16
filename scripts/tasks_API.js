@@ -20,7 +20,7 @@ const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
  * @constant {string}
  */
 const N8N_STATUS_WEBHOOK =
-  "https://agents.newmountains.it/webhook/status-change";
+  "https://n8n.newmountains.it/webhook/status-change";
 
 /**
  * Checks if the given value represents an in-progress status
