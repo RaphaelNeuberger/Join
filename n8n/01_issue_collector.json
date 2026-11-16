@@ -3,7 +3,7 @@
   "nodes": [
     {
       "parameters": {
-        "jsCode": "/**\n * Extracts and normalises the email data from the Microsoft Outlook trigger.\n * Strips HTML, decodes entities, returns the fields needed downstream.\n */\n\nconst m = $input.item.json;\n\nconst fromEmail = m?.sender?.emailAddress?.address || \"\";\nconst fromName = m?.sender?.emailAddress?.name || fromEmail || \"Unknown\";\nconst subject = m?.subject || \"(no subject)\";\nconst messageId = m?.id || \"\";\nconst receivedAt = m?.receivedDateTime || new Date().toISOString();\n\nconst rawBody = m?.body?.content || m?.bodyPreview || \"\";\nconst contentType = m?.body?.contentType || \"text\";\n\nconst plainBody = contentType === \"html\"\n  ? rawBody\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, \"\")\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, \"\")\n      .replace(/<br\\s*\\/?>/gi, \"\\n\")\n      .replace(/<\\/p>/gi, \"\\n\\n\")\n      .replace(/<[^>]+>/g, \"\")\n      .replace(/&nbsp;/gi, \" \")\n      .replace(/&amp;/gi, \"&\")\n      .replace(/&lt;/gi, \"<\")\n      .replace(/&gt;/gi, \">\")\n      .replace(/&quot;/gi, '\"')\n      .replace(/&#39;/gi, \"'\")\n      .replace(/\\n{3,}/g, \"\\n\\n\")\n      .trim()\n  : rawBody.trim();\n\nreturn {\n  json: {\n    fromEmail,\n    fromName,\n    subject,\n    plainBody,\n    messageId,\n    receivedAt,\n    aiInputText: `Betreff: ${subject}\\n\\nAbsender: ${fromName} <${fromEmail}>\\n\\nNachricht:\\n${plainBody}`,\n  },\n};\n"
+        "jsCode": "/**\n * Extracts and normalises the email data from the Microsoft Outlook trigger.\n * Strips HTML, decodes entities, returns the fields needed downstream.\n *\n * SCHLEIFENSCHUTZ (13.11.2026): eigene und automatische Mails werden verworfen,\n * damit der Workflow nie auf seine eigenen Antworten reagiert.\n */\n\nconst m = $input.item.json;\n\nconst fromEmail = m?.sender?.emailAddress?.address || \"\";\nconst fromName = m?.sender?.emailAddress?.name || fromEmail || \"Unknown\";\nconst subject = m?.subject || \"(no subject)\";\nconst messageId = m?.id || \"\";\nconst receivedAt = m?.receivedDateTime || new Date().toISOString();\n\n// --- Schleifenschutz ---\nconst OWN_ADDRESSES = [\"r.neuberger@newmountains.it\"];\nconst from = fromEmail.trim().toLowerCase();\nconst isOwn = OWN_ADDRESSES.includes(from);\nconst isAutoSender = /^(no-?reply|noreply|do-?not-?reply|mailer-daemon|postmaster)@/i.test(from);\nconst isOwnAutoSubject = /^\\s*(Ihre Anfrage \"|Bestaetigung: Ihr Feature Request|Status-Update: \")/i.test(subject);\nconst isAutoReplySubject = /^\\s*(Automatische Antwort|Automatic reply|Auto(-| )?reply|Abwesenheit|Out of Office|Undeliverable|Unzustellbar)/i.test(subject);\nif (!from || isOwn || isAutoSender || isOwnAutoSubject || isAutoReplySubject) {\n  return [];\n}\n\nconst rawBody = m?.body?.content || m?.bodyPreview || \"\";\nconst contentType = m?.body?.contentType || \"text\";\n\nconst plainBody = contentType === \"html\"\n  ? rawBody\n      .replace(/<style[\\s\\S]*?<\\/style>/gi, \"\")\n      .replace(/<script[\\s\\S]*?<\\/script>/gi, \"\")\n      .replace(/<br\\s*\\/?>/gi, \"\\n\")\n      .replace(/<\\/p>/gi, \"\\n\\n\")\n      .replace(/<[^>]+>/g, \"\")\n      .replace(/&nbsp;/gi, \" \")\n      .replace(/&amp;/gi, \"&\")\n      .replace(/&lt;/gi, \"<\")\n      .replace(/&gt;/gi, \">\")\n      .replace(/&quot;/gi, '\"')\n      .replace(/&#39;/gi, \"'\")\n      .replace(/\\n{3,}/g, \"\\n\\n\")\n      .trim()\n  : rawBody.trim();\n\nreturn {\n  json: {\n    fromEmail,\n    fromName,\n    subject,\n    plainBody,\n    messageId,\n    receivedAt,\n    aiInputText: `Betreff: ${subject}\\n\\nAbsender: ${fromName} <${fromEmail}>\\n\\nNachricht:\\n${plainBody}`,\n  },\n};\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
@@ -80,9 +80,9 @@
       "parameters": {
         "modelId": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
           "mode": "list",
-          "cachedResultName": "GPT-4.1-MINI"
+          "value": "gpt-oss-bedrock",
+          "cachedResultName": "gpt-oss-bedrock"
         },
         "responses": {
           "values": [
@@ -97,6 +97,7 @@
         },
         "builtInTools": {},
         "options": {
+          "maxTokens": 2000,
           "textFormat": {
             "textOptions": {
               "type": "json_object"
@@ -234,7 +235,7 @@
         "nodeCredentialType": "microsoftOutlookOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  message: {\n    subject: \"Bestaetigung: Ihr Feature Request \\\"\" + $('Build Task Payload').first().json.meta.ticketTitle + \"\\\"\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Build Task Payload').first().json.meta.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Wir haben Ihre E-Mail erhalten und ein Ticket in unserem Kanban-Board angelegt:</p><p><strong>\" + $('Build Task Payload').first().json.meta.ticketTitle + \"</strong></p><p>Sie werden ueber Statusaenderungen automatisch per E-Mail benachrichtigt.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Build Task Payload').first().json.meta.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
+        "jsonBody": "={{ ((o)=>{try{const b=o&&o.message&&o.message.body;if(b&&typeof b.content==='string'&&!/nmit-mail-logo|#001860|bgcolor=/i.test(b.content)){let c=b.content;if(String(b.contentType).toLowerCase()==='text'){c='<div style=\"white-space:pre-wrap\">'+c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';b.contentType='HTML';}b.content=\"<table role=\\\"presentation\\\" width=\\\"100%\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" bgcolor=\\\"#eef2f7\\\" style=\\\"background:#eef2f7;\\\"><tr><td align=\\\"center\\\" style=\\\"padding:20px 10px;\\\"><table role=\\\"presentation\\\" width=\\\"680\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" style=\\\"width:680px;max-width:100%;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;\\\"><tr><td bgcolor=\\\"#001860\\\" style=\\\"background:#001860;padding:16px 24px;border-radius:12px 12px 0 0;\\\"><img src=\\\"https://newmountains.it/wp-content/uploads/2026/11/brand/nmit-mail-logo-weiss.png\\\" alt=\\\"Newmountains.IT\\\" width=\\\"144\\\" height=\\\"34\\\" style=\\\"display:block;width:144px;height:34px;border:0;\\\"></td></tr><tr><td bgcolor=\\\"#8F35EE\\\" style=\\\"background:#8F35EE;height:4px;line-height:4px;font-size:0;\\\">&nbsp;</td></tr><tr><td style=\\\"padding:22px 24px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#0f172a;\\\">\"+c+\"</td></tr><tr><td style=\\\"padding:12px 24px 18px;border-top:1px solid #e2e8f0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.5;color:#64748b;\\\">Newmountains.IT &middot; Oberndorferstra&szlig;e 22 &middot; 84032 Landshut &middot; <a href=\\\"https://newmountains.it/\\\" style=\\\"color:#1273b8;text-decoration:none;\\\">newmountains.it</a></td></tr></table></td></tr></table>\";} }catch(e){}return JSON.stringify(o);})({\n  message: {\n    subject: \"Bestaetigung: Ihr Feature Request \\\"\" + $('Build Task Payload').first().json.meta.ticketTitle + \"\\\"\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Build Task Payload').first().json.meta.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Wir haben Ihre E-Mail erhalten und ein Ticket in unserem Kanban-Board angelegt:</p><p><strong>\" + $('Build Task Payload').first().json.meta.ticketTitle + \"</strong></p><p>Sie werden ueber Statusaenderungen automatisch per E-Mail benachrichtigt.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Build Task Payload').first().json.meta.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -287,7 +288,7 @@
         "nodeCredentialType": "microsoftOutlookOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  message: {\n    subject: \"Ihre Anfrage \\\"\" + $('Code in JavaScript').first().json.subject + \"\\\" - Tageslimit erreicht\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Code in JavaScript').first().json.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Aus Gruenden der Kostenkontrolle ist unsere automatisierte KI-Verarbeitung auf <strong>10 Anfragen pro Tag</strong> limitiert - dieses Tageslimit ist heute bereits erreicht.</p><p>Keine Sorge: Ihre E-Mail ist bei uns angekommen und wird morgen vom Team manuell gesichtet. Sie erhalten dann ein Update.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Code in JavaScript').first().json.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
+        "jsonBody": "={{ ((o)=>{try{const b=o&&o.message&&o.message.body;if(b&&typeof b.content==='string'&&!/nmit-mail-logo|#001860|bgcolor=/i.test(b.content)){let c=b.content;if(String(b.contentType).toLowerCase()==='text'){c='<div style=\"white-space:pre-wrap\">'+c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';b.contentType='HTML';}b.content=\"<table role=\\\"presentation\\\" width=\\\"100%\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" bgcolor=\\\"#eef2f7\\\" style=\\\"background:#eef2f7;\\\"><tr><td align=\\\"center\\\" style=\\\"padding:20px 10px;\\\"><table role=\\\"presentation\\\" width=\\\"680\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" style=\\\"width:680px;max-width:100%;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;\\\"><tr><td bgcolor=\\\"#001860\\\" style=\\\"background:#001860;padding:16px 24px;border-radius:12px 12px 0 0;\\\"><img src=\\\"https://newmountains.it/wp-content/uploads/2026/11/brand/nmit-mail-logo-weiss.png\\\" alt=\\\"Newmountains.IT\\\" width=\\\"144\\\" height=\\\"34\\\" style=\\\"display:block;width:144px;height:34px;border:0;\\\"></td></tr><tr><td bgcolor=\\\"#8F35EE\\\" style=\\\"background:#8F35EE;height:4px;line-height:4px;font-size:0;\\\">&nbsp;</td></tr><tr><td style=\\\"padding:22px 24px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#0f172a;\\\">\"+c+\"</td></tr><tr><td style=\\\"padding:12px 24px 18px;border-top:1px solid #e2e8f0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.5;color:#64748b;\\\">Newmountains.IT &middot; Oberndorferstra&szlig;e 22 &middot; 84032 Landshut &middot; <a href=\\\"https://newmountains.it/\\\" style=\\\"color:#1273b8;text-decoration:none;\\\">newmountains.it</a></td></tr></table></td></tr></table>\";} }catch(e){}return JSON.stringify(o);})({\n  message: {\n    subject: \"Ihre Anfrage \\\"\" + $('Code in JavaScript').first().json.subject + \"\\\" - Tageslimit erreicht\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Code in JavaScript').first().json.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Aus Gruenden der Kostenkontrolle ist unsere automatisierte KI-Verarbeitung auf <strong>10 Anfragen pro Tag</strong> limitiert - dieses Tageslimit ist heute bereits erreicht.</p><p>Keine Sorge: Ihre E-Mail ist bei uns angekommen und wird morgen vom Team manuell gesichtet. Sie erhalten dann ein Update.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Code in JavaScript').first().json.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -308,7 +309,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "{{ \"https://graph.microsoft.com/v1.0/me/messages/\" + encodeURIComponent($('Microsoft Outlook Trigger').first().json.id) + \"/move\" }}",
+        "url": "={{ \"https://graph.microsoft.com/v1.0/me/messages/\" + encodeURIComponent($('Microsoft Outlook Trigger').first().json.id) + \"/move\" }}",
         "authentication": "predefinedCredentialType",
         "nodeCredentialType": "microsoftOutlookOAuth2Api",
         "sendBody": true,
@@ -339,7 +340,7 @@
         "nodeCredentialType": "microsoftOutlookOAuth2Api",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({\n  message: {\n    subject: \"Ihre Anfrage \\\"\" + $('Code in JavaScript').first().json.subject + \"\\\" - wir melden uns\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Code in JavaScript').first().json.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Wir haben Ihre E-Mail erhalten - unsere automatisierte Verarbeitung konnte sie aktuell nicht abschliessen, aber das Team wurde informiert und sichtet die Anfrage zeitnah manuell.</p><p>Sie werden in Kuerze ueber den Status informiert.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Code in JavaScript').first().json.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
+        "jsonBody": "={{ ((o)=>{try{const b=o&&o.message&&o.message.body;if(b&&typeof b.content==='string'&&!/nmit-mail-logo|#001860|bgcolor=/i.test(b.content)){let c=b.content;if(String(b.contentType).toLowerCase()==='text'){c='<div style=\"white-space:pre-wrap\">'+c.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')+'</div>';b.contentType='HTML';}b.content=\"<table role=\\\"presentation\\\" width=\\\"100%\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" bgcolor=\\\"#eef2f7\\\" style=\\\"background:#eef2f7;\\\"><tr><td align=\\\"center\\\" style=\\\"padding:20px 10px;\\\"><table role=\\\"presentation\\\" width=\\\"680\\\" cellpadding=\\\"0\\\" cellspacing=\\\"0\\\" border=\\\"0\\\" style=\\\"width:680px;max-width:100%;background:#ffffff;border:1px solid #e2e8f0;border-radius:12px;\\\"><tr><td bgcolor=\\\"#001860\\\" style=\\\"background:#001860;padding:16px 24px;border-radius:12px 12px 0 0;\\\"><img src=\\\"https://newmountains.it/wp-content/uploads/2026/11/brand/nmit-mail-logo-weiss.png\\\" alt=\\\"Newmountains.IT\\\" width=\\\"144\\\" height=\\\"34\\\" style=\\\"display:block;width:144px;height:34px;border:0;\\\"></td></tr><tr><td bgcolor=\\\"#8F35EE\\\" style=\\\"background:#8F35EE;height:4px;line-height:4px;font-size:0;\\\">&nbsp;</td></tr><tr><td style=\\\"padding:22px 24px;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.6;color:#0f172a;\\\">\"+c+\"</td></tr><tr><td style=\\\"padding:12px 24px 18px;border-top:1px solid #e2e8f0;font-family:Arial,Helvetica,sans-serif;font-size:11px;line-height:1.5;color:#64748b;\\\">Newmountains.IT &middot; Oberndorferstra&szlig;e 22 &middot; 84032 Landshut &middot; <a href=\\\"https://newmountains.it/\\\" style=\\\"color:#1273b8;text-decoration:none;\\\">newmountains.it</a></td></tr></table></td></tr></table>\";} }catch(e){}return JSON.stringify(o);})({\n  message: {\n    subject: \"Ihre Anfrage \\\"\" + $('Code in JavaScript').first().json.subject + \"\\\" - wir melden uns\",\n    body: {\n      contentType: \"HTML\",\n      content: \"<p>Hallo \" + $('Code in JavaScript').first().json.fromName + \",</p><p>vielen Dank fuer Ihre Anfrage. Wir haben Ihre E-Mail erhalten - unsere automatisierte Verarbeitung konnte sie aktuell nicht abschliessen, aber das Team wurde informiert und sichtet die Anfrage zeitnah manuell.</p><p>Sie werden in Kuerze ueber den Status informiert.</p><p>Beste Gruesse<br>Das Join-Team</p>\"\n    },\n    toRecipients: [{ emailAddress: { address: $('Code in JavaScript').first().json.fromEmail } }]\n  },\n  saveToSentItems: true\n}) }}\n",
         "options": {}
       },
       "type": "n8n-nodes-base.httpRequest",
@@ -512,17 +513,6 @@
         ]
       ]
     },
-    "Error: Move to Zu bearbeiten": {
-      "main": [
-        [
-          {
-            "node": "Error: Send Sorry Mail",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Send Confirmation Mail": {
       "main": [
         [],
@@ -539,13 +529,24 @@
   "active": true,
   "settings": {
     "executionOrder": "v1",
-    "binaryMode": "separate"
+    "binaryMode": "separate",
+    "availableInMCP": true
   },
-  "versionId": "3ddcd7ed-52bc-4dc3-9630-af03ceeb9e47",
+  "versionId": "2bc3a555-be94-40cc-8233-3a7718301a15",
   "meta": {
     "templateCredsSetupCompleted": true,
+    "aiBuilderAssisted": true,
+    "builderVariant": "mcp",
     "instanceId": "20700f6970c5075693d4bc606ee50f0ed17c76a2f6881676a33ccd537c3bf253"
   },
+  "nodeGroups": [],
   "id": "Qtvsip9JblfzSyuq",
-  "tags": []
+  "tags": [
+    {
+      "updatedAt": "2026-08-27T14:33:43.677Z",
+      "createdAt": "2026-08-27T14:33:43.677Z",
+      "id": "CM3VgoijtmIncvv5",
+      "name": "template"
+    }
+  ]
 }
