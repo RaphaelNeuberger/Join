@@ -91,7 +91,7 @@
               "content": "Du bist ein KI-Assistent fuer ein Kanban-Board namens \"Join\". Du bekommst E-Mails von externen Stakeholdern, die Feature-Requests, Bug-Reports oder technische Aufgaben einreichen wollen. Deine Aufgabe: extrahiere strukturierte Ticket-Daten aus der E-Mail.\n\nAntworte AUSSCHLIESSLICH mit gueltigem JSON in genau dieser Struktur:\n{\n  \"title\": \"praegnanter Titel, max 80 Zeichen\",\n  \"category\": \"Technical Tasks\" oder \"User Story\",\n  \"priority\": \"Urgent\" oder \"Medium\" oder \"Low\",\n  \"dueDate\": \"YYYY-MM-DD\" oder null,\n  \"description\": \"ausfuehrliche Beschreibung des Anliegens, ohne Begruessung/Verabschiedung, in Deutsch\"\n}\n\nRegeln:\n- \"Technical Tasks\" fuer Bugs, technische Aufgaben, Infrastruktur, Setup\n- \"User Story\" fuer Feature-Requests, neue Funktionen, UX-Verbesserungen\n- \"Urgent\" bei Keywords wie: sofort, dringend, kritisch, sicherheitsrelevant, ausfall, defekt, urgent, asap, kunden warten\n- \"Low\" bei Keywords wie: irgendwann, nice to have, optional, gelegentlich, wenn Zeit\n- \"Medium\" als Default\n- dueDate: extrahiere konkretes Datum aus dem Text (z.B. \"bis Ende Monat\" -> letzter Tag des aktuellen Monats). Wenn keine Deadline genannt, null.\n- Antwort MUSS valides JSON sein, kein Markdown, keine Erklaerungen drumherum.\n"
             },
             {
-              "content": "={{ $('Code in JavaScript').item.json.aiInputText }}\n"
+              "content": "=Heutiges Datum: {{ $now.setZone('Europe/Berlin').toFormat('cccc, yyyy-MM-dd', { locale: 'de' }) }}\n\n{{ $('Code in JavaScript').item.json.aiInputText }}\n"
             }
           ]
         },
@@ -519,6 +519,17 @@
         [
           {
             "node": "Error: Move to Zu bearbeiten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error: Move to Zu bearbeiten": {
+      "main": [
+        [
+          {
+            "node": "Error: Send Sorry Mail",
             "type": "main",
             "index": 0
           }
