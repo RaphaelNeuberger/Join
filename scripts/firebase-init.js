@@ -38,3 +38,14 @@ window.get = get;
 window.child = child;
 window.update = update;
 window.remove = remove;
+
+/**
+ * Returns the ID token of the signed-in user for authenticated REST calls.
+ * Waits until Firebase has restored the persisted session.
+ * @async
+ * @returns {Promise<string|null>} The ID token or null if nobody is signed in
+ */
+window.getAuthToken = async function getAuthToken() {
+  await auth.authStateReady();
+  return auth.currentUser ? auth.currentUser.getIdToken() : null;
+};

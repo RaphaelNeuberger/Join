@@ -14,6 +14,32 @@ const FIREBASE_BASE_URL =
 const TASKS_BASE_URL = `${FIREBASE_BASE_URL}/tasks`;
 
 /**
+ * Waits until firebase-init.js has registered window.getAuthToken
+ * @returns {Promise<void>}
+ */
+function waitForAuthModule() {
+  return new Promise((resolve) => {
+    const check = () => (window.getAuthToken ? resolve() : setTimeout(check, 50));
+    check();
+  });
+}
+
+/**
+ * Builds an authenticated REST URL for the tasks node
+ * @async
+ * @param {string} [firebaseId] - Optional task key
+ * @returns {Promise<string>} URL including the auth token
+ * @throws {Error} If no user is signed in
+ */
+async function buildTasksUrl(firebaseId) {
+  await waitForAuthModule();
+  const token = await window.getAuthToken();
+  if (!token) throw new Error("Not signed in");
+  const path = firebaseId ? `${TASKS_BASE_URL}/${encodeURIComponent(firebaseId)}` : TASKS_BASE_URL;
+  return `${path}.json?auth=${encodeURIComponent(token)}`;
+}
+
+/**
  * Checks if the given value represents an in-progress status
  * @param {string} value - The status value to check
  * @returns {boolean} True if the value is an in-progress status
@@ -59,7 +85,7 @@ function normalizeTaskStatus(status = "") {
  */
 async function fetchTasks() {
   try {
-    const response = await fetch(`${TASKS_BASE_URL}.json`, {
+    const response = await fetch(await buildTasksUrl(), {
       cache: "no-store",
     });
 
@@ -142,7 +168,7 @@ async function addTask(taskData) {
 
   const { firebaseId: _ignore, ...payload } = cleanTask;
 
-  const response = await fetch(`${TASKS_BASE_URL}.json`, {
+  const response = await fetch(await buildTasksUrl(), {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -184,7 +210,7 @@ async function updateTaskStatus(taskId, newStatus) {
     return;
   }
 
-  const response = await fetch(`${TASKS_BASE_URL}/${firebaseId}.json`, {
+  const response = await fetch(await buildTasksUrl(firebaseId), {
     method: "PATCH",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status: normalizedStatus }),
@@ -223,7 +249,7 @@ async function saveTask(task) {
     }
   }
 
-  const response = await fetch(`${TASKS_BASE_URL}/${firebaseId}.json`, {
+  const response = await fetch(await buildTasksUrl(firebaseId), {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(task),
@@ -248,7 +274,7 @@ async function deleteTaskById(taskId) {
 
   const firebaseId = task && task.firebaseId ? task.firebaseId : taskId;
 
-  const response = await fetch(`${TASKS_BASE_URL}/${firebaseId}.json`, {
+  const response = await fetch(await buildTasksUrl(firebaseId), {
     method: "DELETE",
   });
 

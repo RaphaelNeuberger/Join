@@ -1,0 +1,46 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid",
+        ".validate": "newData.hasChildren(['name', 'email'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+        "email": { ".validate": "newData.isString() && newData.val().length <= 254 && newData.val().matches(/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/)" },
+        "createdAt": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": false }
+      }
+    },
+
+    "contacts": {
+      ".read": "auth != null",
+      ".indexOn": ["email"],
+      "$contactId": {
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren(['name', 'email'])",
+        "name": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 100" },
+        "email": { ".validate": "newData.isString() && newData.val().length <= 254 && newData.val().matches(/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/)" },
+        "phone": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": "newData.isString() && newData.val().length <= 200" }
+      }
+    },
+
+    "tasks": {
+      ".read": "auth != null",
+      "$taskId": {
+        ".write": "auth != null",
+        ".validate": "newData.hasChildren() && $taskId.length <= 64",
+        "title": { ".validate": "newData.isString() && newData.val().length > 0 && newData.val().length <= 200" },
+        "description": { ".validate": "newData.isString() && newData.val().length <= 2000" },
+        "status": { ".validate": "newData.isString() && newData.val().matches(/^(todo|inprogress|in-progress|in_progress|await_feedback|awaitfeedback|await-feedback|done)$/)" },
+        "priority": { ".validate": "newData.isString() && newData.val().length <= 20" },
+        "category": { ".validate": "newData.isString() && newData.val().length <= 100" },
+        "dueDate": { ".validate": "newData.isString() && newData.val().length <= 40" },
+        "$other": { ".validate": "newData.val() != null" }
+      }
+    }
+  }
+}
